@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>avaje ebean</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
+    <link href="/css/site.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div id="wrap">    
+    <div id="header">    
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/documentation">Documentation</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main">    
+<div class="jumbotron mini">
+    <div class="container">
+      <h1><a href="/documentation">Documentation</a> / Introduction  </h1>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="row">
+    <div class="col-md-3">
+
+    <div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="/docs/intro/about">Introduction</a></li>
+            <li class="active"><a href="/docs/intro/programmingstyles">Programming styles</a></li>
+            <li ><a href="/docs/intro/jpacomparison">Comparison to JPA</a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+<!--
+
+-->
+
+    </div>  
+    <div class="col-md-9">
+
+<h1>Comparison to JPA</h1>
+<h4>How is Ebean different</h4>
+
+
+<div class="container">
+
+  <div class="row icon-info">
+
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Architecture</h4>
+  <p>
+Use Spring or Guice etc to inject EbeanServer.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Query Language Design</h4>
+  <p>
+Use the Model MappedSuperclass to add insert(), update(), delete() etc convenience methods to your entity beans.
+This results in a clean programming style made popular by use in the Play framework. The Model and Finder objects
+have now been incorporated into Ebean to support this programming style.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Ebean singleton</h4>
+  <p>
+Use the Ebean singleton object. Similar to the Play / Active record style but you don't use the Ebean specific
+Model and Finder objects in your model.
+  </p>
+  </div>
+</div>
+
+  </div> <!-- ./row -->
+</div>
+
+
+<div class="bs-callout bs-callout-info">
+<h4>Mocking the Ebean singleton</h4>
+<p>
+<code>MockiEbean</code> from <code>avaje-ebeanorm-mocker</code> project provides a helper object to support mocking the EbeanServer using tools like
+<a href="http://code.google.com/p/mockito/">Mockito</a>. If you like the Play/Active record style or Ebean singleton style you can add a test
+dependency on avaje-ebeanorm-mocker and use MockiEbean to enable use of Mockito and similar tools.
+</p>
+</div>
+
+
+
+<h2>Dependency Injection style</h2>
+<p>
+In this style Spring or Guice etc is used to inject an EbeanServer into your service objects.
+Use a Spring FactoryBean or similar to create a EbeanServer instance in the DI context.
+</p>
+
+
+<div class="pull-right">
+<a class="btn btn-large btn-warning" href="">Next: Enhancement</a>
+</div> 
+
+   </div>
+
+    </div> <!-- /.row -->
+  </div>  <!-- /.container -->    
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="/metrics/index">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

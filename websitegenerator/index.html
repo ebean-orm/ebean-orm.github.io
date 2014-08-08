@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Avaje Website Generator</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
+    <link href="/css/site.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><i class='fa fa-cog'></i>  Website Generator</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/metrics/index">Metrics</a></li>
+            <li class="active"><a href="/websitegenerator/index">Website Generator</a></li>
+            <li ><a href="/jetty/index">Jetty Runnable War</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    
+<div class="jumbotron">
+    <div class="container">
+      <h1>Website Generator v1.0.1</h1>
+      <h2>A fun small Java project for offline automatic website generation  <a class="btn btn-warning" href="https://github.com/avaje-common/avaje-website-generator"><b>Github</b></a></h2>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+
+    <div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul>
+            <li><a href="#offline">Offline Generation</a></li>
+            <li><a href="#usingit">Using it</a></li>
+            <li><a href="#secretsauce">Secret Sauce</a></li>
+            <li><a href="#templating">Templating</a></li>
+            <li><a href="#logs">Example logs</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+
+    </div>  
+
+    <div class="col-md-10">
+
+        <div class="feature">
+	<a class="anchor" name="offline"></a>
+        <h2>Offline generation of web pages</h2>
+        <p>
+Uses Java7 file watch service to monitor a directory structure that has freemarker templates.
+When changes are detected it generates a html page including support for syntax highlighting for Java, SQL, XML, Javascript.
+</p>
+        <p>
+Typically you install and run this application on a server and setup a cron job that pulls website changes from git or svn. 
+This application detects changes and updates the pages in a destination directory and you use Nginx or Apache to serve the content.
+        </p>
+      </div>
+
+
+      <div class="">
+        <a class="anchor" name="usingit"></a>
+        <h2>Using it</h2>
+        <p>
+          <a target="_blank" href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22avaje-website-generator%22" class="btn btn-large btn-primary">
+<span class="glyphicon glyphicon-save"></span> Download</a> the runnable jar from maven central. 
+        </p>
+        <p>
+          Run it specifying a source directory (that has the freemarker templates etc) and a destination directory (where the
+resulting html is generated to).  Note that the source directory can have an other files (css, js, images, fonts etc) - if the
+file extension ends with <emphasis>.html</emphasis> then it is processed assuming it is a freemarker template - otherwise the files
+are just copied to the destination directory.
+        </p>
+<div class="syntax sh"><div class="highlight"><pre>java -jar avaje-website-generator-1.0.1.jar <span class="se">\n</span>
+  -source /home/rob/website/source <span class="se">\n</span>
+  -dest /home/rob/website/destination
+
+<span class="c"># edit the templates etc in the source directory</span>
+<span class="c"># the pages etc are automatically generated </span>
+<span class="c"># into the destination directoy</span>
+</pre></div>
+</div> 
+       <h4>Notes:</h4>
+        <p>
+          The source directory can have an other files (css, js, images, fonts etc). If the
+file extension ends with <emphasis>.html</emphasis> then it is processed assuming it is a freemarker template - otherwise the files
+are just copied to the destination directory.  Files and directories are also deleted from the destination directory.
+        </p>
+        <p>
+          On a server typically this program is running and there is a cron job that pulls updates into the source directory
+via git pull or similar. Nginx or similar is configured to serve the pages from the destination directory.
+        </p>
+
+      </div>
+
+      <div class="">
+        <h3>Maven</h3>
+
+<div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>avaje-website-generator<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+
+
+
+<div>
+
+<div class="">
+  <a class="anchor" name="secretsauce"></a>
+  <h2>Secret Sauce</h2>
+  <p>
+  The Java7 file watch service uses OS level file watching events so it is fast and efficient. <a href="http://pygments.org">pygments.org</a> provides the
+nice server side syntax highlighting and we are using Jyphon to execute this - its slow for the first syntax highlight but then is decent 
+performance. 
+  </p>
+</div>
+
+
+<div class="">
+  <a class="anchor" name="templating"></a>
+  <h2>Templating</h2>
+  <p>
+  Uses Freemarker for templating and Jyphon / <a href="http://pygments.org">Pygments</a> for syntax hightlighting.
+  Has a simple template layout inheritance mechanism as described below.
+  </p>
+
+  <h3>Layout inheritance</h3>
+<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the &#39;child&#39; page --&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;layout&quot;</span> <span class="na">content=</span><span class="s">&quot;_layout/parent-layout.html&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+  <p>
+The <code>meta layout</code> tag defines a parent template to inherit.   
+  </p>
+<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the parent page --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;layout-body&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+</pre></div>
+</div>
+  <p>
+In the parent page a <code>div</code> with an  <code>id</code> of <code>layout-body</code> defines where in the parent the child page content goes.   
+  </p>
+
+
+<h3>Title</h3>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;head&gt;</span>
+<span class="c">&lt;!-- In the &#39;child&#39; page --&gt;</span>
+<span class="nt">&lt;title&gt;</span>The page title<span class="nt">&lt;/title&gt;</span>
+...
+</pre></div>
+</div>
+<p>
+If you have a <code>title</code> tag in the head of the page then this title is used in the final generated page.
+</p>
+
+
+
+<h3>Head content</h3>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;head&gt;</span>
+<span class="c">&lt;!-- tags in the head section of the &#39;child&#39; page --&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+</pre></div>
+</div>
+<p>
+Any content you have in the <code>head</code> section of the page will be incorporated into the final page layout as 
+long as the parent layout includes a <code>meta</code> tag with an <code>id</code> of <code>layout-head</code>.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the parent page --&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">id=</span><span class="s">&quot;layout-head&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<a class="anchor" name="syntax"></a>
+<h3>Syntax Highlighting</h3>
+<p><a href="http://pygments.org">Pygments</a> provides the syntax highlighting and Jython is used to execute it.</p>
+<h4>Supported languages</h4>
+<p>
+  The supported languages for syntax highlighting is: <code>java, groovy, scala, javascript, sql, sh, and properties </code>
+</p>
+<p>
+To use the syntax highlighting you prefix the code with <strong>3 backticks</strong> followed by the language and terminate it with 3 backticks.
+
+<pre>
+``java
+
+// only 2 backticks above ...
+
+
+``
+</pre>
+</p>
+
+</div> <!-- ./templating -->
+
+
+<a class="anchor" name="logs"></a>
+<h2>Example execution logs:</h2>
+<p>
+Example logs from running the application are shown below:
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">avaje</span><span class="o">-</span><span class="n">website</span><span class="o">-</span><span class="n">generator</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">jar</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">avaje</span><span class="o">-</span><span class="n">ebeanorm</span><span class="o">-</span><span class="n">website</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">site</span>
+
+<span class="c1">--</span>
+<span class="c1">-- walks the source directory tree and generates html and copies files into destination directory</span>
+<span class="c1">--</span>
+
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">26</span><span class="p">.</span><span class="mi">341</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">render</span> <span class="k">template</span><span class="p">:</span> <span class="n">websitegenerator</span><span class="o">/</span><span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">31</span><span class="p">.</span><span class="mi">648</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">render</span> <span class="k">template</span><span class="p">:</span> <span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">31</span><span class="p">.</span><span class="mi">663</span> <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">render</span> <span class="k">template</span><span class="p">:</span> <span class="n">docs</span><span class="o">/</span><span class="n">transactions</span><span class="o">/</span><span class="n">begincommit</span><span class="p">.</span><span class="n">html</span>
+<span class="p">...</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">409</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">css</span><span class="o">/</span><span class="n">bootstrap</span><span class="p">.</span><span class="k">min</span><span class="p">.</span><span class="n">css</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">421</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">images</span><span class="o">/</span><span class="n">favicon</span><span class="p">.</span><span class="n">ico</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">422</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">README</span><span class="p">.</span><span class="n">md</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">422</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">render</span> <span class="k">template</span><span class="p">:</span> <span class="n">metrics</span><span class="o">/</span><span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">439</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">js</span><span class="o">/</span><span class="n">bootstrap</span><span class="p">.</span><span class="n">js</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">440</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">js</span><span class="o">/</span><span class="n">bootstrap</span><span class="p">.</span><span class="k">min</span><span class="p">.</span><span class="n">js</span>
+
+<span class="c1">--</span>
+<span class="c1">-- After the source directory walk the watcher service is registered on all the directories </span>
+<span class="c1">--</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">443</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">INFO</span>  <span class="n">org</span><span class="p">.</span><span class="n">avaje</span><span class="p">.</span><span class="n">website</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">WatchDir</span> <span class="o">-</span> <span class="n">Scanning</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">avaje</span><span class="o">-</span><span class="n">ebeanorm</span><span class="o">-</span><span class="n">website</span> <span class="p">...</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">34</span><span class="p">.</span><span class="mi">476</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">INFO</span>  <span class="n">org</span><span class="p">.</span><span class="n">avaje</span><span class="p">.</span><span class="n">website</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">WatchDir</span> <span class="o">-</span> <span class="n">Watching</span><span class="p">...</span>
+
+<span class="c1">--</span>
+<span class="c1">-- The watch service detects file change events and pages are regenerated </span>
+<span class="c1">-- or files/directories copied/deleted as required</span>
+<span class="c1">--</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">18</span><span class="p">.</span><span class="mi">315</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">render</span> <span class="k">template</span><span class="p">:</span> <span class="n">websitegenerator</span><span class="o">/</span><span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mi">56</span><span class="p">.</span><span class="mi">423</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">deleted</span> <span class="n">file</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">site</span><span class="o">/</span><span class="n">websitegenerator</span><span class="o">/</span><span class="n">hellorob</span><span class="p">.</span><span class="n">html</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">10</span><span class="p">.</span><span class="mi">528</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="k">copy</span> <span class="n">file</span><span class="p">:</span> <span class="n">websitegenerator</span><span class="o">/</span><span class="n">docs</span><span class="p">.</span><span class="n">css</span>
+<span class="mi">16</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">32</span><span class="p">.</span><span class="mi">913</span> <span class="p">[</span><span class="n">MainThread</span><span class="p">]</span> <span class="n">DEBUG</span> <span class="n">o</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">w</span><span class="p">.</span><span class="n">generator</span><span class="p">.</span><span class="n">SiteWatchRender</span> <span class="o">-</span> <span class="p">...</span> <span class="n">deleted</span> <span class="n">directory</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="k">work</span><span class="o">-</span><span class="n">avaje</span><span class="o">/</span><span class="n">site</span><span class="o">/</span><span class="n">websitegenerator</span><span class="o">/</span><span class="n">morecss</span>
+</pre></div>
+</div>
+
+
+
+   </div>
+
+    </div> <!-- /.row -->
+  </div>  <!-- /.row -->
+</div>  <!-- /.container -->    
+
+
+<footer>
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="/metrics/index">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

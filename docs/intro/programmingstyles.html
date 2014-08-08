@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>avaje ebean</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
+    <link href="/css/site.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div id="wrap">    
+    <div id="header">    
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/documentation">Documentation</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main">    
+<div class="jumbotron mini">
+    <div class="container">
+      <h1><a href="/documentation">Documentation</a> / Introduction  </h1>
+    </div>
+  </div>
+
+  <div class="container">
+  <div class="row">
+    <div class="col-md-3">
+
+    <div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="/docs/intro/about">Introduction</a></li>
+            <li class="active"><a href="/docs/intro/programmingstyles">Programming styles</a></li>
+            <li ><a href="/docs/intro/jpacomparison">Comparison to JPA</a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+<!--
+
+-->
+
+    </div>  
+    <div class="col-md-9">
+
+<h1>Programming Styles</h1>
+<h4>Choice of Dependency Injection, Play/Active Record styles</h4>
+
+
+<div class="container">
+
+  <div class="row icon-info">
+
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Dependency Injection</h4>
+  <p>
+Use Spring or Guice etc to inject EbeanServer.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Play / Active Record style</h4>
+  <p>
+Use the Model MappedSuperclass to add insert(), update(), delete() etc convenience methods to your entity beans.
+This results in a clean programming style made popular by use in the Play framework. The Model and Finder objects
+have now been incorporated into Ebean to support this programming style.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Ebean singleton</h4>
+  <p>
+Use the Ebean singleton object. Similar to the Play / Active record style but you don't use the Ebean specific
+Model and Finder objects in your model.
+  </p>
+  </div>
+</div>
+
+  </div> <!-- ./row -->
+</div>
+
+
+<div class="bs-callout bs-callout-info">
+<h4>Mocking the Ebean singleton</h4>
+<p>
+<code>MockiEbean</code> from <code>avaje-ebeanorm-mocker</code> project provides a helper object to support mocking the EbeanServer using tools like
+<a href="http://code.google.com/p/mockito/">Mockito</a>. If you like the Play/Active record style or Ebean singleton style you can add a test
+dependency on avaje-ebeanorm-mocker and use MockiEbean to enable use of Mockito and similar tools.
+</p>
+</div>
+
+
+
+
+<h2>Dependency Injection style</h2>
+<p>
+In this style Spring or Guice etc is used to inject an EbeanServer into your service objects.
+Use a Spring FactoryBean or similar to create a EbeanServer instance in the DI context.
+</p>
+
+<h4>ServerConfig and EbeanServerFactory</h4>
+<p>
+You can programmatically create an EbeanServer instance using <code>ServerConfig</code> and <code>EbeanServerFactory</code>.
+
+</p>
+
+<div class="syntax java"><div class="highlight"><pre>  <span class="cm">/**</span>
+<span class="cm">   * Example creating a EbeanServer instance programmatically using </span>
+<span class="cm">   * ServerConfig and EbeanServerFactory.</span>
+<span class="cm">   */</span>
+  <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">ServerConfig</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pgtest&quot;</span><span class="o">);</span>
+
+    <span class="c1">// programmatically configure a DataSource</span>
+    <span class="n">DataSourceConfig</span> <span class="n">postgresDb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataSourceConfig</span><span class="o">();</span>
+    <span class="n">postgresDb</span><span class="o">.</span><span class="na">setDriver</span><span class="o">(</span><span class="s">&quot;org.postgresql.Driver&quot;</span><span class="o">);</span>
+    <span class="n">postgresDb</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">);</span>
+    <span class="n">postgresDb</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">);</span>
+    <span class="n">postgresDb</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">&quot;jdbc:postgresql://127.0.0.1:5432/test&quot;</span><span class="o">);</span>
+    <span class="n">postgresDb</span><span class="o">.</span><span class="na">setHeartbeatSql</span><span class="o">(</span><span class="s">&quot;select count(*) from t_one&quot;</span><span class="o">);</span>
+
+    <span class="c1">// load some configuration from ebean.properties</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+
+    <span class="c1">// set some configuration </span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setDdlGenerate</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setDdlRun</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setRegister</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setDataSourceConfig</span><span class="o">(</span><span class="n">postgresDb</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">setDatabasePlatform</span><span class="o">(</span><span class="k">new</span> <span class="n">PostgresPlatform</span><span class="o">());</span>
+
+    <span class="c1">// explicitly register entity beans, listeners, adpaters etc</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">c</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">Contact</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// create the EbeanServer instance</span>
+    <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+  <span class="o">}</span>	
+</pre></div>
+</div>
+
+
+<h4>Example - Spring FactoryBean</h4>
+<p>
+You can write your own Spring FactoryBean like below:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Simple Spring bean factory for creating the EbeanServer (Database access).</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEbeanServerFactory</span> <span class="kd">implements</span> <span class="n">FactoryBean</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
+
+
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+    
+    <span class="k">return</span> <span class="nf">createEbeanServer</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">getObjectType</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSingleton</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Create a EbeanServer instance.</span>
+<span class="cm">   */</span>
+  <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="c1">// programmatically create a EbeanServer instance</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<h4>Ebean Spring</h4>
+<p>
+Alternatively you can use the avaje-ebeanorm-spring.  TODO: more info here 
+</p>
+
+
+<h4>Example - Typical @Inject use</h4>
+<p>
+In your service objects you <code>@Inject</code> or <code>@Autowire</code> a EbeanServer instance.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyService</span> <span class="o">{</span>
+
+  <span class="kd">final</span> <span class="n">EbeanServer</span> <span class="n">ebeanServer</span><span class="o">;</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Constructor injection example ...</span>
+<span class="cm">   */</span>
+  <span class="nd">@Inject</span>
+  <span class="kd">public</span> <span class="nf">MyService</span><span class="o">(</span><span class="n">EbeanServer</span> <span class="n">ebeanServer</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">ebeanServer</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Some example ... using the EbeanServer instance.</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">processOrders</span><span class="o">(</span><span class="n">Date</span> <span class="n">since</span><span class="o">)</span> <span class="o">{</span>
+    
+    <span class="c1">// fetch ...</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">newOrders</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+         <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+         <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;orderDate&quot;</span><span class="o">,</span> <span class="n">since</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+    <span class="o">...</span>
+
+    <span class="c1">// save ...</span>
+    <span class="n">ebeanServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<hr/>
+<h2>Play / Active Record style</h2>
+<p>
+When you create your entity beans extend the Model object and add a Finder. When your entity beans extend the Model object they
+inherit some convenience methods save(), delete() etc. Adding a Finder as a public static field provides a nice way to get 
+query functionality.
+</p>
+
+<h4>Extend Model, add Finder:</h4>
+<div class="syntax java"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Extend Model to get the save(), delete() etc</span>
+<span class="cm"> * methods on the bean itself (active record style).</span>
+<span class="cm"> */</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;be_customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Finder uses the &#39;default&#39; EbeanServer.</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Finder</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">,</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">find</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Finder</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">,</span><span class="n">Customer</span><span class="o">&gt;(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  
+  <span class="nd">@Id</span>
+  <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="n">Date</span> <span class="n">registered</span><span class="o">;</span>
+  
+  <span class="n">String</span> <span class="n">comments</span><span class="o">;</span>
+
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>
+NOTE: Model is annotated with JPA @MappedSuperclass.  It internally makes use of the Ebean singleton in order to 
+provide the save, delete etc methods. View the source code for <a href='https://github.com/ebean-orm/avaje-ebeanorm/blob/play/src/main/java/com/avaje/ebean/Model.java'>Model here</a>.
+<p>
+
+
+<h4>Example: save</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+    <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
+    
+    <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h4>Example: find.byId</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+</pre></div>
+</div>
+
+<h4>Example: find.where</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> 
+        <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span>
+          <span class="nf">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<hr/>
+<h2>Ebean singleton</h2>
+<p>
+The core API is provided by <code>EbeanServer</code>.  The <code>Ebean</code> singleton provides a convienience for using the 'default' or 'primary'
+EbeanServer.
+</p>
+<p>
+A <code>ebean.properties</code> file is used to control how the EbeanServer instance is configured.
+</p>
+
+<h4>Example:</h4>
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// get the &#39;default&#39; or &#39;primary&#39; EbeanServer instance</span>
+<span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+
+<span class="c1">// get an EbeanServer instance that uses a different database</span>
+<span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;humanresources&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<p>
+The Ebean singleton provides convienience methods:  
+</p>
+
+<h4>Example:</h4>
+<div class="syntax java"><div class="highlight"><pre><span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+<span class="c1">// is the same as ...</span>
+
+<span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+<span class="n">defaultServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h2>MockiEbean - Mocking with Ebean singleton</h2>
+<p>
+<code>MockiEbean</code> from avaje-ebeanorm-mocker provides a mechanism for using a tool like Mockito and
+replacing the default EbeanServer instance with a mock.  
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebeaninternal.server.core.DefaultServer</span><span class="o">;</span>
+<span class="o">...</span>
+
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWithMockito</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">defaultServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>
+
+    <span class="n">Long</span> <span class="n">someBeanId</span> <span class="o">=</span> <span class="n">Long</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">47L</span><span class="o">);</span>
+
+    <span class="c1">// Use Mockito to create a mock for the EbeanServer interface</span>
+    <span class="n">EbeanServer</span> <span class="n">mock</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// setup some required behaviour </span>
+    <span class="n">when</span><span class="o">(</span><span class="n">mock</span><span class="o">.</span><span class="na">getBeanId</span><span class="o">(</span><span class="kc">null</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">someBeanId</span><span class="o">);</span>
+ 
+    <span class="c1">// ---------------</span>
+    <span class="c1">// &#39;register&#39; the mock instance into Ebean</span>
+    <span class="c1">// this becomes the &#39;default EbeanServer&#39; until </span>
+    <span class="c1">// mockiEbean.restoreOriginal() is called</span>
+    <span class="c1">// ---------------</span>
+    <span class="n">MockiEbean</span> <span class="n">mockiEbean</span> <span class="o">=</span> <span class="n">MockiEbean</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">mock</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+
+      <span class="c1">// Ebean singleton &#39;default server&#39; now returns the mock instance</span>
+      <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+      <span class="c1">// always returns the someBeanId setup by Mockito</span>
+      <span class="n">Object</span> <span class="n">beanId</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">getBeanId</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+      <span class="n">assertEquals</span><span class="o">(</span><span class="n">someBeanId</span><span class="o">,</span> <span class="n">beanId</span><span class="o">);</span>
+
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="c1">// ---------------</span>
+      <span class="c1">// restore the original defaultServer instance</span>
+      <span class="c1">// ---------------</span>
+      <span class="n">mockiEbean</span><span class="o">.</span><span class="na">restoreOriginal</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="n">EbeanServer</span> <span class="n">restoredServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">restoredServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>
+  <span class="o">}</span>
+</pre></div>
+</div>
+<h4>MoickiEbean Maven dependency</h4>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mocker<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+<div class="pull-right">
+<a class="btn btn-large btn-warning" href="jpacomparison.html">Next: Compare to JPA</a>
+</div> 
+
+   </div>
+
+    </div> <!-- /.row -->
+  </div>  <!-- /.container -->    
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="/metrics/index">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

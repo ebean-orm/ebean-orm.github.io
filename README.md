@@ -1,4 +1,4 @@
-ebean-orm.github.io
-===================
+avaje-ebeanorm-website
+======================
 
-public website
+Website for Ebean ORM.
