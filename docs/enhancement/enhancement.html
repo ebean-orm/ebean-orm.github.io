@@ -11,7 +11,8 @@
     <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
     <link href="/css/site.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -49,68 +50,114 @@
   <div id="main">    
 <div class="jumbotron mini">
     <div class="container">
-      <h1><a href="/documentation">Documentation</a> / Query  </h1>
+      <h1><a href="/documentation">Documentation</a> / Enhancement  </h1>
     </div>
   </div>
 
   <div class="container">
-    <div class="row">
+  <div class="row">
+    <div class="col-md-3">
 
-      <div class="page-content col-md-9">
-          <div id="layout-body"></div>
-      </div>
+    <div class="sidebar-nav">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="/docs/enhancement#maven">Maven</a></li>
+            <li ><a href="/docs/enhancement#agent">Agent</a></li>
+            <li ><a href="/docs/enhancement#ide">IntelliJ, Eclipse</a></li>
 
-      <div class="col-md-3 hidden-xs">
-          <div class="side-bar">
-              <h5>
-                  <a href="/docs/query/intro">QUERY</a>
-              </h5>
-              <ul class="side-nav">
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/intro">Introduction</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/whereclause">Where Clause</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/partialobjects">Partial Objects</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/queryjoins">Query Joins</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/lazyloading">Lazy Loading</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/largequeries">Large Queries</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/rowcount">Row Count</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/paging">Paging</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/findids">Find Ids</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/rawsql">RawSql</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/sqlquery">SqlQuery</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/l2cache">L2 Cache</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/autofetch">Autofetch</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/query/otherbits">Other bits</a>
-      </li>
-              </ul>
-          </div>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
+    </div>
+
+<!--
+
+-->
+
+    </div>  
+    <div class="col-md-9">
+
+<h1>Enhancement</h1>
+<h4>How to enhance entity beans etc</h4>
+
+
+<div class="container">
+
+  <div class="row icon-info">
+
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Maven, Ant</h4>
+  <p>
+Use Maven or Ant to enhance your beans at build compile time.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Agent, AgentLoader</h4>
+  <p>
+Specify the agent on the command line or use AgentLoader to load the agent via code
+onto a running JVM.
+  </p>
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="well">
+  <h4><span class="glyphicon glyphicon-chevron-right"></span> Idea, Eclipse IDE</h4>
+  <p>
+Use IDE plugin to run the enhancement as part of the IDE compile/save.
+  </p>
+  </div>
+</div>
+
+  </div> <!-- ./row -->
+</div>
+
+
+<div class="bs-callout bs-callout-info">
+<h4></h4>
+<p>
+</p>
+</div>
+
+
+
+<h2>Maven, Ant</h2>
+<p>
+Use Maven or Ant to enhance your beans at build compile time.
+</p>
+
+<h2>Agent, AgentLoader</h2>
+<p>
+Use Maven or Ant to enhance your beans at build compile time.
+</p>
+
+<h2>Idea, Eclipse IDE</h2>
+<p>
+Use Maven or Ant to enhance your beans at build compile time.
+</p>
+
+
+
+<div class="pull-right">
+<a class="btn btn-large btn-warning" href="">Next: ???</a>
+</div> 
+
+   </div>
 
     </div> <!-- /.row -->
   </div>  <!-- /.container -->    
