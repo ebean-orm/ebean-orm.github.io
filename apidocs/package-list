@@ -1,0 +1,12 @@
+com.avaje.ebean
+com.avaje.ebean.annotation
+com.avaje.ebean.bean
+com.avaje.ebean.cache
+com.avaje.ebean.common
+com.avaje.ebean.config
+com.avaje.ebean.config.dbplatform
+com.avaje.ebean.event
+com.avaje.ebean.meta
+com.avaje.ebean.text
+com.avaje.ebean.text.csv
+com.avaje.ebean.text.json

@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean.annotation;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import java.lang.annotation.ElementType;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import java.lang.annotation.Retention;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import java.lang.annotation.RetentionPolicy;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import java.lang.annotation.Target;<a name="line.6"></a>
+<span class="sourceLineNo">007</span><a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.avaje.ebean.Query;<a name="line.8"></a>
+<span class="sourceLineNo">009</span><a name="line.9"></a>
+<span class="sourceLineNo">010</span>/**<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * Assign to a property to be based on a SQL formula.<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;p&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * This is typically a SQL Literal value, SQL case statement, SQL function or<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * similar.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * &lt;/p&gt;<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * &lt;p&gt;<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * Any property based on a formula becomes a read only property.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * &lt;/p&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * &lt;p&gt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * You may also put use the Transient annotation with the Formula annotation.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * The effect of the Transient annotation in this case is that the formula will<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * &lt;b&gt;NOT&lt;/b&gt; be included in queries by default - you have to explicitly include<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * it via {@link Query#select(String)} or {@link Query#fetch(String, String, com.avaje.ebean.FetchConfig)}.<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * You may want to do this if the Formula is relatively expensive and only want<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * it included in the query when you explicitly state it.<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * &lt;/p&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * <a name="line.27"></a>
+<span class="sourceLineNo">028</span> * &lt;pre class="code"&gt;<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * // On the Order &amp;quot;master&amp;quot; bean<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * // ... a formula using the Order details<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * // ... sum(order_qty*unit_price)<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * &amp;#064;Transient<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * &amp;#064;Formula(select = &amp;quot;_b${ta}.total_amount&amp;quot;, join = &amp;quot;join (select order_id, sum(order_qty*unit_price) as total_amount from o_order_detail group by order_id) as _b${ta} on _b${ta}.order_id = ${ta}.id&amp;quot;)<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * Double totalAmount;<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * <a name="line.35"></a>
+<span class="sourceLineNo">036</span> * &lt;/pre&gt;<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * &lt;p&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * As the totalAmount formula is also Transient it is not included by default in<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * queries - it needs to be explicitly included.<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * &lt;/p&gt;<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * <a name="line.41"></a>
+<span class="sourceLineNo">042</span> * &lt;pre class="code"&gt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * // find by Id<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * Order o1 = Ebean.find(Order.class)<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *     .select(&amp;quot;id, totalAmount&amp;quot;)<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *     .setId(1).findUnique();<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * <a name="line.47"></a>
+<span class="sourceLineNo">048</span> * // find list ... using totalAmount in the where clause<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * List&amp;lt;Order&amp;gt; list = Ebean.find(Order.class)<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *     .select(&amp;quot;id, totalAmount&amp;quot;)<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *     .where()<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *     .eq(&amp;quot;status&amp;quot;, Order.Status.NEW)<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *     .gt(&amp;quot;totalAmount&amp;quot;, 10)<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *     .findList();<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * <a name="line.55"></a>
+<span class="sourceLineNo">056</span> * // as a join from customer<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * List&amp;lt;Customer&amp;gt; l0 = Ebean.find(Customer.class)<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *     .select(&amp;quot;id, name&amp;quot;)<a name="line.58"></a>
+<span class="sourceLineNo">059</span> *     .join(&amp;quot;orders&amp;quot;, &amp;quot;status, totalAmount&amp;quot;)<a name="line.59"></a>
+<span class="sourceLineNo">060</span> *     .where()<a name="line.60"></a>
+<span class="sourceLineNo">061</span> *     .gt(&amp;quot;id&amp;quot;, 0)<a name="line.61"></a>
+<span class="sourceLineNo">062</span> *     .gt(&amp;quot;orders.totalAmount&amp;quot;, 10)<a name="line.62"></a>
+<span class="sourceLineNo">063</span> *     .findList();<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * <a name="line.64"></a>
+<span class="sourceLineNo">065</span> * &lt;/pre&gt;<a name="line.65"></a>
+<span class="sourceLineNo">066</span> */<a name="line.66"></a>
+<span class="sourceLineNo">067</span>@Target({ ElementType.FIELD, ElementType.METHOD, ElementType.TYPE })<a name="line.67"></a>
+<span class="sourceLineNo">068</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.68"></a>
+<span class="sourceLineNo">069</span>public @interface Formula {<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>  /**<a name="line.71"></a>
+<span class="sourceLineNo">072</span>   * The SQL to be used in the SELECT part of the SQL to populate a property.<a name="line.72"></a>
+<span class="sourceLineNo">073</span>   */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>  String select();<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>  /**<a name="line.76"></a>
+<span class="sourceLineNo">077</span>   * OPTIONAL - the SQL to be used in the JOIN part of the SQL to support the<a name="line.77"></a>
+<span class="sourceLineNo">078</span>   * formula.<a name="line.78"></a>
+<span class="sourceLineNo">079</span>   * &lt;p&gt;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>   * This is commonly used to join a 'dynamic view' to support aggregation such<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   * as count, sum etc.<a name="line.81"></a>
+<span class="sourceLineNo">082</span>   * &lt;/p&gt;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>   * &lt;p&gt;<a name="line.83"></a>
+<span class="sourceLineNo">084</span>   * The join string should start with either "left outer join" or "join".<a name="line.84"></a>
+<span class="sourceLineNo">085</span>   * &lt;/p&gt;<a name="line.85"></a>
+<span class="sourceLineNo">086</span>   * <a name="line.86"></a>
+<span class="sourceLineNo">087</span>   * &lt;p&gt;<a name="line.87"></a>
+<span class="sourceLineNo">088</span>   * You will almost certainly use the "${ta}" as a place holder for the table<a name="line.88"></a>
+<span class="sourceLineNo">089</span>   * alias of the table you are joining back to (the "base table" of the entity<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   * bean).<a name="line.90"></a>
+<span class="sourceLineNo">091</span>   * &lt;/p&gt;<a name="line.91"></a>
+<span class="sourceLineNo">092</span>   * &lt;p&gt;<a name="line.92"></a>
+<span class="sourceLineNo">093</span>   * The example below is used to support a total count of topics created by a<a name="line.93"></a>
+<span class="sourceLineNo">094</span>   * user.<a name="line.94"></a>
+<span class="sourceLineNo">095</span>   * &lt;/p&gt;<a name="line.95"></a>
+<span class="sourceLineNo">096</span>   * <a name="line.96"></a>
+<span class="sourceLineNo">097</span>   * &lt;pre class="code"&gt;<a name="line.97"></a>
+<span class="sourceLineNo">098</span>   * join (select user_id, count(*) as topic_count from f_topic group by user_id) as _tc on _tc.user_id = ${ta}.id<a name="line.98"></a>
+<span class="sourceLineNo">099</span>   * &lt;/pre&gt;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>   */<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  String join() default "";<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>};<a name="line.103"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

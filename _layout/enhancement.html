@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,8 +12,7 @@
     <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
     <link href="/css/site.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -20,8 +20,8 @@
     <![endif]-->
   </head>
   <body>
-  <div id="wrap">    
-    <div id="header">    
+  <div id="wrap">
+    <div id="header">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -38,16 +38,17 @@
             <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
             <li ><a href="/quickstart">Quick Start</a></li>
             <li ><a href="/support">Support</a></li>
-            <li class="active"><a href="/documentation">Documentation</a></li>
+            <li class="active"><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
             <li ><a href="/releases">Releases</a></li>
-            <li ><a href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
   </div>
-  <div id="main">    
+  <div id="main" data-offset="60">
 <div class="jumbotron mini">
     <div class="container">
       <h1><a href="/documentation">Documentation</a> / Enhancement  </h1>
@@ -71,9 +72,11 @@
         </div>
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
-            <li ><a href="/docs/enhancement#maven">Maven</a></li>
-            <li ><a href="/docs/enhancement#agent">Agent</a></li>
-            <li ><a href="/docs/enhancement#ide">IntelliJ, Eclipse</a></li>
+            <li class="active"><a class="page-scroll" href="#maven">Maven</a></li>
+            <li ><a class="page-scroll" href="#maven_eclipse">Maven/Eclipse</a></li>
+            <li ><a class="page-scroll" href="#ant">Ant</a></li>
+            <li ><a class="page-scroll" href="#agent">Agent</a></li>
+            <li ><a class="page-scroll" href="#ide">IntelliJ, Eclipse</a></li>
 
           </ul>
         </div><!--/.nav-collapse -->
@@ -84,15 +87,15 @@
 
 -->
 
-    </div>  
+    </div>
     <div class="col-md-9">
 
-<div id="layout-body"></div> 
+<div id="layout-body"></div>
 
    </div>
 
     </div> <!-- /.row -->
-  </div>  <!-- /.container -->    
+  </div>  <!-- /.container -->
   </div>
 </div>
 
@@ -101,7 +104,7 @@
   <ul class="doc-footer-links">
     <li><a href="/">Ebean ORM</a></li>
     <li> | </li>
-    <li><a href="/metrics/index">Metrics</a></li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
     <li> | </li>
     <li><a href="/websitegenerator/index">Website Generator</a></li>
     <li> | </li>
@@ -110,7 +113,15 @@
  </div>
 </footer>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
   </body>
 </html>

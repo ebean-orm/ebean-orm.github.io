@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,8 +12,7 @@
     <link href="/css/pygments.css" rel="stylesheet" type="text/css" />
     <link href="/css/site.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -20,8 +20,8 @@
     <![endif]-->
   </head>
   <body>
-  <div id="wrap">    
-    <div id="header">    
+  <div id="wrap">
+    <div id="header">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -38,26 +38,594 @@
             <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
             <li class="active"><a href="/quickstart">Quick Start</a></li>
             <li ><a href="/support">Support</a></li>
-            <li ><a href="/documentation">Documentation</a></li>
+            <li ><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
             <li ><a href="/releases">Releases</a></li>
-            <li ><a href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
 
   </div>
-  <div id="main">    
+  <div id="main" data-offset="60">
 <div class="jumbotron mini">
     <div class="container">
       <h1>Quick start</h1>
     </div>
   </div>
 
-  <div class="container">
+<div class="container">
+
+  <ul>
+    <li><a class="page-scroll" href="#get-ebean">Get Ebean</a></li>
+    <li><a class="page-scroll" href="#setup-enhancement">Setup Enhancement</a></li>
+    <li><a class="page-scroll" href="#create-model">Create Model</a></li>
+    <li><a class="page-scroll" href="#configure-ebean">Configure Ebean</a></li>
+    <li><a class="page-scroll" href="#db-operations">ORM / Database Operations</a></li>
+  </ul>
+
+  <section id="get-ebean">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h3>Get Ebean</h3>
+<p>For examples you can see the <a href="https://github.com/ebean-orm/example-java8">Ebean Java 8 example</a>. You can also see the <a href="https://github.com/ebean-orm/avaje-ebeanorm-examples">Basic, EventAdapter, Groovy, Kotlin, JSON, and Postgres examples</a>.</p>
+
+<p>You'll need to add Ebean as dependency in you pom.xml.  This will transitively bring in <a href="http://docs.oracle.com/javaee/6/api/javax/persistence/package-summary.html">JPA</a> persistence-api that has the annotations you use in your Ebean model beans.  It also transitively brings in <a href="http://www.slf4j.org/">SLF4J</a> slf4j-api and <a href="https://github.com/FasterXML/jackson-core">Jackson</a> jackson-core.
+
+Optionally (and probably recommended), you can include <a href="http://beanvalidation.org/">Bean Validation</a> validation-api. Ebean will read any validation annotations like @size to determine column lengths etc
+
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm:<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm:<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT1">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen1">
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm &quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
 
   </div>
-  <!-- /.container -->    
+</p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <section id="setup-enhancement">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h3>Setup Enhancement</h3>
+<p>Ebean requires that model beans to be enhanced by Ebean's enhancer.  This can be done with at build time with your build tool or it can be done at runtime using a Java Agent.</p>
+
+<p>The simplest method is to use the Java Agent. With this option, you start by including the enhancer agent dependencies.  Please see the <a href="/docs/enhancement/enhancement">enhancement docs</a> for other options.
+
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven3" aria-controls="Maven3" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy3" aria-controls="Ivy3" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape3" aria-controls="Grape3" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle3" aria-controls="Gradle3" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr3" aria-controls="Buildr3" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT3" aria-controls="SBT3" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen3" aria-controls="Leiningen3" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven3">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-agentloader<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-agentloader-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy3">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-agentloader&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape3">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-agentloader&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-agentloader-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle3">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr3">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT3">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-agentloader&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen3">
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje/avaje-agentloader &quot;<span class='avaje-agentloader-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven4" aria-controls="Maven4" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy4" aria-controls="Ivy4" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape4" aria-controls="Grape4" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle4" aria-controls="Gradle4" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr4" aria-controls="Buildr4" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT4" aria-controls="SBT4" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen4" aria-controls="Leiningen4" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven4">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-agent<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy4">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape4">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle4">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr4">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT4">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen4">
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-agent &quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
+
+Next, you need to start the enhancer agent.  You can start the enhancer agent programmatically:
+<div class="syntax java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// Load the agent into the running JVM process</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model.**&quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+Alternatively, you can start the enhancer agent from the command line, examples:
+<div class="syntax xml"><div class="highlight"><pre>java -javaagent:avaje-ebeanorm-agent.jar MyApplication
+java -javaagent:avaje-ebeanorm-agent.jar=debug=3 MyApplication
+java -javaagent:avaje-ebeanorm-agent.jar=packages=org.example.model.** MyApplication
+java -javaagent:avaje-ebeanorm-agent.jar=debug=3;packages=org.example.model.**,org.example.model2.** MyApplication
+</pre></div>
+</div>
+For deploying in a JEE web or application server, it may be best to enhance the model classes at build time.  Please see the <a href="/docs/enhancement/enhancement">enhancement docs</a> for other build time options.
+</p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+
+    <section id="create-model">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Create Model</h3>
+  <p>
+    Use JPA Mapping annotations.  If you included Bean Validation API, use those annotations also.
+
+<div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">example</span><span class="o">.</span><span class="na">model</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.Timestamp</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.persistence.CascadeType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Column</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.ManyToOne</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.OneToMany</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Table</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.Model</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.CreatedTimestamp</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.UpdatedTimestamp</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Customer entity bean.</span>
+<span class="cm"> */</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;eg_customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Convenience Finder for &#39;active record&#39; style.  Finder is public static class in com.avaje.ebean.Model</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Finder</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">,</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">find</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Finder</span><span class="o">&lt;&gt;(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+  <span class="nd">@Id</span>
+  <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="nd">@Version</span>
+  <span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
+
+  <span class="nd">@CreatedTimestamp</span>
+  <span class="n">Timestamp</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+  <span class="nd">@UpdatedTimestamp</span>
+  <span class="n">Timestamp</span> <span class="n">whenUpdated</span>
+
+  <span class="nd">@Column</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="o">)</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="kt">boolean</span> <span class="n">inactive</span><span class="o">;</span>
+
+  <span class="n">LocalDate</span> <span class="n">registered</span><span class="o">;</span>
+
+  <span class="nd">@Column</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">1000</span><span class="o">)</span>
+  <span class="n">String</span> <span class="n">comments</span><span class="o">;</span>
+
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
+
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">Address</span> <span class="n">shippingAddress</span><span class="o">;</span>
+
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
+
+  <span class="o">...</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Helper method to add a contact to the customer.</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addContact</span><span class="o">(</span><span class="n">Contact</span> <span class="n">contact</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">contacts</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">contacts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="o">}</span>
+    <span class="c1">// setting the customer is automatically done when Ebean does</span>
+    <span class="c1">// a cascade save from customer to contacts.</span>
+    <span class="n">contact</span><span class="o">.</span><span class="na">setCustomer</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="n">contacts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">contact</span><span class="o">);</span>
+  <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="configure-ebean">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Configure Ebean and Database</h3>
+  <p>
+    You can either manually by create/register EbeanServers via EbeanServerFactory.create(ServerConfig) or automatically during the first use of the Ebean singleton, eg Ebean.getServer();
+    When EbeanServers are created automatically they are configured using information in the ebean.properties file.
+  </p>
+  <p>
+    For an example how to configure programmatically, see the <a target="_blank" href="/apidocs/com/avaje/ebean/config/ServerConfig.html">ServerConfig Javadocs</a>
+  </p>
+
+<div class="syntax java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">com.avaje.ebean.Ebean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.EbeanServer</span><span class="o">;</span>
+
+<span class="o">...</span>
+
+<span class="c1">// configure automatically using ebean.properties file:</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;h2&quot;</span><span class="o">);</span> <span class="c1">// could also pass null since h2 is default db in ebean.properties</span>
+</pre></div>
+</div>
+
+ebean.properties
+
+<div class="syntax properties"><div class="highlight"><pre><span class="c"># generate DDL files</span>
+<span class="na">ebean.ddl.generate</span><span class="o">=</span><span class="s">true</span>
+
+<span class="c"># run ddl drops and recreates tables</span>
+<span class="na">ebean.ddl.run</span><span class="o">=</span><span class="s">true</span>
+
+<span class="na">ebean.uuidStoreAsBinary</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ebean.databaseSequenceBatchSize</span><span class="o">=</span><span class="s">1</span>
+
+<span class="na">ebean.debug.sql</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ebean.debug.lazyload</span><span class="o">=</span><span class="s">false</span>
+
+<span class="na">datasource.default</span><span class="o">=</span><span class="s">h2</span>
+
+<span class="na">datasource.h2.username</span><span class="o">=</span><span class="s">sa</span>
+<span class="na">datasource.h2.password</span><span class="o">=</span>
+<span class="na">datasource.h2.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
+<span class="na">datasource.h2.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+</pre></div>
+</div>
+
+In this ebean.properties, it is using H2 database, so you would need to add H2 to your maven dependencies:
+
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven5" aria-controls="Maven5" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy5" aria-controls="Ivy5" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape5" aria-controls="Grape5" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle5" aria-controls="Gradle5" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr5" aria-controls="Buildr5" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT5" aria-controls="SBT5" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen5" aria-controls="Leiningen5" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven5">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>com.h2database<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>h2<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.4.186<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy5">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;com.h2database&quot;</span> <span class="na">name=</span><span class="s">&quot;h2&quot;</span> <span class="na">rev=</span><span class="s">&quot;1.4.186&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape5">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;com.h2database&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;h2&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;1.4.186&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle5">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;com.h2database:h2:1.4.186&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr5">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;com.h2database:h2:1.4.186&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT5">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;com.h2database&quot;</span> <span class="o">%</span> <span class="s">&quot;h2&quot;</span> <span class="o">%</span> <span class="s">&quot;1.4.186&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen5">
+<div class="syntax xml"><div class="highlight"><pre>[com.h2database/h2 &quot;1.4.186&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="db-operations">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>ORM / Database Operations</h3>
+  <p>
+
+    For more information on transactions, see the <a href="/docs/transactions/implicit">Transaction documentation</a>.
+
+<h4>Insert</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">Ebean</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">TxRunnable</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="n">Contact</span> <span class="n">john</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Contact</span><span class="o">();</span>
+        <span class="n">john</span><span class="o">.</span><span class="na">setFirstName</span><span class="o">(</span><span class="s">&quot;John&quot;</span><span class="o">);</span>
+        <span class="n">john</span><span class="o">.</span><span class="na">setLastName</span><span class="o">(</span><span class="s">&quot;Doe&quot;</span><span class="o">);</span>
+        <span class="n">john</span><span class="o">.</span><span class="na">setEmail</span><span class="o">(</span><span class="s">&quot;john.doe&quot;</span><span class="nd">@example.com</span><span class="s">&quot;);</span>
+
+<span class="s">        Contact jane = new Contact();</span>
+<span class="s">        jane.setFirstName(&quot;</span><span class="n">Jane</span><span class="s">&quot;);</span>
+<span class="s">        jane.setLastName(&quot;</span><span class="n">Doe</span><span class="s">&quot;);</span>
+<span class="s">        jane.setEmail(&quot;</span><span class="n">jane</span><span class="o">.</span><span class="na">doe</span><span class="s">&quot;@example.com&quot;</span><span class="o">);</span>
+
+        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+        <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Example Corp&quot;</span><span class="o">);</span>
+        <span class="n">customer</span><span class="o">.</span><span class="na">addContact</span><span class="o">(</span><span class="n">john</span><span class="o">);</span>
+        <span class="n">customer</span><span class="o">.</span><span class="na">addContact</span><span class="o">(</span><span class="n">jane</span><span class="o">);</span>
+
+        <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+
+
+<h4>Update</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">Ebean</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">TxRunnable</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+        <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;New updated name&quot;</span><span class="o">);</span>
+        <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+      <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+
+<h4>Delete</h4>
+<div class="syntax java"><div class="highlight"><pre>    <span class="n">Ebean</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">new</span> <span class="n">TxRunnable</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="c1">// delete</span>
+        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+        <span class="n">Ebean</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+        <span class="c1">// orm bulk delete use bean name and bean properties</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">createUpdate</span><span class="o">(</span><span class="n">OrderDetail</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;delete from orderDetail&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
+
+        <span class="c1">// sql bulk update uses table and column names</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="s">&quot;delete from o_country&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+
+
+<h4>Query</h4>
+
+For more information on queries, see the <a href="/docs/query/intro">Query docs</a> and <a target="_blank" href="/apidocs/com/avaje/ebean/Query.html">Query Javadocs</a>.
+
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// find by id</span>
+<span class="n">Customer</span> <span class="n">customer1</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
+<span class="n">Customer</span> <span class="n">customer2</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="mi">4</span><span class="o">);</span>
+
+<span class="c1">// find list</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers1</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">like</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob%&quot;</span><span class="o">)</span> <span class="c1">// where name like &#39;Rob%&#39;</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name desc&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+<span class="c1">// find list, returning partially populated objects</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers2</span> <span class="o">=</span>
+  <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="c1">// retrieve only name on Customer</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">contact</span><span class="o">,</span> <span class="s">&quot;firstname&quot;</span><span class="o">,</span> <span class="s">&quot;lastname&quot;</span><span class="o">)</span> <span class="c1">// fetch contact collection, retrieve only firstname, lastname</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;inactive&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="s">&quot;contact.name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;contact.name desc&quot;</span><span class="o">);</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+<span class="c1">// find list, returning partially populated objects based on PathProperties</span>
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">query</span><span class="o">();</span>
+<span class="n">String</span> <span class="n">pathProps</span> <span class="o">=</span> <span class="s">&quot;(id,version,name,contacts(id,email,version))&quot;</span><span class="o">;</span>
+<span class="n">PathProperties</span> <span class="n">pathProperties</span> <span class="o">=</span> <span class="n">PathProperties</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">pathProps</span><span class="o">);</span>
+<span class="n">pathProperties</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">query</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers3</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">).</span><span class="na">findList</span><span class="o">();</span>  <span class="c1">// where id&gt;1</span>
+
+
+<span class="c1">// find single item by Ebean query</span>
+<span class="n">String</span> <span class="n">q</span> <span class="o">=</span> <span class="s">&quot;find Customer where id=:id&quot;</span><span class="o">;</span>
+<span class="n">Customer</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">q</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+</pre></div>
+</div>
+  </p>
+                </div>
+            </div>
+        </div>
+    </section>
+  </script>
+
+</div>
+<!-- /.container -->
   </div>
 </div>
 
@@ -66,7 +634,7 @@
   <ul class="doc-footer-links">
     <li><a href="/">Ebean ORM</a></li>
     <li> | </li>
-    <li><a href="/metrics/index">Metrics</a></li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
     <li> | </li>
     <li><a href="/websitegenerator/index">Website Generator</a></li>
     <li> | </li>
@@ -75,7 +643,15 @@
  </div>
 </footer>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
   </body>
 </html>
