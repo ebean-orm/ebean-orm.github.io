@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>avaje ebean</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/videos">Videos</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / Read Auditing </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <div class="bs-docs-section">
+  <h1 id="readaudit">Read Auditing - @ReadAudit</h1>
+
+  <h3>Overview</h3>
+  <p>
+    ReadAudit is a feature where read access is logged for auditing purposes. You can annotation entity
+    beans with @ReadAudit and then read events on these beans (queries and hits in L2 cache) are logged.
+  </p>
+
+  <p>
+    An implementation of the ReadAuditPrepare interface is typically required. The readAuditPrepare.prepare()
+    method is expected to populate the ReadEvent with user context information (user id, user ip address etc).
+  </p>
+
+  <h3>Caveats</h3>
+
+  <p>
+    SqlQuery queries are currently not logged to the read audit log (RawSql queries are included in read auditing).
+  </p>
+
+  <h2>Getting started</h2>
+
+  <h4>Step 1: Add @ReadAudit</h4>
+
+  <p>
+    Add @ReadAudit annotation to all the entity beans that should have read auditing.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="nd">@ReadAudit</span>
+  <span class="nd">@Entity</span>
+  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+  <span class="o">...</span>
+
+  
+</pre></div>
+</div>
+  <h4>Step 2: Implement ReadAuditPrepare</h4>
+
+  <p>
+    If you skip this step and don't supply a ReadAuditPrepare implementation a 'no op' implementation
+    is used and the user context information (user id, user ip address etc) is left unpopulated.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="kd">class</span> <span class="nc">MyReadAuditPrepare</span> <span class="kd">implements</span> <span class="n">ReadAuditPrepare</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">prepare</span><span class="o">(</span><span class="n">ReadEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+
+      <span class="c1">// get user context information typically from a</span>
+      <span class="c1">// ThreadLocal or similar mechanism</span>
+
+      <span class="n">String</span> <span class="n">currentUserId</span> <span class="o">=</span> <span class="o">...;</span>
+      <span class="n">event</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="n">currentUserId</span><span class="o">);</span>
+
+      <span class="n">String</span> <span class="n">userIpAddress</span> <span class="o">=</span> <span class="o">...;</span>
+      <span class="n">event</span><span class="o">.</span><span class="na">setUserIpAddress</span><span class="o">(</span><span class="n">userIpAddress</span><span class="o">);</span>
+
+      <span class="n">event</span><span class="o">.</span><span class="na">setSource</span><span class="o">(</span><span class="s">&quot;myApplicationName&quot;</span><span class="o">);</span>
+
+      <span class="c1">// add arbitrary user context information to the</span>
+      <span class="c1">// userContext map</span>
+      <span class="n">event</span><span class="o">.</span><span class="na">getUserContext</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;some&quot;</span><span class="o">,</span> <span class="s">&quot;thing&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+</pre></div>
+</div>
+
+  <h4>Step 3: Register ReadAuditPrepare implementation</h4>
+
+  <p>
+    The implementation of ReadAuditPrepare can be automatically detected
+    if classpath scanning is on (just like entity beans are found etc). That is,
+    if scanning is on you don't need to explicitly register the ReadAuditPrepare implementation
+    and instead it will be found and instantiated.
+  </p>
+
+  <p>
+    If scanning is not used or the ReadAuditPrepare implementation has dependencies and its
+    instantiation should be performed externally to Ebean then you can register it explicitly
+    with the ServerConfig.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// example code explicitly registering the ReadAuditPrepare implementation</span>
+
+  <span class="n">MyReadAuditPrepare</span> <span class="n">readAuditPrepare</span> <span class="o">=</span> <span class="o">...;</span>
+
+  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+  <span class="o">...</span>
+
+  <span class="c1">// register explicitly here</span>
+  <span class="n">config</span><span class="o">.</span><span class="na">setReadAuditPrepare</span><span class="o">(</span><span class="n">readAuditPrepare</span><span class="o">);</span>
+
+
+  <span class="o">...</span>
+  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+
+  
+</pre></div>
+</div>
+
+  <h4>Step 4: Configure logging</h4>
+  <p>
+    The default implementation of ReadAuditLogger logs query plan entries to <code>org.avaje.ebean.ReadAuditQuery</code>
+    and read events to <code>org.avaje.ebean.ReadAudit</code>.  The query plans contain the full SQL and having these
+    logged separately means that the read events don't need to include the full SQL executed and instead the bean type
+    and query key can be used to reference/lookup the associated SQL. This reduces the bulk/size of the read event logs.
+  </p>
+
+  <p>
+    Below in logback xml configuration is 2 appenders. <code>READAUDIT_QUERY_LOG</code> for logging
+    the query plans and <code>READAUDIT_LOG</code> for logging the read bean events.
+  </p>
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration: separate loggers for the read auditing --&gt;</span>
+
+  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;READAUDIT_QUERY_LOG&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;File&gt;</span>log/readAuditQuery.log<span class="nt">&lt;/File&gt;</span>
+    <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;FileNamePattern&gt;</span>log/readAuditQuery.log.%d{yyyy-MM-dd}<span class="nt">&lt;/FileNamePattern&gt;</span>
+      <span class="nt">&lt;MaxHistory&gt;</span>90<span class="nt">&lt;/MaxHistory&gt;</span>
+    <span class="nt">&lt;/rollingPolicy&gt;</span>
+    <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %msg%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+  <span class="nt">&lt;/appender&gt;</span>
+
+  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;READAUDIT_LOG&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;File&gt;</span>log/readAudit.log<span class="nt">&lt;/File&gt;</span>
+    <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;FileNamePattern&gt;</span>log/readAudit.log.%d{yyyy-MM-dd}<span class="nt">&lt;/FileNamePattern&gt;</span>
+      <span class="nt">&lt;MaxHistory&gt;</span>90<span class="nt">&lt;/MaxHistory&gt;</span>
+    <span class="nt">&lt;/rollingPolicy&gt;</span>
+    <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %msg%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+  <span class="nt">&lt;/appender&gt;</span>
+
+
+
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ReadAuditQuery&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;READAUDIT_QUERY_LOG&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/logger&gt;</span>
+
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ReadAudit&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;READAUDIT_LOG&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/logger&gt;</span>
+
+
+  
+</pre></div>
+</div>
+
+  <h4>Optional: ReadAuditLogger implementation</h4>
+  <p>
+    If the default logging does not suit you can implement ReadAuditLogger to control how the
+    events are logged. Log to a message queue, direct to a data store etc.
+  </p>
+
+  <h2>Query.setDisableReadAuditing()</h2>
+  <p>
+    For a specific query you can explicitly exclude it from the read auditing. The typically
+    use case for this is where the query is used internally in the application to populate a
+    cache or process bulk data and where you don't want that to go into the read audit log.
+  </p>
+
+</div>
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+
+<li >
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/configuration">Configuration</a>
+</li>
+<li >
+  <a href="/docs/ebean_access_patterns">Ebean access patterns</a>
+</li>
+<li >
+  <a href="/docs/field_and_property_access">Field and property access</a>
+</li>
+
+<li >
+  <a href="/docs/queries">Queries</a>
+</li>
+<li >
+  <a href="/docs/saving">Saving</a>
+</li>
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+<li >
+  <a href="/docs/json">JSON</a>
+</li>
+<li >
+  <a href="/docs/eventlisteners">Event listeners</a>
+</li>
+<li class="active">
+  <a href="/docs/readaudit">Read Audit</a>
+</li>
+<li >
+  <a href="/docs/changelog">Change Log</a>
+</li>
+<li >
+  <a href="/docs/l2caching">L2 caching</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+<li >
+  <a href="/docs/jvmlanguages">JVM Languages</a>
+</li>
+
+<li >
+  <a href="/docs/clustering">Clustering</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Monitoring</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+
+        </ul>
+          <a class="back-to-top" href="#top">
+            Back to top
+          </a>
+      </nav>
+    </div>
+  </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
+  </body>
+</html>

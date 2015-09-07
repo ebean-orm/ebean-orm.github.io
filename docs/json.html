@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -53,39 +53,114 @@
   </div>
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
-    <div class="container">
-      <h1><a href="/documentation">Documentation</a> / Introduction  </h1>
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / JSON </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <div class="bs-docs-section">
+<h1 id="json">JSON</h1>
+...(under construction)...
+
+<p>
+
+Ebean can hydrate a bean from json.  It will ignore the json properties that do not match up to properties on the bean.
+
+<div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">jsonWithUnknown</span> <span class="o">=</span> <span class="s">&quot;{\&quot;id\&quot;:42, \&quot;unknownProp\&quot;:\&quot;foo\&quot;, \&quot;name\&quot;:\&quot;rob\&quot;, \&quot;version\&quot;:1}&quot;</span><span class="o">;</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">json</span><span class="o">().</span><span class="na">toBean</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">jsonWithUnknown</span><span class="o">);</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">42</span><span class="o">),</span> <span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">,</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</pre></div>
+</div>
+
+</p>
+</div>
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+
+<li >
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/configuration">Configuration</a>
+</li>
+<li >
+  <a href="/docs/ebean_access_patterns">Ebean access patterns</a>
+</li>
+<li >
+  <a href="/docs/field_and_property_access">Field and property access</a>
+</li>
+
+<li >
+  <a href="/docs/queries">Queries</a>
+</li>
+<li >
+  <a href="/docs/saving">Saving</a>
+</li>
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+<li class="active">
+  <a href="/docs/json">JSON</a>
+</li>
+<li >
+  <a href="/docs/eventlisteners">Event listeners</a>
+</li>
+<li >
+  <a href="/docs/readaudit">Read Audit</a>
+</li>
+<li >
+  <a href="/docs/changelog">Change Log</a>
+</li>
+<li >
+  <a href="/docs/l2caching">L2 caching</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+<li >
+  <a href="/docs/jvmlanguages">JVM Languages</a>
+</li>
+
+<li >
+  <a href="/docs/clustering">Clustering</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Monitoring</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+
+        </ul>
+          <a class="back-to-top" href="#top">
+            Back to top
+          </a>
+      </nav>
     </div>
   </div>
 
-  <div class="container">
-    <div class="row">
-
-      <div class="page-content col-lg-9">
-<div id="layout-body"></div>
-      </div>
-
-      <div class="col-lg-3 hidden-md hidden-sm">
-          <div class="side-bar">
-              <h5>
-                <a href="/documentation">DOCUMENTATION</a>
-              </h5>
-              <ul class="side-nav">
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/intro/about">Introduction</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/intro/programmingstyles">Programming styles</a>
-      </li>
-      <li >
-          <i class="fa fa-chevron-right"></i> <a href="/docs/intro/jpacomparison">Comparison to JPA</a>
-      </li>
-              </ul>
-          </div>
-      </div>
-
-    </div> <!-- /.row -->
-  </div>  <!-- /.container -->
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
   </div>
 </div>
 

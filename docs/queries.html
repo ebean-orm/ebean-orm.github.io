@@ -1,0 +1,1759 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>avaje ebean</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/videos">Videos</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / Queries </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <div class="bs-docs-section">
+  <h1 id="queries">Queries</h1>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find by id</span>
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+  executes the sql:
+  <div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">ship_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">cretime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">updtime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">customer_id</span>
+  <span class="k">from</span> <span class="n">or_order</span> <span class="n">o</span>
+  <span class="k">where</span> <span class="k">or</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+  
+</pre></div>
+</div>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// these are the same</span>
+    <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+      
+</pre></div>
+</div>
+      These two methods do exactly the same thing. The reason both
+      exist is because the createQuery() style is consistent with JPA and could be argued is a
+      better more accurate name. And find() is more consistent with the fluid API style.
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// fluid API style with find()</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status.code&quot;</span><span class="o">,</span> <span class="s">&quot;SHIPPED&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+        <h2 id="where_clause">Where clause</h2>
+
+        <p>
+          You can specify 'predicates' for the where clause.
+        </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find all the orders shipped since a week ago</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;shipDate&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+          <h4>Example Predicates</h4>
+          <ul>
+            <li>eq(...) = equals</li>
+            <li>ne(...) = not equals
+            <li>
+            <li>ieq(...) = case insensitve equals</li>
+            <li>between(...) = between</li>
+            <li>gt(...) = greater than</li>
+            <li>ge(...) = greater than or equals</li>
+            <li>lt(...) = less than or equals</li>
+            <li>le(...) = less than or equals</li>
+            <li>isNull(...) = is null</li>
+            <li>isNotNull(...) = is not null</li>
+            <li>like(...) = like</li>
+            <li>startsWith(...) = string starts with</li>
+            <li>endswith(...) = string ends with</li>
+            <li>contains(...) = string conains</li>
+            <li>in(...) = in a subquery, collection or array</li>
+            <li>exists(...) = at least one row exists in a subquery</li>
+            <li>notExists(...) = no row exists in a subquery</li>
+            <li>more...</li>
+          </ul>
+          <p>
+            Use code completion in your favorite ide or see <a href="/apidocs/com/avaje/ebean/ExpressionList.html">ExpressionList</a>
+            class for more details.
+          </p>
+
+
+          <p>
+            Ebean will automatically add SQL joins if they are required for the where clause or order by clause (and the
+            matching joins are not explicitly included).
+          </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+    ... in the sql below, the join to or_customer is automatically added to support the where clause.
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+    from or_order o
+    join or_customer c on o.customer_id = c.id
+    where lower(c.name) like ?
+  <span class="nt">&lt;/sql&gt;</span>
+      
+</pre></div>
+</div>
+
+<h2 id="query_language">Ebean query language</h2>
+
+<p>Ebean has it's own query language. Prior to this decision JPQL (the JPA query language)
+  was investigated to see if it would meet the desired goals of Ebean and it did not.
+  Specifically the desire for Ebean is to support "Partial Objects" via the query language and it is
+  difficult to
+  see how JPQL will evolve to support this (specifically difficulties around its select clause).
+</p>
+
+<p>
+  Apart from "Partial Object" support there was also a desire to simplify the join syntax,
+  specifically Ebean will automatically determine the type of join (outer join etc) for you and
+  also automatically add joins to support predicates and order by clauses.
+</p>
+
+<p>
+  JPQL is more powerful with the ability to mix entity beans with scalar values returning
+  Object[]. However, this feature also could be a major stumbling block for it to evolve
+  support for partial objects for any node in the object graph.
+</p>
+
+<p>
+  In summary you could say the Ebean query language is much simplier that JPQL with the
+  benefit of proper support for "Partial Objects" for any node in the object graph (this is not
+  possible with JPQL in it's current form).
+</p>
+
+<p>
+  "Partial Object" support in Ebean is important for design reasons and performance
+  reasons. From a performance perspective your queries are more performant if they fetch
+  less data back from the database. From a design perspective you do not need to model
+  using secondary tables but instead use partial objects at any depth in the query.
+</p>
+
+<p>
+  For example, to build an object graph for an Order you may want some product
+  information for each orderDetail.
+</p>
+
+<p>Examples
+  <div class="syntax groovy"><div class="highlight"><pre>  <span class="c1">// find all the orders fetching all the properties of order</span>
+  <span class="n">find</span> <span class="n">order</span>
+
+  <span class="c1">// find all the orders fetching all the properties of order</span>
+  <span class="c1">// ... this is the same as the first query</span>
+  <span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
+
+  <span class="c1">// find all the orders fetching the id, orderDate and shipDate</span>
+  <span class="c1">// ... This is described as a &quot;partial object query&quot;</span>
+  <span class="c1">// ... the ID property is *ALWAYS* fetched</span>
+  <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+
+  <span class="c1">// find all the orders (and orderDetails)</span>
+  <span class="c1">// ... fetching all the properties of order</span>
+  <span class="c1">// ... and all the properties of orderDetails</span>
+  <span class="c1">// ... the type of fetch(Outer etc) is determined automatically</span>
+  <span class="n">find</span> <span class="n">order</span>
+  <span class="n">fetch</span> <span class="n">orderDetails</span>
+
+  <span class="c1">// find all the orders (with their orderDetails)</span>
+  <span class="c1">// ... fetching all the properties of order</span>
+  <span class="c1">// ... and all the properties of orderDetails</span>
+  <span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
+  <span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
+
+  <span class="c1">// find all the orders (with orderDetails and products)</span>
+  <span class="c1">// ... fetching the order id, orderDate and shipDate</span>
+  <span class="c1">// ... fetching all the properties for orderDetail</span>
+  <span class="c1">// ... fetching the product id, sku and name</span>
+  <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+  <span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
+  <span class="n">fetch</span> <span class="n">orderDetails</span><span class="o">.</span><span class="na">product</span> <span class="o">(</span><span class="n">sku</span><span class="o">,</span> <span class="n">name</span><span class="o">)</span>
+  
+</pre></div>
+</div>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">query</span> <span class="o">=</span> <span class="s">&quot;find order where status.code=:status and shipDate &gt; :shipped&quot;</span><span class="o">;</span>
+
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setQuery</span><span class="o">(</span><span class="n">query</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;shipped&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[false]&#39;</span><span class="nt">&gt;</span>
+      select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+      from or_order o
+      where o.status_code = ? and o.ship_date &gt; ?
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+
+
+    <p>Every object in the object graph can be a partial object. This is what you can't do in JPQL
+      currently.</p>
+
+    <p>These Partially populated objects are will lazy load as required and are fully updatable etc.
+      You can treat them just like fully populated objects.</p>
+
+    <p>Autofetch can use partial objects to only fetch the properties that the application actually
+      uses. In this way you can get the performance of partial objects without any work on your
+      part (Autofetch determines the joins and properties to fetch for you).</p>
+
+
+  <h2 id="partial_objects">Partial objects</h2>
+
+  <p>
+    The Query object has select() and fetch() methods and these allow you to specify
+    the properties that should be fetched.
+  </p>
+
+  <p>This can be a very significant performance benefit by only fetching the properties you need. If
+    the properties are in DB indexes then the DB doesn't have to read Index Blocks. This is also a
+    design benefit in that it removes the "fixed" design constraints of using secondary table
+    properties.</p>
+
+  <p>Note that <a href="#autofetch">Autofetch</a> can use profiling to specify the properties to
+    select rather than you manually doing so (which saves you the work).</p>
+
+  <h4>Select</h4>
+
+  <p>
+    With select you specify the properties that should be fetched on the root level type.
+  </p>
+
+  <p>
+    Partially loading a bean or object graph using select() and fetch().
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+    <div class="syntax sql"><div class="highlight"><pre>    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
+    <span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+    <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span> <span class="p">;</span> <span class="c1">--bind(1)</span>
+    
+</pre></div>
+</div>
+  </p>
+  <h4>Fetch</h4>
+
+  <p>
+    With fetch you specify the properties that should be fetched on the associated beans.
+  </p>
+
+  <p>*ANY* node of the object graph can be a partial object. This example shows several ways partial
+    objects can be fetched.
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, orderDate, shipDate&quot;</span><span class="o">)</span> <span class="c1">// 3 fields from order</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="c1">// just name field from customer</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// all fields from details</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku&quot;</span><span class="o">)</span> <span class="c1">// just sku field from product</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+    <div class="syntax sql"><div class="highlight"><pre>    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span> <span class="n">c3</span><span class="p">,</span>
+    <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c4</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c5</span><span class="p">,</span> <span class="c1">-- customer name</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c6</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">ship_qty</span> <span class="n">c8</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">unit_price</span> <span class="n">c9</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="k">version</span> <span class="n">c10</span><span class="p">,</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">when_created</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c13</span><span class="p">,</span>
+    <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="n">c14</span><span class="p">,</span> <span class="n">t3</span><span class="p">.</span><span class="n">sku</span> <span class="n">c15</span> <span class="c1">-- product sku</span>
+    <span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
+    <span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_order_detail</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_product</span> <span class="n">t3</span> <span class="k">on</span> <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t2</span><span class="p">.</span><span class="n">product_id</span>
+    <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+    <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="k">asc</span><span class="p">;</span> <span class="c1">--bind(1)</span>
+    
+</pre></div>
+</div>
+  </p>
+
+  <h4>Saving a partial object</h4>
+
+  <p>
+    You can save or delete a Partial Object.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find customer 1</span>
+  <span class="c1">// ... just fetch the customer id, name and version property</span>
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+
+  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;CoolName&quot;</span><span class="o">);</span>
+
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+
+  <p>
+    The query generates the following SQL...
+    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
+      select c.id, c.name
+      from or_customer c
+      where c.id = ?
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+  </p>
+  <p>and in the transaction logs we can find the update dml and bind values.</p>
+  <div class="syntax xml"><div class="highlight"><pre>  ... update or_customer set name=?, updtime=? where id=? and name=?
+  ... Binding Update [or_customer] set[name=CoolName, updtime=2008-11-19 10:58:08.598, ] where[id=1,
+  name=Ford, ]
+  ... Updated [app.data.test.Customer] [1]
+  
+</pre></div>
+</div>
+
+<h2 id="query_joins">Query joins</h2>
+<h4>
+  Controlling eager loading of the object graph using query joins.
+</h4>
+
+<p>You can use fetch() to explicitly state which additional paths you want to fetch. You would do
+  this to reduce "lazy loading" of those beans later.</p>
+
+<p>
+  When more than 1 OneToMany or ManyToMany relationship is eagerly fetched
+  then Ebean will automatically convert one of those into a 'Query Join'. Ebean does this so that it
+  avoids
+  generating a cartesian product query. Note that Ebean determines the type of SQL join for you
+  based on the cardinality and optionality of the relationship.
+</p>
+<h4>Example 1</h4>
+
+<p>
+  It this example both "customer.contacts" and "details" are OneToMany relationships.
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">)</span> <span class="c1">// contacts is a @OneToMany</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// details is a @OneToMany</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+    ... results in the "left outer join o_contact" and related t2.* columns being included in the
+    query (so they won't be lazy loaded later).
+
+    <div class="syntax sql"><div class="highlight"><pre>    <span class="c1">-- This first query includes the customer contacts</span>
+    <span class="c1">-- but does not include the order details</span>
+    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span>
+    <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c3</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c4</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c13</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c14</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
+    <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c19</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="n">c20</span>
+    <span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
+    <span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_contact</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span>
+    <span class="k">order</span> <span class="k">by</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+    
+</pre></div>
+</div>
+</p>
+
+
+<h4>The 'Query Join' query ...</h4>
+<div class="syntax sql"><div class="highlight"><pre><span class="c1">-- This second query fetchs the order details associated</span>
+<span class="c1">-- with the orders that were returned by the first query</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">o_order_detail</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">)</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+<span class="c1">--bind(2,1,1,1,3,3,3,4,4,4)</span>
+</pre></div>
+</div>
+
+<h4>Example 2</h4>
+
+<p>
+  In this example contacts is a @OneToMany and then off from each contact notes is a @OneToMany.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">)</span> <span class="c1">// contacts is a OneToMany</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts.notes&quot;</span><span class="o">)</span> <span class="c1">// notes is a OneToMany</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+
+  <div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span> <span class="n">c8</span><span class="p">,</span> <span class="p">...</span>
+  <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c10</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c12</span><span class="p">,</span> <span class="p">...</span>
+  <span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+  <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">be_contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+  <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+  
+</pre></div>
+</div>
+
+  <h4>The 'Query Join' query ...</h4>
+  <div class="syntax sql"><div class="highlight"><pre>  <span class="c1">-- fetch the contact notes for all the contacts</span>
+  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">title</span> <span class="n">c3</span><span class="p">,</span> <span class="p">...</span>
+  <span class="k">from</span> <span class="n">contact_note</span> <span class="n">t0</span>
+  <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">)</span>
+</pre></div>
+</div>
+
+<h2 id="fetchconfig">FetchConfig</h2>
+
+<p>When you specify a Query with Ebean it can result in more than 1 SQL query. Sometimes
+you want explicit control over this (what the secondary queries are, batch size used, eager
+or lazily invoked)</p>
+
+<p>FetchConfig gives you the ability to specify these "secondary queries" and let them
+executed lazily ("lazy loading join") or eagerly ("query join").</p>
+
+
+<p>Note that explicitly using FetchConfig is not a requirement. Ebean is able to automatically
+convert some joins
+to "query joins" when it is needed such as when building object graphs with multiple *ToMany
+relationships or when limit offset
+is used with a *ToMany relationship.</p>
+
+
+<p>You use FetchConfig to define that you want to use a separate SQL query to fetch that part of
+the object graph (to use a "query join" rather than a "fetch join"). What this means is that
+Ebean will use 2 SQL queries rather than 1 to build the object graph.
+</p>
+
+<p>Note that you do not need to expicitly use FetchConfig if you don't want to. In that case Ebean
+will automatically convert any fetch paths over to use FetchConfig if it needs to (multiple
+*ToMany relationships etc).
+</p>
+
+<p>FetchConfig defines the configuration options for a "query fetch" or a "lazy loading fetch".
+This gives you the ability to use multiple smaller queries to populate an object graph as
+opposed to a single large query. The primary goal is to provide efficient ways of loading
+complex object graphs avoiding SQL Cartesian product and issues around populating object graphs
+that have multiple *ToMany relationships. It also provides the ability to control the lazy
+loading queries (batch size, selected properties and fetches) to avoid N+1 queries etc.
+</p>
+
+<p>
+There can also be cases loading across a single OneToMany where 2 SQL queries using Ebean
+FetchConfig.query() can be more efficient than one SQL query. When the "One" side is wide (lots
+of columns) and the cardinality difference is high (a lot of "Many" beans per "One" bean) then
+this can be more efficient loaded as 2 SQL queries.
+</p>
+
+<p>The reason for using "Query Joins" as opposed to "Fetch joins" is that there are some
+cases where using multiple queries is more efficient that a single query.
+
+<p>
+
+<p>Any time you want to load multiple OneToMany associations it will likely be more
+performant as multiple SQL queries. If a single SQL query was used that would result in a
+Cartesian product.</p>
+
+<p>There can also be cases loading across a single OneToMany where 2 SQL queries (using
+Ebean "query join") can be more efficient than one SQL query (using Ebean "fetch join").
+When the "One" side is wide (lots of columns) and the cardinality difference is high (a lot
+of "Many" beans per "One" bean) then this can be more efficient loaded as 2 SQL queries.</p>
+
+
+<p>
+Example: Find Orders join details using a single SQL query
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// Normal fetch join results in a single SQL query</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">).</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+
+<p>
+Example: Using a "query join" instead of a "fetch join" we instead use 2 SQL queries
+
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 2 SQL queries to build this object graph.</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+  queries:
+  <ol>
+    <li>find order</li>
+    <li>find orderDetails where order.id in (?,?...) // first 100 order id's</li>
+  </ol>
+</p>
+
+
+<p>
+Example: Using 2 "query joins"
+
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 3 SQL queries to build this object graph</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">queryFirst</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+  queries:
+  <ol>
+    <li>find order</li>
+    <li>find orderDetails where order.id in (?,?...) // first 100 order id's</li>
+    <li>find customer where id in (?,?,?,?,?) // first 5 customers</li>
+  </ol>
+</p>
+
+<p>
+Example: Using "query joins" and partial objects
+
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 3 SQL queries to build this object graph</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, shipDate&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;quantity, price&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku, name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">queryFirst</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+  queries:
+  <ol>
+    <li>find order (status, shipDate)</li>
+    <li>find orderDetail (quantity, price) fetch product (sku, name) where order.id in (?,?
+      ...)
+    </li>
+    <li>find customer (name) fetch contacts (*) fetch shippingAddress (*) where id in
+      (?,?,?,?,?)
+    </li>
+  </ol>
+  Note: the fetch of "details.product" is automatically included into the fetch of "details"<br>
+  Note: the fetch of "customer.contacts" and "customer.shippingAddress" are automatically
+  included in the fetch of "customer"
+</p>
+
+<p>You can use query() and lazy together on a single join. The query is executed immediately
+and the lazy defines the batch size to use for further lazy loading (if lazy loading is
+invoked).
+
+<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">lazy</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+  queries:
+  <ol>
+    <li>find order</li>
+    <li>find customer where id in (?,?,?,?,?,?,?,?,?,?) // first 10 customers</li>
+    <li>then if lazy loading of customers is invoked, use a batch size of 5 to load the
+      customers
+    </li>
+  </ol>
+</p>
+
+  <p>
+    Example of controlling the lazy loading query:
+  </p>
+
+  <p>
+    This gives us the ability to optimise the lazy loading query for a given use case.
+
+    List<Order> list = Ebean.find(Order.class)
+    .fetch("customer","name", new FetchConfig().lazy(5))
+    .fetch("customer.contacts","contactName, phone, email")
+    .fetch("customer.shippingAddress")
+    .where().eq("status",Order.Status.NEW)
+    .findList();
+    
+      queries:
+      <ol>
+        <li>find order where status = Order.Status.NEW</li>
+        <li>if lazy loading of customers is invoked, use a batch size of 5 to load the
+          customers.
+  </p>
+  </ol>
+
+  Note: when the laxy loading of customers is performed, it perform like:
+  <div class="syntax xml"><div class="highlight"><pre>  find customer (name)
+  fetch customer.contacts (contactName, phone, email)
+  fetch customer.shippingAddress (*)
+  where id in (?,?,?,?,?)
+  
+</pre></div>
+</div>
+
+
+  <p>Example of wo "Query Joins" results in 3 SQL queries used to build an object graph
+    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// A more advanced example with multiple query joins</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">l0</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, shipDate&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;orderQty, unitPrice&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku, name&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;firstName, lastName, mobile&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">,</span><span class="s">&quot;line1, city&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+      
+</pre></div>
+</div>
+
+      The resulting 3 sql queries are:
+  </p>
+  <p>
+    Query 1 - the main query - Note: customer_id was automatically added to support query join.
+    <div class="syntax xml"><div class="highlight"><pre>    // query 1 … the main query
+    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Order&#39;</span><span class="nt">&gt;</span>
+      select o.id c0, o.status c1, o.ship_date c2, o.customer_id c3
+      from o_order o
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+  </p>
+  <p>
+    Query 2 - query join on customer - fetching the first 10 customers referenced (batch:10) but
+    there where actually only 2 to fetch (actual:2).
+    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress</span>
+<span class="s">+many:contacts&#39;</span> <span class="na">load=</span><span class="s">&#39;path:customer batch:10 actual:2&#39;</span><span class="nt">&gt;</span>
+      select c.id c0, c.name c1
+      , cs.id c2, cs.line_1 c3, cs.city c4
+      , cc.id c5, cc.first_name c6, cc.last_name c7, cc.mobile c8
+      from o_customer c
+      left outer join o_address cs on cs.id = c.shipping_address_id
+      left outer join contact cc on cc.customer_id = c.id
+      where c.id in (?,?,?,?,?,?,?,?,?,?)
+      order by c.id
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+  </p>
+  <p>
+    Query 3 – query join on details - fetching the order details for the first 100 orders
+    (batch:100).
+    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Order +many:details, details.product&#39;</span>
+         <span class="na">load=</span><span class="s">&#39;path:details batch:100 actual:3&#39;</span><span class="nt">&gt;</span>
+      select o.id c0
+      , od.id c1, od.order_qty c2, od.unit_price c3
+      , odp.id c4, odp.sku c5, odp.name c6
+      from o_order o
+      left outer join o_order_detail od on od.order_id = o.id
+      left outer join o_product odp on odp.id = od.product_id
+      where o.id in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      order by o.id
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+
+  <h4>FetchConfig.lazy() - "Lazy Joins"</h4>
+
+  <p>If a join is not defined at all (neither a fetch join or a query join) – then lazy loading
+    will by
+    default just fetch all the properties for that entity.
+  </p>
+
+  <p>
+    FetchConfig.lazy() allows you to control that lazy loading query – define the batch size,
+    properties to select and also fetch paths to include on the lazy load query.
+  </p>
+
+  <p>
+    This is very similar to a "query join" except that the loading occurs on demand (when the
+    property is requested and not already loaded).
+  </p>
+
+  <p>
+    The reason you would want to control the lazy loading query is to optimise performance
+    for further lazy loading (avoid N+1 queries, define joins that should be included for lazy
+    loading queries, load only the properties required and no more).
+  </p>
+
+  <p>
+    Example: Control the query used to lazy load
+    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// control the lazy loading of customers ...</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">lazy</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;contactName, phone, email&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span><span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+      
+</pre></div>
+</div>
+  </p>
+  <p>
+    In the example above the orders are loaded. Only when the application requests a
+    customer property (that is not the customer's id) then the lazy loading of the customer is
+    invoked. At that point the customer name is loaded, with the contacts and
+    shippingAddress – this is done in batch of 5 customers.
+  </p>
+
+  <p>
+    Note that if the customer status is requested (rather than the customer name) and that
+    invokes the lazy loading then all the customer's properties are loaded (rather than just the
+    customers name).
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
+
+    <span class="c1">// this invokes the lazy loading of 5 customers</span>
+    <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+  </p>
+
+  <p>
+    The resulting lazy loading query is …
+    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+lazy&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress +many:contacts&#39;</span>
+         <span class="na">load=</span><span class="s">&#39;path:customer batch:5 actual:2&#39;</span><span class="nt">&gt;</span>
+      select c.id c0, c.name c1, cs.id c2, cs.line_1 c3, cs.line_2 c4, cs.city c5,
+      cs.cretime c6, cs.updtime c7, cs.country_code c8,
+      cc.id c9, cc.phone c10, cc.email c11
+      from o_customer c
+      left outer join o_address cs on cs.id = c.shipping_address_id
+      left outer join contact cc on cc.customer_id = c.id
+      where c.id in (?,?,?,?,?)
+      order by c.id
+    <span class="nt">&lt;/sql&gt;</span>
+    
+</pre></div>
+</div>
+
+  <h4>Using both</h4>
+
+  <p>You can use both queryFirst() and lazy() on a single join. The queryFirst() part defines
+    the
+    number of beans that will be loaded eagerly via an additional query and then lazy defines
+    the batch size of the lazy loading that occurs after than (if there is any).
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="k">new</span> <span class="n">FetchQuery</span><span class="o">.</span><span class="na">queryFirst</span><span class="o">(</span><span class="mi">100</span><span class="o">).</span><span class="na">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    
+</pre></div>
+</div>
+
+  </p>
+
+  <h4>+query and +lazy – query language syntax</h4>
+
+  <p>
+    To define "query joins" and "lazy joins" in the query language you can use +query and
+    +lazy. Optionally you can specify the batch size for both.
+
+    <div class="syntax groovy"><div class="highlight"><pre>    <span class="n">find</span> <span class="n">order</span>
+    <span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">query</span> <span class="o">)</span>
+    <span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">status</span>
+    
+</pre></div>
+</div>
+
+    <div class="syntax groovy"><div class="highlight"><pre>    <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+    <span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="n">name</span><span class="o">,</span> <span class="n">status</span><span class="o">)</span>
+    <span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">orderStatus</span>
+    
+</pre></div>
+</div>
+  </p>
+
+
+  <h2 id="lazy_loading">Lazy loading</h2>
+  <h4>
+    Fine grained control over lazy loading.
+  </h4>
+
+  <p>
+    A Partial Object will lazy load the rest of the data on demand when you get or set a
+    property it does not have.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find order 12</span>
+  <span class="c1">// ... fetching the order id, orderDate and version property</span>
+  <span class="c1">// .... nb: the Id and version property are always fetched</span>
+
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;orderDate&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+
+  <span class="c1">// shipDate is not in the partially populated order</span>
+  <span class="c1">// ... so it will lazy load all the missing properties</span>
+  <span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
+
+  <span class="c1">// similarly if we where to set the shipDate</span>
+  <span class="c1">// ... that would also trigger a lazy load</span>
+  <span class="n">order</span><span class="o">.</span><span class="na">setShipDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
+  
+</pre></div>
+</div>
+
+  <p>
+    Lazy loading occurs automatically when you set or get a property that the partially
+    populated bean does not have.
+  </p>
+
+  <h2 id="named_queries">Named Queries</h2>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">import</span> <span class="nn">javax.persistence.NamedQueries</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">javax.persistence.NamedQuery</span><span class="o">;</span>
+
+  <span class="o">...</span>
+  <span class="nd">@NamedQueries</span><span class="o">(</span><span class="n">value</span><span class="o">={</span>
+    <span class="nd">@NamedQuery</span><span class="o">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugsSummary&quot;</span><span class="o">,</span>
+      <span class="n">query</span><span class="o">=</span><span class="s">&quot;find (name, email) fetch loggedBugs (title, status) where id=:id &quot;</span><span class="o">),</span>
+    <span class="nd">@NamedQuery</span><span class="o">(</span>
+      <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span>
+      <span class="n">query</span><span class="o">=</span><span class="s">&quot;fetch loggedBugs where loggedBugs.status = :bugStatusorder by name&quot;</span><span class="o">)</span>
+    <span class="o">})</span>
+  <span class="nd">@Entity</span>
+  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+  <span class="o">...</span>
+  
+</pre></div>
+</div>
+  <p>You can have named queries, where you define the query. Note that the names of the
+    queries are per entity type (not global as they are in JPA).</p>
+
+  <p>Once you get a named query you set any named parameters and then execute it – in the
+    case below we use findUnique() as we expect only one object graph returned.</p>
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugsSummary&quot;</span><span class="o">)</span>
+              <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+              <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+  <h4>Named Queries are Modifyable</h4>
+
+  <p>Named queries are parsed early and returned as query objects to you that you can
+    modify. This means that you can get a named query and then modify the query by adding
+    to the where clause, setting the order by, limits etc.</p>
+
+  <p>This is an intentional feature and means that you can use Named Queries as a "starting
+    point" to then modify via code and execute.</p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// you can treat namedQueries as starting points...</span>
+  <span class="c1">// ... in that you can modify them via code</span>
+  <span class="c1">// ... prior to executing the query</span>
+  <span class="c1">// you can modify a named query...</span>
+  <span class="n">Set</span>
+  <span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugStatus&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span> <span class="s">&quot;NEW&quot;</span><span class="o">)</span>
+
+    <span class="c1">// you can add to the where clause</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+
+    <span class="c1">// you can set/override the order by</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;id desc&quot;</span><span class="o">)</span>
+
+    <span class="c1">// you can set/override limits (max rows, first row)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSet</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+<h2 id="large_queries">Large queries</h2>
+
+<p>Large query results can take up a lot of memory if using findList() since loads all the
+  results in memory at once.
+  Ebean provides functionality for streaming the results. With this functionality, you
+  process the results rows one at a time.</p>
+
+<p><b>Query.findIterate()</b> - Execute the query iterating over the results. Requires
+  calling QueryIterator.close(), typically in a finally block, to prevent resource leakage.
+
+<p><b>Query.findEach(QueryEachConsumer
+  <T> consumer)
+</b> - Execute the query consuming each bean one at a time.
+</p>
+<o>
+  This method is appropriate to process very large query results as the beans are consumed
+  one at a time and do not need to be held in memory (unlike #findList #findSet etc)
+</p>
+<p>Note that internally Ebean can inform the JDBC driver that it is expecting larger resultSet and
+  specifically for MySQL this hint is required to stop it's JDBC driver from buffering the entire
+  resultSet. As such, for smaller resultSets findList() is generally preferable.
+</p>
+
+<p>
+  Compared with findEachWhile() this will always process all the beans where as findEachWhile()
+  provides a way to stop processing the query result early before all the beans have been read.
+</p>
+
+<p>
+  This method is functionally equivalent to findIterate() but instead of using an iterator uses
+  the QueryEachConsumer (SAM) interface which is better suited to use with Java8 closures.
+</p>
+
+<p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+
+    <span class="c1">// do something with customer</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
+  <span class="o">});</span>
+  
+</pre></div>
+</div>
+
+  <p><b>Query.findEachWhile(QueryEachWhileConsumer&lt;T&gt; consumer)
+  </b> - >Execute the query using callbacks to a visitor to process the resulting beans one at a
+    time.
+  </p>
+  <p>
+    This is similar to .findEach(...) except that you return boolean true to continue processing
+    beans and return false to stop processing early.
+  </p>
+
+  <p>
+    This method is functionally equivalent to findIterate() but instead of using an iterator uses
+    the QueryEachWhileConsumer (SAM) interface which is better suited to use with Java8 closures.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findEachWhile</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+
+      <span class="c1">// do something with customer</span>
+      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
+
+      <span class="c1">// return true to continue processing or false to stop</span>
+      <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
+    <span class="o">});</span>
+  
+</pre></div>
+</div>
+
+  <h2 id="paging">Paging</h2>
+
+  <p>Paging through the results means that instead of all the results are not fetched in a single
+    query Ebean will use SQL to limit the results (limit/offset, rownum, row_number() etc).</p>
+
+  <h4>
+    Using firstRows and maxRows or findPagedList to fetch a 'page' of results.
+  </h4>
+
+  <p>
+    If you are building a stateless application (not holding the PagingList over multiple requests)
+    then this approach is a good option.
+  </p>
+
+  <p>
+    Use setFirstRow() and setMaxRows() to control what rows are returned for the Query..
+  </p>
+
+  <p>
+
+  </p>
+
+  <h4>PagedList</h4>
+
+  <p>The benefit of using PagedList over just using the normal Query with Query.setFirstRow(int) and
+    Query.setMaxRows(int) is that it additionally wraps functionality that can call
+    Query.findFutureRowCount() to determine total row count, total page count etc.</p>
+
+  <p>Internally this works using Query.setFirstRow(int) and Query.setMaxRows(int) on the query. This
+    translates into SQL that uses limit offset, rownum or row_number function to limit the result
+    set.</p>
+
+  <p>
+    Example: typical use including total row count
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// We want to find the first 100 new orders</span>
+    <span class="c1">// ... 0 means first page</span>
+    <span class="c1">// ... page size is 100</span>
+
+    <span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pagedList</span>
+      <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findPagedList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+
+      <span class="c1">// Optional: initiate the loading of the total</span>
+      <span class="c1">// row count in a background thread</span>
+      <span class="n">pagedList</span><span class="o">.</span><span class="na">loadRowCount</span><span class="o">();</span>
+
+      <span class="c1">// fetch and return the list in the foreground thread</span>
+      <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
+
+        <span class="c1">// get the total row count (from the future)</span>
+        <span class="kt">int</span> <span class="n">totalRowCount</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getTotalRowCount</span><span class="o">();</span>
+        
+</pre></div>
+</div>
+
+        Example: No total row count required
+        <div class="syntax java"><div class="highlight"><pre>        <span class="c1">// If you are not getting the &#39;first page&#39; often</span>
+        <span class="c1">// you do not bother getting the total row count again</span>
+        <span class="c1">// so instead just get the page list of data</span>
+
+        <span class="c1">// fetch and return the list in the foreground thread</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
+          
+</pre></div>
+</div>
+  </p>
+
+
+<h2 id="async_queries">Asynchronous queries</h2>
+
+<p>
+Ebean has built in support for executing queries asynchronously. These queries are executed in a
+background thread and "Future" objects are returned.
+The "Future" objects returned extend java.util.concurrent.Future. This provides support for
+cancelling the query, checking if it is cancelled or done and getting the result with waiting
+and timeout support.
+</p>
+
+
+Methods on Query for ansychronous execution
+
+<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">FutureList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureList</span><span class="o">();</span>
+
+<span class="kd">public</span> <span class="n">FutureIds</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureIds</span><span class="o">();</span>
+
+<span class="kd">public</span> <span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureRowCount</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+example: shows the use of FutureList:
+
+<div class="syntax java"><div class="highlight"><pre><span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// find list using a background thread</span>
+<span class="n">FutureList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">futureList</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findFutureList</span><span class="o">();</span>
+
+  <span class="c1">// do something else ...</span>
+
+  <span class="k">if</span> <span class="o">(!</span><span class="n">futureList</span><span class="o">.</span><span class="na">isDone</span><span class="o">()){</span>
+  <span class="c1">// you can cancel the query. If supported by the JDBC</span>
+  <span class="c1">// driver and database this will actually cancel the</span>
+  <span class="c1">// sql query execution on the database</span>
+  <span class="n">futureList</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="c1">// wait for the query to finish ... no timeout</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+    <span class="c1">// wait for the query to finish ... with a 30sec timeout</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">30</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+      
+</pre></div>
+</div>
+
+
+  <h2 id="rawsql">RawSql</h2>
+  <h4>
+    Using RawSql to fully control the SQL used to load an object graph.
+  </h4>
+
+  <p>
+    You can explicitly specify the SQL to use and have that mapped into Objects. You
+    may want to do this so use aggregate functions like sum() max() etc or in cases
+    where you just need exact control over the SQL.
+  </p>
+  <p>
+    This is useful for "Reporting" type requirements where you want to use aggregate functions such as
+    sum(), count(), max(), etc. It is also useful if you need to use Database specific SQL for whatever
+    reason.
+  </p>
+  <p>
+    You can programmatically use raw SQL like the following examples or put the Raw SQL and column
+    mappings into ebean-orm.xml file and reference them as 'named queries' - see
+    ebeanServer.createNamedQuery().
+  </p>
+
+  <p>You can use RawSql with ebean enhanced entity beans. You can fetch only the properties that are need
+    (creating partially populated entity beans). All ebean enhanced entity beans built with RawSql invoke
+    lazy loading etc and act just the same as if they where populated via Ebean generated SQL.</p>
+
+  <p>
+    If you let Ebean 'parse' the raw SQL then Ebean can add expressions to the WHERE and HAVING clauses as
+    well as set the ORDER BY and LIMIT OFFSET clauses.
+
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// Use raw SQL with an aggregate function</span>
+
+  <span class="n">String</span> <span class="n">sql</span>
+  <span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
+  <span class="o">+</span> <span class="s">&quot; from o_order o&quot;</span>
+  <span class="o">+</span> <span class="s">&quot; join o_customer c on c.id = o.kcustomer_id &quot;</span>
+  <span class="o">+</span> <span class="s">&quot; join o_order_detail d on d.order_id = o.id &quot;</span>
+  <span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
+
+  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+  <span class="n">RawSqlBuilder</span>
+    <span class="c1">// let ebean parse the SQL so that it can</span>
+    <span class="c1">// add expressions to the WHERE and HAVING</span>
+    <span class="c1">// clauses</span>
+    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+      <span class="c1">// map resultSet columns to bean properties</span>
+      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;o.status&quot;</span><span class="o">,</span> <span class="s">&quot;order.status&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.id&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.id&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.name&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.name&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+
+  <span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+    <span class="c1">// add expressions to the WHERE and HAVING clauses</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+      
+</pre></div>
+</div>
+  </p>
+
+  <p>
+    This example uses FetchConfig to fetch other parts of the object graph. After the raw SQL query is
+    executed Ebean uses 'query joins' to fetch some order and customer properties.
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// You can also use FetchConfig to get Ebean to</span>
+  <span class="c1">// fetch additional parts of the object graph</span>
+  <span class="c1">// after the Raw SQL query is executed.</span>
+
+  <span class="n">String</span> <span class="n">sql</span>
+  <span class="o">=</span> <span class="s">&quot; select order_id, sum(d.order_qty*d.unit_price) as totalAmount &quot;</span>
+  <span class="o">+</span> <span class="s">&quot; from o_order_detail d&quot;</span>
+  <span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
+
+  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+  <span class="n">RawSqlBuilder</span>
+    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+
+  <span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+      <span class="c1">// get ebean to fetch parts of the order and customer</span>
+      <span class="c1">// after the raw SQL query is executed</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+    
+</pre></div>
+</div>
+</p>
+
+<p>
+  This is the OrderAggregate bean used in the examples above.
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">avaje</span><span class="o">.</span><span class="na">tests</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">basic</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+  <span class="kn">import</span> <span class="nn">javax.persistence.OneToOne</span><span class="o">;</span>
+
+  <span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.Sql</span><span class="o">;</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * An example of an Aggregate object.</span>
+<span class="cm">  *</span>
+<span class="cm">  * Note the @Sql indicates to Ebean that this bean is not based on a table but</span>
+<span class="cm">  * instead uses RawSql.</span>
+<span class="cm">  *</span>
+<span class="cm">  */</span>
+  <span class="nd">@Entity</span>
+  <span class="nd">@Sql</span>
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderAggregate</span> <span class="o">{</span>
+
+    <span class="nd">@OneToOne</span>
+    <span class="n">Order</span> <span class="n">order</span><span class="o">;</span>
+
+    <span class="n">Double</span> <span class="n">totalAmount</span><span class="o">;</span>
+
+    <span class="n">Double</span> <span class="n">totalItems</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">order</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; totalAmount:&quot;</span> <span class="o">+</span> <span class="n">totalAmount</span> <span class="o">+</span> <span class="s">&quot; totalItems:&quot;</span> <span class="o">+</span> <span class="n">totalItems</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Order</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrder</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalAmount</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">totalAmount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalAmount</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalAmount</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">totalAmount</span> <span class="o">=</span> <span class="n">totalAmount</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalItems</span><span class="o">()</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">totalItems</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalItems</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalItems</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">totalItems</span> <span class="o">=</span> <span class="n">totalItems</span><span class="o">;</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  
+</pre></div>
+</div>
+  </p>
+
+  <h4>tableAliasMapping()</h4>
+  tableAliasMapping() will automatically map columns from the query results to the associated object based
+  on its path. It does this using the query alias. This is a convenience mathod so that you don't have to
+  map each column individually.
+
+  <p>So a test case looks like:
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
+  <span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;from o_order o join o_customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;join o_order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;join o_product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
+  <span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
+
+
+  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;d&quot;</span><span class="o">,</span> <span class="s">&quot;details&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;details.product&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">ordersFromRaw</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;maxOrderId&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+    Rather than using columnMapping like:
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.status&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.id&quot;</span><span class="o">,</span> <span class="s">&quot;customer.id&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.id&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.order_qty&quot;</span><span class="o">,</span> <span class="s">&quot;details.orderQty&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.id&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.name&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.name&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+  <h2 id="sqlquery">SqlQuery</h2>
+  <h4>
+    Performing sql queries returning relational SqlRow's rather than beans / object graphs.
+  </h4>
+
+  <p>SqlQuery is where you specify the exact SQL SELECT statement and returns list, sets or maps of
+    SqlRow objects. A SqlRow is a Map where the key is the column name.
+
+  <p>
+
+  <p>This is a fairly lightweight API that you could use instead of going to raw JDBC (which is of
+    course an option).</p>
+
+    <div class="syntax java"><div class="highlight"><pre>    <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select b.id, b.title, b.type_code, b.updtime&quot;</span>
+    <span class="o">+</span><span class="s">&quot; ,p.name as product_name &quot;</span>
+    <span class="o">+</span><span class="s">&quot;from b_bug b join b_product p on p.id = b.product_id &quot;</span>
+    <span class="o">+</span><span class="s">&quot;where b.id = :id&quot;</span><span class="o">;</span>
+
+    <span class="n">SqlRow</span> <span class="n">bug</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">prodName</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;product_name&quot;</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">title</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">);</span>
+    
+</pre></div>
+</div>
+<p>Note that you can use "Named" queries and put the sql statements in orm.xml rather than having it
+in your code.</p>
+
+<h2 id="l2cache">L2 Cache</h2>
+<h4>
+How to use the L2 cache with queries.
+</h4>
+...(under construction)...
+
+
+<h2 id="autofetch">Autofetch</h2>
+<h4>
+Let Ebean automatically tune you queries using Autofetch.
+</h4>
+
+<p>Ebean can automatically tune your queries for you using a feature called "Autofetch". This has
+the benefit of executing better performing queries that and reduced lazy loading.</p>
+
+<p>Autofetch automatically modifies your queries – essentially controlling the select() and
+fetch() clauses to fetch all the data your application uses but no more. This has the effect
+of reducing the amount of lazy loading and only fetches properties that are actually used</p>
+
+<p>
+Autofetch can also be used with a query that you have explicitly specified some
+fetch() paths. Autofetch can add additional fetch() paths and tune which properties to fetch
+per path.</p>
+
+<p>
+Example: a program that fetches some orders ... and processes them
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// fetch new orders</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+  <span class="c1">// just read the orderDate</span>
+  <span class="k">for</span> <span class="o">(</span><span class="n">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Date</span> <span class="n">orderDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">();</span>
+  <span class="o">}</span>
+  
+</pre></div>
+</div>
+</p>
+<p>
+Initially Ebean has no "profiling" information so when the program is first run the query executed
+is not optimal.
+</p>
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+    from or_order o
+    where o.status_code = ?
+  <span class="nt">&lt;/sql&gt;</span>
+  
+</pre></div>
+</div>
+  <p>
+    However, now that we have run the program once Ebean has collected some profiling information.
+    Specifically it knows that for this query (based on the call stack) the program only reads the
+    orderDate. So when we run the program a 2nd time...
+  </p>
+
+<div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.updtime
+    from or_order o
+    where o.status_code = ?
+  <span class="nt">&lt;/sql&gt;</span>
+</pre></div>
+</div>
+
+  <p>
+    You will note the autoFetchTuned[true] on the output. This indicates that this query was
+    tuned via Autofetch. In this case, the profiling indicated that only the orderDate
+    property was used so that, along with the Id property and the version column are the only
+    properties fetched.
+  </p>
+
+  <p>
+    example: Now lets change the program. We will use another property of order and we will
+    also get the customers name.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="n">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Date</span> <span class="n">orderDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">();</span>
+    <span class="c1">// also get the ship date</span>
+    <span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
+    <span class="c1">// ... and get the customer name</span>
+    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">customerName</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+</pre></div>
+</div>
+  <p>
+    The query Ebean will run is optimised for what the program USED to do. This results in
+    some lazy loading occuring. The rest of the order is lazy loaded when the shipDate is
+    read... and then the customer is lazy loaded when the customer name is read.
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.updtime
+    from or_order o
+    where o.status_code = ?
+  <span class="nt">&lt;/sql&gt;</span>
+  
+</pre></div>
+</div>
+  -- LAZY LOADING: ... due to reading shipDate
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code,
+    o.customer_id
+    from or_order o
+    where o.id = ?
+  <span class="nt">&lt;/sql&gt;</span>
+  
+</pre></div>
+</div>
+
+  -- LAZY LOADING: ... due to reading customers name
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
+    select c.id, c.name, c.cretime, c.updtime, c.billing_address_id, c.status_code,
+    c.shipping_address_id
+    from or_customer c
+    where c.id = ?
+    <span class="nt">&lt;/sql&gt;</span>
+  
+</pre></div>
+</div>
+
+<p>
+So the above queries are not so good. However, Ebean has now updated its profiling
+information so when we run the program again...
+</p>
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order, customer] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+    select o.id, o.order_date, o.updtime, o.ship_date
+    , c.id, c.name, c.updtime
+    from or_order o
+    join or_customer c on o.customer_id = c.id
+    where o.status_code = ?
+  <span class="nt">&lt;sql&gt;</span>
+  
+</pre></div>
+</div>
+
+<p>
+... now Ebean has added the shipDate and a join to customer fetching the
+customer name.
+</p>
+
+<p>So, if you turn on autoFetch Ebean can optimise your queries based on how the
+object graphs are actually used by the application. The developer has less work
+by not having to define joins and you get the performance benefits of partial
+objects with no work - nice.
+</p>
+
+<p>
+Autofetch can continue to update its profiling information so that when your
+application changes the queries will automatically be tuned to suit.
+</p>
+
+
+<h4>Explicit control on queries</h4>
+
+<p>On the query object you can explicitly specify if you want to use autofetch or
+not.
+<div class="syntax java"><div class="highlight"><pre><span class="c1">// explicitly turn on Autofetch for this query</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setAutofetch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</pre></div>
+</div>
+</p>
+
+<h4>Implicit control from configuration</h4>
+
+<p>There are a number of properties in ebean.properties which control how
+autofetch works.
+
+<div class="syntax properties"><div class="highlight"><pre><span class="c"># enable autofetch</span>
+<span class="na">ebean.autofetch.querytuning</span><span class="o">=</span><span class="s">true</span>
+<span class="c"># enable collection of profiling information</span>
+<span class="na">ebean.autofetch.profiling</span><span class="o">=</span><span class="s">true</span>
+<span class="c"># implicit autofetch mode</span>
+<span class="c"># default_off, default_on, default_on_if_empty</span>
+<span class="na">ebean.autofetch.implicitmode</span><span class="o">=</span><span class="s">default_on</span>
+<span class="c"># minimum amount of profiling to collect before</span>
+<span class="c"># autofetch will start tuning the query</span>
+<span class="na">ebean.autofetch.profiling.min</span><span class="o">=</span><span class="s">1</span>
+<span class="c"># profile every query up to base</span>
+<span class="na">ebean.autofetch.profiling.base</span><span class="o">=</span><span class="s">10</span>
+<span class="c"># after base collect profiling on 5% of queries</span>
+<span class="na">ebean.autofetch.profiling.rate</span><span class="o">=</span><span class="s">0.05</span>
+</pre></div>
+</div>
+<table class="table">
+<tr>
+<th>property</th>
+<th>type/values</th>
+<th>description</th>
+</tr>
+<tr>
+<td>ebean.autofetch.querytuning</td>
+<td>boolean</td>
+<td>If true enables Autofetch to tune queries</td>
+</tr>
+<tr>
+<td>ebean.autofetch.profiling</td>
+<td>boolean</td>
+<td>If true enables profiling information to be collected</td>
+</tr>
+<tr>
+<td>ebean.autofetch.implicitmode</td>
+<td>default_off<br>default_on<br>default_on_if_empty</td>
+<td>default_on_if_empty means autofetch will only tune the query if neither
+select() nor fetch() has been explicitly set on the query.
+</td>
+</tr>
+<tr>
+<td>ebean.autofetch.profiling.min</td>
+<td>integer</td>
+<td>The minimum amount of profiled queries to be collected before the
+automatic query tuning will start to occur
+</td>
+</tr>
+<tr>
+<td>ebean.autofetch.profiling.base</td>
+<td>integer</td>
+<td>Will profile every query up to this number and after than will profile
+based on the profiling.rate (5% of queries etc)
+</td>
+</tr>
+<tr>
+<td>ebean.autofetch.profiling.rate</td>
+<td>float</td>
+<td>The percentage of queries that are profiled after the base number has been
+collected
+</td>
+</tr>
+</table>
+    </p>
+
+
+
+  <h2 id="other_bits">Other Bits</h2>
+  <h4>
+    Other features for controlling queries.
+  </h4>
+  <ul>
+    <li>forUpdate</li>
+    <li>filterMany</li>
+    <li>bufferFetchSize</li>
+    <li>timeout</li>
+    <li>distinct</li>
+    <li>Fetching the 'row count'.</li>
+  </ul>
+  ...(under construction)...
+
+
+</div>
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+
+<li >
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/configuration">Configuration</a>
+</li>
+<li >
+  <a href="/docs/ebean_access_patterns">Ebean access patterns</a>
+</li>
+<li >
+  <a href="/docs/field_and_property_access">Field and property access</a>
+</li>
+
+<li class="active">
+  <a href="/docs/queries">Queries</a>
+          <ul class="nav">
+            <li><a href="#where_clause">Where clause</a></li>
+            <li><a href="#query_language">Ebean query language</a></li>
+            <li><a href="#partial_objects">Partial objects</a></li>
+            <li><a href="#query_joins">Query joins</a></li>
+            <li><a href="#fetchconfig">FetchConfig</a></li>
+            <li><a href="#lazy_loading">Lazy loading</a></li>
+            <li><a href="#named_queries">Named Queries</a></li>
+            <li><a href="#large_queries">Large queries</a></li>
+            <li><a href="#paging">Paging</a></li>
+            <li><a href="#async_queriess">Asynchronous queries</a></li>
+            <li><a href="#rawsql">RawSql</a></li>
+            <li><a href="#sqlquery">SqlQuery</a></li>
+            <li><a href="#l2cache">L2 cache</a></li>
+            <li><a href="#autofetch">Autofetch</a></li>
+            <li><a href="#other_bits">Other bits</a></li>
+          </ul>
+</li>
+<li >
+  <a href="/docs/saving">Saving</a>
+</li>
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+<li >
+  <a href="/docs/json">JSON</a>
+</li>
+<li >
+  <a href="/docs/eventlisteners">Event listeners</a>
+</li>
+<li >
+  <a href="/docs/readaudit">Read Audit</a>
+</li>
+<li >
+  <a href="/docs/changelog">Change Log</a>
+</li>
+<li >
+  <a href="/docs/l2caching">L2 caching</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+<li >
+  <a href="/docs/jvmlanguages">JVM Languages</a>
+</li>
+
+<li >
+  <a href="/docs/clustering">Clustering</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Monitoring</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+
+        </ul>
+          <a class="back-to-top" href="#top">
+            Back to top
+          </a>
+      </nav>
+    </div>
+  </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
+  </body>
+</html>
