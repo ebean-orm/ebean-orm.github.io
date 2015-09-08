@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a>  </h1>
+    <h1><a href="/docs">Documentation</a> / Configuration </h1>
   </div>
 </div>
 
@@ -64,7 +64,49 @@
 
     <div class="col-md-9" role="main">
 
-      <div id="layout-body"></div>
+      <div class="bs-docs-section">
+<h1 class="page-header">ebean.properties</h1>
+
+<h2 id="properties_config">ebean.properties configuration</h2>
+
+<p>Create an ebean.properties file and put it in your classpath or working directory. You can use the example below as a starting point.</p>
+
+<p>
+You need to change the DataSource parameters to suite your own environment.
+</p>
+
+<div class="syntax properties"><div class="highlight"><pre><span class="c"># -------------------------------------------------------------</span>
+<span class="c"># Load (Dev/Test/Prod) properties external to your war/jar</span>
+<span class="c"># -------------------------------------------------------------</span>
+<span class="c"># You can use load.properties to load the properties from a</span>
+<span class="c"># file external to your war/jar.</span>
+<span class="c">#load.properties=$\{HOME}/conf/myapp.ebean.properties</span>
+
+
+<span class="c"># -------------------------------------------------------------</span>
+<span class="c"># DDL generate / run ...</span>
+<span class="c"># -------------------------------------------------------------</span>
+
+<span class="na">ebean.ddl.generate</span><span class="o">=</span><span class="s">false</span>
+<span class="na">ebean.ddl.run</span><span class="o">=</span><span class="s">false</span>
+
+<span class="c"># -------------------------------------------------------------</span>
+<span class="c"># DataSources (If using default Ebean DataSourceFactory)</span>
+<span class="c"># -------------------------------------------------------------</span>
+<span class="c"># You can specify many DataSources (one per EbeanServer)  and</span>
+<span class="c"># one of them is defined as the default/primary DataSource</span>
+
+<span class="c"># specify the default/primary DataSource</span>
+<span class="na">datasource.default</span><span class="o">=</span><span class="s">h2</span>
+
+<span class="na">datasource.h2.username</span><span class="o">=</span><span class="s">sa</span>
+<span class="na">datasource.h2.password</span><span class="o">=</span>
+<span class="na">datasource.h2.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests;DB_CLOSE_DELAY=-1</span>
+<span class="na">datasource.h2.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+</pre></div>
+</div>
+
+</div>
 
     </div>
 
