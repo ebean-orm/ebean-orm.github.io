@@ -24,9 +24,11 @@ freemarker.core.InvalidReferenceException: [... Exception message was already pr
 	at org.avaje.website.generator.TemplateRender.render(TemplateRender.java:83)
 	at org.avaje.website.generator.SiteWatchRender.processFile(SiteWatchRender.java:187)
 	at org.avaje.website.generator.SiteWatchRender.access$100(SiteWatchRender.java:23)
-	at org.avaje.website.generator.SiteWatchRender$Callback.event(SiteWatchRender.java:61)
-	at org.avaje.website.generator.WatchDir.processEvents(WatchDir.java:156)
-	at org.avaje.website.generator.SiteWatchRender.run(SiteWatchRender.java:79)
-	at org.avaje.website.generator.Main.main(Main.java:59)
+	at org.avaje.website.generator.SiteWatchRender$DirectoryWalkProcessFile.visitFile(SiteWatchRender.java:212)
+	at org.avaje.website.generator.SiteWatchRender$DirectoryWalkProcessFile.visitFile(SiteWatchRender.java:207)
+	at java.nio.file.Files.walkFileTree(Files.java:2670)
+	at java.nio.file.Files.walkFileTree(Files.java:2742)
+	at org.avaje.website.generator.SiteWatchRender.render(SiteWatchRender.java:89)
+	at org.avaje.website.generator.Main.main(Main.java:58)
 
 </pre></div></html>
