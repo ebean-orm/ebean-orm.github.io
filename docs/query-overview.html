@@ -208,7 +208,7 @@
     In summary logging there is an <code>origin</code> attribute and this is a key that can be used to link
     origin and secondary queries.
   </p>
-  
+
 <div class="syntax xml"><div class="highlight"><pre>  txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] exeMicros[318] rows[1] bind[3]
 </pre></div>
 </div>
@@ -228,16 +228,13 @@
     <li><code>origin</code> : this key links the secondary query back to the origin</li>
   </ul>
 
-  <div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] exeMicros[318] rows[1] bind[3]
+<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] exeMicros[318] rows[1] bind[3]
 ...
 txn[1016] FindMany mode[+lazy] type[Customer] origin[B0dP9E.DWeHD4.5WUnB] lazyLoadProp[name] ...
 ...
 txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoadProp[city] ...
-
-  
 </pre></div>
 </div>
-
 
 </div>
 
@@ -289,6 +286,12 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoa
 </ul>
 </li>
 <li >
+  <a href="/docs/query-nplus1">Query N + 1</a>
+</li>
+<li >
+  <a href="/docs/query-partialobjects">Query Partial Objects</a>
+</li>
+<li >
   <a href="/docs/query-autotune">Query Automatic Tuning</a>
 </li>
 <li >
@@ -335,7 +338,7 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoa
   <a href="/docs/monitoring">Monitoring</a>
 </li>
 <li >
-  <a href="/docs/architecture">Architecture</a>
+  <a href="/docs/architecture/persistence-context">Architecture</a>
 </li>
         </ul>
       </nav>
