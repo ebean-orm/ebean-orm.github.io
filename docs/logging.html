@@ -65,7 +65,6 @@
     <div class="col-md-9" role="main">
 
       <div class="bs-docs-section">
-  <h1 id="logging" class="page-header">Logging</h1>
 
   <p>Ebean uses <a href="http://www.slf4j.org/">SLF4J</a> for logging.</p>
 
@@ -93,7 +92,7 @@
   <h2 id="summary">Summary logging</h2>
 
   <p>
-    The summary logging is useful for showing lazy loading queries and how they relate
+    The summary logging of <code>org.avaje.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
     back to origin queries. This is useful when looking at more complex object graphs are
     built. In tuning queries for N+1 etc.
   </p>
@@ -139,6 +138,14 @@
 </li>
 <li >
   <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li class="active">
+  <a href="/docs/logging">Logging</a>
+<ul class="nav">
+  <li><a href="#sql">SQL and Transaction logging</a></li>
+  <li><a href="#summary">Summary logging</a></li>
+  <li><a href="#l2cache">L2 Cache logging</a></li>
+</ul>
 </li>
 <li >
   <a href="/docs/serverconfig">ServerConfig</a>

@@ -175,10 +175,6 @@
     on these 'paths containing a many relationship'.
   </p>
 
-  <h2 id="n-plus-1">N + 1</h2>
-  <p>
-
-  </p>
 
   <hr/>
   <h3 id="terminology">TERMINOLOGY</h3>
@@ -209,7 +205,7 @@
     origin and secondary queries.
   </p>
 
-<div class="syntax xml"><div class="highlight"><pre>  txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] exeMicros[318] rows[1] bind[3]
+<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
 </pre></div>
 </div>
 
@@ -221,18 +217,20 @@
   </p>
   <h4>Summary logging</h4>
   <p>
-    In summary logging there is a <code>mode</code>, <code>origin</code>, <code>lazyLoadProp</code> and <code>load</code> attributes.
+    In summary logging the <code>mode</code> and <code>origin</code> attributes can be used to identify which sql
+    queries are "secondary queries" and the origin which they relate back to. This logging can be used to identify
+    excessive lazy loading (N + 1) for example.
   </p>
   <ul>
     <li><code>mode</code> : <b>+lazy</b> for lazy loading query and <b>+query</b> for a query join/eager loading</li>
     <li><code>origin</code> : this key links the secondary query back to the origin</li>
   </ul>
 
-<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] exeMicros[318] rows[1] bind[3]
+<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
 ...
-txn[1016] FindMany mode[+lazy] type[Customer] origin[B0dP9E.DWeHD4.5WUnB] lazyLoadProp[name] ...
+txn[1016] FindMany mode[+lazy] type[Customer] origin[B0dP9E.DWeHD4.5WUnB]  ...
 ...
-txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoadProp[city] ...
+txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB]  ...
 </pre></div>
 </div>
 
@@ -248,6 +246,9 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoa
 </li>
 <li >
   <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/logging">Logging</a>
 </li>
 <li >
   <a href="/docs/serverconfig">ServerConfig</a>
@@ -276,10 +277,8 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB] lazyLoa
   <li><a href="#predicates">Predicates</a></li>
   <li><a href="#automatic-joins">Automatic joins</a></li>
   <li><a href="#cartesian-product">Avoiding Cartesian product</a></li>
-  <li><a href="#firstRows-maxRows">FirstRows MaxRows</a></li>
+  <li><a href="#firstrows-maxrows">FirstRows MaxRows</a></li>
   <li><a href="#complex-graphs">Arbitrarily complex graphs</a></li>
-  <li><a href="#n-plus-1">N + 1</a></li>
-  <li><a href="#terminology">TERMINOLOGY</a></li>
   <li><a href="#load-context">Load Context</a></li>
   <li><a href="#origin-queries">Origin queries</a></li>
   <li><a href="#secondary-queries">Secondary queries</a></li>
