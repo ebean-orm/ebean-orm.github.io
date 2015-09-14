@@ -67,8 +67,130 @@
       <div class="bs-docs-section">
   <h2 id="overview">Overview</h2>
   <p>
-    TODO
+    DB Migration is a feature for generation of DDL from the entity bean model that supports determining the
+    <code>diff</code> from the prior version of the model and generating appropriate DDL changes based on
+    the model difference.
   </p>
+
+  <h2 id="main-method">Main method</h2>
+  <p>
+    To run the <code>DbMigration</code> you should create a main method in the test source similar to
+    the following code:
+  </p>
+
+<div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.config.dbplatform.DbPlatformName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.dbmigration.DbMigration</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDbMigration</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+
+    <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
+
+    <span class="c1">// set path that the migration xml and ddl is located</span>
+    <span class="c1">// this defaults to standard maven src/main/resources</span>
+    <span class="c1">//dbMigration.setPathToResources(&quot;src/main/resources&quot;);</span>
+
+    <span class="c1">// Postgres as the target DB</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+
+    <span class="c1">// generate the migration xml and ddl</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  <p>
+    When the DbMigration is run it loads any prior migration xml and combines that together
+    to define the prior model which is then compared against the existing entity beans.
+  </p>
+  <p>
+    A <code>migration xml</code> document is generated which represents the <code>diff</code>
+    to the logical model and from that DDL scripts are generated
+  </p>
+
+
+  <h2 id="migration-xml">Migration xml</h2>
+  <p>
+    When DbMigration is run if there is a diff detected a migration xml document is generated.
+    The diff can have <code>apply</code> changes or <code>drop</code> tables.
+  </p>
+  <p>
+    The migration xml represents the <code>diff</code> to the model. Note that the changes
+    in the migration xml are database agnostic and a single migration xml document can be used
+    to generate migration DDL for multiple databases. For example, generate migration DDL
+    scripts for Postgres, Oracle and SQL Server from the single migration xml.
+  </p>
+  <p>
+    From the migration xml DDL scripts are generated for <code>apply</code>, <code>applyRollback</code>
+    and <code>drop</code>.
+  </p>
+
+  <h4>Example migration xml</h4>
+  <p>
+    Below is an example migration xml generated with <code>apply</code> changes. The customer table
+    has 2 new columns added to it.
+  </p>
+<div class="syntax xml"><div class="highlight"><pre>  <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+  <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;registered&quot;</span> <span class="na">type=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;comments&quot;</span> <span class="na">type=</span><span class="s">&quot;varchar(1000)&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;/addColumn&gt;</span>
+    <span class="nt">&lt;/changeSet&gt;</span>
+  <span class="nt">&lt;/migration&gt;</span>
+</pre></div>
+</div>
+
+  <h4>Example migration drop changes</h4>
+  <p>
+    Below is an example migration xml generated with <code>drop</code> changes.
+  </p>
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+  <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;drop&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;comments&quot;</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/changeSet&gt;</span>
+  <span class="nt">&lt;/migration&gt;</span>
+  
+</pre></div>
+</div>
+
+  <h2 id="apply-ddl">Apply DDL</h2>
+  <p>
+    The <code>apply</code> ddl script contains the changes that are deemed non-destructive
+    so adding tables, adding columns, adding indexes etc.
+  </p>
+
+  <h2 id="apply-rollback-ddl">Apply Rollback DDL</h2>
+  <p>
+    The <code>applyRollback</code> ddl script contains DDL to reverse or undo the <code>apply</code> changes.
+    Some databases support transactional DDL and if the apply DDL can be run in a transactional manor then
+    the applyRollback script is not necessary. The <code>applyRollback</code> ddl script is always generated
+    (even if the DB supports transactional DDL) and you can use it as required or not.
+  </p>
+
+  <h2 id="drop-ddl">Drop DDL</h2>
+  <p>
+    The <code>drop</code> ddl script contains DDL that is considered destructive such as <code>drop table</code>
+    and <code>drop column</code>. These types of changes are not expected to be able to be run automatically in
+    production with the apply changes as typically the existing application will remain running and as such the
+    existing application is potentially using those tables/columns that are to be dropped and so it is expected
+    that the <code>drop</code> changes can not be applied until the application has been upgraded.
+  </p>
+  <p>
+    That is, unless outage is scheduled the drop changes need to trail the apply changes by at least 1 version.
+  </p>
+  <p>
+    In many cases the <code>drop</code> changes are actually not run for weeks or longer (or not at all even)
+    until such time that it is known the application does not need to revert etc.
+  </p>
+
 
 </div>
 
@@ -102,6 +224,11 @@
   <a href="/docs/dbmigration">DB Migration</a>
 <ul class="nav">
   <li><a href="#overview">Overview</a></li>
+  <li><a href="#main">Main method</a></li>
+  <li><a href="#migration-xml">Migration XML</a></li>
+  <li><a href="#apply-ddl">Apply DDL</a></li>
+  <li><a href="#apply-rollback-ddl">Apply Rollback DDL</a></li>
+  <li><a href="#drop-ddl">Drop DDL</a></li>
 </ul>
 </li>
 <li >
