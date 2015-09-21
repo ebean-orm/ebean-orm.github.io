@@ -65,13 +65,25 @@
     <div class="col-md-9" role="main">
 
       <div class="bs-docs-section">
-<h1 id="json">JSON</h1>
-...(under construction)...
+  <h2 id="overview">Overview</h2>
+  <p>
+    Ebean has built in support for marshalling and unmarshalling entity beans to and from JSON.
+    Ebean uses <code>Jackson core</code> to do this.  The reason Ebean does this is treat
+    JSON as a first class feature with built in support for <code>Partial objects</code> and
+    <code>cyclical relationships</code> which are both common in ORM. In additional all
+    supported types including <code>Joda types</code>, <code>Java8 types</code> and
+    <a href="/docs/json-in-db"><code>JSON database mapping types</code></a> work out of the box.
+  </p>
+  <blockquote>
+    JSON marshalling/unmarshalling should be painless, performant and work out of the box.
+  </blockquote>
 
-<p>
-
-Ebean can hydrate a bean from json.  It will ignore the json properties that do not match up to properties on the bean.
-
+  <h2 id="json-context">JsonContext</h2>
+  <p>
+    Obtain a <code>JsonContext</code> from EbeanServer via the <code>json()</code> method.
+    This JsonContext then provides various methods for marshalling/unmarshalling JSON to and from
+    entity beans.
+  </p>
 <div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">jsonWithUnknown</span> <span class="o">=</span> <span class="s">&quot;{\&quot;id\&quot;:42, \&quot;unknownProp\&quot;:\&quot;foo\&quot;, \&quot;name\&quot;:\&quot;rob\&quot;, \&quot;version\&quot;:1}&quot;</span><span class="o">;</span>
 
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">json</span><span class="o">().</span><span class="na">toBean</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">jsonWithUnknown</span><span class="o">);</span>
@@ -80,79 +92,6 @@ Ebean can hydrate a bean from json.  It will ignore the json properties that do 
 </pre></div>
 </div>
 
-  <h2>Postgres JSONB</h2>
-  <p>
-
-  </p>
-
-  <h3>@DbJsonB</h3>
-  <p>
-    In your entity bean you can annotate a property with <code>@DbJsonB</code> and that indicates that the property
-    maps to a JSONB database type.  For non-Postgres databases this maps to a database Clob.
-  </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;p_doc&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleDoc</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
-
-  <span class="nd">@Id</span>
-  <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
-  <span class="o">...</span>
-
-  <span class="nd">@DbJsonB</span>
-  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span><span class="o">;</span>
-</pre></div>
-</div>
-
-  <h3>Save and Find</h3>
-  <p>
-    You put JSON content into the content property and save it and fetch is as normal.
-  </p>
-<div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">rawJson</span> <span class="o">=</span> <span class="s">&quot;{\&quot;docName\&quot;:\&quot;My document\&quot;, \&quot;docScore\&quot;:234, \&quot;title\&quot;:\&quot;Some title\&quot;}&quot;</span><span class="o">;</span>
-
-  <span class="c1">// get the JSON into a map using Jackson or similar tool.</span>
-  <span class="c1">// Ebean has EJson which using Jackson core which can be used</span>
-  <span class="c1">// to parse JSON content</span>
-  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span> <span class="o">=</span> <span class="n">EJson</span><span class="o">.</span><span class="na">parseObject</span><span class="o">(</span><span class="n">rawJson</span><span class="o">);</span>
-
-  <span class="n">SimpleDoc</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDoc</span><span class="o">();</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;doc1&quot;</span><span class="o">);</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
-
-  <span class="c1">// save to db</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
-
-  <span class="c1">// fetch from db</span>
-  <span class="n">SimpleDoc</span> <span class="n">doc1</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
-
-  <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;My document&quot;</span><span class="o">,</span> <span class="n">doc1</span><span class="o">.</span><span class="na">getContent</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;docName&quot;</span><span class="o">));</span>
-</pre></div>
-</div>
-
-  <h3>Exists expression</h3>
-  <p>
-    Unfortunately the JSONB exists expression uses the "?" character which is the JDBC bind value character.
-    This makes it difficult to use that expression via JDBC. To get around this issue the suggested solution
-    is to create a database function like the one below or create a new Postgres OPERATOR.
-  </p>
-<div class="syntax sql"><div class="highlight"><pre><span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="n">jsonbExists</span> <span class="p">(</span><span class="n">jsonb</span><span class="p">,</span> <span class="nb">text</span><span class="p">)</span> <span class="k">RETURNS</span> <span class="n">bool</span> <span class="k">AS</span> <span class="err">$$</span> <span class="k">SELECT</span> <span class="err">$</span><span class="mi">1</span> <span class="o">?</span> <span class="err">$</span><span class="mi">2</span><span class="p">;</span> <span class="err">$$</span> <span class="k">LANGUAGE</span> <span class="k">sql</span><span class="p">;</span>
-</pre></div>
-</div>
-  <p>
-    The function can then be used in an Ebean query like:
-  </p>
-
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">docs</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;jsonbExists(content#&gt;&#39;{docName}&#39;, &#39;My document&#39;)&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <h3>Example project</h3>
-  <p>
-    Note that the <a href="https://github.com/ebean-orm/avaje-ebeanorm-examples/tree/master/x-postgres-features">x-postgres-features</a>
-    project contains working examples of using Postgres JSON, JSONB and HSTORE.
-  </p>
-
-</p>
 </div>
 
     </div>
@@ -216,6 +155,9 @@ Ebean can hydrate a bean from json.  It will ignore the json properties that do 
 </li>
 <li class="active">
   <a href="/docs/json">JSON</a>
+</li>
+<li >
+  <a href="/docs/json-in-db">JSON in DB</a>
 </li>
 <li >
   <a href="/docs/eventlisteners">Event listeners</a>
