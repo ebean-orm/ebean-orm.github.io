@@ -18,12 +18,12 @@
 <span class="sourceLineNo">010</span>  /**<a name="line.10"></a>
 <span class="sourceLineNo">011</span>   * Return the MetaBeanInfo for a bean type.<a name="line.11"></a>
 <span class="sourceLineNo">012</span>   */<a name="line.12"></a>
-<span class="sourceLineNo">013</span>  public MetaBeanInfo getMetaBeanInfo(Class&lt;?&gt; beanClass);<a name="line.13"></a>
+<span class="sourceLineNo">013</span>  MetaBeanInfo getMetaBeanInfo(Class&lt;?&gt; beanClass);<a name="line.13"></a>
 <span class="sourceLineNo">014</span><a name="line.14"></a>
 <span class="sourceLineNo">015</span>  /**<a name="line.15"></a>
 <span class="sourceLineNo">016</span>   * Return all the MetaBeanInfo.<a name="line.16"></a>
 <span class="sourceLineNo">017</span>   */<a name="line.17"></a>
-<span class="sourceLineNo">018</span>  public List&lt;MetaBeanInfo&gt; getMetaBeanInfoList();<a name="line.18"></a>
+<span class="sourceLineNo">018</span>  List&lt;MetaBeanInfo&gt; getMetaBeanInfoList();<a name="line.18"></a>
 <span class="sourceLineNo">019</span><a name="line.19"></a>
 <span class="sourceLineNo">020</span>  /**<a name="line.20"></a>
 <span class="sourceLineNo">021</span>   * Collect and return the query plan statistics for all the beans.<a name="line.21"></a>
@@ -32,7 +32,7 @@
 <span class="sourceLineNo">024</span>   * executions (since the last collection with reset).<a name="line.24"></a>
 <span class="sourceLineNo">025</span>   * &lt;/p&gt;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>   */<a name="line.26"></a>
-<span class="sourceLineNo">027</span>  public List&lt;MetaQueryPlanStatistic&gt; collectQueryPlanStatistics(boolean reset);<a name="line.27"></a>
+<span class="sourceLineNo">027</span>  List&lt;MetaQueryPlanStatistic&gt; collectQueryPlanStatistics(boolean reset);<a name="line.27"></a>
 <span class="sourceLineNo">028</span><a name="line.28"></a>
 <span class="sourceLineNo">029</span>  /**<a name="line.29"></a>
 <span class="sourceLineNo">030</span>   * Collect and return the ObjectGraphNode statistics.<a name="line.30"></a>
@@ -45,7 +45,7 @@
 <span class="sourceLineNo">037</span>   * @param reset<a name="line.37"></a>
 <span class="sourceLineNo">038</span>   *          Set to true to reset the underlying statistics after collection.<a name="line.38"></a>
 <span class="sourceLineNo">039</span>   */<a name="line.39"></a>
-<span class="sourceLineNo">040</span>  public List&lt;MetaObjectGraphNodeStats&gt; collectNodeStatistics(boolean reset);<a name="line.40"></a>
+<span class="sourceLineNo">040</span>  List&lt;MetaObjectGraphNodeStats&gt; collectNodeStatistics(boolean reset);<a name="line.40"></a>
 <span class="sourceLineNo">041</span><a name="line.41"></a>
 <span class="sourceLineNo">042</span>}<a name="line.42"></a>
 

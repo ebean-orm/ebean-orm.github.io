@@ -30,57 +30,57 @@
 <span class="sourceLineNo">022</span> * efficient loaded as 2 SQL queries.<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * &lt;/p&gt;<a name="line.23"></a>
 <span class="sourceLineNo">024</span> * <a name="line.24"></a>
-<span class="sourceLineNo">025</span> * &lt;pre class="code"&gt;<a name="line.25"></a>
+<span class="sourceLineNo">025</span> * &lt;pre&gt;{@code<a name="line.25"></a>
 <span class="sourceLineNo">026</span> * // Normal fetch join results in a single SQL query<a name="line.26"></a>
-<span class="sourceLineNo">027</span> * List&amp;lt;Order&amp;gt; list = Ebean.find(Order.class).fetch(&amp;quot;details&amp;quot;).findList();<a name="line.27"></a>
+<span class="sourceLineNo">027</span> * List&lt;Order&gt; list = Ebean.find(Order.class).fetch("details").findList();<a name="line.27"></a>
 <span class="sourceLineNo">028</span> * <a name="line.28"></a>
 <span class="sourceLineNo">029</span> * // Find Orders join details using a single SQL query<a name="line.29"></a>
-<span class="sourceLineNo">030</span> * &lt;/pre&gt;<a name="line.30"></a>
+<span class="sourceLineNo">030</span> * }&lt;/pre&gt;<a name="line.30"></a>
 <span class="sourceLineNo">031</span> * &lt;p&gt;<a name="line.31"></a>
 <span class="sourceLineNo">032</span> * Example: Using a "query join" instead of a "fetch join" we instead use 2 SQL<a name="line.32"></a>
 <span class="sourceLineNo">033</span> * queries<a name="line.33"></a>
 <span class="sourceLineNo">034</span> * &lt;/p&gt;<a name="line.34"></a>
 <span class="sourceLineNo">035</span> * <a name="line.35"></a>
-<span class="sourceLineNo">036</span> * &lt;pre class="code"&gt;<a name="line.36"></a>
+<span class="sourceLineNo">036</span> * &lt;pre&gt;{@code<a name="line.36"></a>
 <span class="sourceLineNo">037</span> * // This will use 2 SQL queries to build this object graph<a name="line.37"></a>
-<span class="sourceLineNo">038</span> * List&amp;lt;Order&amp;gt; list =<a name="line.38"></a>
+<span class="sourceLineNo">038</span> * List&lt;Order&gt; list =<a name="line.38"></a>
 <span class="sourceLineNo">039</span> *     Ebean.find(Order.class)<a name="line.39"></a>
-<span class="sourceLineNo">040</span> *         .fetch(&amp;quot;details&amp;quot;, new FetchConfig().query())<a name="line.40"></a>
+<span class="sourceLineNo">040</span> *         .fetch("details", new FetchConfig().query())<a name="line.40"></a>
 <span class="sourceLineNo">041</span> *         .findList();<a name="line.41"></a>
 <span class="sourceLineNo">042</span> * <a name="line.42"></a>
 <span class="sourceLineNo">043</span> * // query 1) find order<a name="line.43"></a>
 <span class="sourceLineNo">044</span> * // query 2) find orderDetails where order.id in (?,?...) // first 100 order id's<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * &lt;/pre&gt;<a name="line.45"></a>
+<span class="sourceLineNo">045</span> * }&lt;/pre&gt;<a name="line.45"></a>
 <span class="sourceLineNo">046</span> * &lt;p&gt;<a name="line.46"></a>
 <span class="sourceLineNo">047</span> * Example: Using 2 "query joins"<a name="line.47"></a>
 <span class="sourceLineNo">048</span> * &lt;/p&gt;<a name="line.48"></a>
 <span class="sourceLineNo">049</span> * <a name="line.49"></a>
-<span class="sourceLineNo">050</span> * &lt;pre class="code"&gt;<a name="line.50"></a>
+<span class="sourceLineNo">050</span> * &lt;pre&gt;{@code<a name="line.50"></a>
 <span class="sourceLineNo">051</span> * // This will use 3 SQL queries to build this object graph<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * List&amp;lt;Order&amp;gt; list =<a name="line.52"></a>
+<span class="sourceLineNo">052</span> * List&lt;Order&gt; list =<a name="line.52"></a>
 <span class="sourceLineNo">053</span> *     Ebean.find(Order.class)<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *         .fetch(&amp;quot;details&amp;quot;, new FetchConfig().query())<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *         .fetch(&amp;quot;customer&amp;quot;, new FetchConfig().queryFirst(5))<a name="line.55"></a>
+<span class="sourceLineNo">054</span> *         .fetch("details", new FetchConfig().query())<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *         .fetch("customer", new FetchConfig().queryFirst(5))<a name="line.55"></a>
 <span class="sourceLineNo">056</span> *         .findList();<a name="line.56"></a>
 <span class="sourceLineNo">057</span> * <a name="line.57"></a>
 <span class="sourceLineNo">058</span> * // query 1) find order<a name="line.58"></a>
 <span class="sourceLineNo">059</span> * // query 2) find orderDetails where order.id in (?,?...) // first 100 order id's<a name="line.59"></a>
 <span class="sourceLineNo">060</span> * // query 3) find customer where id in (?,?,?,?,?) // first 5 customers<a name="line.60"></a>
-<span class="sourceLineNo">061</span> * &lt;/pre&gt;<a name="line.61"></a>
+<span class="sourceLineNo">061</span> * }&lt;/pre&gt;<a name="line.61"></a>
 <span class="sourceLineNo">062</span> * &lt;p&gt;<a name="line.62"></a>
 <span class="sourceLineNo">063</span> * Example: Using "query joins" and partial objects<a name="line.63"></a>
 <span class="sourceLineNo">064</span> * &lt;/p&gt;<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * <a name="line.65"></a>
-<span class="sourceLineNo">066</span> * &lt;pre class="code"&gt;<a name="line.66"></a>
+<span class="sourceLineNo">066</span> * &lt;pre&gt;{@code<a name="line.66"></a>
 <span class="sourceLineNo">067</span> * // This will use 3 SQL queries to build this object graph<a name="line.67"></a>
-<span class="sourceLineNo">068</span> * List&amp;lt;Order&amp;gt; list =<a name="line.68"></a>
+<span class="sourceLineNo">068</span> * List&lt;Order&gt; list =<a name="line.68"></a>
 <span class="sourceLineNo">069</span> *     Ebean.find(Order.class)<a name="line.69"></a>
-<span class="sourceLineNo">070</span> *         .select(&amp;quot;status, shipDate&amp;quot;)<a name="line.70"></a>
-<span class="sourceLineNo">071</span> *         .fetch(&amp;quot;details&amp;quot;, &amp;quot;quantity, price&amp;quot;, new FetchConfig().query())<a name="line.71"></a>
-<span class="sourceLineNo">072</span> *         .fetch(&amp;quot;details.product&amp;quot;, &amp;quot;sku, name&amp;quot;)<a name="line.72"></a>
-<span class="sourceLineNo">073</span> *         .fetch(&amp;quot;customer&amp;quot;, &amp;quot;name&amp;quot;, new FetchConfig().queryFirst(5))<a name="line.73"></a>
-<span class="sourceLineNo">074</span> *         .fetch(&amp;quot;customer.contacts&amp;quot;)<a name="line.74"></a>
-<span class="sourceLineNo">075</span> *         .fetch(&amp;quot;customer.shippingAddress&amp;quot;)<a name="line.75"></a>
+<span class="sourceLineNo">070</span> *         .select("status, shipDate")<a name="line.70"></a>
+<span class="sourceLineNo">071</span> *         .fetch("details", "quantity, price", new FetchConfig().query())<a name="line.71"></a>
+<span class="sourceLineNo">072</span> *         .fetch("details.product", "sku, name")<a name="line.72"></a>
+<span class="sourceLineNo">073</span> *         .fetch("customer", "name", new FetchConfig().queryFirst(5))<a name="line.73"></a>
+<span class="sourceLineNo">074</span> *         .fetch("customer.contacts")<a name="line.74"></a>
+<span class="sourceLineNo">075</span> *         .fetch("customer.shippingAddress")<a name="line.75"></a>
 <span class="sourceLineNo">076</span> *         .findList();<a name="line.76"></a>
 <span class="sourceLineNo">077</span> * <a name="line.77"></a>
 <span class="sourceLineNo">078</span> * // query 1) find order (status, shipDate)<a name="line.78"></a>
@@ -89,22 +89,22 @@
 <span class="sourceLineNo">081</span> * // query 3) find customer (name) fetch contacts (*) fetch shippingAddress (*)<a name="line.81"></a>
 <span class="sourceLineNo">082</span> * // where id in (?,?,?,?,?)<a name="line.82"></a>
 <span class="sourceLineNo">083</span> * <a name="line.83"></a>
-<span class="sourceLineNo">084</span> * // Note: the fetch of &amp;quot;details.product&amp;quot; is automatically included into the<a name="line.84"></a>
-<span class="sourceLineNo">085</span> * // fetch of &amp;quot;details&amp;quot;<a name="line.85"></a>
+<span class="sourceLineNo">084</span> * // Note: the fetch of "details.product" is automatically included into the<a name="line.84"></a>
+<span class="sourceLineNo">085</span> * // fetch of "details"<a name="line.85"></a>
 <span class="sourceLineNo">086</span> * //<a name="line.86"></a>
-<span class="sourceLineNo">087</span> * // Note: the fetch of &amp;quot;customer.contacts&amp;quot; and &amp;quot;customer.shippingAddress&amp;quot;<a name="line.87"></a>
-<span class="sourceLineNo">088</span> * // are automatically included in the fetch of &amp;quot;customer&amp;quot;<a name="line.88"></a>
-<span class="sourceLineNo">089</span> * &lt;/pre&gt;<a name="line.89"></a>
+<span class="sourceLineNo">087</span> * // Note: the fetch of "customer.contacts" and "customer.shippingAddress"<a name="line.87"></a>
+<span class="sourceLineNo">088</span> * // are automatically included in the fetch of "customer"<a name="line.88"></a>
+<span class="sourceLineNo">089</span> * }&lt;/pre&gt;<a name="line.89"></a>
 <span class="sourceLineNo">090</span> * &lt;p&gt;<a name="line.90"></a>
 <span class="sourceLineNo">091</span> * You can use query() and lazy together on a single join. The query is executed<a name="line.91"></a>
 <span class="sourceLineNo">092</span> * immediately and the lazy defines the batch size to use for further lazy<a name="line.92"></a>
 <span class="sourceLineNo">093</span> * loading (if lazy loading is invoked).<a name="line.93"></a>
 <span class="sourceLineNo">094</span> * &lt;/p&gt;<a name="line.94"></a>
 <span class="sourceLineNo">095</span> * <a name="line.95"></a>
-<span class="sourceLineNo">096</span> * &lt;pre class="code"&gt;<a name="line.96"></a>
-<span class="sourceLineNo">097</span> * List&amp;lt;Order&amp;gt; list =<a name="line.97"></a>
+<span class="sourceLineNo">096</span> * &lt;pre&gt;{@code<a name="line.96"></a>
+<span class="sourceLineNo">097</span> * List&lt;Order&gt; list =<a name="line.97"></a>
 <span class="sourceLineNo">098</span> *     Ebean.find(Order.class)<a name="line.98"></a>
-<span class="sourceLineNo">099</span> *         .fetch(&amp;quot;customer&amp;quot;, new FetchConfig().query(10).lazy(5))<a name="line.99"></a>
+<span class="sourceLineNo">099</span> *         .fetch("customer", new FetchConfig().query(10).lazy(5))<a name="line.99"></a>
 <span class="sourceLineNo">100</span> *         .findList();<a name="line.100"></a>
 <span class="sourceLineNo">101</span> * <a name="line.101"></a>
 <span class="sourceLineNo">102</span> * // query 1) find order<a name="line.102"></a>
@@ -112,7 +112,7 @@
 <span class="sourceLineNo">104</span> * // .. then if lazy loading of customers is invoked<a name="line.104"></a>
 <span class="sourceLineNo">105</span> * // .. use a batch size of 5 to load the customers<a name="line.105"></a>
 <span class="sourceLineNo">106</span> * <a name="line.106"></a>
-<span class="sourceLineNo">107</span> * &lt;/pre&gt;<a name="line.107"></a>
+<span class="sourceLineNo">107</span> * }&lt;/pre&gt;<a name="line.107"></a>
 <span class="sourceLineNo">108</span> * <a name="line.108"></a>
 <span class="sourceLineNo">109</span> * &lt;p&gt;<a name="line.109"></a>
 <span class="sourceLineNo">110</span> * Example of controlling the lazy loading query:<a name="line.110"></a>
@@ -122,12 +122,12 @@
 <span class="sourceLineNo">114</span> * case.<a name="line.114"></a>
 <span class="sourceLineNo">115</span> * &lt;/p&gt;<a name="line.115"></a>
 <span class="sourceLineNo">116</span> * <a name="line.116"></a>
-<span class="sourceLineNo">117</span> * &lt;pre class="code"&gt;<a name="line.117"></a>
-<span class="sourceLineNo">118</span> * List&amp;lt;Order&amp;gt; list = Ebean.find(Order.class)<a name="line.118"></a>
-<span class="sourceLineNo">119</span> *   .fetch(&amp;quot;customer&amp;quot;,&amp;quot;name&amp;quot;, new FetchConfig().lazy(5))<a name="line.119"></a>
-<span class="sourceLineNo">120</span> *   .fetch(&amp;quot;customer.contacts&amp;quot;,&amp;quotcontactName, phone, email&amp;quot)<a name="line.120"></a>
-<span class="sourceLineNo">121</span> *   .fetch(&amp;quot;customer.shippingAddress&amp;quot;)<a name="line.121"></a>
-<span class="sourceLineNo">122</span> *   .where().eq(&amp;quot;status&amp;quot;,Order.Status.NEW)<a name="line.122"></a>
+<span class="sourceLineNo">117</span> * &lt;pre&gt;{@code<a name="line.117"></a>
+<span class="sourceLineNo">118</span> * List&lt;Order&gt; list = Ebean.find(Order.class)<a name="line.118"></a>
+<span class="sourceLineNo">119</span> *   .fetch("customer","name", new FetchConfig().lazy(5))<a name="line.119"></a>
+<span class="sourceLineNo">120</span> *   .fetch("customer.contacts",&amp;quotcontactName, phone, email&amp;quot)<a name="line.120"></a>
+<span class="sourceLineNo">121</span> *   .fetch("customer.shippingAddress")<a name="line.121"></a>
+<span class="sourceLineNo">122</span> *   .where().eq("status",Order.Status.NEW)<a name="line.122"></a>
 <span class="sourceLineNo">123</span> *   .findList();<a name="line.123"></a>
 <span class="sourceLineNo">124</span> * <a name="line.124"></a>
 <span class="sourceLineNo">125</span> * // query 1) find order where status = Order.Status.NEW<a name="line.125"></a>
@@ -140,7 +140,7 @@
 <span class="sourceLineNo">132</span> *       fetch customer.shippingAddress (*) <a name="line.132"></a>
 <span class="sourceLineNo">133</span> *       where id in (?,?,?,?,?)<a name="line.133"></a>
 <span class="sourceLineNo">134</span> * <a name="line.134"></a>
-<span class="sourceLineNo">135</span> * &lt;/pre&gt;<a name="line.135"></a>
+<span class="sourceLineNo">135</span> * }&lt;/pre&gt;<a name="line.135"></a>
 <span class="sourceLineNo">136</span> * <a name="line.136"></a>
 <span class="sourceLineNo">137</span> * @author mario<a name="line.137"></a>
 <span class="sourceLineNo">138</span> * @author rbygrave<a name="line.138"></a>

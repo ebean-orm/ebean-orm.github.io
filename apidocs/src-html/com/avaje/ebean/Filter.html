@@ -44,7 +44,7 @@
 <span class="sourceLineNo">036</span> *         .sort(&amp;quot;avgTimeMicros desc&amp;quot;)<a name="line.36"></a>
 <span class="sourceLineNo">037</span> *         .gt(&amp;quot;executionCount&amp;quot;, 0)<a name="line.37"></a>
 <span class="sourceLineNo">038</span> *         .gt(&amp;quot;lastQueryTime&amp;quot;, nowMinus24Hrs)<a name="line.38"></a>
-<span class="sourceLineNo">039</span> *         .eq(&amp;quot;autofetchTuned&amp;quot;, true)<a name="line.39"></a>
+<span class="sourceLineNo">039</span> *         .eq(&amp;quot;autoTuned&amp;quot;, true)<a name="line.39"></a>
 <span class="sourceLineNo">040</span> *         .maxRows(10)<a name="line.40"></a>
 <span class="sourceLineNo">041</span> *         .filter(list);<a name="line.41"></a>
 <span class="sourceLineNo">042</span> * <a name="line.42"></a>
@@ -98,98 +98,98 @@
 <span class="sourceLineNo">090</span>   * Refer to {@link Ebean#sort(List, String)} for more detail.<a name="line.90"></a>
 <span class="sourceLineNo">091</span>   * &lt;/p&gt;<a name="line.91"></a>
 <span class="sourceLineNo">092</span>   */<a name="line.92"></a>
-<span class="sourceLineNo">093</span>  public Filter&lt;T&gt; sort(String sortByClause);<a name="line.93"></a>
+<span class="sourceLineNo">093</span>  Filter&lt;T&gt; sort(String sortByClause);<a name="line.93"></a>
 <span class="sourceLineNo">094</span><a name="line.94"></a>
 <span class="sourceLineNo">095</span>  /**<a name="line.95"></a>
 <span class="sourceLineNo">096</span>   * Specify the maximum number of rows/elements to return.<a name="line.96"></a>
 <span class="sourceLineNo">097</span>   */<a name="line.97"></a>
-<span class="sourceLineNo">098</span>  public Filter&lt;T&gt; maxRows(int maxRows);<a name="line.98"></a>
+<span class="sourceLineNo">098</span>  Filter&lt;T&gt; maxRows(int maxRows);<a name="line.98"></a>
 <span class="sourceLineNo">099</span><a name="line.99"></a>
 <span class="sourceLineNo">100</span>  /**<a name="line.100"></a>
 <span class="sourceLineNo">101</span>   * Equal To - property equal to the given value.<a name="line.101"></a>
 <span class="sourceLineNo">102</span>   */<a name="line.102"></a>
-<span class="sourceLineNo">103</span>  public Filter&lt;T&gt; eq(String prop, Object value);<a name="line.103"></a>
+<span class="sourceLineNo">103</span>  Filter&lt;T&gt; eq(String prop, Object value);<a name="line.103"></a>
 <span class="sourceLineNo">104</span><a name="line.104"></a>
 <span class="sourceLineNo">105</span>  /**<a name="line.105"></a>
 <span class="sourceLineNo">106</span>   * Not Equal To - property not equal to the given value.<a name="line.106"></a>
 <span class="sourceLineNo">107</span>   */<a name="line.107"></a>
-<span class="sourceLineNo">108</span>  public Filter&lt;T&gt; ne(String propertyName, Object value);<a name="line.108"></a>
+<span class="sourceLineNo">108</span>  Filter&lt;T&gt; ne(String propertyName, Object value);<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>
 <span class="sourceLineNo">110</span>  /**<a name="line.110"></a>
 <span class="sourceLineNo">111</span>   * Case Insensitive Equal To.<a name="line.111"></a>
 <span class="sourceLineNo">112</span>   */<a name="line.112"></a>
-<span class="sourceLineNo">113</span>  public Filter&lt;T&gt; ieq(String propertyName, String value);<a name="line.113"></a>
+<span class="sourceLineNo">113</span>  Filter&lt;T&gt; ieq(String propertyName, String value);<a name="line.113"></a>
 <span class="sourceLineNo">114</span><a name="line.114"></a>
 <span class="sourceLineNo">115</span>  /**<a name="line.115"></a>
 <span class="sourceLineNo">116</span>   * Between - property between the two given values.<a name="line.116"></a>
 <span class="sourceLineNo">117</span>   */<a name="line.117"></a>
-<span class="sourceLineNo">118</span>  public Filter&lt;T&gt; between(String propertyName, Object value1, Object value2);<a name="line.118"></a>
+<span class="sourceLineNo">118</span>  Filter&lt;T&gt; between(String propertyName, Object value1, Object value2);<a name="line.118"></a>
 <span class="sourceLineNo">119</span><a name="line.119"></a>
 <span class="sourceLineNo">120</span>  /**<a name="line.120"></a>
 <span class="sourceLineNo">121</span>   * Greater Than - property greater than the given value.<a name="line.121"></a>
 <span class="sourceLineNo">122</span>   */<a name="line.122"></a>
-<span class="sourceLineNo">123</span>  public Filter&lt;T&gt; gt(String propertyName, Object value);<a name="line.123"></a>
+<span class="sourceLineNo">123</span>  Filter&lt;T&gt; gt(String propertyName, Object value);<a name="line.123"></a>
 <span class="sourceLineNo">124</span><a name="line.124"></a>
 <span class="sourceLineNo">125</span>  /**<a name="line.125"></a>
 <span class="sourceLineNo">126</span>   * Greater Than or Equal to - property greater than or equal to the given<a name="line.126"></a>
 <span class="sourceLineNo">127</span>   * value.<a name="line.127"></a>
 <span class="sourceLineNo">128</span>   */<a name="line.128"></a>
-<span class="sourceLineNo">129</span>  public Filter&lt;T&gt; ge(String propertyName, Object value);<a name="line.129"></a>
+<span class="sourceLineNo">129</span>  Filter&lt;T&gt; ge(String propertyName, Object value);<a name="line.129"></a>
 <span class="sourceLineNo">130</span><a name="line.130"></a>
 <span class="sourceLineNo">131</span>  /**<a name="line.131"></a>
 <span class="sourceLineNo">132</span>   * Less Than - property less than the given value.<a name="line.132"></a>
 <span class="sourceLineNo">133</span>   */<a name="line.133"></a>
-<span class="sourceLineNo">134</span>  public Filter&lt;T&gt; lt(String propertyName, Object value);<a name="line.134"></a>
+<span class="sourceLineNo">134</span>  Filter&lt;T&gt; lt(String propertyName, Object value);<a name="line.134"></a>
 <span class="sourceLineNo">135</span><a name="line.135"></a>
 <span class="sourceLineNo">136</span>  /**<a name="line.136"></a>
 <span class="sourceLineNo">137</span>   * Less Than or Equal to - property less than or equal to the given value.<a name="line.137"></a>
 <span class="sourceLineNo">138</span>   */<a name="line.138"></a>
-<span class="sourceLineNo">139</span>  public Filter&lt;T&gt; le(String propertyName, Object value);<a name="line.139"></a>
+<span class="sourceLineNo">139</span>  Filter&lt;T&gt; le(String propertyName, Object value);<a name="line.139"></a>
 <span class="sourceLineNo">140</span><a name="line.140"></a>
 <span class="sourceLineNo">141</span>  /**<a name="line.141"></a>
 <span class="sourceLineNo">142</span>   * Is Null - property is null.<a name="line.142"></a>
 <span class="sourceLineNo">143</span>   */<a name="line.143"></a>
-<span class="sourceLineNo">144</span>  public Filter&lt;T&gt; isNull(String propertyName);<a name="line.144"></a>
+<span class="sourceLineNo">144</span>  Filter&lt;T&gt; isNull(String propertyName);<a name="line.144"></a>
 <span class="sourceLineNo">145</span><a name="line.145"></a>
 <span class="sourceLineNo">146</span>  /**<a name="line.146"></a>
 <span class="sourceLineNo">147</span>   * Is Not Null - property is not null.<a name="line.147"></a>
 <span class="sourceLineNo">148</span>   */<a name="line.148"></a>
-<span class="sourceLineNo">149</span>  public Filter&lt;T&gt; isNotNull(String propertyName);<a name="line.149"></a>
+<span class="sourceLineNo">149</span>  Filter&lt;T&gt; isNotNull(String propertyName);<a name="line.149"></a>
 <span class="sourceLineNo">150</span><a name="line.150"></a>
 <span class="sourceLineNo">151</span>  /**<a name="line.151"></a>
 <span class="sourceLineNo">152</span>   * Starts With.<a name="line.152"></a>
 <span class="sourceLineNo">153</span>   */<a name="line.153"></a>
-<span class="sourceLineNo">154</span>  public Filter&lt;T&gt; startsWith(String propertyName, String value);<a name="line.154"></a>
+<span class="sourceLineNo">154</span>  Filter&lt;T&gt; startsWith(String propertyName, String value);<a name="line.154"></a>
 <span class="sourceLineNo">155</span><a name="line.155"></a>
 <span class="sourceLineNo">156</span>  /**<a name="line.156"></a>
 <span class="sourceLineNo">157</span>   * Case insensitive Starts With.<a name="line.157"></a>
 <span class="sourceLineNo">158</span>   */<a name="line.158"></a>
-<span class="sourceLineNo">159</span>  public Filter&lt;T&gt; istartsWith(String propertyName, String value);<a name="line.159"></a>
+<span class="sourceLineNo">159</span>  Filter&lt;T&gt; istartsWith(String propertyName, String value);<a name="line.159"></a>
 <span class="sourceLineNo">160</span><a name="line.160"></a>
 <span class="sourceLineNo">161</span>  /**<a name="line.161"></a>
 <span class="sourceLineNo">162</span>   * Ends With.<a name="line.162"></a>
 <span class="sourceLineNo">163</span>   */<a name="line.163"></a>
-<span class="sourceLineNo">164</span>  public Filter&lt;T&gt; endsWith(String propertyName, String value);<a name="line.164"></a>
+<span class="sourceLineNo">164</span>  Filter&lt;T&gt; endsWith(String propertyName, String value);<a name="line.164"></a>
 <span class="sourceLineNo">165</span><a name="line.165"></a>
 <span class="sourceLineNo">166</span>  /**<a name="line.166"></a>
 <span class="sourceLineNo">167</span>   * Case insensitive Ends With.<a name="line.167"></a>
 <span class="sourceLineNo">168</span>   */<a name="line.168"></a>
-<span class="sourceLineNo">169</span>  public Filter&lt;T&gt; iendsWith(String propertyName, String value);<a name="line.169"></a>
+<span class="sourceLineNo">169</span>  Filter&lt;T&gt; iendsWith(String propertyName, String value);<a name="line.169"></a>
 <span class="sourceLineNo">170</span><a name="line.170"></a>
 <span class="sourceLineNo">171</span>  /**<a name="line.171"></a>
 <span class="sourceLineNo">172</span>   * Contains - property contains the string "value".<a name="line.172"></a>
 <span class="sourceLineNo">173</span>   */<a name="line.173"></a>
-<span class="sourceLineNo">174</span>  public Filter&lt;T&gt; contains(String propertyName, String value);<a name="line.174"></a>
+<span class="sourceLineNo">174</span>  Filter&lt;T&gt; contains(String propertyName, String value);<a name="line.174"></a>
 <span class="sourceLineNo">175</span><a name="line.175"></a>
 <span class="sourceLineNo">176</span>  /**<a name="line.176"></a>
 <span class="sourceLineNo">177</span>   * Case insensitive Contains.<a name="line.177"></a>
 <span class="sourceLineNo">178</span>   */<a name="line.178"></a>
-<span class="sourceLineNo">179</span>  public Filter&lt;T&gt; icontains(String propertyName, String value);<a name="line.179"></a>
+<span class="sourceLineNo">179</span>  Filter&lt;T&gt; icontains(String propertyName, String value);<a name="line.179"></a>
 <span class="sourceLineNo">180</span><a name="line.180"></a>
 <span class="sourceLineNo">181</span>  /**<a name="line.181"></a>
 <span class="sourceLineNo">182</span>   * In - property has a value contained in the set of values.<a name="line.182"></a>
 <span class="sourceLineNo">183</span>   */<a name="line.183"></a>
-<span class="sourceLineNo">184</span>  public Filter&lt;T&gt; in(String propertyName, Set&lt;?&gt; values);<a name="line.184"></a>
+<span class="sourceLineNo">184</span>  Filter&lt;T&gt; in(String propertyName, Set&lt;?&gt; values);<a name="line.184"></a>
 <span class="sourceLineNo">185</span><a name="line.185"></a>
 <span class="sourceLineNo">186</span>  /**<a name="line.186"></a>
 <span class="sourceLineNo">187</span>   * Apply the filter to the list returning a new list of the matching elements<a name="line.187"></a>
@@ -200,7 +200,7 @@
 <span class="sourceLineNo">192</span>   * <a name="line.192"></a>
 <span class="sourceLineNo">193</span>   * @return Returns a new list with the sorting and filters applied.<a name="line.193"></a>
 <span class="sourceLineNo">194</span>   */<a name="line.194"></a>
-<span class="sourceLineNo">195</span>  public List&lt;T&gt; filter(List&lt;T&gt; sourceList);<a name="line.195"></a>
+<span class="sourceLineNo">195</span>  List&lt;T&gt; filter(List&lt;T&gt; sourceList);<a name="line.195"></a>
 <span class="sourceLineNo">196</span><a name="line.196"></a>
 <span class="sourceLineNo">197</span>}<a name="line.197"></a>
 

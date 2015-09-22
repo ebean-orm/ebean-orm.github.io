@@ -50,12 +50,12 @@
 <span class="sourceLineNo">042</span>  /**<a name="line.42"></a>
 <span class="sourceLineNo">043</span>   * Used to log a message to indicate progress through large files.<a name="line.43"></a>
 <span class="sourceLineNo">044</span>   */<a name="line.44"></a>
-<span class="sourceLineNo">045</span>  protected int logInfoFrequency;<a name="line.45"></a>
+<span class="sourceLineNo">045</span>  protected final int logInfoFrequency;<a name="line.45"></a>
 <span class="sourceLineNo">046</span><a name="line.46"></a>
 <span class="sourceLineNo">047</span>  /**<a name="line.47"></a>
 <span class="sourceLineNo">048</span>   * The batch size used when saving the beans.<a name="line.48"></a>
 <span class="sourceLineNo">049</span>   */<a name="line.49"></a>
-<span class="sourceLineNo">050</span>  protected int persistBatchSize;<a name="line.50"></a>
+<span class="sourceLineNo">050</span>  protected final int persistBatchSize;<a name="line.50"></a>
 <span class="sourceLineNo">051</span><a name="line.51"></a>
 <span class="sourceLineNo">052</span>  /**<a name="line.52"></a>
 <span class="sourceLineNo">053</span>   * The time the process started.<a name="line.53"></a>
@@ -177,39 +177,40 @@
 <span class="sourceLineNo">169</span>        logger.info("Creating transaction, batchSize[" + persistBatchSize + "]");<a name="line.169"></a>
 <span class="sourceLineNo">170</span>        transaction.setBatchMode(true);<a name="line.170"></a>
 <span class="sourceLineNo">171</span>        transaction.setBatchSize(persistBatchSize);<a name="line.171"></a>
-<span class="sourceLineNo">172</span><a name="line.172"></a>
-<span class="sourceLineNo">173</span>      } else {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>        // explicitly turn off JDBC batching in case<a name="line.174"></a>
-<span class="sourceLineNo">175</span>        // is has been turned on globally<a name="line.175"></a>
-<span class="sourceLineNo">176</span>        transaction.setBatchMode(false);<a name="line.176"></a>
-<span class="sourceLineNo">177</span>        logger.info("Creating transaction with no JDBC batching");<a name="line.177"></a>
-<span class="sourceLineNo">178</span>      }<a name="line.178"></a>
-<span class="sourceLineNo">179</span>    }<a name="line.179"></a>
-<span class="sourceLineNo">180</span>  }<a name="line.180"></a>
-<span class="sourceLineNo">181</span><a name="line.181"></a>
-<span class="sourceLineNo">182</span>  /**<a name="line.182"></a>
-<span class="sourceLineNo">183</span>   * If we created a transaction commit it. We have successfully processed all<a name="line.183"></a>
-<span class="sourceLineNo">184</span>   * the rows.<a name="line.184"></a>
-<span class="sourceLineNo">185</span>   */<a name="line.185"></a>
-<span class="sourceLineNo">186</span>  protected void commitTransactionIfCreated() {<a name="line.186"></a>
-<span class="sourceLineNo">187</span>    if (createdTransaction) {<a name="line.187"></a>
-<span class="sourceLineNo">188</span>      transaction.commit();<a name="line.188"></a>
-<span class="sourceLineNo">189</span>      logger.info("Committed transaction");<a name="line.189"></a>
-<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
-<span class="sourceLineNo">191</span>  }<a name="line.191"></a>
-<span class="sourceLineNo">192</span><a name="line.192"></a>
-<span class="sourceLineNo">193</span>  /**<a name="line.193"></a>
-<span class="sourceLineNo">194</span>   * Rollback the transaction if we where not successful in processing all the<a name="line.194"></a>
-<span class="sourceLineNo">195</span>   * rows.<a name="line.195"></a>
-<span class="sourceLineNo">196</span>   */<a name="line.196"></a>
-<span class="sourceLineNo">197</span>  protected void rollbackTransactionIfCreated(Throwable e) {<a name="line.197"></a>
-<span class="sourceLineNo">198</span>    if (createdTransaction) {<a name="line.198"></a>
-<span class="sourceLineNo">199</span>      transaction.rollback(e);<a name="line.199"></a>
-<span class="sourceLineNo">200</span>      logger.info("Rolled back transaction");<a name="line.200"></a>
-<span class="sourceLineNo">201</span>    }<a name="line.201"></a>
-<span class="sourceLineNo">202</span>  }<a name="line.202"></a>
-<span class="sourceLineNo">203</span><a name="line.203"></a>
-<span class="sourceLineNo">204</span>}<a name="line.204"></a>
+<span class="sourceLineNo">172</span>        transaction.setBatchGetGeneratedKeys(false);<a name="line.172"></a>
+<span class="sourceLineNo">173</span><a name="line.173"></a>
+<span class="sourceLineNo">174</span>      } else {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        // explicitly turn off JDBC batching in case<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        // is has been turned on globally<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        transaction.setBatchMode(false);<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        logger.info("Creating transaction with no JDBC batching");<a name="line.178"></a>
+<span class="sourceLineNo">179</span>      }<a name="line.179"></a>
+<span class="sourceLineNo">180</span>    }<a name="line.180"></a>
+<span class="sourceLineNo">181</span>  }<a name="line.181"></a>
+<span class="sourceLineNo">182</span><a name="line.182"></a>
+<span class="sourceLineNo">183</span>  /**<a name="line.183"></a>
+<span class="sourceLineNo">184</span>   * If we created a transaction commit it. We have successfully processed all<a name="line.184"></a>
+<span class="sourceLineNo">185</span>   * the rows.<a name="line.185"></a>
+<span class="sourceLineNo">186</span>   */<a name="line.186"></a>
+<span class="sourceLineNo">187</span>  protected void commitTransactionIfCreated() {<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    if (createdTransaction) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>      transaction.commit();<a name="line.189"></a>
+<span class="sourceLineNo">190</span>      logger.info("Committed transaction");<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    }<a name="line.191"></a>
+<span class="sourceLineNo">192</span>  }<a name="line.192"></a>
+<span class="sourceLineNo">193</span><a name="line.193"></a>
+<span class="sourceLineNo">194</span>  /**<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   * Rollback the transaction if we where not successful in processing all the<a name="line.195"></a>
+<span class="sourceLineNo">196</span>   * rows.<a name="line.196"></a>
+<span class="sourceLineNo">197</span>   */<a name="line.197"></a>
+<span class="sourceLineNo">198</span>  protected void rollbackTransactionIfCreated(Throwable e) {<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    if (createdTransaction) {<a name="line.199"></a>
+<span class="sourceLineNo">200</span>      transaction.rollback(e);<a name="line.200"></a>
+<span class="sourceLineNo">201</span>      logger.info("Rolled back transaction");<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    }<a name="line.202"></a>
+<span class="sourceLineNo">203</span>  }<a name="line.203"></a>
+<span class="sourceLineNo">204</span><a name="line.204"></a>
+<span class="sourceLineNo">205</span>}<a name="line.205"></a>
 
 
 

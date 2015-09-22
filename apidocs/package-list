@@ -5,8 +5,12 @@ com.avaje.ebean.cache
 com.avaje.ebean.common
 com.avaje.ebean.config
 com.avaje.ebean.config.dbplatform
+com.avaje.ebean.dbmigration
 com.avaje.ebean.event
+com.avaje.ebean.event.changelog
+com.avaje.ebean.event.readaudit
 com.avaje.ebean.meta
+com.avaje.ebean.plugin
 com.avaje.ebean.text
 com.avaje.ebean.text.csv
 com.avaje.ebean.text.json

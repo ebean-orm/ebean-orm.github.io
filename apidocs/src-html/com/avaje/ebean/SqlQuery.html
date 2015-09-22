@@ -52,22 +52,22 @@
 <span class="sourceLineNo">044</span>   * This must be called from a different thread to the one executing the query.<a name="line.44"></a>
 <span class="sourceLineNo">045</span>   * &lt;/p&gt;<a name="line.45"></a>
 <span class="sourceLineNo">046</span>   */<a name="line.46"></a>
-<span class="sourceLineNo">047</span>  public void cancel();<a name="line.47"></a>
+<span class="sourceLineNo">047</span>  void cancel();<a name="line.47"></a>
 <span class="sourceLineNo">048</span><a name="line.48"></a>
 <span class="sourceLineNo">049</span>  /**<a name="line.49"></a>
 <span class="sourceLineNo">050</span>   * Execute the query returning a list.<a name="line.50"></a>
 <span class="sourceLineNo">051</span>   */<a name="line.51"></a>
-<span class="sourceLineNo">052</span>  public List&lt;SqlRow&gt; findList();<a name="line.52"></a>
+<span class="sourceLineNo">052</span>  List&lt;SqlRow&gt; findList();<a name="line.52"></a>
 <span class="sourceLineNo">053</span><a name="line.53"></a>
 <span class="sourceLineNo">054</span>  /**<a name="line.54"></a>
 <span class="sourceLineNo">055</span>   * Execute the query returning a set.<a name="line.55"></a>
 <span class="sourceLineNo">056</span>   */<a name="line.56"></a>
-<span class="sourceLineNo">057</span>  public Set&lt;SqlRow&gt; findSet();<a name="line.57"></a>
+<span class="sourceLineNo">057</span>  Set&lt;SqlRow&gt; findSet();<a name="line.57"></a>
 <span class="sourceLineNo">058</span><a name="line.58"></a>
 <span class="sourceLineNo">059</span>  /**<a name="line.59"></a>
 <span class="sourceLineNo">060</span>   * Execute the query returning a map.<a name="line.60"></a>
 <span class="sourceLineNo">061</span>   */<a name="line.61"></a>
-<span class="sourceLineNo">062</span>  public Map&lt;?, SqlRow&gt; findMap();<a name="line.62"></a>
+<span class="sourceLineNo">062</span>  Map&lt;?, SqlRow&gt; findMap();<a name="line.62"></a>
 <span class="sourceLineNo">063</span><a name="line.63"></a>
 <span class="sourceLineNo">064</span>  /**<a name="line.64"></a>
 <span class="sourceLineNo">065</span>   * Execute the query returning a single row or null.<a name="line.65"></a>
@@ -76,7 +76,7 @@
 <span class="sourceLineNo">068</span>   * PersistenceException.<a name="line.68"></a>
 <span class="sourceLineNo">069</span>   * &lt;/p&gt;<a name="line.69"></a>
 <span class="sourceLineNo">070</span>   */<a name="line.70"></a>
-<span class="sourceLineNo">071</span>  public SqlRow findUnique();<a name="line.71"></a>
+<span class="sourceLineNo">071</span>  SqlRow findUnique();<a name="line.71"></a>
 <span class="sourceLineNo">072</span><a name="line.72"></a>
 <span class="sourceLineNo">073</span>  /**<a name="line.73"></a>
 <span class="sourceLineNo">074</span>   * Execute find list SQL query in a background thread.<a name="line.74"></a>
@@ -89,17 +89,17 @@
 <span class="sourceLineNo">081</span>   * @return a Future object for the list result of the query<a name="line.81"></a>
 <span class="sourceLineNo">082</span>   * @deprecated<a name="line.82"></a>
 <span class="sourceLineNo">083</span>   */<a name="line.83"></a>
-<span class="sourceLineNo">084</span>  public SqlFutureList findFutureList();<a name="line.84"></a>
+<span class="sourceLineNo">084</span>  SqlFutureList findFutureList();<a name="line.84"></a>
 <span class="sourceLineNo">085</span><a name="line.85"></a>
 <span class="sourceLineNo">086</span>  /**<a name="line.86"></a>
 <span class="sourceLineNo">087</span>   * The same as bind for named parameters.<a name="line.87"></a>
 <span class="sourceLineNo">088</span>   */<a name="line.88"></a>
-<span class="sourceLineNo">089</span>  public SqlQuery setParameter(String name, Object value);<a name="line.89"></a>
+<span class="sourceLineNo">089</span>  SqlQuery setParameter(String name, Object value);<a name="line.89"></a>
 <span class="sourceLineNo">090</span><a name="line.90"></a>
 <span class="sourceLineNo">091</span>  /**<a name="line.91"></a>
 <span class="sourceLineNo">092</span>   * The same as bind for positioned parameters.<a name="line.92"></a>
 <span class="sourceLineNo">093</span>   */<a name="line.93"></a>
-<span class="sourceLineNo">094</span>  public SqlQuery setParameter(int position, Object value);<a name="line.94"></a>
+<span class="sourceLineNo">094</span>  SqlQuery setParameter(int position, Object value);<a name="line.94"></a>
 <span class="sourceLineNo">095</span><a name="line.95"></a>
 <span class="sourceLineNo">096</span>  /**<a name="line.96"></a>
 <span class="sourceLineNo">097</span>   * Set a listener to process the query on a row by row basis.<a name="line.97"></a>
@@ -112,27 +112,27 @@
 <span class="sourceLineNo">104</span>   * entire query result in memory.<a name="line.104"></a>
 <span class="sourceLineNo">105</span>   * &lt;/p&gt;<a name="line.105"></a>
 <span class="sourceLineNo">106</span>   */<a name="line.106"></a>
-<span class="sourceLineNo">107</span>  public SqlQuery setListener(SqlQueryListener queryListener);<a name="line.107"></a>
+<span class="sourceLineNo">107</span>  SqlQuery setListener(SqlQueryListener queryListener);<a name="line.107"></a>
 <span class="sourceLineNo">108</span><a name="line.108"></a>
 <span class="sourceLineNo">109</span>  /**<a name="line.109"></a>
 <span class="sourceLineNo">110</span>   * Set the index of the first row of the results to return.<a name="line.110"></a>
 <span class="sourceLineNo">111</span>   */<a name="line.111"></a>
-<span class="sourceLineNo">112</span>  public SqlQuery setFirstRow(int firstRow);<a name="line.112"></a>
+<span class="sourceLineNo">112</span>  SqlQuery setFirstRow(int firstRow);<a name="line.112"></a>
 <span class="sourceLineNo">113</span><a name="line.113"></a>
 <span class="sourceLineNo">114</span>  /**<a name="line.114"></a>
 <span class="sourceLineNo">115</span>   * Set the maximum number of query results to return.<a name="line.115"></a>
 <span class="sourceLineNo">116</span>   */<a name="line.116"></a>
-<span class="sourceLineNo">117</span>  public SqlQuery setMaxRows(int maxRows);<a name="line.117"></a>
+<span class="sourceLineNo">117</span>  SqlQuery setMaxRows(int maxRows);<a name="line.117"></a>
 <span class="sourceLineNo">118</span><a name="line.118"></a>
 <span class="sourceLineNo">119</span>  /**<a name="line.119"></a>
 <span class="sourceLineNo">120</span>   * Set the index after which fetching continues in a background thread.<a name="line.120"></a>
 <span class="sourceLineNo">121</span>   */<a name="line.121"></a>
-<span class="sourceLineNo">122</span>  public SqlQuery setBackgroundFetchAfter(int backgroundFetchAfter);<a name="line.122"></a>
+<span class="sourceLineNo">122</span>  SqlQuery setBackgroundFetchAfter(int backgroundFetchAfter);<a name="line.122"></a>
 <span class="sourceLineNo">123</span><a name="line.123"></a>
 <span class="sourceLineNo">124</span>  /**<a name="line.124"></a>
 <span class="sourceLineNo">125</span>   * Set the column to use to determine the keys for a Map.<a name="line.125"></a>
 <span class="sourceLineNo">126</span>   */<a name="line.126"></a>
-<span class="sourceLineNo">127</span>  public SqlQuery setMapKey(String mapKey);<a name="line.127"></a>
+<span class="sourceLineNo">127</span>  SqlQuery setMapKey(String mapKey);<a name="line.127"></a>
 <span class="sourceLineNo">128</span><a name="line.128"></a>
 <span class="sourceLineNo">129</span>  /**<a name="line.129"></a>
 <span class="sourceLineNo">130</span>   * Set a timeout on this query.<a name="line.130"></a>
@@ -145,7 +145,7 @@
 <span class="sourceLineNo">137</span>   * @param secs<a name="line.137"></a>
 <span class="sourceLineNo">138</span>   *          the query timeout limit in seconds. Zero means there is no limit.<a name="line.138"></a>
 <span class="sourceLineNo">139</span>   */<a name="line.139"></a>
-<span class="sourceLineNo">140</span>  public SqlQuery setTimeout(int secs);<a name="line.140"></a>
+<span class="sourceLineNo">140</span>  SqlQuery setTimeout(int secs);<a name="line.140"></a>
 <span class="sourceLineNo">141</span><a name="line.141"></a>
 <span class="sourceLineNo">142</span>  /**<a name="line.142"></a>
 <span class="sourceLineNo">143</span>   * A hint which for JDBC translates to the Statement.fetchSize().<a name="line.143"></a>
@@ -154,7 +154,7 @@
 <span class="sourceLineNo">146</span>   * fetched from the database when more rows are needed for ResultSet.<a name="line.146"></a>
 <span class="sourceLineNo">147</span>   * &lt;/p&gt;<a name="line.147"></a>
 <span class="sourceLineNo">148</span>   */<a name="line.148"></a>
-<span class="sourceLineNo">149</span>  public SqlQuery setBufferFetchSizeHint(int bufferFetchSizeHint);<a name="line.149"></a>
+<span class="sourceLineNo">149</span>  SqlQuery setBufferFetchSizeHint(int bufferFetchSizeHint);<a name="line.149"></a>
 <span class="sourceLineNo">150</span><a name="line.150"></a>
 <span class="sourceLineNo">151</span>}<a name="line.151"></a>
 

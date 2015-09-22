@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean.dbmigration.model.visitor;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import com.avaje.ebeaninternal.api.SpiEbeanServer;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import com.avaje.ebeaninternal.server.deploy.BeanDescriptor;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import com.avaje.ebeaninternal.server.deploy.BeanProperty;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import com.avaje.ebeaninternal.server.deploy.BeanPropertyAssocMany;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import com.avaje.ebeaninternal.server.deploy.BeanPropertyAssocOne;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.avaje.ebeaninternal.server.deploy.BeanPropertyCompound;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import com.avaje.ebeaninternal.server.deploy.InheritInfo;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import com.avaje.ebeaninternal.server.deploy.InheritInfoVisitor;<a name="line.10"></a>
+<span class="sourceLineNo">011</span><a name="line.11"></a>
+<span class="sourceLineNo">012</span>import java.util.List;<a name="line.12"></a>
+<span class="sourceLineNo">013</span><a name="line.13"></a>
+<span class="sourceLineNo">014</span>/**<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * Makes use of BeanVisitor and PropertyVisitor to navigate BeanDescriptors<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * and their properties.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> */<a name="line.17"></a>
+<span class="sourceLineNo">018</span>public class VisitAllUsing {<a name="line.18"></a>
+<span class="sourceLineNo">019</span><a name="line.19"></a>
+<span class="sourceLineNo">020</span>  protected final BeanVisitor visitor;<a name="line.20"></a>
+<span class="sourceLineNo">021</span><a name="line.21"></a>
+<span class="sourceLineNo">022</span>  protected final List&lt;BeanDescriptor&lt;?&gt;&gt; descriptors;<a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>  /**<a name="line.24"></a>
+<span class="sourceLineNo">025</span>   * Visit all the descriptors for a given server.<a name="line.25"></a>
+<span class="sourceLineNo">026</span>   */<a name="line.26"></a>
+<span class="sourceLineNo">027</span>  public VisitAllUsing(BeanVisitor visitor, SpiEbeanServer server) {<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>    this(visitor, server.getBeanDescriptors());<a name="line.29"></a>
+<span class="sourceLineNo">030</span>  }<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>  /**<a name="line.32"></a>
+<span class="sourceLineNo">033</span>   * Visit all the descriptors in the list.<a name="line.33"></a>
+<span class="sourceLineNo">034</span>   */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>  public VisitAllUsing(BeanVisitor visitor, List&lt;BeanDescriptor&lt;?&gt;&gt; descriptors) {<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    this.visitor = visitor;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    this.descriptors = descriptors;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>  }<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>  public void visitAllBeans() {<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    for (BeanDescriptor&lt;?&gt; desc : descriptors) {<a name="line.41"></a>
+<span class="sourceLineNo">042</span>      if (desc.getBaseTable() != null) {<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        visitBean(desc, visitor);<a name="line.43"></a>
+<span class="sourceLineNo">044</span>      }<a name="line.44"></a>
+<span class="sourceLineNo">045</span>    }<a name="line.45"></a>
+<span class="sourceLineNo">046</span>  }<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>  /**<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   * Visit the bean using a visitor.<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   */<a name="line.50"></a>
+<span class="sourceLineNo">051</span>  protected void visitBean(BeanDescriptor&lt;?&gt; desc, BeanVisitor visitor) {<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>    BeanPropertyVisitor propertyVisitor = visitor.visitBean(desc);<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    if (propertyVisitor != null) {<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>      BeanProperty idProp = desc.getIdProperty();<a name="line.56"></a>
+<span class="sourceLineNo">057</span>      if (idProp != null) {<a name="line.57"></a>
+<span class="sourceLineNo">058</span>        visit(propertyVisitor, idProp);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>      }<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>      BeanPropertyAssocOne&lt;?&gt; unidirectional = desc.getUnidirectional();<a name="line.61"></a>
+<span class="sourceLineNo">062</span>      if (unidirectional != null) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        visit(propertyVisitor, unidirectional);<a name="line.63"></a>
+<span class="sourceLineNo">064</span>      }<a name="line.64"></a>
+<span class="sourceLineNo">065</span><a name="line.65"></a>
+<span class="sourceLineNo">066</span>      BeanProperty[] propertiesNonTransient = desc.propertiesNonTransient();<a name="line.66"></a>
+<span class="sourceLineNo">067</span>      for (int i = 0; i &lt; propertiesNonTransient.length; i++) {<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        BeanProperty p = propertiesNonTransient[i];<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        if (!p.isFormula() &amp;&amp; !p.isSecondaryTable()) {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>          visit(propertyVisitor, p);<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        }<a name="line.71"></a>
+<span class="sourceLineNo">072</span>      }<a name="line.72"></a>
+<span class="sourceLineNo">073</span><a name="line.73"></a>
+<span class="sourceLineNo">074</span>      visitInheritanceProperties(desc, propertyVisitor);<a name="line.74"></a>
+<span class="sourceLineNo">075</span>      propertyVisitor.visitEnd();<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
+<span class="sourceLineNo">077</span>  }<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>  /**<a name="line.79"></a>
+<span class="sourceLineNo">080</span>   * Visit the property.<a name="line.80"></a>
+<span class="sourceLineNo">081</span>   */<a name="line.81"></a>
+<span class="sourceLineNo">082</span>  protected void visit(BeanPropertyVisitor pv, BeanProperty p) {<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>    if (p instanceof BeanPropertyAssocMany&lt;?&gt;) {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>      // oneToMany or manyToMany<a name="line.85"></a>
+<span class="sourceLineNo">086</span>      pv.visitMany((BeanPropertyAssocMany&lt;?&gt;) p);<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>    } else if (p instanceof BeanPropertyAssocOne&lt;?&gt;) {<a name="line.88"></a>
+<span class="sourceLineNo">089</span>      BeanPropertyAssocOne&lt;?&gt; assocOne = (BeanPropertyAssocOne&lt;?&gt;) p;<a name="line.89"></a>
+<span class="sourceLineNo">090</span>      if (assocOne.isEmbedded()) {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        // Embedded bean<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        pv.visitEmbedded(assocOne);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        BeanProperty[] embProps = assocOne.getProperties();<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        for (int i = 0; i &lt; embProps.length; i++) {<a name="line.94"></a>
+<span class="sourceLineNo">095</span>          pv.visitEmbeddedScalar(embProps[i], assocOne);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        }<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>      } else if (assocOne.isOneToOneExported()) {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        // associated one exported<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        pv.visitOneExported(assocOne);<a name="line.100"></a>
+<span class="sourceLineNo">101</span><a name="line.101"></a>
+<span class="sourceLineNo">102</span>      } else {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        // associated one imported<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        pv.visitOneImported(assocOne);<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      }<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    } else if (p instanceof BeanPropertyCompound) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>      // compound type<a name="line.108"></a>
+<span class="sourceLineNo">109</span>      BeanPropertyCompound compound = (BeanPropertyCompound) p;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>      pv.visitCompound(compound);<a name="line.110"></a>
+<span class="sourceLineNo">111</span><a name="line.111"></a>
+<span class="sourceLineNo">112</span>      BeanProperty[] properties = compound.getScalarProperties();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>      for (int i = 0; i &lt; properties.length; i++) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        pv.visitCompoundScalar(compound, properties[i]);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>      }<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>    } else {<a name="line.117"></a>
+<span class="sourceLineNo">118</span>      // simple scalar type<a name="line.118"></a>
+<span class="sourceLineNo">119</span>      pv.visitScalar(p);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>    }<a name="line.120"></a>
+<span class="sourceLineNo">121</span>  }<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>  /**<a name="line.124"></a>
+<span class="sourceLineNo">125</span>   * Visit all the other inheritance properties that are not on the root.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>   */<a name="line.126"></a>
+<span class="sourceLineNo">127</span>  protected void visitInheritanceProperties(BeanDescriptor&lt;?&gt; descriptor, BeanPropertyVisitor pv) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>    InheritInfo inheritInfo = descriptor.getInheritInfo();<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    if (inheritInfo != null &amp;&amp; inheritInfo.isRoot()) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>      // add all properties on the children objects<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      InheritChildVisitor childVisitor = new InheritChildVisitor(this, pv);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>      inheritInfo.visitChildren(childVisitor);<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    }<a name="line.134"></a>
+<span class="sourceLineNo">135</span>  }<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>  /**<a name="line.138"></a>
+<span class="sourceLineNo">139</span>   * Helper used to visit all the inheritInfo/BeanDescriptor in<a name="line.139"></a>
+<span class="sourceLineNo">140</span>   * the inheritance hierarchy (to add their 'local' properties).<a name="line.140"></a>
+<span class="sourceLineNo">141</span>   */<a name="line.141"></a>
+<span class="sourceLineNo">142</span>  protected class InheritChildVisitor implements InheritInfoVisitor {<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>    private final VisitAllUsing owner;<a name="line.144"></a>
+<span class="sourceLineNo">145</span>    private final BeanPropertyVisitor pv;<a name="line.145"></a>
+<span class="sourceLineNo">146</span><a name="line.146"></a>
+<span class="sourceLineNo">147</span>    protected InheritChildVisitor(VisitAllUsing owner, BeanPropertyVisitor pv) {<a name="line.147"></a>
+<span class="sourceLineNo">148</span>      this.owner = owner;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>      this.pv = pv;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>    }<a name="line.150"></a>
+<span class="sourceLineNo">151</span><a name="line.151"></a>
+<span class="sourceLineNo">152</span>    public void visit(InheritInfo inheritInfo) {<a name="line.152"></a>
+<span class="sourceLineNo">153</span>      BeanProperty[] propertiesLocal = inheritInfo.getBeanDescriptor().propertiesLocal();<a name="line.153"></a>
+<span class="sourceLineNo">154</span>      for (int i = 0; i &lt;propertiesLocal.length ; i++) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        owner.visit(pv, propertiesLocal[i]);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>      }<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>  }<a name="line.158"></a>
+<span class="sourceLineNo">159</span>}<a name="line.159"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

@@ -515,54 +515,53 @@
 <span class="sourceLineNo">507</span><a name="line.507"></a>
 <span class="sourceLineNo">508</span>    String customProperties = properties.get("customProperties", null);<a name="line.508"></a>
 <span class="sourceLineNo">509</span>    if (customProperties != null &amp;&amp; customProperties.length() &gt; 0) {<a name="line.509"></a>
-<span class="sourceLineNo">510</span>      Map&lt;String, String&gt; custProps = StringHelper.delimitedToMap(customProperties, ";", "=");<a name="line.510"></a>
-<span class="sourceLineNo">511</span>      this.customProperties = custProps;<a name="line.511"></a>
-<span class="sourceLineNo">512</span>    }<a name="line.512"></a>
-<span class="sourceLineNo">513</span><a name="line.513"></a>
-<span class="sourceLineNo">514</span>  }<a name="line.514"></a>
-<span class="sourceLineNo">515</span><a name="line.515"></a>
-<span class="sourceLineNo">516</span>  /**<a name="line.516"></a>
-<span class="sourceLineNo">517</span>   * Return the isolation level description from the associated Connection int value.<a name="line.517"></a>
-<span class="sourceLineNo">518</span>   */<a name="line.518"></a>
-<span class="sourceLineNo">519</span>  public String getTransactionIsolationLevel(int level) {<a name="line.519"></a>
-<span class="sourceLineNo">520</span>    switch (level) {<a name="line.520"></a>
-<span class="sourceLineNo">521</span>      case Connection.TRANSACTION_NONE : return "NONE";<a name="line.521"></a>
-<span class="sourceLineNo">522</span>      case Connection.TRANSACTION_READ_COMMITTED : return "READ_COMMITTED";<a name="line.522"></a>
-<span class="sourceLineNo">523</span>      case Connection.TRANSACTION_READ_UNCOMMITTED : return "READ_UNCOMMITTED";<a name="line.523"></a>
-<span class="sourceLineNo">524</span>      case Connection.TRANSACTION_REPEATABLE_READ : return "REPEATABLE_READ";<a name="line.524"></a>
-<span class="sourceLineNo">525</span>      case Connection.TRANSACTION_SERIALIZABLE : return "SERIALIZABLE";<a name="line.525"></a>
-<span class="sourceLineNo">526</span>      default: throw new RuntimeException("Transaction Isolation level [" + level + "] is not known.");<a name="line.526"></a>
-<span class="sourceLineNo">527</span>    }<a name="line.527"></a>
-<span class="sourceLineNo">528</span>  }<a name="line.528"></a>
-<span class="sourceLineNo">529</span><a name="line.529"></a>
-<span class="sourceLineNo">530</span>  /**<a name="line.530"></a>
-<span class="sourceLineNo">531</span>   * Return the isolation level for a given string description.<a name="line.531"></a>
-<span class="sourceLineNo">532</span>   */<a name="line.532"></a>
-<span class="sourceLineNo">533</span>  public int getTransactionIsolationLevel(String level) {<a name="line.533"></a>
-<span class="sourceLineNo">534</span>    level = level.toUpperCase();<a name="line.534"></a>
-<span class="sourceLineNo">535</span>    if (level.startsWith("TRANSACTION")) {<a name="line.535"></a>
-<span class="sourceLineNo">536</span>      level = level.substring("TRANSACTION".length());<a name="line.536"></a>
-<span class="sourceLineNo">537</span>    }<a name="line.537"></a>
-<span class="sourceLineNo">538</span>    level = level.replace("_", "");<a name="line.538"></a>
-<span class="sourceLineNo">539</span>    if ("NONE".equalsIgnoreCase(level)) {<a name="line.539"></a>
-<span class="sourceLineNo">540</span>      return Connection.TRANSACTION_NONE;<a name="line.540"></a>
-<span class="sourceLineNo">541</span>    }<a name="line.541"></a>
-<span class="sourceLineNo">542</span>    if ("READCOMMITTED".equalsIgnoreCase(level)) {<a name="line.542"></a>
-<span class="sourceLineNo">543</span>      return Connection.TRANSACTION_READ_COMMITTED;<a name="line.543"></a>
-<span class="sourceLineNo">544</span>    }<a name="line.544"></a>
-<span class="sourceLineNo">545</span>    if ("READUNCOMMITTED".equalsIgnoreCase(level)) {<a name="line.545"></a>
-<span class="sourceLineNo">546</span>      return Connection.TRANSACTION_READ_UNCOMMITTED;<a name="line.546"></a>
-<span class="sourceLineNo">547</span>    }<a name="line.547"></a>
-<span class="sourceLineNo">548</span>    if ("REPEATABLEREAD".equalsIgnoreCase(level)) {<a name="line.548"></a>
-<span class="sourceLineNo">549</span>      return Connection.TRANSACTION_REPEATABLE_READ;<a name="line.549"></a>
-<span class="sourceLineNo">550</span>    }<a name="line.550"></a>
-<span class="sourceLineNo">551</span>    if ("SERIALIZABLE".equalsIgnoreCase(level)) {<a name="line.551"></a>
-<span class="sourceLineNo">552</span>      return Connection.TRANSACTION_SERIALIZABLE;<a name="line.552"></a>
-<span class="sourceLineNo">553</span>    }<a name="line.553"></a>
-<span class="sourceLineNo">554</span><a name="line.554"></a>
-<span class="sourceLineNo">555</span>    throw new RuntimeException("Transaction Isolation level [" + level + "] is not known.");<a name="line.555"></a>
-<span class="sourceLineNo">556</span>  }<a name="line.556"></a>
-<span class="sourceLineNo">557</span>}<a name="line.557"></a>
+<span class="sourceLineNo">510</span>      this.customProperties = StringHelper.delimitedToMap(customProperties, ";", "=");<a name="line.510"></a>
+<span class="sourceLineNo">511</span>    }<a name="line.511"></a>
+<span class="sourceLineNo">512</span><a name="line.512"></a>
+<span class="sourceLineNo">513</span>  }<a name="line.513"></a>
+<span class="sourceLineNo">514</span><a name="line.514"></a>
+<span class="sourceLineNo">515</span>  /**<a name="line.515"></a>
+<span class="sourceLineNo">516</span>   * Return the isolation level description from the associated Connection int value.<a name="line.516"></a>
+<span class="sourceLineNo">517</span>   */<a name="line.517"></a>
+<span class="sourceLineNo">518</span>  public String getTransactionIsolationLevel(int level) {<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    switch (level) {<a name="line.519"></a>
+<span class="sourceLineNo">520</span>      case Connection.TRANSACTION_NONE : return "NONE";<a name="line.520"></a>
+<span class="sourceLineNo">521</span>      case Connection.TRANSACTION_READ_COMMITTED : return "READ_COMMITTED";<a name="line.521"></a>
+<span class="sourceLineNo">522</span>      case Connection.TRANSACTION_READ_UNCOMMITTED : return "READ_UNCOMMITTED";<a name="line.522"></a>
+<span class="sourceLineNo">523</span>      case Connection.TRANSACTION_REPEATABLE_READ : return "REPEATABLE_READ";<a name="line.523"></a>
+<span class="sourceLineNo">524</span>      case Connection.TRANSACTION_SERIALIZABLE : return "SERIALIZABLE";<a name="line.524"></a>
+<span class="sourceLineNo">525</span>      default: throw new RuntimeException("Transaction Isolation level [" + level + "] is not known.");<a name="line.525"></a>
+<span class="sourceLineNo">526</span>    }<a name="line.526"></a>
+<span class="sourceLineNo">527</span>  }<a name="line.527"></a>
+<span class="sourceLineNo">528</span><a name="line.528"></a>
+<span class="sourceLineNo">529</span>  /**<a name="line.529"></a>
+<span class="sourceLineNo">530</span>   * Return the isolation level for a given string description.<a name="line.530"></a>
+<span class="sourceLineNo">531</span>   */<a name="line.531"></a>
+<span class="sourceLineNo">532</span>  public int getTransactionIsolationLevel(String level) {<a name="line.532"></a>
+<span class="sourceLineNo">533</span>    level = level.toUpperCase();<a name="line.533"></a>
+<span class="sourceLineNo">534</span>    if (level.startsWith("TRANSACTION")) {<a name="line.534"></a>
+<span class="sourceLineNo">535</span>      level = level.substring("TRANSACTION".length());<a name="line.535"></a>
+<span class="sourceLineNo">536</span>    }<a name="line.536"></a>
+<span class="sourceLineNo">537</span>    level = level.replace("_", "");<a name="line.537"></a>
+<span class="sourceLineNo">538</span>    if ("NONE".equalsIgnoreCase(level)) {<a name="line.538"></a>
+<span class="sourceLineNo">539</span>      return Connection.TRANSACTION_NONE;<a name="line.539"></a>
+<span class="sourceLineNo">540</span>    }<a name="line.540"></a>
+<span class="sourceLineNo">541</span>    if ("READCOMMITTED".equalsIgnoreCase(level)) {<a name="line.541"></a>
+<span class="sourceLineNo">542</span>      return Connection.TRANSACTION_READ_COMMITTED;<a name="line.542"></a>
+<span class="sourceLineNo">543</span>    }<a name="line.543"></a>
+<span class="sourceLineNo">544</span>    if ("READUNCOMMITTED".equalsIgnoreCase(level)) {<a name="line.544"></a>
+<span class="sourceLineNo">545</span>      return Connection.TRANSACTION_READ_UNCOMMITTED;<a name="line.545"></a>
+<span class="sourceLineNo">546</span>    }<a name="line.546"></a>
+<span class="sourceLineNo">547</span>    if ("REPEATABLEREAD".equalsIgnoreCase(level)) {<a name="line.547"></a>
+<span class="sourceLineNo">548</span>      return Connection.TRANSACTION_REPEATABLE_READ;<a name="line.548"></a>
+<span class="sourceLineNo">549</span>    }<a name="line.549"></a>
+<span class="sourceLineNo">550</span>    if ("SERIALIZABLE".equalsIgnoreCase(level)) {<a name="line.550"></a>
+<span class="sourceLineNo">551</span>      return Connection.TRANSACTION_SERIALIZABLE;<a name="line.551"></a>
+<span class="sourceLineNo">552</span>    }<a name="line.552"></a>
+<span class="sourceLineNo">553</span><a name="line.553"></a>
+<span class="sourceLineNo">554</span>    throw new RuntimeException("Transaction Isolation level [" + level + "] is not known.");<a name="line.554"></a>
+<span class="sourceLineNo">555</span>  }<a name="line.555"></a>
+<span class="sourceLineNo">556</span>}<a name="line.556"></a>
 
 
 

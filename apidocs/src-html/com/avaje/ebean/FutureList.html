@@ -10,78 +10,77 @@
 <span class="sourceLineNo">002</span><a name="line.2"></a>
 <span class="sourceLineNo">003</span>import javax.persistence.PersistenceException;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import java.util.List;<a name="line.4"></a>
-<span class="sourceLineNo">005</span>import java.util.concurrent.ExecutionException;<a name="line.5"></a>
-<span class="sourceLineNo">006</span>import java.util.concurrent.Future;<a name="line.6"></a>
-<span class="sourceLineNo">007</span>import java.util.concurrent.TimeUnit;<a name="line.7"></a>
-<span class="sourceLineNo">008</span>import java.util.concurrent.TimeoutException;<a name="line.8"></a>
-<span class="sourceLineNo">009</span><a name="line.9"></a>
-<span class="sourceLineNo">010</span>/**<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * FutureList represents the result of a background query execution that will<a name="line.11"></a>
-<span class="sourceLineNo">012</span> * return a list of entities.<a name="line.12"></a>
-<span class="sourceLineNo">013</span> * &lt;p&gt;<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * It extends the java.util.concurrent.Future with the ability to cancel the<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * query, check if it is finished and get the resulting list waiting for the<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * query to finish (ie. the standard features of java.util.concurrent.Future).<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * &lt;/p&gt;<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * &lt;p&gt;<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * A simple example:<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * &lt;/p&gt;<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * <a name="line.21"></a>
-<span class="sourceLineNo">022</span> * &lt;pre&gt;{@code<a name="line.22"></a>
-<span class="sourceLineNo">023</span> *  // create a query to find all orders<a name="line.23"></a>
-<span class="sourceLineNo">024</span> * Query&lt;Order&gt; query = Ebean.find(Order.class);<a name="line.24"></a>
-<span class="sourceLineNo">025</span> * <a name="line.25"></a>
-<span class="sourceLineNo">026</span> *  // execute the query in a background thread<a name="line.26"></a>
-<span class="sourceLineNo">027</span> *  // immediately returning the futureList<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * FutureList&lt;Order&gt; futureList = query.findFutureList();<a name="line.28"></a>
-<span class="sourceLineNo">029</span> * <a name="line.29"></a>
-<span class="sourceLineNo">030</span> *  // do something else ... <a name="line.30"></a>
-<span class="sourceLineNo">031</span> * <a name="line.31"></a>
-<span class="sourceLineNo">032</span> * if (!futureList.isDone()){<a name="line.32"></a>
-<span class="sourceLineNo">033</span> *      // we can cancel the query execution. This will cancel<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * // the underlying query if that is supported by the JDBC<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * // driver and database<a name="line.35"></a>
-<span class="sourceLineNo">036</span> *      futureList.cancel(true);<a name="line.36"></a>
-<span class="sourceLineNo">037</span> * }<a name="line.37"></a>
+<span class="sourceLineNo">005</span>import java.util.concurrent.Future;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import java.util.concurrent.TimeUnit;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import java.util.concurrent.TimeoutException;<a name="line.7"></a>
+<span class="sourceLineNo">008</span><a name="line.8"></a>
+<span class="sourceLineNo">009</span>/**<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * FutureList represents the result of a background query execution that will<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * return a list of entities.<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;p&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * It extends the java.util.concurrent.Future with the ability to cancel the<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * query, check if it is finished and get the resulting list waiting for the<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * query to finish (ie. the standard features of java.util.concurrent.Future).<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * &lt;/p&gt;<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;p&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * A simple example:<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * &lt;/p&gt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * <a name="line.20"></a>
+<span class="sourceLineNo">021</span> * &lt;pre&gt;{@code<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *  // create a query to find all orders<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * Query&lt;Order&gt; query = Ebean.find(Order.class);<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * <a name="line.24"></a>
+<span class="sourceLineNo">025</span> *  // execute the query in a background thread<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *  // immediately returning the futureList<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * FutureList&lt;Order&gt; futureList = query.findFutureList();<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * <a name="line.28"></a>
+<span class="sourceLineNo">029</span> *  // do something else ... <a name="line.29"></a>
+<span class="sourceLineNo">030</span> * <a name="line.30"></a>
+<span class="sourceLineNo">031</span> * if (!futureList.isDone()){<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *      // we can cancel the query execution. This will cancel<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * // the underlying query if that is supported by the JDBC<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * // driver and database<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *      futureList.cancel(true);<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * }<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * <a name="line.37"></a>
 <span class="sourceLineNo">038</span> * <a name="line.38"></a>
-<span class="sourceLineNo">039</span> * <a name="line.39"></a>
-<span class="sourceLineNo">040</span> * if (!futureList.isCancelled()){<a name="line.40"></a>
-<span class="sourceLineNo">041</span> *      // wait for the query to finish and return the list<a name="line.41"></a>
-<span class="sourceLineNo">042</span> *      List&lt;Order&gt; list = futureList.get();<a name="line.42"></a>
-<span class="sourceLineNo">043</span> *      ...<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * }<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * <a name="line.45"></a>
-<span class="sourceLineNo">046</span> * }&lt;/pre&gt;<a name="line.46"></a>
-<span class="sourceLineNo">047</span> */<a name="line.47"></a>
-<span class="sourceLineNo">048</span>public interface FutureList&lt;T&gt; extends Future&lt;List&lt;T&gt;&gt; {<a name="line.48"></a>
-<span class="sourceLineNo">049</span><a name="line.49"></a>
-<span class="sourceLineNo">050</span>  /**<a name="line.50"></a>
-<span class="sourceLineNo">051</span>   * Return the query that is being executed by a background thread.<a name="line.51"></a>
-<span class="sourceLineNo">052</span>   */<a name="line.52"></a>
-<span class="sourceLineNo">053</span>  public Query&lt;T&gt; getQuery();<a name="line.53"></a>
-<span class="sourceLineNo">054</span><a name="line.54"></a>
-<span class="sourceLineNo">055</span>  /**<a name="line.55"></a>
-<span class="sourceLineNo">056</span>   * Same as {@link #get()} but wraps InterruptedException and ExecutionException in the<a name="line.56"></a>
-<span class="sourceLineNo">057</span>   * unchecked PersistenceException.<a name="line.57"></a>
-<span class="sourceLineNo">058</span>   *<a name="line.58"></a>
-<span class="sourceLineNo">059</span>   * @return The query list result<a name="line.59"></a>
-<span class="sourceLineNo">060</span>   *<a name="line.60"></a>
-<span class="sourceLineNo">061</span>   * @throws PersistenceException when a InterruptedException or ExecutionException occurs.<a name="line.61"></a>
-<span class="sourceLineNo">062</span>   */<a name="line.62"></a>
-<span class="sourceLineNo">063</span>  public List&lt;T&gt; getUnchecked();<a name="line.63"></a>
-<span class="sourceLineNo">064</span><a name="line.64"></a>
-<span class="sourceLineNo">065</span>  /**<a name="line.65"></a>
-<span class="sourceLineNo">066</span>   * Same as {@link #get(long, java.util.concurrent.TimeUnit)} but wraps InterruptedException<a name="line.66"></a>
-<span class="sourceLineNo">067</span>   * and ExecutionException in the unchecked PersistenceException.<a name="line.67"></a>
-<span class="sourceLineNo">068</span>   *<a name="line.68"></a>
-<span class="sourceLineNo">069</span>   * @return The query list result<a name="line.69"></a>
-<span class="sourceLineNo">070</span>   *<a name="line.70"></a>
-<span class="sourceLineNo">071</span>   * @throws TimeoutException if the wait timed out<a name="line.71"></a>
-<span class="sourceLineNo">072</span>   * @throws PersistenceException if a InterruptedException or ExecutionException occurs.<a name="line.72"></a>
-<span class="sourceLineNo">073</span>   */<a name="line.73"></a>
-<span class="sourceLineNo">074</span>  public List&lt;T&gt; getUnchecked(long timeout, TimeUnit unit) throws TimeoutException;<a name="line.74"></a>
-<span class="sourceLineNo">075</span><a name="line.75"></a>
-<span class="sourceLineNo">076</span>}<a name="line.76"></a>
+<span class="sourceLineNo">039</span> * if (!futureList.isCancelled()){<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *      // wait for the query to finish and return the list<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *      List&lt;Order&gt; list = futureList.get();<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *      ...<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * }<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * <a name="line.44"></a>
+<span class="sourceLineNo">045</span> * }&lt;/pre&gt;<a name="line.45"></a>
+<span class="sourceLineNo">046</span> */<a name="line.46"></a>
+<span class="sourceLineNo">047</span>public interface FutureList&lt;T&gt; extends Future&lt;List&lt;T&gt;&gt; {<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>  /**<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   * Return the query that is being executed by a background thread.<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>  Query&lt;T&gt; getQuery();<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>  /**<a name="line.54"></a>
+<span class="sourceLineNo">055</span>   * Same as {@link #get()} but wraps InterruptedException and ExecutionException in the<a name="line.55"></a>
+<span class="sourceLineNo">056</span>   * unchecked PersistenceException.<a name="line.56"></a>
+<span class="sourceLineNo">057</span>   *<a name="line.57"></a>
+<span class="sourceLineNo">058</span>   * @return The query list result<a name="line.58"></a>
+<span class="sourceLineNo">059</span>   *<a name="line.59"></a>
+<span class="sourceLineNo">060</span>   * @throws PersistenceException when a InterruptedException or ExecutionException occurs.<a name="line.60"></a>
+<span class="sourceLineNo">061</span>   */<a name="line.61"></a>
+<span class="sourceLineNo">062</span>  List&lt;T&gt; getUnchecked();<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>  /**<a name="line.64"></a>
+<span class="sourceLineNo">065</span>   * Same as {@link #get(long, java.util.concurrent.TimeUnit)} but wraps InterruptedException<a name="line.65"></a>
+<span class="sourceLineNo">066</span>   * and ExecutionException in the unchecked PersistenceException.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>   *<a name="line.67"></a>
+<span class="sourceLineNo">068</span>   * @return The query list result<a name="line.68"></a>
+<span class="sourceLineNo">069</span>   *<a name="line.69"></a>
+<span class="sourceLineNo">070</span>   * @throws TimeoutException if the wait timed out<a name="line.70"></a>
+<span class="sourceLineNo">071</span>   * @throws PersistenceException if a InterruptedException or ExecutionException occurs.<a name="line.71"></a>
+<span class="sourceLineNo">072</span>   */<a name="line.72"></a>
+<span class="sourceLineNo">073</span>  List&lt;T&gt; getUnchecked(long timeout, TimeUnit unit) throws TimeoutException;<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>}<a name="line.75"></a>
 
 
 

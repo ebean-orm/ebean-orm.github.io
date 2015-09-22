@@ -91,7 +91,7 @@
 <span class="sourceLineNo">083</span>   * wrapped in the unchecked PersistenceException (which might be preferrable).<a name="line.83"></a>
 <span class="sourceLineNo">084</span>   * &lt;/p&gt;<a name="line.84"></a>
 <span class="sourceLineNo">085</span>   */<a name="line.85"></a>
-<span class="sourceLineNo">086</span>  public void loadRowCount();<a name="line.86"></a>
+<span class="sourceLineNo">086</span>  void loadRowCount();<a name="line.86"></a>
 <span class="sourceLineNo">087</span><a name="line.87"></a>
 <span class="sourceLineNo">088</span>  /**<a name="line.88"></a>
 <span class="sourceLineNo">089</span>   * Return the Future row count. You might get this if you wish to cancel the total row count query<a name="line.89"></a>
@@ -119,12 +119,12 @@
 <span class="sourceLineNo">111</span>   *<a name="line.111"></a>
 <span class="sourceLineNo">112</span>   * }&lt;/pre&gt;<a name="line.112"></a>
 <span class="sourceLineNo">113</span>   */<a name="line.113"></a>
-<span class="sourceLineNo">114</span>  public Future&lt;Integer&gt; getFutureRowCount();<a name="line.114"></a>
+<span class="sourceLineNo">114</span>  Future&lt;Integer&gt; getFutureRowCount();<a name="line.114"></a>
 <span class="sourceLineNo">115</span><a name="line.115"></a>
 <span class="sourceLineNo">116</span>  /**<a name="line.116"></a>
 <span class="sourceLineNo">117</span>   * Return the list of entities for this page.<a name="line.117"></a>
 <span class="sourceLineNo">118</span>   */<a name="line.118"></a>
-<span class="sourceLineNo">119</span>  public List&lt;T&gt; getList();<a name="line.119"></a>
+<span class="sourceLineNo">119</span>  List&lt;T&gt; getList();<a name="line.119"></a>
 <span class="sourceLineNo">120</span><a name="line.120"></a>
 <span class="sourceLineNo">121</span>  /**<a name="line.121"></a>
 <span class="sourceLineNo">122</span>   * Return the total row count for all pages.<a name="line.122"></a>
@@ -151,7 +151,7 @@
 <span class="sourceLineNo">143</span>   *<a name="line.143"></a>
 <span class="sourceLineNo">144</span>   * }&lt;/pre&gt;<a name="line.144"></a>
 <span class="sourceLineNo">145</span>   */<a name="line.145"></a>
-<span class="sourceLineNo">146</span>  public int getTotalRowCount();<a name="line.146"></a>
+<span class="sourceLineNo">146</span>  int getTotalRowCount();<a name="line.146"></a>
 <span class="sourceLineNo">147</span><a name="line.147"></a>
 <span class="sourceLineNo">148</span>  /**<a name="line.148"></a>
 <span class="sourceLineNo">149</span>   * Return the total number of pages based on the page size and total row count.<a name="line.149"></a>
@@ -160,44 +160,49 @@
 <span class="sourceLineNo">152</span>   * the total row count query if it has not already been invoked.<a name="line.152"></a>
 <span class="sourceLineNo">153</span>   * &lt;/p&gt;<a name="line.153"></a>
 <span class="sourceLineNo">154</span>   */<a name="line.154"></a>
-<span class="sourceLineNo">155</span>  public int getTotalPageCount();<a name="line.155"></a>
+<span class="sourceLineNo">155</span>  int getTotalPageCount();<a name="line.155"></a>
 <span class="sourceLineNo">156</span><a name="line.156"></a>
 <span class="sourceLineNo">157</span>  /**<a name="line.157"></a>
 <span class="sourceLineNo">158</span>   * Return the index position of this page. Zero based.<a name="line.158"></a>
 <span class="sourceLineNo">159</span>   */<a name="line.159"></a>
-<span class="sourceLineNo">160</span>  public int getPageIndex();<a name="line.160"></a>
+<span class="sourceLineNo">160</span>  int getPageIndex();<a name="line.160"></a>
 <span class="sourceLineNo">161</span><a name="line.161"></a>
 <span class="sourceLineNo">162</span>  /**<a name="line.162"></a>
-<span class="sourceLineNo">163</span>   * Return true if there is a next page.<a name="line.163"></a>
-<span class="sourceLineNo">164</span>   * &lt;p&gt;<a name="line.164"></a>
-<span class="sourceLineNo">165</span>   * This method requires that the total row count has been fetched and will invoke<a name="line.165"></a>
-<span class="sourceLineNo">166</span>   * the total row count query if it has not already been invoked.<a name="line.166"></a>
-<span class="sourceLineNo">167</span>   * &lt;/p&gt;<a name="line.167"></a>
-<span class="sourceLineNo">168</span>   */<a name="line.168"></a>
-<span class="sourceLineNo">169</span>  public boolean hasNext();<a name="line.169"></a>
-<span class="sourceLineNo">170</span><a name="line.170"></a>
-<span class="sourceLineNo">171</span>  /**<a name="line.171"></a>
-<span class="sourceLineNo">172</span>   * Return true if there is a previous page.<a name="line.172"></a>
+<span class="sourceLineNo">163</span>   * Return the page size used for this query.<a name="line.163"></a>
+<span class="sourceLineNo">164</span>   */<a name="line.164"></a>
+<span class="sourceLineNo">165</span>  int getPageSize();<a name="line.165"></a>
+<span class="sourceLineNo">166</span><a name="line.166"></a>
+<span class="sourceLineNo">167</span>  /**<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   * Return true if there is a next page.<a name="line.168"></a>
+<span class="sourceLineNo">169</span>   * &lt;p&gt;<a name="line.169"></a>
+<span class="sourceLineNo">170</span>   * This method requires that the total row count has been fetched and will invoke<a name="line.170"></a>
+<span class="sourceLineNo">171</span>   * the total row count query if it has not already been invoked.<a name="line.171"></a>
+<span class="sourceLineNo">172</span>   * &lt;/p&gt;<a name="line.172"></a>
 <span class="sourceLineNo">173</span>   */<a name="line.173"></a>
-<span class="sourceLineNo">174</span>  public boolean hasPrev();<a name="line.174"></a>
+<span class="sourceLineNo">174</span>  boolean hasNext();<a name="line.174"></a>
 <span class="sourceLineNo">175</span><a name="line.175"></a>
 <span class="sourceLineNo">176</span>  /**<a name="line.176"></a>
-<span class="sourceLineNo">177</span>   * Helper method to return a "X to Y of Z" string for this page where X is the first row, Y the<a name="line.177"></a>
-<span class="sourceLineNo">178</span>   * last row and Z the total row count.<a name="line.178"></a>
-<span class="sourceLineNo">179</span>   * &lt;p&gt;<a name="line.179"></a>
-<span class="sourceLineNo">180</span>   * This method requires that the total row count has been fetched and will invoke<a name="line.180"></a>
-<span class="sourceLineNo">181</span>   * the total row count query if it has not already been invoked.<a name="line.181"></a>
-<span class="sourceLineNo">182</span>   * &lt;/p&gt;<a name="line.182"></a>
-<span class="sourceLineNo">183</span>   *<a name="line.183"></a>
-<span class="sourceLineNo">184</span>   * @param to<a name="line.184"></a>
-<span class="sourceLineNo">185</span>   *          String to put between the first and last row<a name="line.185"></a>
-<span class="sourceLineNo">186</span>   * @param of<a name="line.186"></a>
-<span class="sourceLineNo">187</span>   *          String to put between the last row and the total row count<a name="line.187"></a>
-<span class="sourceLineNo">188</span>   * <a name="line.188"></a>
-<span class="sourceLineNo">189</span>   * @return String of the format XtoYofZ.<a name="line.189"></a>
-<span class="sourceLineNo">190</span>   */<a name="line.190"></a>
-<span class="sourceLineNo">191</span>  public String getDisplayXtoYofZ(String to, String of);<a name="line.191"></a>
-<span class="sourceLineNo">192</span>}<a name="line.192"></a>
+<span class="sourceLineNo">177</span>   * Return true if there is a previous page.<a name="line.177"></a>
+<span class="sourceLineNo">178</span>   */<a name="line.178"></a>
+<span class="sourceLineNo">179</span>  boolean hasPrev();<a name="line.179"></a>
+<span class="sourceLineNo">180</span><a name="line.180"></a>
+<span class="sourceLineNo">181</span>  /**<a name="line.181"></a>
+<span class="sourceLineNo">182</span>   * Helper method to return a "X to Y of Z" string for this page where X is the first row, Y the<a name="line.182"></a>
+<span class="sourceLineNo">183</span>   * last row and Z the total row count.<a name="line.183"></a>
+<span class="sourceLineNo">184</span>   * &lt;p&gt;<a name="line.184"></a>
+<span class="sourceLineNo">185</span>   * This method requires that the total row count has been fetched and will invoke<a name="line.185"></a>
+<span class="sourceLineNo">186</span>   * the total row count query if it has not already been invoked.<a name="line.186"></a>
+<span class="sourceLineNo">187</span>   * &lt;/p&gt;<a name="line.187"></a>
+<span class="sourceLineNo">188</span>   *<a name="line.188"></a>
+<span class="sourceLineNo">189</span>   * @param to<a name="line.189"></a>
+<span class="sourceLineNo">190</span>   *          String to put between the first and last row<a name="line.190"></a>
+<span class="sourceLineNo">191</span>   * @param of<a name="line.191"></a>
+<span class="sourceLineNo">192</span>   *          String to put between the last row and the total row count<a name="line.192"></a>
+<span class="sourceLineNo">193</span>   * <a name="line.193"></a>
+<span class="sourceLineNo">194</span>   * @return String of the format XtoYofZ.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   */<a name="line.195"></a>
+<span class="sourceLineNo">196</span>  String getDisplayXtoYofZ(String to, String of);<a name="line.196"></a>
+<span class="sourceLineNo">197</span>}<a name="line.197"></a>
 
 
 
