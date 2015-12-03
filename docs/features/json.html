@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1>Documentation</h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / JSON </h1>
   </div>
 </div>
 
@@ -62,56 +62,87 @@
 
   <div class="row">
 
-    <div class="col-md-4">
-      <h2><a href="/docs/setup">Setup</a></h2>
-      <p>
-        Enhancement, Configuration, Dependency Injection
-      </p>
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+  <h2 id="overview">Overview</h2>
+  <p>
+    Ebean has built in support for marshalling and unmarshalling entity beans to and from JSON.
+    Ebean uses <code>Jackson core</code> to do this.  The reason Ebean does this is treat
+    JSON as a first class feature with built in support for <code>Partial objects</code> and
+    <code>cyclical relationships</code> which are both common in ORM. In additional all
+    supported types including <code>Joda types</code>, <code>Java8 types</code> and
+    <a href="/docs/json-in-db"><code>JSON database mapping types</code></a> work out of the box.
+  </p>
+  <blockquote>
+    JSON marshalling/unmarshalling should be painless, performant and work out of the box.
+  </blockquote>
+
+  <h2 id="json-context">JsonContext</h2>
+  <p>
+    Obtain a <code>JsonContext</code> from EbeanServer via the <code>json()</code> method.
+    This JsonContext then provides various methods for marshalling/unmarshalling JSON to and from
+    entity beans.
+  </p>
+<div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">jsonWithUnknown</span> <span class="o">=</span> <span class="s">&quot;{\&quot;id\&quot;:42, \&quot;unknownProp\&quot;:\&quot;foo\&quot;, \&quot;name\&quot;:\&quot;rob\&quot;, \&quot;version\&quot;:1}&quot;</span><span class="o">;</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">json</span><span class="o">().</span><span class="na">toBean</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">jsonWithUnknown</span><span class="o">);</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">42</span><span class="o">),</span> <span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">,</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</pre></div>
+</div>
+
+</div>
     </div>
 
-    <div class="col-md-4">
-      <h2><a href="/docs/mapping">Mapping</a></h2>
-      <p>
-        JPA mapping, Extensions such as @SoftDelete, @Encrypted ...
-      </p>
-    </div>
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
 
-    <div class="col-md-4">
-      <h2><a href="/docs/query">Query</a></h2>
-      <p>
-        Performance, Partial Objects, Automatic query tuning, Type safe queries
-      </p>
-    </div>
 
+<li class="active">
+  <a href="/docs/features/json">JSON</a>
+</li>
+<li >
+  <a href="/docs/features/json-in-db">JSON in DB</a>
+</li>
+<li >
+  <a href="/docs/features/eventlistening">Event listening</a>
+</li>
+
+<li >
+  <a href="/docs/features/readauditing">Read Auditing</a>
+</li>
+<li >
+  <a href="/docs/features/changelog">Change Log</a>
+</li>
+<li >
+  <a href="/docs/features/history">History SQL2011</a>
+</li>
+<li >
+  <a href="/docs/features/draftable">Draftable</a>
+</li>
+<li >
+  <a href="/docs/features/l2caching">L2 caching</a>
+</li>
+<li >
+  <a href="/docs/features/jvmlanguages">JVM Languages</a>
+</li>
+
+<li >
+  <a href="/docs/features/clustering">Clustering</a>
+</li>
+<li >
+  <a href="/docs/features/monitoring">Monitoring</a>
+</li>
+<li >
+  <a href="/docs/setup/dbmigration">DB Migration</a>
+</li>
+        </ul>
+      </nav>
+    </div>
   </div>
 
-
-  <div class="row">
-
-    <div class="col-md-4">
-      <h2><a href="/docs/persist">Persist</a></h2>
-      <p>
-        Save/Insert/Update/Delete, JDBC Batch, Cascading, Bulk Updates, Stored Procedures, Raw JDBC
-      </p>
-    </div>
-
-    <div class="col-md-4">
-      <h2><a href="/docs/transactions">Transactions</a></h2>
-      <p>
-        Implicit, Programmatic, Spring, JTA
-      </p>
-    </div>
-
-    <div class="col-md-4">
-      <h2><a href="/docs/features">Features</a></h2>
-      <p>
-        Event Listening, ElasticSearch, History/SQL2011, Draftable, Change log, Read Auditing, JSON
-      </p>
-    </div>
-
-
-  </div>
-
+</div>
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>

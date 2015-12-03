@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1>Documentation</h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/query">Query</a>  </h1>
   </div>
 </div>
 
@@ -62,56 +62,67 @@
 
   <div class="row">
 
-    <div class="col-md-4">
-      <h2><a href="/docs/setup">Setup</a></h2>
-      <p>
-        Enhancement, Configuration, Dependency Injection
-      </p>
+    <div class="col-md-9" role="main">
+      <div class="container doc-index bs-docs-container">
+
+  <h2><a href="/docs/setup/enhancement">Enhancement</a></h2>
+  <p>
+    Various options for configuring the enhancement including javaagent, maven, IDE etc.
+  </p>
+
+  <h2><a href="/docs/setup/logging">Logging</a></h2>
+  <p>
+    Setup logging of SQL, Transaction demarcation and Summary level logging.
+  </p>
+
+  <h2><a href="/docs/setup/serverconfig">ServerConfig</a></h2>
+  <p>
+    Programmatically configure EbeanServer instances.
+  </p>
+
+  <h2><a href="/docs/setup/guice">Guice</a></h2>
+  <p>
+    How to configure and use EbeanServer instances with Guice dependency injection.
+  </p>
+
+  <h2><a href="/docs/setup/spring">Spring</a></h2>
+  <p>
+    Using Ebean with Spring Boot. How to configure and use EbeanServer instances
+    with Spring dependency injection and optionally use Spring transactions.
+  </p>
+
+  <!-- /.row -->
+</div>  <!-- /.container -->
     </div>
 
-    <div class="col-md-4">
-      <h2><a href="/docs/mapping">Mapping</a></h2>
-      <p>
-        JPA mapping, Extensions such as @SoftDelete, @Encrypted ...
-      </p>
-    </div>
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/query/overview">Overview</a>
+</li>
+<li >
+  <a href="/docs/query/nplus1">N + 1</a>
+</li>
+<li >
+  <a href="/docs/query/partialobjects">Partial Objects</a>
+</li>
+<li >
+  <a href="/docs/query/autotune">Automatic Tuning</a>
+</li>
+<li >
+  <a href="/docs/query/typesafe">Type Safe queries</a>
+</li>
+<li >
+  <a href="/docs/query/features">Query Features</a>
+</li>
 
-    <div class="col-md-4">
-      <h2><a href="/docs/query">Query</a></h2>
-      <p>
-        Performance, Partial Objects, Automatic query tuning, Type safe queries
-      </p>
+        </ul>
+      </nav>
     </div>
-
   </div>
 
-
-  <div class="row">
-
-    <div class="col-md-4">
-      <h2><a href="/docs/persist">Persist</a></h2>
-      <p>
-        Save/Insert/Update/Delete, JDBC Batch, Cascading, Bulk Updates, Stored Procedures, Raw JDBC
-      </p>
-    </div>
-
-    <div class="col-md-4">
-      <h2><a href="/docs/transactions">Transactions</a></h2>
-      <p>
-        Implicit, Programmatic, Spring, JTA
-      </p>
-    </div>
-
-    <div class="col-md-4">
-      <h2><a href="/docs/features">Features</a></h2>
-      <p>
-        Event Listening, ElasticSearch, History/SQL2011, Draftable, Change log, Read Auditing, JSON
-      </p>
-    </div>
-
-
-  </div>
-
+</div>
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>

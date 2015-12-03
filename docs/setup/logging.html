@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / Architecture </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / Logging </h1>
   </div>
 </div>
 
@@ -63,121 +63,103 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-
       <div class="bs-docs-section">
 
-  <h1 id="load-context">Load Context</h1>
+  <p>Ebean uses <a href="http://www.slf4j.org/">SLF4J</a> for logging.</p>
 
-  <h2 id="overview">Overview</h2>
-
+  <h2 id="sql">SQL and Transaction logging</h2>
   <p>
-    TODO
+    During development it is expected that you include logging of
+    <code>org.avaje.ebean.SQL</code> and <code>org.avaje.ebean.TXN</code>.
+    These log the sql statements executed, bind values for statement execution
+    and transaction demarcation.
   </p>
 
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+
+  <span class="c">&lt;!-- SQL and bind values --&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+  <span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+  
+</pre></div>
 </div>
 
+  <h2 id="summary">Summary logging</h2>
+
+  <p>
+    The summary logging of <code>org.avaje.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
+    back to origin queries. This is useful when looking at more complex object graphs are
+    built. In tuning queries for N+1 etc.
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+
+  <span class="c">&lt;!-- Summary level details --&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+  
+</pre></div>
+</div>
+
+  <h2 id="l2cache">L2 Cache logging</h2>
+
+  <p>The L2 cache events can be logged using the logger entries below.
+    This is useful when you are starting out using the L2 cache and looking
+    at the behaviour with L2 caching.
+  </p>
+
+
+  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+
+   <span class="c">&lt;!-- L2 logging --&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+  
+</pre></div>
+</div>
+
+</div>
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/introduction">Introduction</a>
-</li>
-<li >
-  <a href="/docs/enhancement">Enhancement</a>
-</li>
-<li >
-  <a href="/docs/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/serverconfig">ServerConfig</a>
-</li>
-<li >
-  <a href="/docs/guice">Guice</a>
-</li>
-<li >
-  <a href="/docs/spring">Spring</a>
-</li>
-<li >
-  <a href="/docs/activerecord">Active Record</a>
-</li>
-<li >
-  <a href="/docs/dbmigration">DB Migration</a>
-</li>
-<li >
-  <a href="/docs/testing">Testing</a>
-</li>
-<li >
-  <a href="/docs/query-overview">Query Overview</a>
-</li>
-<li >
-  <a href="/docs/query-nplus1">Query N + 1</a>
-</li>
-<li >
-  <a href="/docs/query-partialobjects">Query Partial Objects</a>
-</li>
-<li >
-  <a href="/docs/query-autotune">Query Automatic Tuning</a>
-</li>
-<li >
-  <a href="/docs/query-typesafe">Query Type Safety</a>
-</li>
-<li >
-  <a href="/docs/queries">Queries</a>
-</li>
-<li >
-  <a href="/docs/persisting">Persisting</a>
-</li>
-<li >
-  <a href="/docs/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-<li >
-  <a href="/docs/json">JSON</a>
-</li>
-<li >
-  <a href="/docs/json-in-db">JSON in DB</a>
-</li>
-<li >
-  <a href="/docs/eventlisteners">Event listening</a>
-</li>
 
 <li >
-  <a href="/docs/readauditing">Read Auditing</a>
-</li>
-<li >
-  <a href="/docs/changelog">Change Log</a>
-</li>
-<li >
-  <a href="/docs/history">History</a>
-</li>
-<li >
-  <a href="/docs/draftable">Draftable</a>
-</li>
-<li >
-  <a href="/docs/l2caching">L2 caching</a>
-</li>
-<li >
-  <a href="/docs/jvmlanguages">JVM Languages</a>
-</li>
-
-<li >
-  <a href="/docs/clustering">Clustering</a>
-</li>
-<li >
-  <a href="/docs/monitoring">Monitoring</a>
+  <a href="/docs/setup/enhancement">Enhancement</a>
 </li>
 <li class="active">
-  <a href="/docs/architecture/persistence-context">Architecture</a>
+  <a href="/docs/setup/logging">Logging</a>
 <ul class="nav">
-  <li><a href="/docs/architecture/persistence-context">Persistence context</a></li>
-  <li><a href="/docs/architecture/load-context">Load context</a></li>
-  <li><a href="/docs/architecture/jdbc-batch-buffer">JDBC batch buffer</a></li>
-  <li><a href="/docs/architecture/entity-enhancement">Entity Enhancement</a></li>
+  <li><a href="#sql">SQL and Transaction logging</a></li>
+  <li><a href="#summary">Summary logging</a></li>
+  <li><a href="#l2cache">L2 Cache logging</a></li>
 </ul>
+</li>
+<li >
+  <a href="/docs/setup/serverconfig">ServerConfig</a>
+</li>
+<li >
+  <a href="/docs/setup/guice">Guice</a>
+</li>
+<li >
+  <a href="/docs/setup/spring">Spring</a>
+</li>
+<li >
+  <a href="/docs/setup/activerecord">Active Record</a>
+</li>
+<li >
+  <a href="/docs/setup/dbmigration">DB Migration</a>
+</li>
+<li >
+  <a href="/docs/setup/testing">Testing</a>
 </li>
         </ul>
       </nav>

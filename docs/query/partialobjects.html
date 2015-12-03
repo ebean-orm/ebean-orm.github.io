@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/videos">Videos</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/query">Query</a> / Query Partial Objects </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+  <h2 id="overview">Overview</h2>
+  <p>
+    <code>Partial Objects</code> is where an entity bean is not fully populated with all its properties but instead has only
+    some of it's properties populated/loaded.
+  </p>
+  <p>
+    Partial properties are very important from a <code>database</code>, <code>JDBC</code> and <code>network</code>
+    performance perspective and everything in Ebean is built to support partially populated beans. The query
+    language, enhancement, persisting, event adapters and all of Ebean's internals work on the premise that
+    partially populated beans are the norm.
+  </p>
+
+  <h2 id="index-query">Index only query</h2>
+  <p>
+    If a SQL query executes where all the columns used are included in an index then the database has the
+    ability to return the query result by only using the index and specifically avoid reading the data blocks associated
+    with the table. This is sometimes described as a "covering index" or "covering query".
+  </p>
+  <blockquote>
+    Small number of columns selected = opportunity for index only query
+  </blockquote>
+
+<div class="syntax java"><div class="highlight"><pre><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+
+  <span class="c1">// only fetch the customer id and name</span>
+  <span class="c1">// ... if there is an index covering id and name the database has the ability</span>
+  <span class="c1">// ... to avoid reading the customer table data blocks and instead resolve the</span>
+  <span class="c1">// ... query by only using the index (which can be much faster)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+
+  <span class="c1">// predicates and order by covered by index</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">().</span><span class="na">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+  <h2 id="index-join">Index only join</h2>
+  <p>
+    Similar to 'Index only query' is the case for joins where the columns needed/used on the joined table can
+    be fully resolved by an index. For example, joining the customer table and only needing customer name.
+    Similarly, joining to the product table and only needing the product name. These are examples where the join
+    can often be resolved by the database by just using an index and not actually needing to read/access the
+    table data blocks (join resolved by just reading the index blocks and avoiding reading the table blocks).
+  </p>
+  <blockquote>
+    Small number of columns selected in joined table = opportunity for index only join
+  </blockquote>
+
+<div class="syntax java"><div class="highlight"><pre><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">...</span>
+  <span class="c1">// only fetch the customer id and name</span>
+  <span class="c1">// ... if there is an index on the customer table that is covering the customer id and name</span>
+  <span class="c1">// ... the database has the ability to avoid reading the customer table data blocks and instead</span>
+  <span class="c1">// ... resolve the join part of this query from only the customer index (which is faster)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+  <span class="o">...</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+  <h2 id="database">Database buffers</h2>
+  <p>
+    When the database is processing the query it creates buffers to performing sorting, joining etc. These buffers
+    are larger when there is more columns involved as there is more data. If you can only select the columns needed
+    then these buffers and the amount of data involved in the sorting, joining etc is reduced. This is more important
+    if the columns that can be excluded are large varchar columns or the entity beans are mapped to tables with large
+    numbers of columns.
+  </p>
+  <blockquote>
+    Less columns selected = smaller buffers used by DB to process sorts/joins etc
+  </blockquote>
+
+  <h2 id="jdbc">JDBC buffers</h2>
+  <p>
+    The JDBC driver also has buffers to pump the resultSet data over the network. More columns means a bigger JDBC
+    buffer and more memory required by the JDBC driver.
+  </p>
+  <blockquote>
+    Less columns selected = smaller buffers used by JDBC driver
+  </blockquote>
+
+  <h2 id="network">Network</h2>
+  <p>
+    More columns included in the fetch means more data is pumped over the network.
+    Note that some JDBC drivers do have something like column wise compression to reduce the network payload when
+    values repeat (as repeating values is a pretty common occurrence with SQL resultSet data).
+  </p>
+  <blockquote>
+    Less columns selected = less data pumped over the network
+  </blockquote>
+
+  <h2 id="select-fetch">Select / Fetch</h2>
+  <p>
+    Ebean makes it easy to control what you want to fetch on a query using <code>select()</code> and <code>fetch()</code>.
+    <code>select()</code> is used to define the specific properties to fetch/load for the root level and <code>fetch()</code>
+    is used to define the properties to fetch/load for all other levels (with additional control over eager/lazy loading
+    and loading batch size etc).
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// control the lazy loading of customers ...</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+     <span class="c1">// fetch just these properties for the Order</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status,orderDate,shipDate&quot;</span><span class="o">)</span>
+    <span class="c1">// fetch customer name only</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">)</span>
+    <span class="c1">// fetch product name only</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span><span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+    
+</pre></div>
+</div>
+
+  <h2 id="autotune">AutoTune</h2>
+  <blockquote>
+    AutoTune will tune each query for each use case to fetch the minimal set of properties
+  </blockquote>
+  <p>
+    Manually optimising queries to fetch only what is needed can be some work and even when you do that you often
+    have the case where a single query like 'find order by id' is used in multiple user cases and each use case
+    uses a different part of the object graph.
+  </p>
+  <p>
+    AutoTune is a feature than can profile the object graph use relative to the call stack for each query and
+    provide an query that selects/fetches only what is used for the given call stack - effectively provide a nice
+    automated way of optimising the query to only fetch what the application uses.
+  </p>
+
+
+</div>
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/query/overview">Overview</a>
+</li>
+<li >
+  <a href="/docs/query/nplus1">N + 1</a>
+</li>
+<li class="active">
+  <a href="/docs/query/partialobjects">Partial Objects</a>
+<ul class="nav">
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#index-query">Index only query</a></li>
+  <li><a href="#index-join">Index only join</a></li>
+  <li><a href="#database">Database buffers</a></li>
+  <li><a href="#jdbc">JDBC buffers</a></li>
+  <li><a href="#network">Network</a></li>
+  <li><a href="#select-fetch">Select / Fetch</a></li>
+  <li><a href="#autotune">AutoTune</a></li>
+</ul>
+</li>
+<li >
+  <a href="/docs/query/autotune">Automatic Tuning</a>
+</li>
+<li >
+  <a href="/docs/query/typesafe">Type Safe queries</a>
+</li>
+<li >
+  <a href="/docs/query/features">Query Features</a>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
+  </body>
+</html>

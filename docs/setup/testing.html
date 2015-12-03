@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav pull-right">
+            <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+            <li ><a href="/videos">Videos</a></li>
+            <li ><a href="/quickstart">Quick Start</a></li>
+            <li ><a href="/support">Support</a></li>
+            <li class="active"><a href="/docs">Docs</a></li>
+            <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+            <li ><a href="/releases">Releases</a></li>
+            <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / Testing </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+<h2 id="test-properties">test-ebean.properties</h2>
+<p>
+  When you want to run all tests against <code>H2</code> in memory database a simple way to do this is to add a
+  <code>src/test/resources/test-ebean.properties</code> to your project. In the <code>test-ebean.properties</code>
+  you can effectively override the properties of the datasource and specify to use <code>H2</code>.
+</p>
+  <p>
+    When an EbeanServer is created automatically via <code>Ebean.getDefaultServer()</code> or <code>Ebean.getServer(name)</code>
+    then Ebean will look for the existence of test-ebean.properties in the classpath. If found this then typically
+    specifies to use an in memory <code>H2</code> datasource.
+  </p>
+  <p>
+    When programmatically creating an EbeanServer using <code>ServerConfig</code> and <code>EbeanServerFactory</code>
+    there is a method <code>serverConfig.loadTestProperties()</code> which will similarly look for a test-ebean.properties
+    file if present.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+    <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+    <span class="o">...</span>
+
+    <span class="c1">// load test-ebean.properties if present for running tests</span>
+    <span class="c1">// typically using H2 in memory database</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">loadTestProperties</span><span class="o">();</span>
+
+    <span class="c1">// set as default and register so that Model can be</span>
+    <span class="c1">// used if desired for save() and update() etc</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setRegister</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="o">}</span>
+  
+</pre></div>
+</div>
+
+  <h3>Example test-ebean.properties</h3>
+<div class="syntax properties"><div class="highlight"><pre>  <span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>
+  <span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>
+
+  <span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
+  <span class="na">datasource.db.password</span><span class="o">=</span>
+  <span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
+  <span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+</pre></div>
+</div>
+
+
+<h2 id="mockibean">MockiEbean</h2>
+
+<code>MockiEbean</code> from <code>avaje-ebeanorm-mocker</code> project provides a helper object to support mocking the EbeanServer using tools like
+<a href="http://code.google.com/p/mockito/">Mockito</a>. If you like the Play/Active record style or Ebean singleton style you can add a test
+dependency on avaje-ebeanorm-mocker and use MockiEbean to enable use of Mockito and similar tools.
+
+Mocking with Ebean singleton
+<code>MockiEbean</code> from avaje-ebeanorm-mocker provides a mechanism for using a tool like Mockito and
+replacing the default EbeanServer instance with a mock.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebeaninternal.server.core.DefaultServer</span><span class="o">;</span>
+<span class="o">...</span>
+
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWithMockito</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">defaultServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>
+
+    <span class="n">Long</span> <span class="n">someBeanId</span> <span class="o">=</span> <span class="n">Long</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">47L</span><span class="o">);</span>
+
+    <span class="c1">// Use Mockito to create a mock for the EbeanServer interface</span>
+    <span class="n">EbeanServer</span> <span class="n">mock</span> <span class="o">=</span> <span class="n">Mockito</span><span class="o">.</span><span class="na">mock</span><span class="o">(</span><span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="c1">// setup some required behaviour</span>
+    <span class="n">when</span><span class="o">(</span><span class="n">mock</span><span class="o">.</span><span class="na">getBeanId</span><span class="o">(</span><span class="kc">null</span><span class="o">)).</span><span class="na">thenReturn</span><span class="o">(</span><span class="n">someBeanId</span><span class="o">);</span>
+
+    <span class="c1">// ---------------</span>
+    <span class="c1">// &#39;register&#39; the mock instance into Ebean</span>
+    <span class="c1">// this becomes the &#39;default EbeanServer&#39; until</span>
+    <span class="c1">// mockiEbean.restoreOriginal() is called</span>
+    <span class="c1">// ---------------</span>
+    <span class="n">MockiEbean</span> <span class="n">mockiEbean</span> <span class="o">=</span> <span class="n">MockiEbean</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">mock</span><span class="o">);</span>
+    <span class="k">try</span> <span class="o">{</span>
+
+      <span class="c1">// Ebean singleton &#39;default server&#39; now returns the mock instance</span>
+      <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+      <span class="c1">// always returns the someBeanId setup by Mockito</span>
+      <span class="n">Object</span> <span class="n">beanId</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">getBeanId</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+      <span class="n">assertEquals</span><span class="o">(</span><span class="n">someBeanId</span><span class="o">,</span> <span class="n">beanId</span><span class="o">);</span>
+
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="c1">// ---------------</span>
+      <span class="c1">// restore the original defaultServer instance</span>
+      <span class="c1">// ---------------</span>
+      <span class="n">mockiEbean</span><span class="o">.</span><span class="na">restoreOriginal</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="n">EbeanServer</span> <span class="n">restoredServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">restoredServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>
+  <span class="o">}</span>
+</pre></div>
+</div>
+<h4>MoickiEbean Maven dependency</h4>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mocker<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+</div>
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/setup/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/setup/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/setup/serverconfig">ServerConfig</a>
+</li>
+<li >
+  <a href="/docs/setup/guice">Guice</a>
+</li>
+<li >
+  <a href="/docs/setup/spring">Spring</a>
+</li>
+<li >
+  <a href="/docs/setup/activerecord">Active Record</a>
+</li>
+<li >
+  <a href="/docs/setup/dbmigration">DB Migration</a>
+</li>
+<li class="active">
+  <a href="/docs/setup/testing">Testing</a>
+<ul class="nav">
+  <li><a href="#test-properties">test-ebean.properties</a></li>
+  <li><a href="#mockibean">MockiEbean</a></li>
+</ul>
+</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+</div>
+
+<footer id="footer">
+ <div class="doc-footer">
+  <ul class="doc-footer-links">
+    <li><a href="/">Ebean ORM</a></li>
+    <li> | </li>
+    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    <li> | </li>
+    <li><a href="/websitegenerator/index">Website Generator</a></li>
+    <li> | </li>
+    <li><a href="/jetty/index">Jetty Runnable War</a></li>
+  </ul>
+ </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+  <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+
+  </body>
+</html>

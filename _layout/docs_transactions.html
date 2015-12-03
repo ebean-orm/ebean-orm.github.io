@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a>  </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/transactions">Transactions</a>  </h1>
   </div>
 </div>
 
@@ -63,140 +63,42 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-
       <div id="layout-body"></div>
-
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/introduction">Introduction</a>
-</li>
-<li >
-  <a href="/docs/enhancement">Enhancement</a>
-</li>
-<li >
-  <a href="/docs/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/serverconfig">ServerConfig</a>
-</li>
-<li >
-  <a href="/docs/guice">Guice</a>
-</li>
-<li >
-  <a href="/docs/spring">Spring</a>
-</li>
-<li >
-  <a href="/docs/activerecord">Active Record</a>
-</li>
-<li >
-  <a href="/docs/dbmigration">DB Migration</a>
-</li>
-<li >
-  <a href="/docs/testing">Testing</a>
-</li>
-<li >
-  <a href="/docs/query-overview">Query Overview</a>
-</li>
-<li >
-  <a href="/docs/query-nplus1">Query N + 1</a>
-</li>
-<li >
-  <a href="/docs/query-partialobjects">Query Partial Objects</a>
-</li>
-<li >
-  <a href="/docs/query-autotune">Query Automatic Tuning</a>
-</li>
-<li >
-  <a href="/docs/query-typesafe">Query Type Safety</a>
-</li>
-<li >
-  <a href="/docs/queries">Queries</a>
-</li>
-<li >
-  <a href="/docs/persisting">Persisting</a>
-</li>
-<li >
-  <a href="/docs/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-<li >
-  <a href="/docs/json">JSON</a>
-</li>
-<li >
-  <a href="/docs/json-in-db">JSON in DB</a>
-</li>
-<li >
-  <a href="/docs/eventlisteners">Event listening</a>
-</li>
+<!-- FREEMARKER ERROR MESSAGE STARTS HERE --><!-- ]]> --><script language=javascript>//"></script><script language=javascript>//'></script><script language=javascript>//"></script><script language=javascript>//'></script></title></xmp></script></noscript></style></object></head></pre></table></form></table></table></table></a></u></i></b><div align='left' style='background-color:#FFFF7C; display:block; border-top:double; padding:4px; margin:0; font-family:Arial,sans-serif; color:#A80000; font-size:12px; font-style:normal; font-variant:normal; font-weight:normal; text-decoration:none; text-transform: none'><b style='font-size:12px; font-style:normal; font-weight:bold; text-decoration:none; text-transform: none;'>FreeMarker template error</b><pre style='display:block; background: none; border: 0; margin:0; padding: 0;font-family:monospace; color:#A80000; font-size:12px; font-style:normal; font-variant:normal; font-weight:normal; text-decoration:none; text-transform: none; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;'>
 
-<li >
-  <a href="/docs/readauditing">Read Auditing</a>
-</li>
-<li >
-  <a href="/docs/changelog">Change Log</a>
-</li>
-<li >
-  <a href="/docs/history">History</a>
-</li>
-<li >
-  <a href="/docs/draftable">Draftable</a>
-</li>
-<li >
-  <a href="/docs/l2caching">L2 caching</a>
-</li>
-<li >
-  <a href="/docs/jvmlanguages">JVM Languages</a>
-</li>
+Error reading included file "_layout/_docs_nav_transactions.ftl":
+Template "_layout/_docs_nav_transactions.ftl" not found.
 
-<li >
-  <a href="/docs/clustering">Clustering</a>
-</li>
-<li >
-  <a href="/docs/monitoring">Monitoring</a>
-</li>
-<li >
-  <a href="/docs/architecture/persistence-context">Architecture</a>
-</li>
-        </ul>
-      </nav>
-    </div>
-  </div>
+The failing instruction (FTL stack trace):
+----------
+==> #include "/_layout/_docs_nav_transact...  [in template "_layout/docs_transactions.html" at line 79, column 9]
+----------
 
-</div>
-<!-- /.row -->
-</div>  <!-- /.container -->
-  </div>
-</div>
+Java stack trace (for programmers):
+----------
+freemarker.core._MiscTemplateException: [... Exception message was already printed; see it above ...]
+	at freemarker.core.Include.accept(Include.java:168)
+	at freemarker.core.Environment.visit(Environment.java:265)
+	at freemarker.core.MixedContent.accept(MixedContent.java:93)
+	at freemarker.core.Environment.visit(Environment.java:265)
+	at freemarker.core.Environment.process(Environment.java:243)
+	at freemarker.template.Template.process(Template.java:277)
+	at org.avaje.website.generator.TemplateRender.render(TemplateRender.java:83)
+	at org.avaje.website.generator.SiteWatchRender.processFile(SiteWatchRender.java:187)
+	at org.avaje.website.generator.SiteWatchRender.access$100(SiteWatchRender.java:23)
+	at org.avaje.website.generator.SiteWatchRender$Callback.event(SiteWatchRender.java:61)
+	at org.avaje.website.generator.WatchDir.processEvents(WatchDir.java:156)
+	at org.avaje.website.generator.SiteWatchRender.run(SiteWatchRender.java:79)
+	at org.avaje.website.generator.Main.main(Main.java:59)
+Caused by: java.io.FileNotFoundException: Template "_layout/_docs_nav_transactions.ftl" not found.
+	at freemarker.template.Configuration.getTemplate(Configuration.java:742)
+	at freemarker.core.Environment.getTemplateForInclusion(Environment.java:1694)
+	at freemarker.core.Include.accept(Include.java:159)
+	... 12 more
 
-<footer id="footer">
- <div class="doc-footer">
-  <ul class="doc-footer-links">
-    <li><a href="/">Ebean ORM</a></li>
-    <li> | </li>
-    <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    <li> | </li>
-    <li><a href="/websitegenerator/index">Website Generator</a></li>
-    <li> | </li>
-    <li><a href="/jetty/index">Jetty Runnable War</a></li>
-  </ul>
- </div>
-</footer>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-  <script src="/js/json2.js"></script>
-  <script src="/js/jquery.cookie.min.js"></script>
-  <script src="/js/jquery.storageapi.min.js"></script>
-
-  <script src="/js/ebean-site.js"></script>
-
-  </body>
-</html>
+</pre></div></html>
