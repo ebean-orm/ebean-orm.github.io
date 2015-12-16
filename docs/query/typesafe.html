@@ -314,7 +314,7 @@
 
   </div>
 
-  <h4>typequery-maven-plugin</h4>
+  <h4>querybean-maven-plugin</h4>
   <p>
     You can configure the maven plugin to perform compile time enhancement.
   </p>
@@ -455,7 +455,8 @@
 
   </p>
   <h4>Example</h4>
-<div class="syntax java"><div class="highlight"><pre>  <span class="k">new</span> <span class="nf">QCustomer</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="nf">QCustomer</span><span class="o">()</span>
     <span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
     <span class="o">.</span><span class="na">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
@@ -581,7 +582,7 @@
     <code>GeneratorConfig</code> is configured to know where the classes are, where the source
     code should go and the package containing the entity beans.
   </p>
-                          
+
 <div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.generator.Generator</span><span class="o">;</span>
