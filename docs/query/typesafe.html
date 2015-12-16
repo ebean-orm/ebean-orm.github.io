@@ -54,7 +54,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/query">Query</a> / Query Type Safe </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/query">Query</a> / Type safe queries (Query Beans) </h1>
   </div>
 </div>
 
@@ -86,9 +86,81 @@
   </p>
 
   <h2 id="dependencies">Dependencies</h2>
-  <h4>avaje-ebeanorm-typequery</h4>
+
+  <h4>querybean-generator</h4>
   <p>
-    You need to add <code>avaje-ebeanorm-typequery</code> as a dependency. This provides the property
+    Query bean generator is a Java annotation processor so you add it as a dependency and then javac
+    will automatically register it and whenever a entity is compiled the associated query beans are
+    generated.
+  </p>
+  <p>
+    If the dependency is added with <code>provided</code> scope then the generator itself will not
+    be included in the final build artifact.
+  </p>
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='querybean-generator-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;querybean-generator&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='querybean-generator-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;querybean-generator&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='querybean-generator-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:querybean-generator:<span class='querybean-generator-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:querybean-generator:<span class='querybean-generator-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT1">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;querybean-generator&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='querybean-generator-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen1">
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/querybean-generator &quot;<span class='querybean-generator-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <h4>avaje-ebeanorm-querybean</h4>
+  <p>
+    We need to add <code>avaje-ebeanorm-querybean</code> as a dependency. This provides the property
     types for the generated <code>query beans</code>.
   </p>
 
@@ -110,40 +182,40 @@
       <div role="tabpanel" class="tab-pane active" id="Maven1">
 <div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-typequery<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-typequery-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-querybean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-querybean-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-typequery&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-typequery-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-querybean&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-querybean-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape1">
 <div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-typequery&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-typequery-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-querybean&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-querybean-version'>${version}</span>&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery:<span class='avaje-ebeanorm-typequery-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-querybean:<span class='avaje-ebeanorm-querybean-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery:<span class='avaje-ebeanorm-typequery-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-querybean:<span class='avaje-ebeanorm-querybean-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-typequery&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-typequery-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-querybean&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-querybean-version'>${version}</span>&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-typequery &quot;<span class='avaje-ebeanorm-typequery-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-querybean &quot;<span class='avaje-ebeanorm-querybean-version'>${version}</span>&quot;]
 </pre></div>
 </div>
       </div>
@@ -152,78 +224,12 @@
 
   </div>
 
-  <h4>avaje-ebeanorm-typequery-generator</h4>
-  <p>
-    You need to add a <code>test</code> scope dependency for <code>avaje-ebeanorm-typequery-generator</code>.
-    This contains the <code>org.avaje.ebean.typequery.generator.Generator</code> which is used to read the
-    entity bean meta data (properties, types etc) and generate the <code>query beans</code>.
-  </p>
-
-
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven1">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-typequery-generator<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-typequery-generator-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-typequery-generator&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-typequery-generator&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-generator:<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-generator:<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-typequery-generator&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-typequery-generator &quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
-
-
-  </div>
 
   <h2 id="enhancement">Enhancement</h2>
   <p>
     The <code>query beans</code> have been designed so for maximum readability of the query code. That is,
     some type safe query mechanisms achieve the type safety goal but in doing so result in query code that
-    is virtually unreadable.
+    is virtually unreadable and we specifically want to avoid that issue.
   </p>
   <p>
     Ebean's type safe query mechanism results in very readable queries with the downside that it requires
@@ -236,15 +242,15 @@
     for Eclipse) as well as the standard javaagent and maven plugin for load time and compile time enhancement.
   </p>
 
-  <h4>IDEA Type Query Plugin</h4>
+  <h4>IDEA Query bean plugin</h4>
   <p>
-    In IntelliJ install the <code>Ebean ORM Type Query Enhancer</code> plugin. It should then appear as an
+    In IntelliJ install the <code>Ebean ORM Query bean enhancer</code> plugin. It should then appear as an
     extra item on the <code>Build menu</code> where it can be toggled on and off.
   </p>
 
-  <h4>avaje-ebeanorm-typequery-agent</h4>
+  <h4>querybean-agent</h4>
   <p>
-    You use the <code>avaje-ebeanorm-typequery-agent</code> if you want to use the standard <code>javaagent</code>
+    You use the <code>querybean-agent</code> if you want to use the standard <code>javaagent</code>
     mechanism to enhance the <code>query beans</code>.
   </p>
 
@@ -266,40 +272,40 @@
       <div role="tabpanel" class="tab-pane active" id="Maven1">
 <div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-typequery-agent<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-typequery-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-agent<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='querybean-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-typequery-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;querybean-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='querybean-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape1">
 <div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-typequery-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;querybean-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='querybean-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-agent:<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:querybean-agent:<span class='querybean-agent-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-agent:<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:querybean-agent:<span class='querybean-agent-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-typequery-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;querybean-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='querybean-agent-version'>${version}</span>&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-typequery-agent &quot;<span class='avaje-ebeanorm-typequery-agent-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/querybean-agent &quot;<span class='querybean-agent-version'>${version}</span>&quot;]
 </pre></div>
 </div>
       </div>
@@ -315,8 +321,8 @@
 
   <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;plugin&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>typequery-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span>1.5.1<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>querybean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.1.1<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;executions&gt;</span>
       <span class="c">&lt;!-- enhance code --&gt;</span>
       <span class="nt">&lt;execution&gt;</span>
@@ -347,58 +353,16 @@
 </pre></div>
 </div>
 
-  <h2 id="generation">Query bean generation</h2>
+  <h2 id="generation">Generation</h2>
   <p>
-    To generate the <code>query beans</code> add code similar to below to your <code>src/test</code>.
-    The Generator reads compiled <code>.class</code> entity beans using the <code>ASM</code> library.
-    It then uses this meta data to generate java source for the <code>query beans</code>.
+    Once the dependency to querybean-generator is added the query beans will be generated
+    automatically whenever javac compile occurs.
   </p>
   <p>
-    The generation is done in this way rather than using <code>javac</code> annotation processing as
-    it means there is no requirement for javac - you can use any JVM language to write/compile your
-    entity beans including <code>Kotlin</code> and <code>Scala</code>. It also makes it easy/low tech
-    to configure the code generation and execution is just a manor of running the <code>main()</code>
-    method.
+    Note that along with generating query beans the generator generates
+    a manifest file at: <code>META-INF/ebean-typequery.mf</code>
   </p>
-  <p>
-    The requirement of this approach is that entity beans are compiled as .class files and that
-    <code>GeneratorConfig</code> is configured to know where the classes are, where the source
-    code should go and the package containing the entity beans.
-  </p>
-<div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.generator.Generator</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.generator.GeneratorConfig</span><span class="o">;</span>
-
-<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Generate type query beans for each entity bean.</span>
-<span class="cm"> */</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainQueryBeanGenerator</span> <span class="o">{</span>
-
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
-
-    <span class="n">GeneratorConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GeneratorConfig</span><span class="o">();</span>
-    <span class="c1">//config.setClassesDirectory(&quot;./target/classes&quot;);</span>
-    <span class="c1">//config.setDestDirectory(&quot;./src/main/java&quot;);</span>
-    <span class="c1">//config.setDestResourceDirectory(&quot;./src/main/resources&quot;);</span>
-
-    <span class="n">config</span><span class="o">.</span><span class="na">setEntityBeanPackage</span><span class="o">(</span><span class="s">&quot;org.example.domain&quot;</span><span class="o">);</span>
-    <span class="c1">//config.setDestPackage(&quot;org.example.domain.query&quot;);</span>
-
-    <span class="c1">//config.setOverwriteExistingFinders(true);</span>
-
-    <span class="n">Generator</span> <span class="n">generator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Generator</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-    <span class="n">generator</span><span class="o">.</span><span class="na">generateQueryBeans</span><span class="o">();</span>
-
-    <span class="c1">// Additionally generate &#39;finder&#39;s</span>
-    <span class="c1">//generator.generateFinders();</span>
-    <span class="c1">//generator.modifyEntityBeansAddFinderField();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-</div>
 
   <h2 id="query-beans">Query beans</h2>
   <p>
@@ -593,6 +557,66 @@
     <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
+
+
+
+  <hr/>
+
+  <h2 id="manual-generation"><b>ALTERNATE STYLE</b> - Manual Query bean generation</h2>
+  <p>
+    There is a mechanism to generate query beans via running code (not via javac annotation processing).
+  </p>
+  <p>
+    To generate the <code>query beans</code> add code similar to below to your <code>src/test</code>.
+    The Generator reads compiled <code>.class</code> entity beans using the <code>ASM</code> library.
+    It then uses this meta data to generate java source for the <code>query beans</code>.
+  </p>
+  <p>
+    Using this approach rather than using <code>javac</code> annotation processing means there is
+    no requirement for javac - you can use any JVM language to write/compile your
+    entity beans (so maybe <code>Scala</code> and SBT.
+  </p>
+  <p>
+    The requirement of this approach is that entity beans are compiled as .class files and that
+    <code>GeneratorConfig</code> is configured to know where the classes are, where the source
+    code should go and the package containing the entity beans.
+  </p>
+                          
+<div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.generator.Generator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.generator.GeneratorConfig</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Generate type query beans for each entity bean.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainQueryBeanGenerator</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+
+    <span class="n">GeneratorConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GeneratorConfig</span><span class="o">();</span>
+    <span class="c1">//config.setClassesDirectory(&quot;./target/classes&quot;);</span>
+    <span class="c1">//config.setDestDirectory(&quot;./src/main/java&quot;);</span>
+    <span class="c1">//config.setDestResourceDirectory(&quot;./src/main/resources&quot;);</span>
+
+    <span class="n">config</span><span class="o">.</span><span class="na">setEntityBeanPackage</span><span class="o">(</span><span class="s">&quot;org.example.domain&quot;</span><span class="o">);</span>
+    <span class="c1">//config.setDestPackage(&quot;org.example.domain.query&quot;);</span>
+
+    <span class="c1">//config.setOverwriteExistingFinders(true);</span>
+
+    <span class="n">Generator</span> <span class="n">generator</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Generator</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+    <span class="n">generator</span><span class="o">.</span><span class="na">generateQueryBeans</span><span class="o">();</span>
+
+    <span class="c1">// Additionally generate &#39;finder&#39;s</span>
+    <span class="c1">//generator.generateFinders();</span>
+    <span class="c1">//generator.modifyEntityBeansAddFinderField();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
 </div>
     </div>
 
@@ -617,9 +641,10 @@
   <li><a href="#overview">Overview</a></li>
   <li><a href="#dependencies">Dependencies</a></li>
   <li><a href="#enhancement">Enhancement</a></li>
-  <li><a href="#generation">Query bean generation</a></li>
+  <li><a href="#generation">Generation</a></li>
   <li><a href="#query-beans">Query beans</a></li>
   <li><a href="#query-examples">Query examples</a></li>
+  <li><a href="#manual-generation">Alternate manual generation</a></li>
 </ul>
 </li>
 <li >
