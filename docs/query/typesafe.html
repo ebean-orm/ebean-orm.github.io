@@ -71,12 +71,14 @@
 <div class="media ">
   <div class="media-left">
     <div class="media-left">
-    <img src="/images/movies-64-grey.png" width="64" height="64" >
+    <a href="https://youtu.be/VhMq270FmVg">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
     </div>
   </div>
   <div class="media-body">
     <h4 class="media-heading">Generation</h4>
-  How to generate query beans
+  Generating query beans (via java annotation processor)
   </div>
 </div>
     </div>
@@ -597,10 +599,73 @@
 
   <hr/>
 
-  <h2 id="manual-generation"><b>ALTERNATE STYLE</b> - Manual Query bean generation</h2>
+  <h2 id="manual-generation">Manual generation</h2>
   <p>
     There is a mechanism to generate query beans via running code (not via javac annotation processing).
+    This is manual in the sense that whenever there is a change to the entity beans we then need to
+    re-run this process (where as with the java annotation processor it is automatically updated with each
+    compile).
   </p>
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-typequery-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-typequery-generator-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy1">
+<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-typequery-generator&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-typequery-generator&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-generator:<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr1">
+<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-typequery-generator:<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT1">
+<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-typequery-generator&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen1">
+<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-typequery-generator &quot;<span class='avaje-ebeanorm-typequery-generator-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
   <p>
     To generate the <code>query beans</code> add code similar to below to your <code>src/test</code>.
     The Generator reads compiled <code>.class</code> entity beans using the <code>ASM</code> library.
@@ -616,6 +681,7 @@
     <code>GeneratorConfig</code> is configured to know where the classes are, where the source
     code should go and the package containing the entity beans.
   </p>
+
 
 <div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
 
@@ -679,7 +745,7 @@
   <li><a href="#generation">Generation</a></li>
   <li><a href="#query-beans">Query beans</a></li>
   <li><a href="#query-examples">Query examples</a></li>
-  <li><a href="#manual-generation">Alternate manual generation</a></li>
+  <li><a href="#manual-generation">Manual generation</a></li>
 </ul>
 </li>
 <li >
