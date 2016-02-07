@@ -186,14 +186,15 @@ The Customer entity bean...
 </div>
 
 The Order entity bean...
-...
-@Entity
-@Table(name="or_order")
-public class Order {
-  ...
-  @ManyToOne
-  Customer customer;
-
+<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nd">@ManyToOne</span>
+  <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
+</pre></div>
+</div>
 </p>
 <p>
 Because the @OneToMany and @ManyToOne are both mapped this is a
@@ -369,9 +370,10 @@ noted. These become inserts into and deletes from the intersection table.
   <span class="o">...</span>
   <span class="nd">@ManyToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Role</span><span class="o">&gt;</span> <span class="n">roles</span><span class="o">;</span>
-  <span class="nd">@Entity</span>
-  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_role&quot;</span><span class="o">)</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Role</span> <span class="o">{</span>
+  
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_role&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Role</span> <span class="o">{</span>
   <span class="o">...</span>
   <span class="nd">@ManyToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
