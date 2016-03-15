@@ -92,13 +92,94 @@
 
   <h2 id="createIndex">Create index</h2>
 
-  <h2 id="dropIndex">Drop index</h2>
+  <p>
+    Creates an index with the option of also creating an alias to map to the index.
+  </p>
+  <p>
+    This will load an associated mapping file as a resource from the class path.
+  </p>
 
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// create a new index without an alias</span>
+  <span class="c1">// ... the mapping is loaded from classpath as a resource</span>
+  <span class="n">documentStore</span><span class="o">.</span><span class="na">createIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+
+  
+</pre></div>
+</div>
+
+  <h2 id="dropIndex">Drop index</h2>
+  <p>
+    Drop a index.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">documentStore</span><span class="o">.</span><span class="na">dropIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
+  
+</pre></div>
+</div>
   <h2 id="copyIndex">Copy index</h2>
+  <p>
+    This does not hit the database but instead uses an ElasticSearch <code>scroll</code> query
+    to go through the ElasticSearch index and use the index source to send to the destination index.
+  </p>
+  <p>
+    This could be used as part of a devops index migration task.
+  </p>
+  <h4>Example: Copy index - All</h4>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// scroll the product index sending the source documents to &quot;product_copy&quot;</span>
+  <span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+
+  <h4>Example: Copy index - Query</h4>
+  <p>
+    You can specify a query filter such that only part of the index is copied.
+    This could be used to update an index with recent changes or to partition
+    a single index copy task into multiple tasks that could be executed in parallel.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;c&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+
+  <span class="kt">int</span> <span class="n">bulkBatchSize</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+  <span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="n">bulkBatchSize</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+
 
   <h2 id="indexAll">Index all</h2>
+  <p>
+    This uses the database as the "source" and will execute a <code>findEach</code> query to
+    iterate all the rows (ORM graphs actually) and index them.
+  </p>
+  <p>
+    This is expected to be more useful for testing and during development.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// query all countries and index them</span>
+  <span class="n">documentStore</span><span class="o">.</span><span class="na">indexAll</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  
+</pre></div>
+</div>
 
   <h2 id="indexByQuery">Index by query</h2>
+  <p>
+    This is similar to indexAll by using the database as the "source" and will execute a
+    <code>findEach</code> query to iterate all the rows (ORM graphs) and index them.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;C&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+
+    <span class="n">server</span><span class="o">.</span><span class="na">docStore</span><span class="o">().</span><span class="na">indexByQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
+  
+</pre></div>
+</div>
 
 </div>
     </div>
