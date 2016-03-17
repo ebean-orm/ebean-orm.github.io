@@ -158,7 +158,7 @@
     By default inserts are included. <code>ServerConfig.setChangeLogIncludeInserts(boolean)</code> can be used
     to control the default behaviour.  This can also be set via ebean.properties.
   </p>
-<div class="syntax properties"><div class="highlight"><pre>  <span class="na">ebean.changeLogIncludeInserts</span><span class="o">=</span><span class="s">false</span>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.changeLogIncludeInserts</span><span class="o">=</span><span class="s">false</span>
 </pre></div>
 </div>
 
@@ -167,31 +167,28 @@
   <p>
     Add <code>@ChangeLog</code> annotation to all the entity beans that should have change logging on.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="nd">@ChangeLog</span>
-  <span class="nd">@Entity</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Address</span> <span class="o">{</span>
-  <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@ChangeLog</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Address</span> <span class="o">{</span>
+<span class="o">...</span>
 
-  <span class="cm">/**</span>
-<span class="cm">   * Only include updates if specific properties are changed.</span>
-<span class="cm">   */</span>
-  <span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">updatesThatInclude</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="s">&quot;dateOfBirth&quot;</span><span class="o">})</span>
-  <span class="nd">@Entity</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
-  <span class="o">...</span>
-
-
-  <span class="cm">/**</span>
-<span class="cm">   * Override the default behaviour for inserts - INCLUDE, EXCLUDE or DEFAULT.</span>
-<span class="cm">   * In this case exclude inserts from the change log.</span>
-<span class="cm">   */</span>
-  <span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">inserts</span> <span class="o">=</span> <span class="n">ChangeLogInsertMode</span><span class="o">.</span><span class="na">EXCLUDE</span><span class="o">)</span>
-  <span class="nd">@Entity</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
-  <span class="o">...</span>
+<span class="cm">/**</span>
+<span class="cm"> * Only include updates if specific properties are changed.</span>
+<span class="cm"> */</span>
+<span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">updatesThatInclude</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="s">&quot;dateOfBirth&quot;</span><span class="o">})</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+<span class="o">...</span>
 
 
-  
+<span class="cm">/**</span>
+<span class="cm"> * Override the default behaviour for inserts - INCLUDE, EXCLUDE or DEFAULT.</span>
+<span class="cm"> * In this case exclude inserts from the change log.</span>
+<span class="cm"> */</span>
+<span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">inserts</span> <span class="o">=</span> <span class="n">ChangeLogInsertMode</span><span class="o">.</span><span class="na">EXCLUDE</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+<span class="o">...</span>
 </pre></div>
 </div>
   <h4>Step 3: Implement ChangeLogPrepare</h4>
@@ -211,30 +208,29 @@
     return false (and this means the change set is not passed to the ChangeLogListener in a background thread).
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="kd">class</span> <span class="nc">MyChangeLogPrepare</span> <span class="kd">implements</span> <span class="n">ChangeLogPrepare</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">MyChangeLogPrepare</span> <span class="kd">implements</span> <span class="n">ChangeLogPrepare</span> <span class="o">{</span>
 
-    <span class="nd">@Override</span>
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">prepare</span><span class="o">(</span><span class="n">ChangeSet</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">prepare</span><span class="o">(</span><span class="n">ChangeSet</span> <span class="n">changes</span><span class="o">)</span> <span class="o">{</span>
 
-      <span class="c1">// get user context information typically from a</span>
-      <span class="c1">// ThreadLocal or similar mechanism</span>
+    <span class="c1">// get user context information typically from a</span>
+    <span class="c1">// ThreadLocal or similar mechanism</span>
 
-      <span class="n">String</span> <span class="n">currentUserId</span> <span class="o">=</span> <span class="o">...;</span>
-      <span class="n">changes</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="n">currentUserId</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">currentUserId</span> <span class="o">=</span> <span class="o">...;</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="n">currentUserId</span><span class="o">);</span>
 
-      <span class="n">String</span> <span class="n">userIpAddress</span> <span class="o">=</span> <span class="o">...;</span>
-      <span class="n">changes</span><span class="o">.</span><span class="na">setUserIpAddress</span><span class="o">(</span><span class="n">userIpAddress</span><span class="o">);</span>
+    <span class="n">String</span> <span class="n">userIpAddress</span> <span class="o">=</span> <span class="o">...;</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">setUserIpAddress</span><span class="o">(</span><span class="n">userIpAddress</span><span class="o">);</span>
 
-      <span class="n">changes</span><span class="o">.</span><span class="na">setSource</span><span class="o">(</span><span class="s">&quot;myApplicationName&quot;</span><span class="o">);</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">setSource</span><span class="o">(</span><span class="s">&quot;myApplicationName&quot;</span><span class="o">);</span>
 
-      <span class="c1">// add arbitrary user context information to the</span>
-      <span class="c1">// userContext map</span>
-      <span class="n">changes</span><span class="o">.</span><span class="na">getUserContext</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;some&quot;</span><span class="o">,</span> <span class="s">&quot;thing&quot;</span><span class="o">);</span>
+    <span class="c1">// add arbitrary user context information to the</span>
+    <span class="c1">// userContext map</span>
+    <span class="n">changes</span><span class="o">.</span><span class="na">getUserContext</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;some&quot;</span><span class="o">,</span> <span class="s">&quot;thing&quot;</span><span class="o">);</span>
 
-      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
   <span class="o">}</span>
-  
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -253,20 +249,18 @@
     with the ServerConfig.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// example code explicitly registering the ChangeLogPrepare implementation</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// example code explicitly registering the ChangeLogPrepare implementation</span>
 
-  <span class="n">MyChangeLogPrepare</span> <span class="n">changeLogPrepare</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">MyChangeLogPrepare</span> <span class="n">changeLogPrepare</span> <span class="o">=</span> <span class="o">...;</span>
 
-  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-  <span class="o">...</span>
-  <span class="c1">// register explicitly here</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setChangeLogPrepare</span><span class="o">(</span><span class="n">changeLogPrepare</span><span class="o">);</span>
+<span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="o">...</span>
+<span class="c1">// register explicitly here</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setChangeLogPrepare</span><span class="o">(</span><span class="n">changeLogPrepare</span><span class="o">);</span>
 
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-  <span class="o">...</span>
-
-  
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="o">...</span>
 </pre></div>
 </div>
 
@@ -282,24 +276,22 @@
     Below in logback xml configuration an appender <code>CHANGE_LOG</code> for logging the change events
     to this separate log.
   </p>
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration: separate logger for the change log --&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration: separate logger for the change log --&gt;</span>
 
-  <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;CHANGE_LOG&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;File&gt;</span>log/changeLog.log<span class="nt">&lt;/File&gt;</span>
-    <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;FileNamePattern&gt;</span>log/changeLog.log.%d{yyyy-MM-dd}<span class="nt">&lt;/FileNamePattern&gt;</span>
-      <span class="nt">&lt;MaxHistory&gt;</span>90<span class="nt">&lt;/MaxHistory&gt;</span>
-    <span class="nt">&lt;/rollingPolicy&gt;</span>
-    <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %msg%n<span class="nt">&lt;/pattern&gt;</span>
-    <span class="nt">&lt;/encoder&gt;</span>
-  <span class="nt">&lt;/appender&gt;</span>
+<span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;CHANGE_LOG&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;File&gt;</span>log/changeLog.log<span class="nt">&lt;/File&gt;</span>
+  <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;FileNamePattern&gt;</span>log/changeLog.log.%d{yyyy-MM-dd}<span class="nt">&lt;/FileNamePattern&gt;</span>
+    <span class="nt">&lt;MaxHistory&gt;</span>90<span class="nt">&lt;/MaxHistory&gt;</span>
+  <span class="nt">&lt;/rollingPolicy&gt;</span>
+  <span class="nt">&lt;encoder</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.classic.encoder.PatternLayoutEncoder&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %msg%n<span class="nt">&lt;/pattern&gt;</span>
+  <span class="nt">&lt;/encoder&gt;</span>
+<span class="nt">&lt;/appender&gt;</span>
 
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ChangeLog&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;CHANGE_LOG&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;/logger&gt;</span>
-
-  
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ChangeLog&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;CHANGE_LOG&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/logger&gt;</span>
 </pre></div>
 </div>
 
@@ -375,6 +367,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -382,10 +375,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

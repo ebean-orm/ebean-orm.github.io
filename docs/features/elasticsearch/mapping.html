@@ -110,7 +110,7 @@
     We add the <code>@DocStore</code> annotation on each entity we want to map into an ElasticSearch
     index.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// Store contact in ElasticSearch</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Store contact in ElasticSearch</span>
 <span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="o">{</span>
@@ -130,7 +130,7 @@
     ones to include via <code>doc</code>.
   </p>
   <h5>Example: Only index some properties</h5>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;firstName, lastName, email&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;firstName, lastName, email&quot;</span><span class="o">)</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="o">{</span>
 <span class="o">...</span>
@@ -153,7 +153,7 @@
     Embedded the customer id, name into the contact index.
   </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="o">{</span>
 
@@ -170,7 +170,7 @@
     Embed some customer details (customer id and name).
     Embed the order details (as ElasticSearch "nested" property as it is a @OneToMany).
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
 
@@ -190,7 +190,7 @@
     Embed more customer details including the nested billingAddress and billingAddress.country.
     Embed more order details including the nested product with id, sku and name.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
 
@@ -227,7 +227,7 @@
   <p>
     We want to treat product sku values as literal codes (not analysed).
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="o">{</span>
 
@@ -244,7 +244,7 @@
   <p>
     @DocCode properties are mapped as not analyzed.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="s">&quot;properties&quot;</span> <span class="o">:</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="s">&quot;properties&quot;</span> <span class="o">:</span> <span class="o">{</span>
   <span class="s">&quot;sku&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;string&quot;</span><span class="o">,</span> <span class="s">&quot;index&quot;</span><span class="o">:</span> <span class="s">&quot;not_analyzed&quot;</span> <span class="o">},</span>
   <span class="o">...</span>
 </pre></div>
@@ -267,7 +267,7 @@
   <p>
     We want to be able to sort on customer name.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
 
@@ -281,7 +281,7 @@
   <p>
     We want to be able to sort on product name (and we can sort on product sku as it's a code).
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="o">{</span>
 
@@ -296,7 +296,7 @@
   <p>
     @DocSortable properties are mapped with additional "raw" not analyzed field.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="s">&quot;properties&quot;</span> <span class="o">:</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="s">&quot;properties&quot;</span> <span class="o">:</span> <span class="o">{</span>
   <span class="s">&quot;name&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;string&quot;</span><span class="o">,</span> <span class="s">&quot;fields&quot;</span><span class="o">:</span> <span class="o">{</span>
             <span class="s">&quot;raw&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;string&quot;</span><span class="o">,</span> <span class="s">&quot;index&quot;</span><span class="o">:</span> <span class="s">&quot;not_analyzed&quot;</span> <span class="o">}</span> <span class="o">}</span> <span class="o">},</span>
   <span class="o">...</span>
@@ -308,14 +308,14 @@
     When you write an Ebean query and specify an order by clause Ebean will automatically
     translate the order by clause to use the associated 'raw' field is one is defined.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
    <h5>Elastic query:</h5>
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// name.raw used automatically for sort order</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// name.raw used automatically for sort order</span>
 <span class="o">{</span><span class="s">&quot;sort&quot;</span><span class="o">:[{</span><span class="s">&quot;name.raw&quot;</span><span class="o">:{</span><span class="s">&quot;order&quot;</span><span class="o">:</span><span class="s">&quot;asc&quot;</span><span class="o">}}],</span><span class="s">&quot;query&quot;</span><span class="o">:{</span><span class="s">&quot;match_all&quot;</span><span class="o">:{}}}</span>
 </pre></div>
 </div>
@@ -329,14 +329,14 @@
      Similarly "Greater than", "Less than", "Greater than or equal to" and "Less than or equal to"
      also translate into range queries that also use the "raw" field when available.
    </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">products</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="s">&quot;Chair&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
    <h5>Elastic query:</h5>
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// name.raw used automatically for &#39;term&#39; expression</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// name.raw used automatically for &#39;term&#39; expression</span>
 <span class="o">{</span><span class="s">&quot;query&quot;</span><span class="o">:{</span><span class="s">&quot;filtered&quot;</span><span class="o">:{</span><span class="s">&quot;filter&quot;</span><span class="o">:{</span><span class="s">&quot;term&quot;</span><span class="o">:{</span><span class="s">&quot;name.raw&quot;</span><span class="o">:</span><span class="s">&quot;Chair&quot;</span><span class="o">}}}}}</span>
 </pre></div>
 </div>
@@ -366,7 +366,7 @@
     <code>@DocProperty</code> can be put on a property or on the <code>@DocStore mapping</code> attribute
     and mappings here effectively override any existing property mappings.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@DocStore</span><span class="o">(</span><span class="n">mapping</span> <span class="o">=</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span><span class="o">(</span><span class="n">mapping</span> <span class="o">=</span> <span class="o">{</span>
   <span class="nd">@DocMapping</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;description&quot;</span><span class="o">,</span>
     <span class="n">options</span> <span class="o">=</span> <span class="nd">@DocProperty</span><span class="o">(</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)),</span>
   <span class="nd">@DocMapping</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;notes&quot;</span><span class="o">,</span>
@@ -454,6 +454,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -461,10 +462,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

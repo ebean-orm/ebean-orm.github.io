@@ -124,32 +124,31 @@
         Use standard JPA Mapping annotations - @Entity, @Table, @Id etc.
       </p>
 
-      <div class="syntax java"><div class="highlight"><pre>      <span class="cm">/**</span>
-<span class="cm">      * Use standard JPA Mapping annotations.</span>
-<span class="cm">      */</span>
-      <span class="nd">@Entity</span>
-      <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;o_customer&quot;</span><span class="o">)</span>
-      <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+      <div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* Use standard JPA Mapping annotations.</span>
+<span class="cm">*/</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;o_customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
 
-      <span class="nd">@Id</span>
-      <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+<span class="nd">@Id</span>
+<span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
 
-      <span class="nd">@Version</span>
-      <span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
+<span class="nd">@Version</span>
+<span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
 
-      <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
-      <span class="nd">@ManyToOne</span>
-      <span class="n">Address</span> <span class="n">address</span><span class="o">;</span>
+<span class="nd">@ManyToOne</span>
+<span class="n">Address</span> <span class="n">address</span><span class="o">;</span>
 
-      <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
-      <span class="n">List</span>
-      <span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span><span class="o">;</span>
+<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="n">List</span>
+<span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span><span class="o">;</span>
 
-        <span class="c1">// getters and setters</span>
+  <span class="c1">// getters and setters</span>
 
-        <span class="o">}</span>
-        
+  <span class="o">}</span>
 </pre></div>
 </div>
 
@@ -162,51 +161,45 @@
         </p>
 
         <h4>Example - find by id:</h4>
-        <div class="syntax java"><div class="highlight"><pre>        <span class="nd">@Inject</span>
-        <span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
-        <span class="o">...</span>
+        <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Inject</span>
+<span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
+<span class="o">...</span>
 
-        <span class="c1">// find customer by id</span>
-        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">customerId</span><span class="o">);</span>
-        
+<span class="c1">// find customer by id</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">customerId</span><span class="o">);</span>
 </pre></div>
 </div>
 
         <h4>Example:</h4>
-        <div class="syntax java"><div class="highlight"><pre>        <span class="nd">@Inject</span>
-        <span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
-        <span class="o">...</span>
+        <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Inject</span>
+<span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
+<span class="o">...</span>
 
-        <span class="c1">// find orders for a customer</span>
-        <span class="c1">// shipped since last week</span>
-        <span class="n">List</span>
-        <span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
-          <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-          <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="n">customerId</span><span class="o">)</span> <span class="c1">// eq = equal to</span>
-          <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;shipDate&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span> <span class="c1">// gt = greater than</span>
-          <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-
-          
+<span class="c1">// find orders for a customer</span>
+<span class="c1">// shipped since last week</span>
+<span class="n">List</span>
+<span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="n">customerId</span><span class="o">)</span> <span class="c1">// eq = equal to</span>
+  <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;shipDate&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span> <span class="c1">// gt = greater than</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
           <h4>Example:</h4>
-          <div class="syntax java"><div class="highlight"><pre>          <span class="c1">// find new customers with a name like rob%</span>
-          <span class="c1">// .. only fetch their name and status</span>
-          <span class="n">List</span>
-          <span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-            <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-            <span class="c1">// just fetch the properties you need</span>
-            <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, status&quot;</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-
-
-            
+          <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find new customers with a name like rob%</span>
+<span class="c1">// .. only fetch their name and status</span>
+<span class="n">List</span>
+<span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="c1">// just fetch the properties you need</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, status&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -218,37 +211,33 @@
 
 
             <h4>Example insert:</h4>
-            <div class="syntax java"><div class="highlight"><pre>            <span class="nd">@Inject</span>
-            <span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
-            <span class="o">...</span>
+            <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Inject</span>
+<span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
+<span class="o">...</span>
 
-            <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-            <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
-            <span class="n">customer</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">);</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">);</span>
 
-            <span class="c1">// inserts the customer</span>
-            <span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-
-            
+<span class="c1">// inserts the customer</span>
+<span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
 </pre></div>
 </div>
 
 
             <h4>Example update/delete:</h4>
-            <div class="syntax java"><div class="highlight"><pre>            <span class="nd">@Inject</span>
-            <span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
-            <span class="o">...</span>
+            <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Inject</span>
+<span class="n">EbeanServer</span> <span class="n">server</span><span class="o">;</span>
+<span class="o">...</span>
 
-            <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">customerId</span><span class="o">);</span>
-            <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Person formally known as Rob&quot;</span><span class="o">);</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">customerId</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Person formally known as Rob&quot;</span><span class="o">);</span>
 
-            <span class="c1">// update</span>
-            <span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+<span class="c1">// update</span>
+<span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
 
-            <span class="c1">// delete</span>
-            <span class="n">server</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-
-            
+<span class="c1">// delete</span>
+<span class="n">server</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -504,6 +493,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -511,10 +501,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

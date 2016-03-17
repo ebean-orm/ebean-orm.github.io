@@ -89,7 +89,7 @@
     <li>@PreUpdate</li>
   </ul>
 
-<div class="syntax java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">javax.persistence.PostLoad</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">javax.persistence.PostLoad</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javax.persistence.PostPersist</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javax.persistence.PostRemove</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">javax.persistence.PostUpdate</span><span class="o">;</span>
@@ -160,7 +160,7 @@
 
 <p>Note that getTransaction() on the PersistRequest returns the transaction used for the insert, update, delete or fetch. To explicitly use this same transaction you should use this transaction via methods on EbeanServer.</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Object</span> <span class="n">extaBeanToSave</span> <span class="o">=</span> <span class="o">...;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Object</span> <span class="n">extaBeanToSave</span> <span class="o">=</span> <span class="o">...;</span>
 <span class="n">Transaction</span> <span class="n">t</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">();</span>
 <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getEbeanServer</span><span class="o">();</span>
 <span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">extraBeanToSave</span><span class="o">,</span> <span class="n">t</span><span class="o">);</span>
@@ -286,6 +286,7 @@ BeanPersistListener can be notified of events from other servers in a cluster.</
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -293,10 +294,6 @@ BeanPersistListener can be notified of events from other servers in a cluster.</
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

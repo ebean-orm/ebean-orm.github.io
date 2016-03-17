@@ -140,7 +140,7 @@
     This JsonContext then provides various methods for marshalling/unmarshalling JSON to and from
     entity beans.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">jsonWithUnknown</span> <span class="o">=</span> <span class="s">&quot;{\&quot;id\&quot;:42, \&quot;unknownProp\&quot;:\&quot;foo\&quot;, \&quot;name\&quot;:\&quot;rob\&quot;, \&quot;version\&quot;:1}&quot;</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">jsonWithUnknown</span> <span class="o">=</span> <span class="s">&quot;{\&quot;id\&quot;:42, \&quot;unknownProp\&quot;:\&quot;foo\&quot;, \&quot;name\&quot;:\&quot;rob\&quot;, \&quot;version\&quot;:1}&quot;</span><span class="o">;</span>
 
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">json</span><span class="o">().</span><span class="na">toBean</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">jsonWithUnknown</span><span class="o">);</span>
 <span class="n">assertEquals</span><span class="o">(</span><span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mi">42</span><span class="o">),</span> <span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
@@ -215,6 +215,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -222,10 +223,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

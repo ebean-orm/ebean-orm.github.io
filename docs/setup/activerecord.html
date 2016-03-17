@@ -207,7 +207,7 @@
 
 
   <h4>Example: extend Model</h4>
-<div class="syntax java"><div class="highlight"><pre><span class="cm">/**</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Extend Model to get the save(), delete() etc</span>
 <span class="cm"> * methods on the bean itself (active record style).</span>
 <span class="cm"> */</span>
@@ -229,11 +229,10 @@
 </div>
 
   <h4>Example: save()</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
 
-  <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
-  
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -248,29 +247,25 @@
 
 
   <h4>Example: find by id</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
 </pre></div>
 </div>
 
   <h4>Example: get reference</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
 </pre></div>
 </div>
 
   <h4>Example: delete by id</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">deleteById</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">deleteById</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
 </pre></div>
 </div>
 
   <h4>Example: find where</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-      <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
-          <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+    <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+        <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -330,6 +325,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -337,10 +333,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

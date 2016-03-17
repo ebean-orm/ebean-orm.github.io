@@ -126,11 +126,9 @@
     This will load an associated mapping file as a resource from the class path.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// create a new index without an alias</span>
-  <span class="c1">// ... the mapping is loaded from classpath as a resource</span>
-  <span class="n">documentStore</span><span class="o">.</span><span class="na">createIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// create a new index without an alias</span>
+<span class="c1">// ... the mapping is loaded from classpath as a resource</span>
+<span class="n">documentStore</span><span class="o">.</span><span class="na">createIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -139,8 +137,7 @@
     Drop a index.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">documentStore</span><span class="o">.</span><span class="na">dropIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">documentStore</span><span class="o">.</span><span class="na">dropIndex</span><span class="o">(</span><span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
   <h2 id="copyIndex">Copy index</h2>
@@ -152,9 +149,8 @@
     This could be used as part of a devops index migration task.
   </p>
   <h4>Example: Copy index - All</h4>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// scroll the product index sending the source documents to &quot;product_copy&quot;</span>
-  <span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// scroll the product index sending the source documents to &quot;product_copy&quot;</span>
+<span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -164,15 +160,14 @@
     This could be used to update an index with recent changes or to partition
     a single index copy task into multiple tasks that could be executed in parallel.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
-    <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;c&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;c&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">query</span><span class="o">();</span>
 
-  <span class="kt">int</span> <span class="n">bulkBatchSize</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
-  <span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="n">bulkBatchSize</span><span class="o">);</span>
-  
+<span class="kt">int</span> <span class="n">bulkBatchSize</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+<span class="kt">long</span> <span class="n">docCount</span> <span class="o">=</span> <span class="n">documentStore</span><span class="o">.</span><span class="na">copyIndex</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="s">&quot;product_copy&quot;</span><span class="o">,</span> <span class="n">bulkBatchSize</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -186,9 +181,8 @@
     This is expected to be more useful for testing and during development.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// query all countries and index them</span>
-  <span class="n">documentStore</span><span class="o">.</span><span class="na">indexAll</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// query all countries and index them</span>
+<span class="n">documentStore</span><span class="o">.</span><span class="na">indexAll</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -197,14 +191,13 @@
     This is similar to indexAll by using the database as the "source" and will execute a
     <code>findEach</code> query to iterate all the rows (ORM graphs) and index them.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
-    <span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;C&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;C&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">query</span><span class="o">();</span>
 
-    <span class="n">server</span><span class="o">.</span><span class="na">docStore</span><span class="o">().</span><span class="na">indexByQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
-  
+  <span class="n">server</span><span class="o">.</span><span class="na">docStore</span><span class="o">().</span><span class="na">indexByQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -246,6 +239,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -253,10 +247,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

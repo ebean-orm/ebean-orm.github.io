@@ -192,25 +192,24 @@
   <p>The persistence context is sometimes described as the "first level cache" or L1 cache. I have also seen
     it described as the "transactional cache" in that it is most frequently scoped to a transaction.</p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// a new persistence context started with the transaction</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
-  <span class="k">try</span> <span class="o">{</span>
-    <span class="c1">// find &quot;order 72&quot; results in that instance being put</span>
-    <span class="c1">// into the persistence context</span>
-    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>
+<span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="c1">// find &quot;order 72&quot; results in that instance being put</span>
+  <span class="c1">// into the persistence context</span>
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
 
-    <span class="c1">// finds an existing &quot;order 72&quot; in the persistence context</span>
-    <span class="c1">// ... so just returns that instance</span>
-    <span class="n">Order</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
-    <span class="n">Order</span> <span class="n">o3</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
+  <span class="c1">// finds an existing &quot;order 72&quot; in the persistence context</span>
+  <span class="c1">// ... so just returns that instance</span>
+  <span class="n">Order</span> <span class="n">o2</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
+  <span class="n">Order</span> <span class="n">o3</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
 
-    <span class="c1">// all the same instance</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">order</span> <span class="o">==</span> <span class="n">o2</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">order</span> <span class="o">==</span> <span class="n">o3</span><span class="o">);</span>
-  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">endTransaction</span><span class="o">();</span>
-  <span class="o">}</span>
-  
+  <span class="c1">// all the same instance</span>
+  <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">order</span> <span class="o">==</span> <span class="n">o2</span><span class="o">);</span>
+  <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">order</span> <span class="o">==</span> <span class="n">o3</span><span class="o">);</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">endTransaction</span><span class="o">();</span>
+<span class="o">}</span>
 </pre></div>
 </div>
   <p>
@@ -225,28 +224,27 @@
   <p>
     A more realistic example would be when the persistence context is used:
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// a new persistence context started with the transaction</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>
+<span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 
-    <span class="k">try</span> <span class="o">{</span>
-      <span class="c1">// find &quot;customer 1&quot; results in this instance being</span>
-      <span class="c1">// put into the persistence context</span>
-      <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="c1">// find &quot;customer 1&quot; results in this instance being</span>
+  <span class="c1">// put into the persistence context</span>
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
 
-      <span class="c1">// for this example … &quot;customer 1&quot; placed &quot;order 72&quot;</span>
-      <span class="c1">// when &quot;order 72&quot; is fetched/built it has a foreign</span>
-      <span class="c1">// key value customer_id = 1...</span>
-      <span class="c1">// As customer 1 is already in the persistence context</span>
-      <span class="c1">// this same instance of customer 1 is used</span>
-      <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
-      <span class="n">Customer</span> <span class="n">customerB</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
+  <span class="c1">// for this example … &quot;customer 1&quot; placed &quot;order 72&quot;</span>
+  <span class="c1">// when &quot;order 72&quot; is fetched/built it has a foreign</span>
+  <span class="c1">// key value customer_id = 1...</span>
+  <span class="c1">// As customer 1 is already in the persistence context</span>
+  <span class="c1">// this same instance of customer 1 is used</span>
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">72</span><span class="o">);</span>
+  <span class="n">Customer</span> <span class="n">customerB</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
 
-      <span class="c1">// they are the same instance</span>
-      <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">customer</span> <span class="o">==</span> <span class="n">customerB</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-      <span class="n">Ebean</span><span class="o">.</span><span class="na">endTransaction</span><span class="o">();</span>
-    <span class="o">}</span>
-    
+  <span class="c1">// they are the same instance</span>
+  <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">customer</span> <span class="o">==</span> <span class="n">customerB</span><span class="o">);</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">endTransaction</span><span class="o">();</span>
+<span class="o">}</span>
 </pre></div>
 </div>
   </p>
@@ -387,6 +385,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -394,10 +393,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

@@ -78,7 +78,7 @@
 <p>
 Save will either insert or update the bean depending on its state.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">();</span>
 <span class="n">order</span><span class="o">.</span><span class="na">setOrderDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
 <span class="o">...</span>
 <span class="c1">// insert the order</span>
@@ -89,7 +89,7 @@ Save will either insert or update the bean depending on its state.
 If the bean was fetched it will be updated...
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
 <span class="n">order</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="s">&quot;SHIPPED&quot;</span><span class="o">);</span>
 <span class="o">...</span>
 <span class="c1">// update the order</span>
@@ -106,7 +106,7 @@ specify a cascade type (such as the one on details below) for
 save() or delete() to cascade.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="c1">// the Entity bean with its Mapping Annotations</span>
 <span class="o">...</span>
 <span class="nd">@Entity</span>
@@ -132,7 +132,7 @@ the details property. This means save() and delete() will
 both casade from order to its order details.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="c1">// save the order ...  will cascade also saving the order details</span>
 <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
 </pre></div>
@@ -143,7 +143,7 @@ both casade from order to its order details.
 Delete is very similar to save. Just call Ebean.delete();
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
 
 <span class="c1">// delete the order</span>
@@ -165,18 +165,18 @@ deletes are cascaded.</p>
 an Order the details will be saved as well but the associated customer will not be saved as
 there is no cascade atttribute and the default is to not cascade.</p>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="o">...</span>
-  <span class="nd">@Entity</span>
-  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
-    <span class="o">...</span>
-    <span class="c1">// no cascading</span>
-    <span class="nd">@ManyToOne</span>
-    <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="c1">// no cascading</span>
+  <span class="nd">@ManyToOne</span>
+  <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
-    <span class="c1">// save and delete cascaded</span>
-    <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
+  <span class="c1">// save and delete cascaded</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 </pre></div>
 </div>
 
@@ -192,7 +192,7 @@ application.</p>
 in a 'logical' form where entity name is used in place of the table name and property
 names are used in place of column names.</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// orm bulk delete use bean name and bean properties</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// orm bulk delete use bean name and bean properties</span>
 <span class="n">server</span><span class="o">.</span><span class="na">createUpdate</span><span class="o">(</span><span class="n">OrderDetail</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;delete from orderDetail&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
 
 <span class="c1">// sql bulk update uses table and column names</span>
@@ -204,7 +204,7 @@ names are used in place of column names.</p>
 
 <p>In similar fashion to <a href="#sqlquery">SqlQuery</a> you can specify a SQL INSERT, UPDATE or DELETE statement with named or positioned parameters.</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">dml</span> <span class="o">=</span> <span class="s">&quot;update b_bug set title=:title where id = :id&quot;</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">dml</span> <span class="o">=</span> <span class="s">&quot;update b_bug set title=:title where id = :id&quot;</span><span class="o">;</span>
 <span class="n">SqlUpdate</span> <span class="n">update</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">dml</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">,</span> <span class="s">&quot;Updated Again&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
@@ -216,7 +216,7 @@ names are used in place of column names.</p>
 
 <p>CallableSql provides a way to call a database stored procedure.</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;{call sp_order_mod(?,?)}&quot;</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;{call sp_order_mod(?,?)}&quot;</span><span class="o">;</span>
 <span class="n">CallableSql</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createCallableSql</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 <span class="n">cs</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;turbo&quot;</span><span class="o">);</span>
 <span class="n">cs</span><span class="o">.</span><span class="na">registerOut</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">Types</span><span class="o">.</span><span class="na">INTEGER</span><span class="o">);</span>
@@ -241,7 +241,7 @@ perform any raw JDBC calls you like.</p>
 <p>This may be useful for Savepoints, advanced Clob/Blob use or advanced stored
 procedure calls (if CallableSql doesn't do the business for you).</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 <span class="k">try</span> <span class="o">{</span>
   <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
   <span class="c1">// use raw JDBC</span>
@@ -276,7 +276,7 @@ manage its "L2" cache as well as maintain Lucene text indexes.</p>
   ...(under construction)... need to provide better guidance on how to determine batch mode, child batch mode, and batch size
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 <span class="k">try</span> <span class="o">{</span>
   <span class="c1">// turn of cascade persist</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setCascadePersist</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
@@ -310,7 +310,7 @@ manage its "L2" cache as well as maintain Lucene text indexes.</p>
 </div>
 
 example using @Transactional
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Transactional</span><span class="o">(</span><span class="n">batch</span> <span class="o">=</span> <span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">batchOnCascade</span> <span class="o">=</span> <span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">batchSize</span> <span class="o">=</span> <span class="mi">99</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="n">batch</span> <span class="o">=</span> <span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">batchOnCascade</span> <span class="o">=</span> <span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">batchSize</span> <span class="o">=</span> <span class="mi">99</span><span class="o">)</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doWithBatchOptionsSet</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">currentTransaction</span><span class="o">();</span>
@@ -350,6 +350,7 @@ example using @Transactional
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -357,10 +358,6 @@ example using @Transactional
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

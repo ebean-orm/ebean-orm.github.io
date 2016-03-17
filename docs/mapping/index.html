@@ -185,7 +185,7 @@ using a Foreign Key constraint. A foreign key constraint has an "imported" side 
 
 <p>
 The Customer entity bean...
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
@@ -196,7 +196,7 @@ The Customer entity bean...
 </div>
 
 The Order entity bean...
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
@@ -250,7 +250,7 @@ want to write some code to add a OrderDetail to an Order (insert). How do you sp
 which Order it should go to?
 </p><p>
 "Turn on" cascade save on the @OneToMany side
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
   <span class="o">...</span>
@@ -261,7 +261,7 @@ which Order it should go to?
 </div>
 
 And save the order... which cascade saves the details
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// create or fetch the order</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// create or fetch the order</span>
 <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="o">...</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;();</span>
 <span class="n">OrderDetail</span> <span class="n">orderDetail</span> <span class="o">=</span> <span class="o">...</span>
@@ -309,7 +309,7 @@ side of the relationship (meaning you don't specify any @JoinColumn etc on this 
 </p><p>
 If you don't have a mappedBy attribute (there is no matching property on the other related
 bean) then this is a Unidirectional relationship. In this case you can specify a
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@JoinColumn</span> <span class="k">if</span> <span class="n">you</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">override</span> <span class="n">the</span> <span class="n">join</span> <span class="n">column</span> <span class="n">information</span> <span class="n">from</span> <span class="n">the</span> <span class="k">default</span><span class="o">).</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@JoinColumn</span> <span class="k">if</span> <span class="n">you</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">override</span> <span class="n">the</span> <span class="n">join</span> <span class="n">column</span> <span class="n">information</span> <span class="n">from</span> <span class="n">the</span> <span class="k">default</span><span class="o">).</span>
 <span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
@@ -374,7 +374,7 @@ inserting into and deleting from the intersection table.
 </p><p>
 The way this works is that any additions or removables from the many list/set/map are
 noted. These become inserts into and deletes from the intersection table.
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
   <span class="o">...</span>
@@ -394,7 +394,7 @@ noted. These become inserts into and deletes from the intersection table.
 The intersection table name and foreign key columns can default or be specified by @JoinTable etc.
 </p><p>
 The following code shows a new role added to a user.
-<div class="syntax java"><div class="highlight"><pre><span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Role</span><span class="o">&gt;</span> <span class="n">roles</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getRoles</span><span class="o">();</span>
 <span class="n">Role</span> <span class="n">role</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Role</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">27</span><span class="o">);</span>
 
@@ -437,7 +437,7 @@ programs / tools to insert into the DB.</li>
 <h4>UUID Id Generation</h4>
 <p>To use UUID's with Ebean all you need to do is use the UUID type for your id property.</p>
 <p>Ebean will automatically assign an appropriate UUID Id generator.
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEntity</span> <span class="o">{</span>
 <span class="nd">@Id</span>
 <span class="n">UUID</span> <span class="n">id</span><span class="o">;</span>
@@ -461,7 +461,7 @@ annotations.
 </p><p>
 What this means is that, typically you only need to the the @Id annotation unless you
 need to override a sequence name (when it doesn't match the naming convention).
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEntity</span> <span class="o">{</span>
 <span class="nd">@Id</span>
 <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
@@ -496,7 +496,7 @@ dynamically determined by Ebean and you can put the $\{ta} in the select or join
 <h4>A SQL Expression</h4>
 <p>
 Example: The caseForm field using a SQL case expression
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
@@ -516,7 +516,7 @@ Note in this deployment 'T' and 'F' are mapped to boolean values.
 
 <h4>A SQL Function</h4>
 <p>
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Formula</span><span class="o">(</span><span class="n">select</span><span class="o">=</span><span class="s">&quot;(select count(*) from f_topic _b where _b.user_id =$\{ta}.id)&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Formula</span><span class="o">(</span><span class="n">select</span><span class="o">=</span><span class="s">&quot;(select count(*) from f_topic _b where _b.user_id =$\{ta}.id)&quot;</span><span class="o">)</span>
 <span class="kt">int</span> <span class="n">countAssiged</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -524,7 +524,7 @@ Note in this deployment 'T' and 'F' are mapped to boolean values.
 
 The formula properties can be used as normal properties. This includes in query select
 and where expressions.
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// include the countAssigned property</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// include the countAssigned property</span>
 <span class="n">Query</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 <span class="n">query</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id, name, countAssiged&quot;</span><span class="o">);</span>
 <span class="n">query</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;topics&quot;</span><span class="o">);</span>
@@ -533,7 +533,7 @@ and where expressions.
 </div>
 </p><p>
 The SQL generated from the query above is:
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
 select u.id, u.name,
 (select count(*) from f_topic _b where _b.user_id = u.id)
 from s_user u
@@ -552,7 +552,7 @@ expensive and you may find you have an unhappy DBA .
 </p><p>
 The above can be re-written to use a view (if one exists). The benefit is that we can use a
 join rather than a subquery which can perform much better from a database perspective.
-<div class="syntax sql"><div class="highlight"><pre><span class="o">//</span> <span class="k">VIEW</span><span class="p">:</span> <span class="n">vw_topic_aggr</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="k">VIEW</span><span class="p">:</span> <span class="n">vw_topic_aggr</span>
 <span class="o">//</span> <span class="n">Lets</span> <span class="n">say</span> <span class="n">there</span> <span class="k">is</span> <span class="n">a</span> <span class="k">view</span> <span class="n">base</span> <span class="k">on</span> <span class="n">this</span> <span class="k">SQL</span><span class="p">.</span>
 <span class="o">//</span> <span class="n">It</span> <span class="k">is</span> <span class="n">typically</span> <span class="k">more</span> <span class="n">performant</span> <span class="k">to</span> <span class="k">JOIN</span>
 <span class="o">//</span> <span class="k">to</span> <span class="n">a</span> <span class="k">view</span> <span class="n">rather</span> <span class="k">than</span> <span class="n">use</span> <span class="n">a</span> <span class="n">subquery</span>
@@ -565,7 +565,7 @@ join rather than a subquery which can perform much better from a database perspe
 
 And use the join attribute of @Formula
 
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Formula</span><span class="o">(</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Formula</span><span class="o">(</span>
   <span class="n">select</span><span class="o">=</span><span class="s">&quot;_b$\{ta}.topic_count&quot;</span><span class="o">,</span>
   <span class="n">join</span><span class="o">=</span><span class="s">&quot;join vw_topic_aggr as _b$\{ta} on _b$\{ta}.user_id = id&quot;</span><span class="o">)</span>
 <span class="kt">int</span> <span class="n">countWithJoin</span><span class="o">;</span>
@@ -582,14 +582,14 @@ from f_topic group by user_id).
   join="join (select user_id, max(id) as topic_max, count(*) as topic_count from f_topic group by user_id) as _b$\{ta} on _b$ {ta}.user_id = id")
 int countWithJoin;
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Query</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 <span class="n">query</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id, name, countWithJoin&quot;</span><span class="o">);</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 </p><p>
 Results in the following SQL: - will generally perform better than the subquery
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
 select u.id, u.name, _bu.topic_count
 from s_user u
 join (select user_id, max(id) as topic_max, count(*) as topic_count
@@ -601,7 +601,7 @@ from f_topic group by user_id) as _bu on _bu.user_id = id
 It is also worth noting that the formula fields can be used in where expressions.
 </p><p>
 Example: where countWithJoin > 1
-<div class="syntax java"><div class="highlight"><pre><span class="n">Query</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 <span class="n">query</span><span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id, name, countWithJoin&quot;</span><span class="o">);</span>
 <span class="c1">// using the formula field in the where</span>
 <span class="n">query</span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;countWithJoin&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
@@ -609,7 +609,7 @@ Example: where countWithJoin > 1
 </pre></div>
 </div>
 Resulting SQL:
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.User]&#39;</span><span class="nt">&gt;</span>
 select u.id, u.name, _bu.topic_count
 from s_user u
 join (select user_id, max(id) as topic_max, count(*) as topic_count
@@ -628,7 +628,7 @@ dangerous (in the case of Ordinal mapping) or not very practical (in the case of
 mapping).
 </p><p>
 Lets take the example of this Enumeration:
-<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
   <span class="n">ACTIVE</span><span class="o">,</span> <span class="n">INACTIVE</span><span class="o">,</span> <span class="n">NEW</span>
 <span class="o">}</span>
 </pre></div>
@@ -638,21 +638,21 @@ Enum Ordinal Mapping is Dangerous
 </p><p>
   In my opinion JPA Ordinal Mapping for Enum's is very dangerous, and it is recommended that you avoid it.
   The reason is because the ordinal values for Enum depends on the order in which they appear.
-<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestStatus</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestStatus</span> <span class="o">{</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-      <span class="kt">int</span> <span class="n">ord0</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
-      <span class="kt">int</span> <span class="n">ord1</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">INACTIVE</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
-      <span class="kt">int</span> <span class="n">ord2</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">NEW</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">ord0</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">ACTIVE</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">ord1</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">INACTIVE</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
+      <span class="kt">int</span> <span class="n">ord2</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">NEW</span><span class="o">.</span><span class="na">ordinal</span><span class="o">();</span>
 
       <span class="c1">// 0, 1, 2</span>
-      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;ord 0:&quot;</span><span class="o">+</span><span class="n">ord0</span><span class="o">+</span><span class="s">&quot; 1:&quot;</span><span class="o">+</span><span class="n">ord1</span><span class="o">+</span><span class="s">&quot; 2:&quot;</span><span class="o">+</span><span class="n">ord2</span><span class="o">);</span>
+      <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;ord 0:&quot;</span><span class="o">+</span><span class="n">ord0</span><span class="o">+</span><span class="s">&quot; 1:&quot;</span><span class="o">+</span><span class="n">ord1</span><span class="o">+</span><span class="s">&quot; 2:&quot;</span><span class="o">+</span><span class="n">ord2</span><span class="o">);</span>
 
-      <span class="n">String</span> <span class="n">str0</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
-      <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">INACTIVE</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
-      <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na">NEW</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+      <span class="n">String</span> <span class="n">str0</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">ACTIVE</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+      <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">INACTIVE</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+      <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">UserStatus</span><span class="o">.</span><span class="na field">NEW</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
 
       <span class="c1">// &quot;ACTIVE&quot;, &quot;INACTIVE&quot;, &quot;NEW&quot;</span>
-      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;str 0:&quot;</span><span class="o">+</span><span class="n">str0</span><span class="o">+</span><span class="s">&quot; 1:&quot;</span><span class="o">+</span><span class="n">str1</span><span class="o">+</span><span class="s">&quot; 2:&quot;</span><span class="o">+</span><span class="n">str2</span><span class="o">);</span>
+      <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;str 0:&quot;</span><span class="o">+</span><span class="n">str0</span><span class="o">+</span><span class="s">&quot; 1:&quot;</span><span class="o">+</span><span class="n">str1</span><span class="o">+</span><span class="s">&quot; 2:&quot;</span><span class="o">+</span><span class="n">str2</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
@@ -666,7 +666,7 @@ str 0:ACTIVE 1:INACTIVE 2:NEW
 
 The problem is that if you change the order of the Enum elements such as in this example
 (DELETED is now first with Ordinal value of 0) ...
-<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
   <span class="n">DELETED</span><span class="o">,</span> <span class="n">ACTIVE</span><span class="o">,</span> <span class="n">INACTIVE</span><span class="o">,</span> <span class="n">NEW</span>
 <span class="o">}</span>
 </pre></div>
@@ -689,7 +689,7 @@ map into DB values or your DBA will be unhappy with long wasteful values.
 </p>
 
 <h4>@EnumValue</h4>
-<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
   <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;D&quot;</span><span class="o">)</span> <span class="n">DELETED</span><span class="o">,</span>
   <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span> <span class="n">ACTIVE</span><span class="o">,</span>
   <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;I&quot;</span><span class="o">)</span> <span class="n">INACTIVE</span><span class="o">,</span>
@@ -774,7 +774,7 @@ Your application code does not change
 That's it.  Your code to query, insert, update and delete etc does not change and Ebean automatically does the encryption/decryption behind the scenes.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// Use @Encrypted annotation to mark the encrypted properties</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Use @Encrypted annotation to mark the encrypted properties</span>
 
 <span class="o">...</span>
 <span class="nd">@Entity</span>
@@ -823,7 +823,7 @@ List&lt;Patient&gt; list  =
 <p>
 Results in the following SQL:
 </p>
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Patient&#39;</span> <span class="nt">&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Patient&#39;</span> <span class="nt">&gt;</span>
   select e.id as c0, pgp_sym_decrypt(e.name,?) as c1
   from pm_patient e
   where pgp_sym_decrypt(e.description,?) = ?
@@ -838,7 +838,7 @@ You can specify the EncryptKeyManager implementation in the ebean.properties
 file like below:
 </p>
 
-<div class="syntax properties"><div class="highlight"><pre><span class="c"># ebean.properties - specify the Key Manager</span>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="c"># ebean.properties - specify the Key Manager</span>
 <span class="na">ebean.encryptKeyManager</span><span class="o">=</span><span class="s">com.avaje.tests.basic.encrypt.BasicEncyptKeyManager</span>
 </pre></div>
 </div>
@@ -846,7 +846,7 @@ file like below:
 Or if you are programmatically configuring an EbeanServer using ServerConfig,
 set the EncryptKeyManager.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// programmatically configure an EbeanServer</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// programmatically configure an EbeanServer</span>
 <span class="c1">// with an EncryptKeyManager</span>
 
 <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="o">();</span>
@@ -860,7 +860,7 @@ set the EncryptKeyManager.
 
 <h3>A EncryptKeyManager:</h3>
 
-<div class="syntax java"><div class="highlight"><pre><span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">avaje</span><span class="o">.</span><span class="na">tests</span><span class="o">.</span><span class="na">basic</span><span class="o">.</span><span class="na">encrypt</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">com.avaje.tests.basic.encrypt</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">com.avaje.ebean.config.EncryptKey</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">com.avaje.ebean.config.EncryptKeyManager</span><span class="o">;</span>
@@ -878,7 +878,7 @@ set the EncryptKeyManager.
 
         <span class="c1">// get the key for the given table and column</span>
         <span class="n">String</span> <span class="n">keyValue</span> <span class="o">=</span> <span class="o">...;</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="nf">BasicEncryptKey</span><span class="o">(</span><span class="n">keyValue</span><span class="o">);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">BasicEncryptKey</span><span class="o">(</span><span class="n">keyValue</span><span class="o">);</span>
     <span class="o">}</span>
 
 <span class="o">}</span>
@@ -931,6 +931,7 @@ use positioned (1,2,3,4..) parameters.
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -938,10 +939,6 @@ use positioned (1,2,3,4..) parameters.
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

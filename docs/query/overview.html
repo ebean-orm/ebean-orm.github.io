@@ -214,7 +214,7 @@
     origin and secondary queries.
   </p>
 
-<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
+<div class="syntax xml"><div class="highlight"><pre><span></span>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
 </pre></div>
 </div>
 
@@ -235,7 +235,7 @@
     <li><code>origin</code> : this key links the secondary query back to the origin</li>
   </ul>
 
-<div class="syntax xml"><div class="highlight"><pre>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
+<div class="syntax xml"><div class="highlight"><pre><span></span>txn[1012] FindBean type[Order] origin[B0dP9E.DWeHD4.5WUnB] ...
 ...
 txn[1016] FindMany mode[+lazy] type[Customer] origin[B0dP9E.DWeHD4.5WUnB]  ...
 ...
@@ -290,6 +290,7 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB]  ...
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -297,10 +298,6 @@ txn[1017] FindMany mode[+lazy] type[Address] origin[B0dP9E.DWeHD4.5WUnB]  ...
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

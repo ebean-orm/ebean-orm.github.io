@@ -164,7 +164,7 @@ This means, a persistence context
 <p>The persistence context is sometimes described as the "first level cache". I have also seen
 it described as the "transactional cache" in that it is scoped to a transaction or longer.</p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// a new persistence context started with the transaction</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>
 <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 <span class="k">try</span> <span class="o">{</span>
   <span class="c1">// find &quot;order 72&quot; results in that instance being put</span>
@@ -195,7 +195,7 @@ single transaction. The code above is not something you would typically write.</
 <p>
 A more realistic example would be when the persistence context is used:
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// a new persistence context started with the transaction</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>
 <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 
 <span class="k">try</span> <span class="o">{</span>
@@ -346,6 +346,7 @@ fact that it sometimes looks/acts like a cache is more of a side effect.</p>
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -353,10 +354,6 @@ fact that it sometimes looks/acts like a cache is more of a side effect.</p>
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

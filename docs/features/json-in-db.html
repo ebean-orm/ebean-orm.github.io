@@ -157,7 +157,7 @@
     In your entity bean you can annotate a property with <code>@DbJsonB</code> and that indicates that the property
     maps to a JSONB database type.  For non-Postgres databases this maps to a database Clob.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;p_doc&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleDoc</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
 
@@ -176,7 +176,7 @@
     In your entity bean you can annotate a property with <code>@DbJson</code> and that indicates that the property
     maps to a JSON database type.  For non-Postgres databases this maps to a database Clob.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;p_doc&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleDoc</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
 
@@ -195,24 +195,24 @@
   <p>
     You put JSON content into the content property and save it and fetch is as normal.
   </p>
-<div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">rawJson</span> <span class="o">=</span> <span class="s">&quot;{\&quot;docName\&quot;:\&quot;My document\&quot;, \&quot;docScore\&quot;:234, \&quot;title\&quot;:\&quot;Some title\&quot;}&quot;</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">rawJson</span> <span class="o">=</span> <span class="s">&quot;{\&quot;docName\&quot;:\&quot;My document\&quot;, \&quot;docScore\&quot;:234, \&quot;title\&quot;:\&quot;Some title\&quot;}&quot;</span><span class="o">;</span>
 
-  <span class="c1">// get the JSON into a map using Jackson or similar tool.</span>
-  <span class="c1">// Ebean has EJson which using Jackson core which can be used</span>
-  <span class="c1">// to parse JSON content</span>
-  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span> <span class="o">=</span> <span class="n">EJson</span><span class="o">.</span><span class="na">parseObject</span><span class="o">(</span><span class="n">rawJson</span><span class="o">);</span>
+<span class="c1">// get the JSON into a map using Jackson or similar tool.</span>
+<span class="c1">// Ebean has EJson which using Jackson core which can be used</span>
+<span class="c1">// to parse JSON content</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span> <span class="o">=</span> <span class="n">EJson</span><span class="o">.</span><span class="na">parseObject</span><span class="o">(</span><span class="n">rawJson</span><span class="o">);</span>
 
-  <span class="n">SimpleDoc</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDoc</span><span class="o">();</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;doc1&quot;</span><span class="o">);</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
+<span class="n">SimpleDoc</span> <span class="n">doc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDoc</span><span class="o">();</span>
+<span class="n">doc</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;doc1&quot;</span><span class="o">);</span>
+<span class="n">doc</span><span class="o">.</span><span class="na">setContent</span><span class="o">(</span><span class="n">content</span><span class="o">);</span>
 
-  <span class="c1">// save to db</span>
-  <span class="n">doc</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+<span class="c1">// save to db</span>
+<span class="n">doc</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 
-  <span class="c1">// fetch from db</span>
-  <span class="n">SimpleDoc</span> <span class="n">doc1</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+<span class="c1">// fetch from db</span>
+<span class="n">SimpleDoc</span> <span class="n">doc1</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="n">doc</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
 
-  <span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;My document&quot;</span><span class="o">,</span> <span class="n">doc1</span><span class="o">.</span><span class="na">getContent</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;docName&quot;</span><span class="o">));</span>
+<span class="n">assertEquals</span><span class="o">(</span><span class="s">&quot;My document&quot;</span><span class="o">,</span> <span class="n">doc1</span><span class="o">.</span><span class="na">getContent</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;docName&quot;</span><span class="o">));</span>
 </pre></div>
 </div>
 
@@ -224,45 +224,45 @@
   <p>
     Ebean <code>ExpressionList</code> has expressions for:
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="cm">/**</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Path exists - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonExists</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonExists</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Path does not exist - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonNotExists</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonNotExists</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Equal to expression for the value at the given path in the JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">value</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Not Equal to - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonNotEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonNotEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Greater than - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonGreaterThan</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonGreaterThan</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Greater than or equal to - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonGreaterOrEqual</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonGreaterOrEqual</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Less than - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonLessThan</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonLessThan</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
 
 <span class="cm">/**</span>
 <span class="cm"> * Less than or equal to - for the given path in a JSON document.</span>
 <span class="cm"> */</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">jsonLessOrEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">jsonLessOrEqualTo</span><span class="o">(</span><span class="n">String</span> <span class="n">propertyName</span><span class="o">,</span> <span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">Object</span> <span class="n">val</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -277,20 +277,18 @@
     For Postgres Ebean's <code>jsonExists()</code> <code>jsonNotExists()</code> expression result in the
     path value using <code>->></code> or <code>#>></code> and  <code>IS NULL</code>  and <code>IS NOT NULL</code>.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">jsonExists</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
+<span class="o">.</span><span class="na">where</span><span class="o">()</span>
+<span class="o">.</span><span class="na">jsonExists</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
   <p>
     The function can then be used in an Ebean query like:
   </p>
 
-  <div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
-  <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span> <span class="o">#&gt;&gt;</span> <span class="s1">&#39;{path,other}&#39;</span><span class="p">)</span> <span class="k">is</span> <span class="k">not</span> <span class="k">null</span>
-  
+  <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span> <span class="o">#&gt;&gt;</span> <span class="s1">&#39;{path,other}&#39;</span><span class="p">)</span> <span class="k">is</span> <span class="k">not</span> <span class="k">null</span>
 </pre></div>
 </div>
   <h3>Value expressions</h3>
@@ -300,14 +298,14 @@
     value testing against. That is, if the value tested is a Integer or Long the DB path expression is cast to
     <code>::INTEGER</code> and there is similar casting for <code>::DECIMAL</code> and <code>::BOOLEAN</code>.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
   <span class="o">.</span><span class="na">jsonEqualTo</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">,</span> <span class="mi">34</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
   
 </pre></div>
 </div>
-<div class="syntax sql"><div class="highlight"><pre><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
 <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span> <span class="o">#&gt;&gt;</span> <span class="s1">&#39;{path,other}&#39;</span><span class="p">)::</span><span class="nb">INTEGER</span> <span class="o">=</span> <span class="o">?</span>
 </pre></div>
 </div>
@@ -323,33 +321,32 @@
   <p>
     For Oracle Ebean's jsonExists() expression uses the Oracle <code>json_exists</code> function.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">jsonExists</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">jsonExists</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
   <p>
     The function can then be used in an Ebean query like:
   </p>
 
-<div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
-  <span class="k">where</span> <span class="n">json_exists</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;$.path.other&#39;</span><span class="p">)</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">where</span> <span class="n">json_exists</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;$.path.other&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
   <h3>Value expressions</h3>
   <p>
     For Oracle Ebean's value's jsonEqualTo() jsonGreaterThan() etc use the Oracle <code>json_value</code> function.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QSimpleDoc</span><span class="o">().</span><span class="na">query</span><span class="o">()</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
   <span class="o">.</span><span class="na">jsonEqualTo</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="s">&quot;path.other&quot;</span><span class="o">,</span> <span class="mi">34</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
   
 </pre></div>
 </div>
-<div class="syntax sql"><div class="highlight"><pre><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
 <span class="k">where</span> <span class="n">json_value</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;$.path.other&#39;</span><span class="p">)</span> <span class="o">=</span> <span class="o">?</span>
 </pre></div>
 </div>
@@ -358,7 +355,7 @@
  <p>
    If the provided expressions do not match what is required you can use <code>raw()</code> expressions.
  </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">docs</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">SimpleDoc</span><span class="o">&gt;</span> <span class="n">docs</span> <span class="o">=</span> <span class="n">SimpleDoc</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
   <span class="c1">// pass a raw expression through - property names are translated to</span>
   <span class="c1">// db columns but everything else is passed through to the DB</span>
   <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;content#&gt;&#39;{docName}&#39; ? &#39;rob doc&#39;&quot;</span><span class="o">)</span>
@@ -441,6 +438,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -448,10 +446,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

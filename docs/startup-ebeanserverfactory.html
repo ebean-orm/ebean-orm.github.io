@@ -87,7 +87,7 @@
 You need to change the DataSource parameters to suite your own environment.
 </p>
 
-<div class="syntax properties"><div class="highlight"><pre><span class="c"># -------------------------------------------------------------</span>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="c"># -------------------------------------------------------------</span>
 <span class="c"># Load (Dev/Test/Prod) properties external to your war/jar</span>
 <span class="c"># -------------------------------------------------------------</span>
 <span class="c"># You can use load.properties to load the properties from a</span>
@@ -178,7 +178,7 @@ You can programmatically build EbeanServer instances. ServerConfig is used to co
 Note: When you use the Ebean singleton with a ebean.properties file it internally will create a ServerConfig, populate it from settings in the ebean.properties file and call EbeanServerFactory much like the code below.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// programmatically build a EbeanServer instance</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// programmatically build a EbeanServer instance</span>
 <span class="c1">// specify the configuration...</span>
 
 <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
@@ -228,7 +228,7 @@ Note: When you use the Ebean singleton with a ebean.properties file it internall
 
 <p>Ebean uses <a href="http://www.slf4j.org/">SLF4J</a> for logging.</p>
 
-<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- SQL and bind values --&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- SQL and bind values --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 <span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
@@ -352,6 +352,7 @@ so that you can see exactly what Ebean is doing.
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -359,10 +360,6 @@ so that you can see exactly what Ebean is doing.
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

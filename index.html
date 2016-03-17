@@ -69,7 +69,7 @@
           Use JPA Mapping annotations.
         </p>
 
-<div class="syntax java"><div class="highlight"><pre><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;be_customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
 
@@ -89,16 +89,16 @@
           With Ebean it is very easy to insert, update, delete.
           There is no 'Session' or EntityManager to manage, no merge/flush etc.
         </p>
-<div class="syntax java"><div class="highlight"><pre>  <span class="nd">@Inject</span>
-  <span class="kd">final</span> <span class="n">EbeanServer</span> <span class="n">ebeanServer</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Inject</span>
+<span class="kd">final</span> <span class="n">EbeanServer</span> <span class="n">ebeanServer</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createCustomer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">createCustomer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
 
-    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-    <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
 
-    <span class="n">ebeanServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-  <span class="o">}</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -106,14 +106,14 @@
         <p>
           Just fetch what you need. Makes is it easy to optimise the query and get the SQL that you want.
         </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, email&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
 
-<div class="syntax sql"><div class="highlight"><pre><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">email</span> <span class="n">c2</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">email</span> <span class="n">c2</span>
   <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
  <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
 </pre></div>
@@ -123,14 +123,14 @@
           Ebean automatically adds the appropriate joins to support the queries fetch, where and order by
           clauses. This makes it easy to
         </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
     <span class="c1">// join added for this predicate automatically</span>
     <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;billingAddress.country.code&quot;</span><span class="o">,</span> <span class="s">&quot;NZ&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-<div class="syntax sql"><div class="highlight"><pre><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
   <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
   <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_address</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span>
  <span class="k">where</span> <span class="n">t1</span><span class="p">.</span><span class="n">country_code</span> <span class="o">=</span> <span class="o">?</span>
@@ -228,10 +228,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

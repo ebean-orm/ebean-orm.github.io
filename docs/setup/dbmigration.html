@@ -145,15 +145,15 @@
     If the customer table has @History support this could also add columns to the history table and
     update the associated db triggers.
   </p>
-<div class="syntax xml"><div class="highlight"><pre>  <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
-  <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;registered&quot;</span> <span class="na">type=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;</span>
-        <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;comments&quot;</span> <span class="na">type=</span><span class="s">&quot;varchar(1000)&quot;</span><span class="nt">/&gt;</span>
-      <span class="nt">&lt;/addColumn&gt;</span>
-    <span class="nt">&lt;/changeSet&gt;</span>
-  <span class="nt">&lt;/migration&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;registered&quot;</span> <span class="na">type=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;comments&quot;</span> <span class="na">type=</span><span class="s">&quot;varchar(1000)&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/addColumn&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
 </pre></div>
 </div>
 
@@ -161,13 +161,12 @@
   <p>
     Below is an example migration xml generated with <code>pendingDrops</code> changes.
   </p>
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
-  <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;pendingDrops&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/changeSet&gt;</span>
-  <span class="nt">&lt;/migration&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;pendingDrops&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
 </pre></div>
 </div>
   <p>
@@ -183,8 +182,7 @@
 
   <h2>Applying pending drops</h2>
 
-  <div class="syntax sh"><div class="highlight"><pre>  INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions <span class="o">[</span>1.2<span class="o">]</span>
-  
+  <div class="syntax sh"><div class="highlight"><pre><span></span>INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions <span class="o">[</span>1.2<span class="o">]</span>
 </pre></div>
 </div>
 
@@ -194,13 +192,12 @@
     the pending drops as the next migration.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
-  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDrop&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDrop&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
 
-  <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
-  <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
-  <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
-  
+<span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
+<span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+<span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
 </pre></div>
 </div>
   <p>
@@ -209,13 +206,12 @@
     various drop statements that will be executed.
   </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
-  <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span> <span class="na">dropsFor=</span><span class="s">&quot;1.2&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/changeSet&gt;</span>
-  <span class="nt">&lt;/migration&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span> <span class="na">dropsFor=</span><span class="s">&quot;1.2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
 </pre></div>
 </div>
 
@@ -237,15 +233,15 @@
     In a "git flow feature" workflow a decent versioning schema is to take the pom version and append a number
     to represent the feature and take the form:
   </p>
-<div class="syntax xml"><div class="highlight"><pre>  {pom version}_{feature number}_{feature name}
+<div class="syntax xml"><div class="highlight"><pre><span></span>{pom version}_{feature number}_{feature name}
 
-  So for:
-    pom version = 4.5.6
-    feature number = 12
-    feature name = support end dating
+So for:
+  pom version = 4.5.6
+  feature number = 12
+  feature name = support end dating
 
-  The resulting apply sql is:
-    4.5.6_12__support-end-dating.sql
+The resulting apply sql is:
+  4.5.6_12__support-end-dating.sql
 </pre></div>
 </div>
   <p>
@@ -271,11 +267,10 @@
     For a migration the developer needs to provide the <code>version</code> and <code>name</code>
     and these can be set via environment variables, system properties or ebean.properties or programmatically.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
 
-  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
-  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
-  
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -286,17 +281,16 @@
     system property or environment variable to true.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="nd">@Test</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="o">{</span>
 
-    <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 
-    <span class="c1">// migration will be generated when EbeanServer instance starts</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
-  <span class="o">}</span>
-  
+  <span class="c1">// migration will be generated when EbeanServer instance starts</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -306,31 +300,30 @@
     the test source similar to the following code:
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">package</span> <span class="n">main</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
 
-  <span class="kn">import</span> <span class="nn">com.avaje.ebean.config.dbplatform.DbPlatformName</span><span class="o">;</span>
-  <span class="kn">import</span> <span class="nn">com.avaje.ebean.dbmigration.DbMigration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.config.dbplatform.DbPlatformName</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.dbmigration.DbMigration</span><span class="o">;</span>
 
-  <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDbMigration</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDbMigration</span> <span class="o">{</span>
 
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 
-      <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
+    <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
 
-      <span class="c1">// set path that the migration xml and ddl is located</span>
-      <span class="c1">// this defaults to standard maven src/main/resources</span>
-      <span class="c1">//dbMigration.setPathToResources(&quot;src/main/resources&quot;);</span>
+    <span class="c1">// set path that the migration xml and ddl is located</span>
+    <span class="c1">// this defaults to standard maven src/main/resources</span>
+    <span class="c1">//dbMigration.setPathToResources(&quot;src/main/resources&quot;);</span>
 
-      <span class="c1">// Postgres as the target DB</span>
-      <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+    <span class="c1">// Postgres as the target DB</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
 
-      <span class="c1">// generate the migration xml and ddl</span>
-      <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
-    <span class="o">}</span>
+    <span class="c1">// generate the migration xml and ddl</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
   <span class="o">}</span>
-  
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -390,6 +383,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -397,10 +391,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

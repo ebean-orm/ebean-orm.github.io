@@ -76,36 +76,32 @@
       <div class="bs-docs-section">
   <h1 id="queries">Query Features</h1>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find by id</span>
-  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find by id</span>
+<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">12</span><span class="o">);</span>
 </pre></div>
 </div>
   executes the sql:
-  <div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">ship_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">cretime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">updtime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">customer_id</span>
-  <span class="k">from</span> <span class="n">or_order</span> <span class="n">o</span>
-  <span class="k">where</span> <span class="k">or</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
-  
+  <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">o</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">ship_date</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">cretime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">updtime</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">from</span> <span class="n">or_order</span> <span class="n">o</span>
+<span class="k">where</span> <span class="k">or</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
 </pre></div>
 </div>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// these are the same</span>
-    <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-      
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// these are the same</span>
+  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 </pre></div>
 </div>
       These two methods do exactly the same thing. The reason both
       exist is because the createQuery() style is consistent with JPA and could be argued is a
       better more accurate name. And find() is more consistent with the fluid API style.
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// fluid API style with find()</span>
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status.code&quot;</span><span class="o">,</span> <span class="s">&quot;SHIPPED&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// fluid API style with find()</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status.code&quot;</span><span class="o">,</span> <span class="s">&quot;SHIPPED&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -115,13 +111,12 @@
           You can specify 'predicates' for the where clause.
         </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find all the orders shipped since a week ago</span>
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;shipDate&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find all the orders shipped since a week ago</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;shipDate&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -158,23 +153,21 @@
             matching joins are not explicitly included).
           </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
     ... in the sql below, the join to or_customer is automatically added to support the where clause.
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
-    from or_order o
-    join or_customer c on o.customer_id = c.id
-    where lower(c.name) like ?
-  <span class="nt">&lt;/sql&gt;</span>
-      
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+  from or_order o
+  join or_customer c on o.customer_id = c.id
+  where lower(c.name) like ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -219,59 +212,56 @@
 </p>
 
 <p>Examples
-  <div class="syntax groovy"><div class="highlight"><pre>  <span class="c1">// find all the orders fetching all the properties of order</span>
-  <span class="n">find</span> <span class="n">order</span>
+  <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="c1">// find all the orders fetching all the properties of order</span>
+<span class="n">find</span> <span class="n">order</span>
 
-  <span class="c1">// find all the orders fetching all the properties of order</span>
-  <span class="c1">// ... this is the same as the first query</span>
-  <span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
+<span class="c1">// find all the orders fetching all the properties of order</span>
+<span class="c1">// ... this is the same as the first query</span>
+<span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
 
-  <span class="c1">// find all the orders fetching the id, orderDate and shipDate</span>
-  <span class="c1">// ... This is described as a &quot;partial object query&quot;</span>
-  <span class="c1">// ... the ID property is *ALWAYS* fetched</span>
-  <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+<span class="c1">// find all the orders fetching the id, orderDate and shipDate</span>
+<span class="c1">// ... This is described as a &quot;partial object query&quot;</span>
+<span class="c1">// ... the ID property is *ALWAYS* fetched</span>
+<span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
 
-  <span class="c1">// find all the orders (and orderDetails)</span>
-  <span class="c1">// ... fetching all the properties of order</span>
-  <span class="c1">// ... and all the properties of orderDetails</span>
-  <span class="c1">// ... the type of fetch(Outer etc) is determined automatically</span>
-  <span class="n">find</span> <span class="n">order</span>
-  <span class="n">fetch</span> <span class="n">orderDetails</span>
+<span class="c1">// find all the orders (and orderDetails)</span>
+<span class="c1">// ... fetching all the properties of order</span>
+<span class="c1">// ... and all the properties of orderDetails</span>
+<span class="c1">// ... the type of fetch(Outer etc) is determined automatically</span>
+<span class="n">find</span> <span class="n">order</span>
+<span class="n">fetch</span> <span class="n">orderDetails</span>
 
-  <span class="c1">// find all the orders (with their orderDetails)</span>
-  <span class="c1">// ... fetching all the properties of order</span>
-  <span class="c1">// ... and all the properties of orderDetails</span>
-  <span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
-  <span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
+<span class="c1">// find all the orders (with their orderDetails)</span>
+<span class="c1">// ... fetching all the properties of order</span>
+<span class="c1">// ... and all the properties of orderDetails</span>
+<span class="n">find</span> <span class="nf">order</span> <span class="o">(*)</span>
+<span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
 
-  <span class="c1">// find all the orders (with orderDetails and products)</span>
-  <span class="c1">// ... fetching the order id, orderDate and shipDate</span>
-  <span class="c1">// ... fetching all the properties for orderDetail</span>
-  <span class="c1">// ... fetching the product id, sku and name</span>
-  <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
-  <span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
-  <span class="n">fetch</span> <span class="n">orderDetails</span><span class="o">.</span><span class="na">product</span> <span class="o">(</span><span class="n">sku</span><span class="o">,</span> <span class="n">name</span><span class="o">)</span>
-  
+<span class="c1">// find all the orders (with orderDetails and products)</span>
+<span class="c1">// ... fetching the order id, orderDate and shipDate</span>
+<span class="c1">// ... fetching all the properties for orderDetail</span>
+<span class="c1">// ... fetching the product id, sku and name</span>
+<span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">orderDate</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+<span class="n">fetch</span> <span class="nf">orderDetails</span> <span class="o">(*)</span>
+<span class="n">fetch</span> <span class="n">orderDetails</span><span class="o">.</span><span class="na">product</span> <span class="o">(</span><span class="n">sku</span><span class="o">,</span> <span class="n">name</span><span class="o">)</span>
 </pre></div>
 </div>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">query</span> <span class="o">=</span> <span class="s">&quot;find order where status.code=:status and shipDate &gt; :shipped&quot;</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">query</span> <span class="o">=</span> <span class="s">&quot;find order where status.code=:status and shipDate &gt; :shipped&quot;</span><span class="o">;</span>
 
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setQuery</span><span class="o">(</span><span class="n">query</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;shipped&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setQuery</span><span class="o">(</span><span class="n">query</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;shipped&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
-    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[false]&#39;</span><span class="nt">&gt;</span>
-      select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
-      from or_order o
-      where o.status_code = ? and o.ship_date &gt; ?
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[false]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+  from or_order o
+  where o.status_code = ? and o.ship_date &gt; ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -310,18 +300,16 @@
 
   <p>
     Partially loading a bean or object graph using select() and fetch().
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
-    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-    
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+<span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
 
-    <div class="syntax sql"><div class="highlight"><pre>    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
-    <span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
-    <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span> <span class="p">;</span> <span class="c1">--bind(1)</span>
-    
+    <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
+<span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span> <span class="p">;</span> <span class="c1">--bind(1)</span>
 </pre></div>
 </div>
   </p>
@@ -334,28 +322,26 @@
   <p>*ANY* node of the object graph can be a partial object. This example shows several ways partial
     objects can be fetched.
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
-    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, orderDate, shipDate&quot;</span><span class="o">)</span> <span class="c1">// 3 fields from order</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="c1">// just name field from customer</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// all fields from details</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku&quot;</span><span class="o">)</span> <span class="c1">// just sku field from product</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-    
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
+<span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, orderDate, shipDate&quot;</span><span class="o">)</span> <span class="c1">// 3 fields from order</span>
+<span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span> <span class="c1">// just name field from customer</span>
+<span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// all fields from details</span>
+<span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku&quot;</span><span class="o">)</span> <span class="c1">// just sku field from product</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
-    <div class="syntax sql"><div class="highlight"><pre>    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span> <span class="n">c3</span><span class="p">,</span>
-    <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c4</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c5</span><span class="p">,</span> <span class="c1">-- customer name</span>
-    <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c6</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">ship_qty</span> <span class="n">c8</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">unit_price</span> <span class="n">c9</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="k">version</span> <span class="n">c10</span><span class="p">,</span>
-    <span class="n">t2</span><span class="p">.</span><span class="n">when_created</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c13</span><span class="p">,</span>
-    <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="n">c14</span><span class="p">,</span> <span class="n">t3</span><span class="p">.</span><span class="n">sku</span> <span class="n">c15</span> <span class="c1">-- product sku</span>
-    <span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
-    <span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
-    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_order_detail</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
-    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_product</span> <span class="n">t3</span> <span class="k">on</span> <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t2</span><span class="p">.</span><span class="n">product_id</span>
-    <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
-    <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="k">asc</span><span class="p">;</span> <span class="c1">--bind(1)</span>
-    
+    <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span> <span class="n">c3</span><span class="p">,</span>
+<span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c4</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c5</span><span class="p">,</span> <span class="c1">-- customer name</span>
+<span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c6</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">ship_qty</span> <span class="n">c8</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">unit_price</span> <span class="n">c9</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="k">version</span> <span class="n">c10</span><span class="p">,</span>
+<span class="n">t2</span><span class="p">.</span><span class="n">when_created</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c13</span><span class="p">,</span>
+<span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="n">c14</span><span class="p">,</span> <span class="n">t3</span><span class="p">.</span><span class="n">sku</span> <span class="n">c15</span> <span class="c1">-- product sku</span>
+<span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_order_detail</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_product</span> <span class="n">t3</span> <span class="k">on</span> <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t2</span><span class="p">.</span><span class="n">product_id</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="k">asc</span><span class="p">;</span> <span class="c1">--bind(1)</span>
 </pre></div>
 </div>
   </p>
@@ -366,37 +352,34 @@
     You can save or delete a Partial Object.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find customer 1</span>
-  <span class="c1">// ... just fetch the customer id, name and version property</span>
-  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find customer 1</span>
+<span class="c1">// ... just fetch the customer id, name and version property</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 
-  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;CoolName&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;CoolName&quot;</span><span class="o">);</span>
 
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-  
+<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
 </pre></div>
 </div>
 
   <p>
     The query generates the following SQL...
-    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
-      select c.id, c.name
-      from or_customer c
-      where c.id = ?
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
+  select c.id, c.name
+  from or_customer c
+  where c.id = ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
   </p>
   <p>and in the transaction logs we can find the update dml and bind values.</p>
-  <div class="syntax xml"><div class="highlight"><pre>  ... update or_customer set name=?, updtime=? where id=? and name=?
-  ... Binding Update [or_customer] set[name=CoolName, updtime=2008-11-19 10:58:08.598, ] where[id=1,
-  name=Ford, ]
-  ... Updated [app.data.test.Customer] [1]
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span>... update or_customer set name=?, updtime=? where id=? and name=?
+... Binding Update [or_customer] set[name=CoolName, updtime=2008-11-19 10:58:08.598, ] where[id=1,
+name=Ford, ]
+... Updated [app.data.test.Customer] [1]
 </pre></div>
 </div>
 
@@ -419,38 +402,36 @@
 
 <p>
   It this example both "customer.contacts" and "details" are OneToMany relationships.
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
-    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">)</span> <span class="c1">// contacts is a @OneToMany</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// details is a @OneToMany</span>
-    <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="na">find</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">)</span> <span class="c1">// contacts is a @OneToMany</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// details is a @OneToMany</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
     ... results in the "left outer join o_contact" and related t2.* columns being included in the
     query (so they won't be lazy loaded later).
 
-    <div class="syntax sql"><div class="highlight"><pre>    <span class="c1">-- This first query includes the customer contacts</span>
-    <span class="c1">-- but does not include the order details</span>
-    <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span>
-    <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c3</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c4</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
-    <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c13</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c14</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
-    <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c19</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="n">c20</span>
-    <span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
-    <span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
-    <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_contact</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span>
-    <span class="k">order</span> <span class="k">by</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
-    
+    <div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- This first query includes the customer contacts</span>
+<span class="c1">-- but does not include the order details</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span>
+<span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c3</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c4</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
+<span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c13</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c14</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
+<span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c19</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="n">c20</span>
+<span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_contact</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
 </pre></div>
 </div>
 </p>
 
 
 <h4>The 'Query Join' query ...</h4>
-<div class="syntax sql"><div class="highlight"><pre><span class="c1">-- This second query fetchs the order details associated</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- This second query fetchs the order details associated</span>
 <span class="c1">-- with the orders that were returned by the first query</span>
 <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
 <span class="k">from</span> <span class="n">o_order_detail</span> <span class="n">t0</span>
@@ -465,7 +446,7 @@
 <p>
   In this example contacts is a @OneToMany and then off from each contact notes is a @OneToMany.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">)</span> <span class="c1">// contacts is a OneToMany</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts.notes&quot;</span><span class="o">)</span> <span class="c1">// notes is a OneToMany</span>
   <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
@@ -474,21 +455,20 @@
 </pre></div>
 </div>
 
-  <div class="syntax sql"><div class="highlight"><pre>  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
-  <span class="n">t0</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span> <span class="n">c8</span><span class="p">,</span> <span class="p">...</span>
-  <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c10</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c12</span><span class="p">,</span> <span class="p">...</span>
-  <span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
-  <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">be_contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
-  <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
-  
+  <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
+<span class="n">t0</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span> <span class="n">c8</span><span class="p">,</span> <span class="p">...</span>
+<span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c10</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c12</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">be_contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
 </pre></div>
 </div>
 
   <h4>The 'Query Join' query ...</h4>
-  <div class="syntax sql"><div class="highlight"><pre>  <span class="c1">-- fetch the contact notes for all the contacts</span>
-  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">title</span> <span class="n">c3</span><span class="p">,</span> <span class="p">...</span>
-  <span class="k">from</span> <span class="n">contact_note</span> <span class="n">t0</span>
-  <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">)</span>
+  <div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- fetch the contact notes for all the contacts</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">title</span> <span class="n">c3</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">contact_note</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">contact_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">)</span>
 </pre></div>
 </div>
 
@@ -551,7 +531,7 @@ of "Many" beans per "One" bean) then this can be more efficient loaded as 2 SQL 
 
 <p>
 Example: Find Orders join details using a single SQL query
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// Normal fetch join results in a single SQL query</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Normal fetch join results in a single SQL query</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">).</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
@@ -560,7 +540,7 @@ Example: Find Orders join details using a single SQL query
 <p>
 Example: Using a "query join" instead of a "fetch join" we instead use 2 SQL queries
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 2 SQL queries to build this object graph.</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// This will use 2 SQL queries to build this object graph.</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
@@ -579,7 +559,7 @@ Example: Using a "query join" instead of a "fetch join" we instead use 2 SQL que
 <p>
 Example: Using 2 "query joins"
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 3 SQL queries to build this object graph</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// This will use 3 SQL queries to build this object graph</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
@@ -599,7 +579,7 @@ Example: Using 2 "query joins"
 <p>
 Example: Using "query joins" and partial objects
 
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// This will use 3 SQL queries to build this object graph</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// This will use 3 SQL queries to build this object graph</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, shipDate&quot;</span><span class="o">)</span>
@@ -631,7 +611,7 @@ Example: Using "query joins" and partial objects
 and the lazy defines the batch size to use for further lazy loading (if lazy loading is
 invoked).
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">lazy</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
@@ -655,13 +635,12 @@ invoked).
   <p>
     This gives us the ability to optimise the lazy loading query for a given use case.
 
-    List<Order> list = Ebean.find(Order.class)
-    .fetch("customer","name", new FetchConfig().lazy(5))
-    .fetch("customer.contacts","contactName, phone, email")
-    .fetch("customer.shippingAddress")
-    .where().eq("status",Order.Status.NEW)
-    .findList();
-    
+  List<Order> list = Ebean.find(Order.class)
+  .fetch("customer","name", new FetchConfig().lazy(5))
+  .fetch("customer.contacts","contactName, phone, email")
+  .fetch("customer.shippingAddress")
+  .where().eq("status",Order.Status.NEW)
+  .findList();
       queries:
       <ol>
         <li>find order where status = Order.Status.NEW</li>
@@ -671,26 +650,24 @@ invoked).
   </ol>
 
   Note: when the laxy loading of customers is performed, it perform like:
-  <div class="syntax xml"><div class="highlight"><pre>  find customer (name)
-  fetch customer.contacts (contactName, phone, email)
-  fetch customer.shippingAddress (*)
-  where id in (?,?,?,?,?)
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span>find customer (name)
+fetch customer.contacts (contactName, phone, email)
+fetch customer.shippingAddress (*)
+where id in (?,?,?,?,?)
 </pre></div>
 </div>
 
 
   <p>Example of wo "Query Joins" results in 3 SQL queries used to build an object graph
-    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// A more advanced example with multiple query joins</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">l0</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, shipDate&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;orderQty, unitPrice&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku, name&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;firstName, lastName, mobile&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">,</span><span class="s">&quot;line1, city&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-      
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// A more advanced example with multiple query joins</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">l0</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, shipDate&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;orderQty, unitPrice&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku, name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;firstName, lastName, mobile&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">,</span><span class="s">&quot;line1, city&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -698,48 +675,45 @@ invoked).
   </p>
   <p>
     Query 1 - the main query - Note: customer_id was automatically added to support query join.
-    <div class="syntax xml"><div class="highlight"><pre>    // query 1 … the main query
-    <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Order&#39;</span><span class="nt">&gt;</span>
-      select o.id c0, o.status c1, o.ship_date c2, o.customer_id c3
-      from o_order o
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span>// query 1 … the main query
+<span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Order&#39;</span><span class="nt">&gt;</span>
+  select o.id c0, o.status c1, o.ship_date c2, o.customer_id c3
+  from o_order o
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
   </p>
   <p>
     Query 2 - query join on customer - fetching the first 10 customers referenced (batch:10) but
     there where actually only 2 to fetch (actual:2).
-    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress</span>
-<span class="s">+many:contacts&#39;</span> <span class="na">load=</span><span class="s">&#39;path:customer batch:10 actual:2&#39;</span><span class="nt">&gt;</span>
-      select c.id c0, c.name c1
-      , cs.id c2, cs.line_1 c3, cs.city c4
-      , cc.id c5, cc.first_name c6, cc.last_name c7, cc.mobile c8
-      from o_customer c
-      left outer join o_address cs on cs.id = c.shipping_address_id
-      left outer join contact cc on cc.customer_id = c.id
-      where c.id in (?,?,?,?,?,?,?,?,?,?)
-      order by c.id
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress</span>
+<span class="s">y:contacts&#39;</span> <span class="na">load=</span><span class="s">&#39;path:customer batch:10 actual:2&#39;</span><span class="nt">&gt;</span>
+  select c.id c0, c.name c1
+  , cs.id c2, cs.line_1 c3, cs.city c4
+  , cc.id c5, cc.first_name c6, cc.last_name c7, cc.mobile c8
+  from o_customer c
+  left outer join o_address cs on cs.id = c.shipping_address_id
+  left outer join contact cc on cc.customer_id = c.id
+  where c.id in (?,?,?,?,?,?,?,?,?,?)
+  order by c.id
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
   </p>
   <p>
     Query 3 – query join on details - fetching the order details for the first 100 orders
     (batch:100).
-    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Order +many:details, details.product&#39;</span>
-         <span class="na">load=</span><span class="s">&#39;path:details batch:100 actual:3&#39;</span><span class="nt">&gt;</span>
-      select o.id c0
-      , od.id c1, od.order_qty c2, od.unit_price c3
-      , odp.id c4, odp.sku c5, odp.name c6
-      from o_order o
-      left outer join o_order_detail od on od.order_id = o.id
-      left outer join o_product odp on odp.id = od.product_id
-      where o.id in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-      order by o.id
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+query&#39;</span> <span class="na">summary=</span><span class="s">&#39;Order +many:details, details.product&#39;</span>
+     <span class="na">load=</span><span class="s">&#39;path:details batch:100 actual:3&#39;</span><span class="nt">&gt;</span>
+  select o.id c0
+  , od.id c1, od.order_qty c2, od.unit_price c3
+  , odp.id c4, odp.sku c5, odp.name c6
+  from o_order o
+  left outer join o_order_detail od on od.order_id = o.id
+  left outer join o_product odp on odp.id = od.product_id
+  where o.id in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+  order by o.id
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -769,14 +743,13 @@ invoked).
   <p>
     Example: Control the query used to lazy load
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// control the lazy loading of customers ...</span>
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">lazy</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;contactName, phone, email&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span><span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// control the lazy loading of customers ...</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">lazy</span><span class="o">(</span><span class="mi">5</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.contacts&quot;</span><span class="o">,</span><span class="s">&quot;contactName, phone, email&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
   <p>
@@ -791,30 +764,28 @@ invoked).
     invokes the lazy loading then all the customer's properties are loaded (rather than just the
     customers name).
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
-    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
 
-    <span class="c1">// this invokes the lazy loading of 5 customers</span>
-    <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
-    
+<span class="c1">// this invokes the lazy loading of 5 customers</span>
+<span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
 </pre></div>
 </div>
   </p>
 
   <p>
     The resulting lazy loading query is …
-    <div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+lazy&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress +many:contacts&#39;</span>
-         <span class="na">load=</span><span class="s">&#39;path:customer batch:5 actual:2&#39;</span><span class="nt">&gt;</span>
-      select c.id c0, c.name c1, cs.id c2, cs.line_1 c3, cs.line_2 c4, cs.city c5,
-      cs.cretime c6, cs.updtime c7, cs.country_code c8,
-      cc.id c9, cc.phone c10, cc.email c11
-      from o_customer c
-      left outer join o_address cs on cs.id = c.shipping_address_id
-      left outer join contact cc on cc.customer_id = c.id
-      where c.id in (?,?,?,?,?)
-      order by c.id
-    <span class="nt">&lt;/sql&gt;</span>
-    
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">mode=</span><span class="s">&#39;+lazy&#39;</span> <span class="na">summary=</span><span class="s">&#39;Customer, shippingAddress +many:contacts&#39;</span>
+     <span class="na">load=</span><span class="s">&#39;path:customer batch:5 actual:2&#39;</span><span class="nt">&gt;</span>
+  select c.id c0, c.name c1, cs.id c2, cs.line_1 c3, cs.line_2 c4, cs.city c5,
+  cs.cretime c6, cs.updtime c7, cs.country_code c8,
+  cc.id c9, cc.phone c10, cc.email c11
+  from o_customer c
+  left outer join o_address cs on cs.id = c.shipping_address_id
+  left outer join contact cc on cc.customer_id = c.id
+  where c.id in (?,?,?,?,?)
+  order by c.id
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -825,8 +796,7 @@ invoked).
     number of beans that will be loaded eagerly via an additional query and then lazy defines
     the batch size of the lazy loading that occurs after than (if there is any).
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="k">new</span> <span class="n">FetchQuery</span><span class="o">.</span><span class="na">queryFirst</span><span class="o">(</span><span class="mi">100</span><span class="o">).</span><span class="na">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
-    
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">FetchQuery</span><span class="o">.</span><span class="na">queryFirst</span><span class="o">(</span><span class="mi">100</span><span class="o">).</span><span class="na">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -838,17 +808,15 @@ invoked).
     To define "query joins" and "lazy joins" in the query language you can use +query and
     +lazy. Optionally you can specify the batch size for both.
 
-    <div class="syntax groovy"><div class="highlight"><pre>    <span class="n">find</span> <span class="n">order</span>
-    <span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">query</span> <span class="o">)</span>
-    <span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">status</span>
-    
+    <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">find</span> <span class="n">order</span>
+<span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">query</span> <span class="o">)</span>
+<span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">status</span>
 </pre></div>
 </div>
 
-    <div class="syntax groovy"><div class="highlight"><pre>    <span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
-    <span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="n">name</span><span class="o">,</span> <span class="n">status</span><span class="o">)</span>
-    <span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">orderStatus</span>
-    
+    <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">find</span> <span class="nf">order</span> <span class="o">(</span><span class="n">status</span><span class="o">,</span> <span class="n">shipDate</span><span class="o">)</span>
+<span class="n">join</span> <span class="nf">customers</span> <span class="o">(+</span><span class="n">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span> <span class="n">name</span><span class="o">,</span> <span class="n">status</span><span class="o">)</span>
+<span class="n">where</span> <span class="n">status</span> <span class="o">=</span> <span class="o">:</span><span class="n">orderStatus</span>
 </pre></div>
 </div>
   </p>
@@ -864,23 +832,22 @@ invoked).
     property it does not have.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// find order 12</span>
-  <span class="c1">// ... fetching the order id, orderDate and version property</span>
-  <span class="c1">// .... nb: the Id and version property are always fetched</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find order 12</span>
+<span class="c1">// ... fetching the order id, orderDate and version property</span>
+<span class="c1">// .... nb: the Id and version property are always fetched</span>
 
-  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;orderDate&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;orderDate&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 
-  <span class="c1">// shipDate is not in the partially populated order</span>
-  <span class="c1">// ... so it will lazy load all the missing properties</span>
-  <span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
+<span class="c1">// shipDate is not in the partially populated order</span>
+<span class="c1">// ... so it will lazy load all the missing properties</span>
+<span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
 
-  <span class="c1">// similarly if we where to set the shipDate</span>
-  <span class="c1">// ... that would also trigger a lazy load</span>
-  <span class="n">order</span><span class="o">.</span><span class="na">setShipDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
-  
+<span class="c1">// similarly if we where to set the shipDate</span>
+<span class="c1">// ... that would also trigger a lazy load</span>
+<span class="n">order</span><span class="o">.</span><span class="na">setShipDate</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
 </pre></div>
 </div>
 
@@ -891,23 +858,22 @@ invoked).
 
   <h2 id="named_queries">Named Queries</h2>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">import</span> <span class="nn">javax.persistence.NamedQueries</span><span class="o">;</span>
-  <span class="kn">import</span> <span class="nn">javax.persistence.NamedQuery</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">javax.persistence.NamedQueries</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.NamedQuery</span><span class="o">;</span>
 
-  <span class="o">...</span>
-  <span class="nd">@NamedQueries</span><span class="o">(</span><span class="n">value</span><span class="o">={</span>
-    <span class="nd">@NamedQuery</span><span class="o">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugsSummary&quot;</span><span class="o">,</span>
-      <span class="n">query</span><span class="o">=</span><span class="s">&quot;find (name, email) fetch loggedBugs (title, status) where id=:id &quot;</span><span class="o">),</span>
-    <span class="nd">@NamedQuery</span><span class="o">(</span>
-      <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span>
-      <span class="n">query</span><span class="o">=</span><span class="s">&quot;fetch loggedBugs where loggedBugs.status = :bugStatusorder by name&quot;</span><span class="o">)</span>
-    <span class="o">})</span>
-  <span class="nd">@Entity</span>
-  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
-  <span class="o">...</span>
-  
+<span class="o">...</span>
+<span class="nd">@NamedQueries</span><span class="o">(</span><span class="n">value</span><span class="o">={</span>
+  <span class="nd">@NamedQuery</span><span class="o">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugsSummary&quot;</span><span class="o">,</span>
+    <span class="n">query</span><span class="o">=</span><span class="s">&quot;find (name, email) fetch loggedBugs (title, status) where id=:id &quot;</span><span class="o">),</span>
+  <span class="nd">@NamedQuery</span><span class="o">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span>
+    <span class="n">query</span><span class="o">=</span><span class="s">&quot;fetch loggedBugs where loggedBugs.status = :bugStatusorder by name&quot;</span><span class="o">)</span>
+  <span class="o">})</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+<span class="o">...</span>
 </pre></div>
 </div>
   <p>You can have named queries, where you define the query. Note that the names of the
@@ -916,10 +882,9 @@ invoked).
   <p>Once you get a named query you set any named parameters and then execute it – in the
     case below we use findUnique() as we expect only one object graph returned.</p>
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugsSummary&quot;</span><span class="o">)</span>
-              <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
-              <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-    
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugsSummary&quot;</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -931,24 +896,23 @@ invoked).
 
   <p>This is an intentional feature and means that you can use Named Queries as a "starting
     point" to then modify via code and execute.</p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// you can treat namedQueries as starting points...</span>
-  <span class="c1">// ... in that you can modify them via code</span>
-  <span class="c1">// ... prior to executing the query</span>
-  <span class="c1">// you can modify a named query...</span>
-  <span class="n">Set</span>
-  <span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugStatus&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span> <span class="s">&quot;NEW&quot;</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// you can treat namedQueries as starting points...</span>
+<span class="c1">// ... in that you can modify them via code</span>
+<span class="c1">// ... prior to executing the query</span>
+<span class="c1">// you can modify a named query...</span>
+<span class="n">Set</span>
+<span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugStatus&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;bugStatus&quot;</span><span class="o">,</span> <span class="s">&quot;NEW&quot;</span><span class="o">)</span>
 
-    <span class="c1">// you can add to the where clause</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+  <span class="c1">// you can add to the where clause</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
 
-    <span class="c1">// you can set/override the order by</span>
-    <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;id desc&quot;</span><span class="o">)</span>
+  <span class="c1">// you can set/override the order by</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;id desc&quot;</span><span class="o">)</span>
 
-    <span class="c1">// you can set/override limits (max rows, first row)</span>
-    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findSet</span><span class="o">();</span>
-    
+  <span class="c1">// you can set/override limits (max rows, first row)</span>
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">20</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findSet</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -986,15 +950,14 @@ invoked).
 </p>
 
 <p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+<span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
 
-    <span class="c1">// do something with customer</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
-  <span class="o">});</span>
-  
+  <span class="c1">// do something with customer</span>
+  <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
+<span class="o">});</span>
 </pre></div>
 </div>
 
@@ -1011,20 +974,19 @@ invoked).
     This method is functionally equivalent to findIterate() but instead of using an iterator uses
     the QueryEachWhileConsumer (SAM) interface which is better suited to use with Java8 closures.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findEachWhile</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findEachWhile</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
 
-      <span class="c1">// do something with customer</span>
-      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
+    <span class="c1">// do something with customer</span>
+    <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
 
-      <span class="c1">// return true to continue processing or false to stop</span>
-      <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
-    <span class="o">});</span>
-  
+    <span class="c1">// return true to continue processing or false to stop</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
+  <span class="o">});</span>
 </pre></div>
 </div>
 
@@ -1063,37 +1025,35 @@ invoked).
   <p>
     Example: typical use including total row count
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="c1">// We want to find the first 100 new orders</span>
-    <span class="c1">// ... 0 means first page</span>
-    <span class="c1">// ... page size is 100</span>
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// We want to find the first 100 new orders</span>
+<span class="c1">// ... 0 means first page</span>
+<span class="c1">// ... page size is 100</span>
 
-    <span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pagedList</span>
-      <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findPagedList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
+<span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pagedList</span>
+  <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findPagedList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
 
-      <span class="c1">// Optional: initiate the loading of the total</span>
-      <span class="c1">// row count in a background thread</span>
-      <span class="n">pagedList</span><span class="o">.</span><span class="na">loadRowCount</span><span class="o">();</span>
+  <span class="c1">// Optional: initiate the loading of the total</span>
+  <span class="c1">// row count in a background thread</span>
+  <span class="n">pagedList</span><span class="o">.</span><span class="na">loadRowCount</span><span class="o">();</span>
 
-      <span class="c1">// fetch and return the list in the foreground thread</span>
-      <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
+  <span class="c1">// fetch and return the list in the foreground thread</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
 
-        <span class="c1">// get the total row count (from the future)</span>
-        <span class="kt">int</span> <span class="n">totalRowCount</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getTotalRowCount</span><span class="o">();</span>
-        
+    <span class="c1">// get the total row count (from the future)</span>
+    <span class="kt">int</span> <span class="n">totalRowCount</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getTotalRowCount</span><span class="o">();</span>
 </pre></div>
 </div>
 
         Example: No total row count required
-        <div class="syntax java"><div class="highlight"><pre>        <span class="c1">// If you are not getting the &#39;first page&#39; often</span>
-        <span class="c1">// you do not bother getting the total row count again</span>
-        <span class="c1">// so instead just get the page list of data</span>
+        <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// If you are not getting the &#39;first page&#39; often</span>
+<span class="c1">// you do not bother getting the total row count again</span>
+<span class="c1">// so instead just get the page list of data</span>
 
-        <span class="c1">// fetch and return the list in the foreground thread</span>
-        <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
-          
+<span class="c1">// fetch and return the list in the foreground thread</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">pagedList</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
 </pre></div>
 </div>
   </p>
@@ -1112,18 +1072,18 @@ and timeout support.
 
 Methods on Query for ansychronous execution
 
-<div class="syntax java"><div class="highlight"><pre><span class="kd">public</span> <span class="n">FutureList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureList</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="n">FutureList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureList</span><span class="o">();</span>
 
-<span class="kd">public</span> <span class="n">FutureIds</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureIds</span><span class="o">();</span>
+<span class="kd">public</span> <span class="n">FutureIds</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureIds</span><span class="o">();</span>
 
-<span class="kd">public</span> <span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">findFutureRowCount</span><span class="o">();</span>
+<span class="kd">public</span> <span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureRowCount</span><span class="o">();</span>
 </pre></div>
 </div>
 
 
 example: shows the use of FutureList:
 
-<div class="syntax java"><div class="highlight"><pre><span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 
 <span class="c1">// find list using a background thread</span>
 <span class="n">FutureList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">futureList</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findFutureList</span><span class="o">();</span>
@@ -1176,37 +1136,36 @@ example: shows the use of FutureList:
     well as set the ORDER BY and LIMIT OFFSET clauses.
 
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// Use raw SQL with an aggregate function</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Use raw SQL with an aggregate function</span>
 
-  <span class="n">String</span> <span class="n">sql</span>
-  <span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
-  <span class="o">+</span> <span class="s">&quot; from o_order o&quot;</span>
-  <span class="o">+</span> <span class="s">&quot; join o_customer c on c.id = o.kcustomer_id &quot;</span>
-  <span class="o">+</span> <span class="s">&quot; join o_order_detail d on d.order_id = o.id &quot;</span>
-  <span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">sql</span>
+<span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
+<span class="o">+</span> <span class="s">&quot; from o_order o&quot;</span>
+<span class="o">+</span> <span class="s">&quot; join o_customer c on c.id = o.kcustomer_id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; join o_order_detail d on d.order_id = o.id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
 
-  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
-  <span class="n">RawSqlBuilder</span>
-    <span class="c1">// let ebean parse the SQL so that it can</span>
-    <span class="c1">// add expressions to the WHERE and HAVING</span>
-    <span class="c1">// clauses</span>
-    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
-      <span class="c1">// map resultSet columns to bean properties</span>
-      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;o.status&quot;</span><span class="o">,</span> <span class="s">&quot;order.status&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.id&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.id&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.name&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.name&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+<span class="n">RawSqlBuilder</span>
+  <span class="c1">// let ebean parse the SQL so that it can</span>
+  <span class="c1">// add expressions to the WHERE and HAVING</span>
+  <span class="c1">// clauses</span>
+  <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+    <span class="c1">// map resultSet columns to bean properties</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;o.status&quot;</span><span class="o">,</span> <span class="s">&quot;order.status&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.id&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.name&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
 
-  <span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
-    <span class="c1">// add expressions to the WHERE and HAVING clauses</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+  <span class="c1">// add expressions to the WHERE and HAVING clauses</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
 
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-      
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
   </p>
@@ -1215,33 +1174,32 @@ example: shows the use of FutureList:
     This example uses FetchConfig to fetch other parts of the object graph. After the raw SQL query is
     executed Ebean uses 'query joins' to fetch some order and customer properties.
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// You can also use FetchConfig to get Ebean to</span>
-  <span class="c1">// fetch additional parts of the object graph</span>
-  <span class="c1">// after the Raw SQL query is executed.</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// You can also use FetchConfig to get Ebean to</span>
+<span class="c1">// fetch additional parts of the object graph</span>
+<span class="c1">// after the Raw SQL query is executed.</span>
 
-  <span class="n">String</span> <span class="n">sql</span>
-  <span class="o">=</span> <span class="s">&quot; select order_id, sum(d.order_qty*d.unit_price) as totalAmount &quot;</span>
-  <span class="o">+</span> <span class="s">&quot; from o_order_detail d&quot;</span>
-  <span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">sql</span>
+<span class="o">=</span> <span class="s">&quot; select order_id, sum(d.order_qty*d.unit_price) as totalAmount &quot;</span>
+<span class="o">+</span> <span class="s">&quot; from o_order_detail d&quot;</span>
+<span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
 
-  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
-  <span class="n">RawSqlBuilder</span>
-    <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+<span class="n">RawSqlBuilder</span>
+  <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
 
-  <span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
-      <span class="c1">// get ebean to fetch parts of the order and customer</span>
-      <span class="c1">// after the raw SQL query is executed</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
-      <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
-    
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+    <span class="c1">// get ebean to fetch parts of the order and customer</span>
+    <span class="c1">// after the raw SQL query is executed</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
 </pre></div>
 </div>
 </p>
@@ -1249,60 +1207,59 @@ example: shows the use of FutureList:
 <p>
   This is the OrderAggregate bean used in the examples above.
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">avaje</span><span class="o">.</span><span class="na">tests</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">basic</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">com.avaje.tests.model.basic</span><span class="o">;</span>
 
-  <span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
-  <span class="kn">import</span> <span class="nn">javax.persistence.OneToOne</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.OneToOne</span><span class="o">;</span>
 
-  <span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.Sql</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.Sql</span><span class="o">;</span>
 
-  <span class="cm">/**</span>
-<span class="cm">  * An example of an Aggregate object.</span>
-<span class="cm">  *</span>
-<span class="cm">  * Note the @Sql indicates to Ebean that this bean is not based on a table but</span>
-<span class="cm">  * instead uses RawSql.</span>
-<span class="cm">  *</span>
-<span class="cm">  */</span>
-  <span class="nd">@Entity</span>
-  <span class="nd">@Sql</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderAggregate</span> <span class="o">{</span>
+<span class="cm">/**</span>
+<span class="cm">* An example of an Aggregate object.</span>
+<span class="cm">*</span>
+<span class="cm">* Note the @Sql indicates to Ebean that this bean is not based on a table but</span>
+<span class="cm">* instead uses RawSql.</span>
+<span class="cm">*</span>
+<span class="cm">*/</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Sql</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderAggregate</span> <span class="o">{</span>
 
-    <span class="nd">@OneToOne</span>
-    <span class="n">Order</span> <span class="n">order</span><span class="o">;</span>
+  <span class="nd">@OneToOne</span>
+  <span class="n">Order</span> <span class="n">order</span><span class="o">;</span>
 
-    <span class="n">Double</span> <span class="n">totalAmount</span><span class="o">;</span>
+  <span class="n">Double</span> <span class="n">totalAmount</span><span class="o">;</span>
 
-    <span class="n">Double</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="n">Double</span> <span class="n">totalItems</span><span class="o">;</span>
 
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">order</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; totalAmount:&quot;</span> <span class="o">+</span> <span class="n">totalAmount</span> <span class="o">+</span> <span class="s">&quot; totalItems:&quot;</span> <span class="o">+</span> <span class="n">totalItems</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="n">Order</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrder</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">this</span><span class="o">.</span><span class="na">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalAmount</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">totalAmount</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalAmount</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalAmount</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">this</span><span class="o">.</span><span class="na">totalAmount</span> <span class="o">=</span> <span class="n">totalAmount</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalItems</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">totalItems</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalItems</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalItems</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">this</span><span class="o">.</span><span class="na">totalItems</span> <span class="o">=</span> <span class="n">totalItems</span><span class="o">;</span>
-    <span class="o">}</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; totalAmount:&quot;</span> <span class="o">+</span> <span class="n">totalAmount</span> <span class="o">+</span> <span class="s">&quot; totalItems:&quot;</span> <span class="o">+</span> <span class="n">totalItems</span><span class="o">;</span>
   <span class="o">}</span>
-  
+
+  <span class="kd">public</span> <span class="n">Order</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrder</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalAmount</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">totalAmount</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalAmount</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalAmount</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">totalAmount</span> <span class="o">=</span> <span class="n">totalAmount</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalItems</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalItems</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalItems</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">totalItems</span> <span class="o">=</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
   </p>
@@ -1314,43 +1271,41 @@ example: shows the use of FutureList:
 
   <p>So a test case looks like:
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
-  <span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
-  <span class="s">&quot;from o_order o join o_customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
-  <span class="s">&quot;join o_order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
-  <span class="s">&quot;join o_product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
-  <span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
-  <span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
+<span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
+<span class="s">&quot;from o_order o join o_customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join o_order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join o_product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
+<span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
 
 
-  <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;d&quot;</span><span class="o">,</span> <span class="s">&quot;details&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;details.product&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;d&quot;</span><span class="o">,</span> <span class="s">&quot;details&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;details.product&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">ordersFromRaw</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;maxOrderId&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-    
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">ordersFromRaw</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;maxOrderId&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
     Rather than using columnMapping like:
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.status&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.id&quot;</span><span class="o">,</span> <span class="s">&quot;customer.id&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.id&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.order_qty&quot;</span><span class="o">,</span> <span class="s">&quot;details.orderQty&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.id&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.name&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.name&quot;</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">create</span><span class="o">();</span>
-    
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.status&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.id&quot;</span><span class="o">,</span> <span class="s">&quot;customer.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.order_qty&quot;</span><span class="o">,</span> <span class="s">&quot;details.orderQty&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.name&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -1367,17 +1322,16 @@ example: shows the use of FutureList:
   <p>This is a fairly lightweight API that you could use instead of going to raw JDBC (which is of
     course an option).</p>
 
-    <div class="syntax java"><div class="highlight"><pre>    <span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select b.id, b.title, b.type_code, b.updtime&quot;</span>
-    <span class="o">+</span><span class="s">&quot; ,p.name as product_name &quot;</span>
-    <span class="o">+</span><span class="s">&quot;from b_bug b join b_product p on p.id = b.product_id &quot;</span>
-    <span class="o">+</span><span class="s">&quot;where b.id = :id&quot;</span><span class="o">;</span>
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select b.id, b.title, b.type_code, b.updtime&quot;</span>
+<span class="o">+</span><span class="s">&quot; ,p.name as product_name &quot;</span>
+<span class="o">+</span><span class="s">&quot;from b_bug b join b_product p on p.id = b.product_id &quot;</span>
+<span class="o">+</span><span class="s">&quot;where b.id = :id&quot;</span><span class="o">;</span>
 
-    <span class="n">SqlRow</span> <span class="n">bug</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-    <span class="n">String</span> <span class="n">prodName</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;product_name&quot;</span><span class="o">);</span>
-    <span class="n">String</span> <span class="n">title</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">);</span>
-    
+<span class="n">SqlRow</span> <span class="n">bug</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="n">String</span> <span class="n">prodName</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;product_name&quot;</span><span class="o">);</span>
+<span class="n">String</span> <span class="n">title</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>Note that you can use "Named" queries and put the sql statements in orm.xml rather than having it
@@ -1409,10 +1363,10 @@ per path.</p>
 
 <p>
 Example: a program that fetches some orders ... and processes them
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// fetch new orders</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// fetch new orders</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 
   <span class="c1">// just read the orderDate</span>
@@ -1428,12 +1382,11 @@ Initially Ebean has no "profiling" information so when the program is first run 
 is not optimal.
 </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
-    from or_order o
-    where o.status_code = ?
-  <span class="nt">&lt;/sql&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code, o.customer_id
+  from or_order o
+  where o.status_code = ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
   <p>
@@ -1442,11 +1395,11 @@ is not optimal.
     orderDate. So when we run the program a 2nd time...
   </p>
 
-<div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.updtime
-    from or_order o
-    where o.status_code = ?
-  <span class="nt">&lt;/sql&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.updtime
+  from or_order o
+  where o.status_code = ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -1461,20 +1414,19 @@ is not optimal.
     example: Now lets change the program. We will use another property of order and we will
     also get the customers name.
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 
-    <span class="k">for</span> <span class="o">(</span><span class="n">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Date</span> <span class="n">orderDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">();</span>
-    <span class="c1">// also get the ship date</span>
-    <span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
-    <span class="c1">// ... and get the customer name</span>
-    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
-    <span class="n">String</span> <span class="n">customerName</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
-    <span class="o">}</span>
-    
+  <span class="k">for</span> <span class="o">(</span><span class="n">Order</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Date</span> <span class="n">orderDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getOrderDate</span><span class="o">();</span>
+  <span class="c1">// also get the ship date</span>
+  <span class="n">Date</span> <span class="n">shipDate</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getShipDate</span><span class="o">();</span>
+  <span class="c1">// ... and get the customer name</span>
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">();</span>
+  <span class="n">String</span> <span class="n">customerName</span> <span class="o">=</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+  <span class="o">}</span>
 </pre></div>
 </div>
   <p>
@@ -1483,33 +1435,30 @@ is not optimal.
     read... and then the customer is lazy loaded when the customer name is read.
   </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.updtime
-    from or_order o
-    where o.status_code = ?
-  <span class="nt">&lt;/sql&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.updtime
+  from or_order o
+  where o.status_code = ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
   -- LAZY LOADING: ... due to reading shipDate
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code,
-    o.customer_id
-    from or_order o
-    where o.id = ?
-  <span class="nt">&lt;/sql&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.ship_date, o.cretime, o.updtime, o.status_code,
+  o.customer_id
+  from or_order o
+  where o.id = ?
+<span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
   -- LAZY LOADING: ... due to reading customers name
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
-    select c.id, c.name, c.cretime, c.updtime, c.billing_address_id, c.status_code,
-    c.shipping_address_id
-    from or_customer c
-    where c.id = ?
-    <span class="nt">&lt;/sql&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Customer]&#39;</span><span class="nt">&gt;</span>
+  select c.id, c.name, c.cretime, c.updtime, c.billing_address_id, c.status_code,
+  c.shipping_address_id
+  from or_customer c
+  where c.id = ?
+  <span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
 
@@ -1518,14 +1467,13 @@ So the above queries are not so good. However, Ebean has now updated its profili
 information so when we run the program again...
 </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order, customer] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
-    select o.id, o.order_date, o.updtime, o.ship_date
-    , c.id, c.name, c.updtime
-    from or_order o
-    join or_customer c on o.customer_id = c.id
-    where o.status_code = ?
-  <span class="nt">&lt;sql&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;[app.data.test.Order, customer] autoFetchTuned[true]&#39;</span><span class="nt">&gt;</span>
+  select o.id, o.order_date, o.updtime, o.ship_date
+  , c.id, c.name, c.updtime
+  from or_order o
+  join or_customer c on o.customer_id = c.id
+  where o.status_code = ?
+<span class="nt">&lt;sql&gt;</span>
 </pre></div>
 </div>
 
@@ -1550,7 +1498,7 @@ application changes the queries will automatically be tuned to suit.
 
 <p>On the query object you can explicitly specify if you want to use autofetch or
 not.
-<div class="syntax java"><div class="highlight"><pre><span class="c1">// explicitly turn on Autofetch for this query</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// explicitly turn on Autofetch for this query</span>
 <span class="n">query</span><span class="o">.</span><span class="na">setAutofetch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </pre></div>
 </div>
@@ -1561,7 +1509,7 @@ not.
 <p>There are a number of properties in ebean.properties which control how
 autofetch works.
 
-<div class="syntax properties"><div class="highlight"><pre><span class="c"># enable autofetch</span>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="c"># enable autofetch</span>
 <span class="na">ebean.autofetch.querytuning</span><span class="o">=</span><span class="s">true</span>
 <span class="c"># enable collection of profiling information</span>
 <span class="na">ebean.autofetch.profiling</span><span class="o">=</span><span class="s">true</span>
@@ -1690,6 +1638,7 @@ collected
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -1697,10 +1646,6 @@ collected
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

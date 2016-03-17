@@ -108,13 +108,13 @@ resulting html is generated to).  Note that the source directory can have an oth
 file extension ends with <emphasis>.html</emphasis> then it is processed assuming it is a freemarker template - otherwise the files
 are just copied to the destination directory.
         </p>
-<div class="syntax sh"><div class="highlight"><pre>java -jar avaje-website-generator-1.0.1.jar <span class="se">\n</span>
+<div class="syntax sh"><div class="highlight"><pre><span></span>java -jar avaje-website-generator-1.0.1.jar <span class="se">\n</span>
   -source /home/rob/website/source <span class="se">\n</span>
   -dest /home/rob/website/destination
 
-<span class="c"># edit the templates etc in the source directory</span>
-<span class="c"># the pages etc are automatically generated </span>
-<span class="c"># into the destination directoy</span>
+<span class="c1"># edit the templates etc in the source directory</span>
+<span class="c1"># the pages etc are automatically generated </span>
+<span class="c1"># into the destination directoy</span>
 </pre></div>
 </div> 
        <h4>Notes:</h4>
@@ -133,11 +133,11 @@ via git pull or similar. Nginx or similar is configured to serve the pages from 
       <div class="">
         <h3>Maven</h3>
 
-<div class="syntax xml"><div class="highlight"><pre>    <span class="nt">&lt;dependency&gt;</span>
-      <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
-      <span class="nt">&lt;artifactId&gt;</span>avaje-website-generator<span class="nt">&lt;/artifactId&gt;</span>
-      <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
-    <span class="nt">&lt;/dependency&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-website-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
@@ -166,14 +166,14 @@ performance.
   </p>
 
   <h3>Layout inheritance</h3>
-<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the &#39;child&#39; page --&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- In the &#39;child&#39; page --&gt;</span>
 <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;layout&quot;</span> <span class="na">content=</span><span class="s">&quot;_layout/parent-layout.html&quot;</span> <span class="nt">/&gt;</span>
 </pre></div>
 </div>
   <p>
 The <code>meta layout</code> tag defines a parent template to inherit.   
   </p>
-<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the parent page --&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- In the parent page --&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;layout-body&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
 </pre></div>
 </div>
@@ -183,7 +183,7 @@ In the parent page a <code>div</code> with an  <code>id</code> of <code>layout-b
 
 
 <h3>Title</h3>
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;head&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;head&gt;</span>
 <span class="c">&lt;!-- In the &#39;child&#39; page --&gt;</span>
 <span class="nt">&lt;title&gt;</span>The page title<span class="nt">&lt;/title&gt;</span>
 ...
@@ -196,7 +196,7 @@ If you have a <code>title</code> tag in the head of the page then this title is 
 
 
 <h3>Head content</h3>
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;head&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;head&gt;</span>
 <span class="c">&lt;!-- tags in the head section of the &#39;child&#39; page --&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 </pre></div>
@@ -205,7 +205,7 @@ If you have a <code>title</code> tag in the head of the page then this title is 
 Any content you have in the <code>head</code> section of the page will be incorporated into the final page layout as 
 long as the parent layout includes a <code>meta</code> tag with an <code>id</code> of <code>layout-head</code>.
 </p>
-<div class="syntax xml"><div class="highlight"><pre><span class="c">&lt;!-- In the parent page --&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- In the parent page --&gt;</span>
 <span class="nt">&lt;meta</span> <span class="na">id=</span><span class="s">&quot;layout-head&quot;</span> <span class="nt">/&gt;</span>
 </pre></div>
 </div>
@@ -238,7 +238,7 @@ To use the syntax highlighting you prefix the code with <strong>3 backticks</str
 <p>
 Example logs from running the application are shown below:
 </p>
-<div class="syntax sql"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">avaje</span><span class="o">-</span><span class="n">website</span><span class="o">-</span><span class="n">generator</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">jar</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">avaje</span><span class="o">-</span><span class="n">ebeanorm</span><span class="o">-</span><span class="n">website</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">site</span>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="n">avaje</span><span class="o">-</span><span class="n">website</span><span class="o">-</span><span class="n">generator</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="n">jar</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">avaje</span><span class="o">-</span><span class="n">ebeanorm</span><span class="o">-</span><span class="n">website</span> <span class="o">-</span><span class="n">d</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rob</span><span class="o">/</span><span class="n">site</span>
 
 <span class="c1">--</span>
 <span class="c1">-- walks the source directory tree and generates html and copies files into destination directory</span>

@@ -257,17 +257,15 @@
     other tables included in the query the rows returned represent 'current values'.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// asOf some time in the past like 1 hour ago, 1 week ago, 1 month ago etc</span>
-  <span class="n">Timestamp</span> <span class="n">asOf</span> <span class="o">=</span> <span class="o">...;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// asOf some time in the past like 1 hour ago, 1 week ago, 1 month ago etc</span>
+<span class="n">Timestamp</span> <span class="n">asOf</span> <span class="o">=</span> <span class="o">...;</span>
 
-  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
-      <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
-          <span class="o">.</span><span class="na">asOf</span><span class="o">(</span><span class="n">asOf</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;billingAddress&quot;</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;jim&quot;</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-
-  
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+    <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">asOf</span><span class="o">(</span><span class="n">asOf</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;billingAddress&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;jim&quot;</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -298,23 +296,21 @@
     effective start and effective end timestamps.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Timestamp</span> <span class="n">start</span> <span class="o">=</span> <span class="o">...;</span>
-  <span class="n">Timestamp</span> <span class="n">end</span> <span class="o">=</span> <span class="o">...;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Timestamp</span> <span class="n">start</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">Timestamp</span> <span class="n">end</span> <span class="o">=</span> <span class="o">...;</span>
 
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;&gt;</span> <span class="n">customerVersions</span> <span class="o">=</span>
-      <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
-        <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-        <span class="o">.</span><span class="na">idEq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
-        <span class="o">.</span><span class="na">findVersionsBetween</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">end</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;&gt;</span> <span class="n">customerVersions</span> <span class="o">=</span>
+    <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">idEq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findVersionsBetween</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">end</span><span class="o">);</span>
 
-  <span class="k">for</span> <span class="o">(</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customerVersion</span> <span class="o">:</span> <span class="n">customerVersions</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Customer</span> <span class="n">bean</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getBean</span><span class="o">();</span>
-    <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">ValuePair</span><span class="o">&gt;</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getDiff</span><span class="o">();</span>
-    <span class="n">Timestamp</span> <span class="n">effectiveStart</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getStart</span><span class="o">();</span>
-    <span class="n">Timestamp</span> <span class="n">effectiveEnd</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getEnd</span><span class="o">();</span>
-  <span class="o">}</span>
-
-  
+<span class="k">for</span> <span class="o">(</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customerVersion</span> <span class="o">:</span> <span class="n">customerVersions</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Customer</span> <span class="n">bean</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getBean</span><span class="o">();</span>
+  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">ValuePair</span><span class="o">&gt;</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getDiff</span><span class="o">();</span>
+  <span class="n">Timestamp</span> <span class="n">effectiveStart</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getStart</span><span class="o">();</span>
+  <span class="n">Timestamp</span> <span class="n">effectiveEnd</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getEnd</span><span class="o">();</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -323,41 +319,41 @@
     It is generally expected that the entity beans should contain <code>@WhoCreated</code>, <code>@WhoModified</code>,
     <code>@WhenCreated</code> and <code>@WhenModified</code> properties.
   </p>
-<div class="syntax java"><div class="highlight"><pre>  <span class="cm">/**</span>
-<span class="cm">   * Common properties used by many entity beans.</span>
-<span class="cm">   */</span>
-  <span class="nd">@MappedSuperclass</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseModel</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Common properties used by many entity beans.</span>
+<span class="cm"> */</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseModel</span> <span class="o">{</span>
 
-    <span class="nd">@Id</span>
-    <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+  <span class="nd">@Id</span>
+  <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
 
-    <span class="nd">@Version</span>
-    <span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
+  <span class="nd">@Version</span>
+  <span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
 
-    <span class="nd">@WhenCreated</span>
-    <span class="n">Timestamp</span> <span class="n">whenCreated</span><span class="o">;</span>
+  <span class="nd">@WhenCreated</span>
+  <span class="n">Timestamp</span> <span class="n">whenCreated</span><span class="o">;</span>
 
-    <span class="nd">@WhenModified</span>
-    <span class="n">Timestamp</span> <span class="n">whenModified</span><span class="o">;</span>
+  <span class="nd">@WhenModified</span>
+  <span class="n">Timestamp</span> <span class="n">whenModified</span><span class="o">;</span>
 
-    <span class="nd">@WhoCreated</span>
-    <span class="n">String</span> <span class="n">whoCreated</span><span class="o">;</span>
+  <span class="nd">@WhoCreated</span>
+  <span class="n">String</span> <span class="n">whoCreated</span><span class="o">;</span>
 
-    <span class="nd">@WhoModified</span>
-    <span class="n">String</span> <span class="n">whoModified</span><span class="o">;</span>
-    <span class="o">...</span>
+  <span class="nd">@WhoModified</span>
+  <span class="n">String</span> <span class="n">whoModified</span><span class="o">;</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="nd">@History</span>
-  <span class="nd">@Entity</span>
-  <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@History</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
 
-    <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
-    <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-    <span class="o">...</span>
+  <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">...</span>
 </pre></div>
 </div>
 
@@ -487,6 +483,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -494,10 +491,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

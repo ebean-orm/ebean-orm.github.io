@@ -86,15 +86,13 @@
   </p>
 
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
-  <span class="c">&lt;!-- SQL and bind values --&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!-- SQL and bind values --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 
-  <span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-
-  
+<span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
@@ -106,12 +104,10 @@
     built. In tuning queries for N+1 etc.
   </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
-  <span class="c">&lt;!-- Summary level details --&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-
-  
+<span class="c">&lt;!-- Summary level details --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
@@ -123,15 +119,13 @@
   </p>
 
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
-   <span class="c">&lt;!-- L2 logging --&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-
-  
+ <span class="c">&lt;!-- L2 logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
@@ -186,6 +180,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -193,10 +188,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

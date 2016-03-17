@@ -181,26 +181,24 @@
     Query beans provides a type safe "wrapper" over the query criteria API. We can also
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setFirstRow</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">whenCreated</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setFirstRow</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">whenCreated</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="o">{</span>
-    <span class="s">&quot;sort&quot;</span><span class="o">:</span> <span class="o">[</span> <span class="o">{</span> <span class="s">&quot;whenCreated&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;order&quot;</span><span class="o">:</span> <span class="s">&quot;desc&quot;</span> <span class="o">}</span> <span class="o">}</span> <span class="o">],</span>
-    <span class="s">&quot;query&quot;</span><span class="o">:</span> <span class="o">{</span>
-      <span class="s">&quot;filtered&quot;</span><span class="o">:</span> <span class="o">{</span>
-        <span class="s">&quot;filter&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;term&quot;</span><span class="o">:</span> <span class="o">{</span> <span class="s">&quot;status&quot;</span><span class="o">:</span> <span class="s">&quot;COMPLETE&quot;</span> <span class="o">}</span> <span class="o">}</span>
-      <span class="o">}</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-  
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;sort&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">],</span>
+  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;filtered&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 
@@ -211,19 +209,19 @@
     query is automatically treated as a document store query.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="k">new</span> <span class="nf">QOrder</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">customer</span><span class="o">.</span><span class="na">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="s">&quot;query&quot;</span><span class="o">:</span> <span class="o">{</span>
-    <span class="s">&quot;match&quot;</span><span class="o">:</span> <span class="o">{</span>
-      <span class="s">&quot;customer.name&quot;</span><span class="o">:</span> <span class="s">&quot;Rob&quot;</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-  
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 
@@ -239,30 +237,28 @@
     query.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">MultiMatch</span> <span class="n">multiMatch</span> <span class="o">=</span>
-    <span class="n">MultiMatch</span><span class="o">.</span><span class="na">fields</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.notes&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">opAnd</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="n">MultiMatch</span><span class="o">.</span><span class="na">Type</span><span class="o">.</span><span class="na">PHRASE_PREFIX</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">MultiMatch</span> <span class="n">multiMatch</span> <span class="o">=</span>
+  <span class="n">MultiMatch</span><span class="o">.</span><span class="na">fields</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.notes&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">opAnd</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">type</span><span class="o">(</span><span class="n">MultiMatch</span><span class="o">.</span><span class="na field">Type</span><span class="o">.</span><span class="na">PHRASE_PREFIX</span><span class="o">);</span>
 
-  <span class="k">new</span> <span class="nf">QOrder</span><span class="o">()</span>
-      <span class="o">.</span><span class="na">multiMatch</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">,</span> <span class="n">multiMatch</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  
+<span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">multiMatch</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">,</span> <span class="n">multiMatch</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="s">&quot;query&quot;</span><span class="o">:</span> <span class="o">{</span>
-    <span class="s">&quot;multi_match&quot;</span><span class="o">:</span> <span class="o">{</span>
-      <span class="s">&quot;query&quot;</span><span class="o">:</span> <span class="s">&quot;Rob&quot;</span><span class="o">,</span>
-      <span class="s">&quot;fields&quot;</span><span class="o">:</span> <span class="o">[</span>
-        <span class="s">&quot;customer.name&quot;</span><span class="o">,</span>
-        <span class="s">&quot;customer.notes&quot;</span>
-      <span class="o">],</span>
-      <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;phrase_prefix&quot;</span><span class="o">,</span>
-      <span class="s">&quot;operator&quot;</span><span class="o">:</span> <span class="s">&quot;and&quot;</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
-  
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;multi_match&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;customer.name&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;customer.notes&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;phrase_prefix&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;and&quot;</span>
+  <span class="p">}</span>
+<span class="p">}}</span>
 </pre></div>
 </div>
 
@@ -301,12 +297,12 @@
   </p>
   <h6>Ebean example</h6>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
 </pre></div>
 </div>
   <h6>Elastic JSON query</h6>
 
-<div class="syntax xml"><div class="highlight"><pre>  { &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
+<div class="syntax xml"><div class="highlight"><pre><span></span>{ &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
 </pre></div>
 </div>
 
@@ -316,12 +312,12 @@
   </p>
   <h6>Ebean example</h6>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
 </pre></div>
 </div>
   <h6>Elastic JSON query</h6>
 
-<div class="syntax xml"><div class="highlight"><pre>  {&quot;range&quot;:{&quot;customer.id&quot;:{&quot;gt&quot;:42}}}
+<div class="syntax xml"><div class="highlight"><pre><span></span>{&quot;range&quot;:{&quot;customer.id&quot;:{&quot;gt&quot;:42}}}
 </pre></div>
 </div>
 
@@ -333,22 +329,22 @@
   </p>
   <h6>Ebean example</h6>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">allEq</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
-  <span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="s">&quot;COMPLETE&quot;</span><span class="o">);</span>
-  <span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">allEq</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
+<span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="s">&quot;COMPLETE&quot;</span><span class="o">);</span>
+<span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
 
-  <span class="o">...</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">allEq</span><span class="o">(</span><span class="n">allEq</span><span class="o">)</span>
+<span class="o">...</span>
+<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">allEq</span><span class="o">(</span><span class="n">allEq</span><span class="o">)</span>
 </pre></div>
 </div>
   <h6>Elastic JSON query</h6>
 
-<div class="syntax xml"><div class="highlight"><pre>  &quot;bool&quot;: {
-    &quot;must&quot;: [
-      { &quot;term&quot;: { &quot;customer.id&quot;: 1 } },
-      { &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
-    ]
-  }
+<div class="syntax xml"><div class="highlight"><pre><span></span>&quot;bool&quot;: {
+  &quot;must&quot;: [
+    { &quot;term&quot;: { &quot;customer.id&quot;: 1 } },
+    { &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
+  ]
+}
 </pre></div>
 </div>
 
@@ -389,6 +385,7 @@
 
 </div>
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -396,10 +393,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

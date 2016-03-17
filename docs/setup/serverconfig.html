@@ -92,16 +92,15 @@
     and some from ebean.properties.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-  <span class="o">...</span>
-  <span class="c1">// load configuration from ebean.properties</span>
-  <span class="c1">// using &quot;pg&quot; as the server name</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
-  <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+<span class="o">...</span>
+<span class="c1">// load configuration from ebean.properties</span>
+<span class="c1">// using &quot;pg&quot; as the server name</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+<span class="o">...</span>
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-  
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -112,19 +111,18 @@
     via the externally loaded properties and some is set via code (calling setter methods on ServerConfig).
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// load properties externally</span>
-  <span class="n">Properties</span> <span class="n">externalProps</span> <span class="o">=</span> <span class="o">...;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// load properties externally</span>
+<span class="n">Properties</span> <span class="n">externalProps</span> <span class="o">=</span> <span class="o">...;</span>
 
-  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-  <span class="o">...</span>
-  <span class="c1">// load configuration from external properties</span>
-  <span class="c1">// using &quot;pg&quot; as the server name</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">(</span><span class="n">externalProps</span><span class="o">);</span>
-  <span class="o">...</span>
+<span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+<span class="o">...</span>
+<span class="c1">// load configuration from external properties</span>
+<span class="c1">// using &quot;pg&quot; as the server name</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">(</span><span class="n">externalProps</span><span class="o">);</span>
+<span class="o">...</span>
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-  
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
 </pre></div>
 </div>
   <h2 id="register">Register</h2>
@@ -136,19 +134,17 @@
     You need to explicitly ServerConfig.setRegister(false) if you don't this feature.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-  <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+<span class="o">...</span>
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
 
-  <span class="o">...</span>
+<span class="o">...</span>
 
-  <span class="c1">// Later on we can get the server instance</span>
-  <span class="c1">// using it&#39;s name via Ebean</span>
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-
-  
+<span class="c1">// Later on we can get the server instance</span>
+<span class="c1">// using it&#39;s name via Ebean</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -158,22 +154,20 @@
     be the 'default' EbeanServer and can be later accessed via <code>Ebean.getDefaultServer()</code>
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-  <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="o">...</span>
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
 
-  <span class="o">...</span>
+<span class="o">...</span>
 
-  <span class="c1">// Later on we can get the server instance ...</span>
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+<span class="c1">// Later on we can get the server instance ...</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
 
-  <span class="c1">// Note: serverName of null is the same as getting the default server</span>
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
-
-  
+<span class="c1">// Note: serverName of null is the same as getting the default server</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -246,6 +240,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -253,10 +248,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

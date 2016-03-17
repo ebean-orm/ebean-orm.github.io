@@ -87,7 +87,7 @@ generation is also referred to as "Proxy classes").
 To explain Field Access and Property Access I'll use an example focusing on a single field
 (in this case "firstName") and how Property Access and Field Acccess works in Ebean.
 
-<div class="syntax java"><div class="highlight"><pre><span class="o">...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
 
@@ -131,19 +131,19 @@ getFullName() method as an example).
 
 <h4>Property Access with Ebean</h4>
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="o">...</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFullName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// not getter or setter so NOT intercepted...</span>
-    <span class="k">return</span> <span class="n">firstName</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span> <span class="n">lastName</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preGetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preSetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">,</span> <span class="n">getFirstName</span><span class="o">());</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
-  <span class="o">}</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getFullName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// not getter or setter so NOT intercepted...</span>
+  <span class="k">return</span> <span class="n">firstName</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span> <span class="n">lastName</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preGetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preSetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">,</span> <span class="n">getFirstName</span><span class="o">());</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -171,33 +171,33 @@ The class bytes are modified replacing the GETFIELD and PUTFIELD bytecode calls 
 With Ebean Field access looks something like this... (note: other ORMs could generate
 quite different code)
 
-<div class="syntax java"><div class="highlight"><pre>  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFullName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// GETFIELD firstName replaced...</span>
-    <span class="k">return</span> <span class="nf">_ebean_getFirstName</span><span class="o">()+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_ebean_getLastName</span><span class="o">();</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// GETFIELD firstName replaced</span>
-    <span class="k">return</span> <span class="nf">_ebean_getFirstName</span><span class="o">();</span>
-  <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// PUTFIELD firstName replaced</span>
-    <span class="n">_ebean_setFirstName</span><span class="o">(</span><span class="n">newValue</span><span class="o">);</span>
-  <span class="o">}</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="n">String</span> <span class="nf">getFullName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// GETFIELD firstName replaced...</span>
+  <span class="k">return</span> <span class="n">_ebean_getFirstName</span><span class="o">()+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_ebean_getLastName</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// GETFIELD firstName replaced</span>
+  <span class="k">return</span> <span class="n">_ebean_getFirstName</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// PUTFIELD firstName replaced</span>
+  <span class="n">_ebean_setFirstName</span><span class="o">(</span><span class="n">newValue</span><span class="o">);</span>
+<span class="o">}</span>
 
-  <span class="c1">// new method generated by Ebean</span>
-  <span class="c1">// used to replace GETFIELD firstName</span>
-  <span class="n">String</span> <span class="nf">_ebean_getFirstName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preGetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">);</span>
-    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">firstName</span><span class="o">;</span>
-  <span class="o">}</span>
+<span class="c1">// new method generated by Ebean</span>
+<span class="c1">// used to replace GETFIELD firstName</span>
+<span class="n">String</span> <span class="nf">_ebean_getFirstName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preGetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">);</span>
+  <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">firstName</span><span class="o">;</span>
+<span class="o">}</span>
 
-  <span class="c1">// new method generated by Ebean</span>
-  <span class="c1">// used to replace PUTFIELD firstName</span>
-  <span class="kt">void</span> <span class="nf">_ebean_setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">String</span> <span class="n">currentValue</span> <span class="o">=</span> <span class="n">_ebean_getFirstName</span><span class="o">();</span>
-    <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preSetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">,</span> <span class="n">currentValue</span><span class="o">);</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
-  <span class="o">}</span>
+<span class="c1">// new method generated by Ebean</span>
+<span class="c1">// used to replace PUTFIELD firstName</span>
+<span class="kt">void</span> <span class="nf">_ebean_setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">newValue</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">String</span> <span class="n">currentValue</span> <span class="o">=</span> <span class="n">_ebean_getFirstName</span><span class="o">();</span>
+  <span class="n">_ebean_intercept</span><span class="o">.</span><span class="na">preSetter</span><span class="o">(</span><span class="s">&quot;firstName&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">,</span> <span class="n">currentValue</span><span class="o">);</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 </p><p>
@@ -412,6 +412,7 @@ account as needed.
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -419,10 +420,6 @@ account as needed.
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

@@ -139,15 +139,14 @@
   </ul>
 
   <h4>Turn profiling on</h4>
-  <div class="syntax properties"><div class="highlight"><pre><span class="na">ebean.autotune.profiling</span><span class="o">=</span><span class="s">true</span>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.autotune.profiling</span><span class="o">=</span><span class="s">true</span>
   
 </pre></div>
 </div>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
 
-  <span class="c1">// turn on profiling</span>
-  <span class="n">serverConfig</span><span class="o">.</span><span class="na">getAutoTuneConfig</span><span class="o">().</span><span class="na">setProfiling</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  
+<span class="c1">// turn on profiling</span>
+<span class="n">serverConfig</span><span class="o">.</span><span class="na">getAutoTuneConfig</span><span class="o">().</span><span class="na">setProfiling</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -182,7 +181,7 @@
     In the example below the diff entries shows us that for this origin point the application now additionally uses
     the order.shipDate and customer.name
   </p>
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;profileDiff&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;profileDiff&gt;</span>
   <span class="nt">&lt;origin</span> <span class="na">key=</span><span class="s">&quot;h_zOh.wpbnw.DJ7cI3&quot;</span> <span class="na">beanType=</span><span class="s">&quot;org.example.domain.Order&quot;</span>
           <span class="na">detail=</span><span class="s">&quot;select (shipDate,orderDate)  fetch customer (id,name) &quot;</span>
           <span class="na">original=</span><span class="s">&quot;select (orderDate)  fetch customer (id) &quot;</span><span class="nt">&gt;</span>
@@ -204,7 +203,7 @@
     is no longer valid as the code has been changed/deleted.
   </p>
   <h5>Example</h5>
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;profileEmpty&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;profileEmpty&gt;</span>
   <span class="nt">&lt;origin</span> <span class="na">key=</span><span class="s">&quot;wpbnw.BQejAr.Bzpaqe&quot;</span><span class="nt">/&gt;</span>
   <span class="nt">&lt;origin</span> <span class="na">key=</span><span class="s">&quot;wpbnw.BQejAr.CEn3iT&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/profileEmpty&gt;</span>
@@ -236,14 +235,14 @@
   </p>
 
   <h4>Turn tuning on</h4>
-  <div class="syntax properties"><div class="highlight"><pre><span class="na">ebean.autotune.queryTuning</span><span class="o">=</span><span class="s">true</span>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.autotune.queryTuning</span><span class="o">=</span><span class="s">true</span>
 
 <span class="c"># optionally specify the location of ebean-autotune.xml</span>
 <span class="c">#ebean.autotune.queryTuningFile=ebean-autotune.xml</span>
   
 </pre></div>
 </div>
-  <div class="syntax java"><div class="highlight"><pre><span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
 
 <span class="n">AutoTuneConfig</span> <span class="n">autoTuneConfig</span> <span class="o">=</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">getAutoTuneConfig</span><span class="o">();</span>
 
@@ -261,7 +260,7 @@
   </p>
 
   <h5>Example</h5>
-<div class="syntax xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
 <span class="nt">&lt;autotune</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/autotune&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;origin</span> <span class="na">key=</span><span class="s">&quot;wpbnw.BQejAr.Bzpaqe&quot;</span> <span class="na">beanType=</span><span class="s">&quot;org.example.domain.Order&quot;</span>
           <span class="na">detail=</span><span class="s">&quot;select (orderDate,shipDate,status)  fetch details (id,orderQty)&quot;</span>
@@ -334,6 +333,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -341,10 +341,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

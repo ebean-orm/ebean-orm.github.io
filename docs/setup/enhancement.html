@@ -146,25 +146,24 @@
     This can be described as "build time enhancement".
   </p>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;plugin&gt;</span>
-    <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-    <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mavenenhancer<span class="nt">&lt;/artifactId&gt;</span>
-    <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-    <span class="nt">&lt;executions&gt;</span>
-      <span class="nt">&lt;execution&gt;</span>
-        <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-        <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-        <span class="nt">&lt;configuration&gt;</span>
-          <span class="nt">&lt;packages&gt;</span>org.example.domain.**,org.example.anotherdomain.**<span class="nt">&lt;/packages&gt;</span>
-          <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-        <span class="nt">&lt;/configuration&gt;</span>
-        <span class="nt">&lt;goals&gt;</span>
-          <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-        <span class="nt">&lt;/goals&gt;</span>
-      <span class="nt">&lt;/execution&gt;</span>
-    <span class="nt">&lt;/executions&gt;</span>
-  <span class="nt">&lt;/plugin&gt;</span>
-  
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mavenenhancer<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;packages&gt;</span>org.example.domain.**,org.example.anotherdomain.**<span class="nt">&lt;/packages&gt;</span>
+        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+  <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
 </pre></div>
 </div>
 
@@ -175,44 +174,43 @@
 
     <p>Eclipse can be configured to enhance the classes during build using maven configuration</p>
 
-      <div class="syntax xml"><div class="highlight"><pre>      <span class="nt">&lt;build&gt;</span>
-        <span class="nt">&lt;plugins&gt;</span>
-          <span class="c">&lt;!-- plugins here --&gt;</span>
-        <span class="nt">&lt;/plugins&gt;</span>
-        <span class="nt">&lt;pluginManagement&gt;</span>
-          <span class="nt">&lt;plugins&gt;</span>
-            <span class="c">&lt;!--This plugin&#39;s configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. --&gt;</span>
-            <span class="nt">&lt;plugin&gt;</span>
-              <span class="nt">&lt;groupId&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupId&gt;</span>
-              <span class="nt">&lt;artifactId&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactId&gt;</span>
-              <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
-              <span class="nt">&lt;configuration&gt;</span>
-                <span class="nt">&lt;lifecycleMappingMetadata&gt;</span>
-                  <span class="nt">&lt;pluginExecutions&gt;</span>
-                    <span class="nt">&lt;pluginExecution&gt;</span>
-                      <span class="nt">&lt;pluginExecutionFilter&gt;</span>
-                        <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-                        <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mavenenhancer<span class="nt">&lt;/artifactId&gt;</span>
-                        <span class="nt">&lt;versionRange&gt;</span>[<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>,)<span class="nt">&lt;/versionRange&gt;</span>
-                        <span class="nt">&lt;goals&gt;</span>
-                          <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-                        <span class="nt">&lt;/goals&gt;</span>
-                      <span class="nt">&lt;/pluginExecutionFilter&gt;</span>
-                      <span class="nt">&lt;action&gt;</span>
-                        <span class="nt">&lt;execute&gt;</span>
-                          <span class="nt">&lt;runOnConfiguration&gt;</span>true<span class="nt">&lt;/runOnConfiguration&gt;</span>
-                          <span class="nt">&lt;runOnIncremental&gt;</span>true<span class="nt">&lt;/runOnIncremental&gt;</span>
-                        <span class="nt">&lt;/execute&gt;</span>
-                      <span class="nt">&lt;/action&gt;</span>
-                    <span class="nt">&lt;/pluginExecution&gt;</span>
-                  <span class="nt">&lt;/pluginExecutions&gt;</span>
-                <span class="nt">&lt;/lifecycleMappingMetadata&gt;</span>
-              <span class="nt">&lt;/configuration&gt;</span>
-            <span class="nt">&lt;/plugin&gt;</span>
-          <span class="nt">&lt;/plugins&gt;</span>
-        <span class="nt">&lt;/pluginManagement&gt;</span>
-      <span class="nt">&lt;/build&gt;</span>
-      
+      <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;plugins&gt;</span>
+    <span class="c">&lt;!-- plugins here --&gt;</span>
+  <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;pluginManagement&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="c">&lt;!--This plugin&#39;s configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. --&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;configuration&gt;</span>
+          <span class="nt">&lt;lifecycleMappingMetadata&gt;</span>
+            <span class="nt">&lt;pluginExecutions&gt;</span>
+              <span class="nt">&lt;pluginExecution&gt;</span>
+                <span class="nt">&lt;pluginExecutionFilter&gt;</span>
+                  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+                  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-mavenenhancer<span class="nt">&lt;/artifactId&gt;</span>
+                  <span class="nt">&lt;versionRange&gt;</span>[<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>,)<span class="nt">&lt;/versionRange&gt;</span>
+                  <span class="nt">&lt;goals&gt;</span>
+                    <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+                  <span class="nt">&lt;/goals&gt;</span>
+                <span class="nt">&lt;/pluginExecutionFilter&gt;</span>
+                <span class="nt">&lt;action&gt;</span>
+                  <span class="nt">&lt;execute&gt;</span>
+                    <span class="nt">&lt;runOnConfiguration&gt;</span>true<span class="nt">&lt;/runOnConfiguration&gt;</span>
+                    <span class="nt">&lt;runOnIncremental&gt;</span>true<span class="nt">&lt;/runOnIncremental&gt;</span>
+                  <span class="nt">&lt;/execute&gt;</span>
+                <span class="nt">&lt;/action&gt;</span>
+              <span class="nt">&lt;/pluginExecution&gt;</span>
+            <span class="nt">&lt;/pluginExecutions&gt;</span>
+          <span class="nt">&lt;/lifecycleMappingMetadata&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/pluginManagement&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
 </pre></div>
 </div>
 
@@ -231,7 +229,7 @@
     libraries from apache, google, testing etc.
   </p>
 
-<div class="syntax xml"><div class="highlight"><pre>java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar MyApplication
+<div class="syntax xml"><div class="highlight"><pre><span></span>java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar MyApplication
 java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=debug=3 MyApplication
 java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=packages=org.example.model.** MyApplication
 java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=debug=1;packages=org.example.model.**,org.example.model2.**
@@ -260,7 +258,7 @@ MyApplication
 
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven4">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-agent<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
@@ -269,33 +267,33 @@ MyApplication
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy4">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
   <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-agent:<span class='avaje-ebeanorm-agent-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT4">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen4">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-agent &quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje.ebeanorm/avaje-ebeanorm-agent &quot;<span class='avaje-ebeanorm-agent-version'>${version}</span>&quot;]
 </pre></div>
 </div>
       </div>
@@ -332,7 +330,7 @@ MyApplication
 
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven3">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>avaje-agentloader<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span><span class='avaje-agentloader-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
@@ -341,33 +339,33 @@ MyApplication
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy3">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-agentloader&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-agentloader&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape3">
-<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
   <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-agentloader&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-agentloader-version'>${version}</span>&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle3">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr3">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT3">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-agentloader&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-agentloader&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen3">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje/avaje-agentloader &quot;<span class='avaje-agentloader-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje/avaje-agentloader &quot;<span class='avaje-agentloader-version'>${version}</span>&quot;]
 </pre></div>
 </div>
       </div>
@@ -380,15 +378,14 @@ MyApplication
     The code below loads the enhancer agent programmatically onto the running JVM.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
-  <span class="o">...</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// Load the agent into the running JVM process</span>
-    <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model.**&quot;</span><span class="o">))</span> <span class="o">{</span>
-      <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
-    <span class="o">}</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// Load the agent into the running JVM process</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model.**&quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;avaje-ebeanorm-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
   <span class="o">}</span>
-  
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -402,23 +399,22 @@ MyApplication
     <li>Create a target that uses the AntEnhanceTask to enhance the entity classes.</li>
   </ol>
 
-  <div class="syntax xml"><div class="highlight"><pre>  <span class="nt">&lt;taskdef</span>
-      <span class="na">name=</span><span class="s">&quot;ebeanEnhance&quot;</span>
-      <span class="na">classname=</span><span class="s">&quot;com.avaje.ebean.enhance.ant.AntEnhanceTask&quot;</span>
-      <span class="na">classpath=</span><span class="s">&quot;your_path_to/ebean-x.x.x.jar&quot;</span><span class="nt">/&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;taskdef</span>
+    <span class="na">name=</span><span class="s">&quot;ebeanEnhance&quot;</span>
+    <span class="na">classname=</span><span class="s">&quot;com.avaje.ebean.enhance.ant.AntEnhanceTask&quot;</span>
+    <span class="na">classpath=</span><span class="s">&quot;your_path_to/ebean-x.x.x.jar&quot;</span><span class="nt">/&gt;</span>
 
-  <span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;ormEnhance&quot;</span> <span class="na">depends=</span><span class="s">&quot;clean,compile&quot;</span><span class="nt">&gt;</span>
-    <span class="c">&lt;!--</span>
-<span class="c">    classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.</span>
+<span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;ormEnhance&quot;</span> <span class="na">depends=</span><span class="s">&quot;clean,compile&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!--</span>
+<span class="c">  classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.</span>
 
-<span class="c">    packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .</span>
-<span class="c">    --&gt;</span>
-    <span class="nt">&lt;ebeanEnhance</span>
-        <span class="na">classSource=</span><span class="s">&quot;your_classes_directory&quot;</span>
-        <span class="na">packages=</span><span class="s">&quot;app.domain.*&quot;</span>
-        <span class="na">transformArgs=</span><span class="s">&quot;debug=1&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;/target&gt;</span>
-  
+<span class="c">  packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .</span>
+<span class="c">  --&gt;</span>
+  <span class="nt">&lt;ebeanEnhance</span>
+      <span class="na">classSource=</span><span class="s">&quot;your_classes_directory&quot;</span>
+      <span class="na">packages=</span><span class="s">&quot;app.domain.*&quot;</span>
+      <span class="na">transformArgs=</span><span class="s">&quot;debug=1&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/target&gt;</span>
 </pre></div>
 </div>
 
@@ -429,24 +425,23 @@ MyApplication
     You can run the enhancement yourself programmatically using the Transformer class from the agent.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre>  <span class="n">Transformer</span> <span class="n">transformer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Transformer</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;debug=1&quot;</span><span class="o">);</span>
-  <span class="n">InputStreamTransform</span> <span class="n">streamTransform</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InputStreamTransform</span><span class="o">(</span><span class="n">transformer</span><span class="o">,</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">());</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transformer</span> <span class="n">transformer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Transformer</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;debug=1&quot;</span><span class="o">);</span>
+<span class="n">InputStreamTransform</span> <span class="n">streamTransform</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InputStreamTransform</span><span class="o">(</span><span class="n">transformer</span><span class="o">,</span> <span class="n">Ebean</span><span class="o">.</span><span class="na field">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">());</span>
 
-  <span class="c1">// Or use ASM or Javassist get bytecode and new InputSream</span>
-  <span class="c1">// eg. in = new ByteArrayInputStream(ctClass.toBytecode());</span>
-  <span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;your.class.file.class&quot;</span><span class="o">).</span><span class="na">openStream</span><span class="o">();</span>
+<span class="c1">// Or use ASM or Javassist get bytecode and new InputSream</span>
+<span class="c1">// eg. in = new ByteArrayInputStream(ctClass.toBytecode());</span>
+<span class="n">InputStream</span> <span class="n">in</span> <span class="o">=</span> <span class="k">new</span> <span class="n">URL</span><span class="o">(</span><span class="s">&quot;your.class.file.class&quot;</span><span class="o">).</span><span class="na">openStream</span><span class="o">();</span>
 
-  <span class="kt">byte</span><span class="o">[]</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-  <span class="k">try</span> <span class="o">{</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">streamTransform</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="s">&quot;your.class.name&quot;</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span><span class="c1">//class must be not loaded by classLoader</span>
-  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-    <span class="n">in</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-  <span class="o">}</span>
-  <span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">CannotCompileException</span><span class="o">(</span><span class="s">&quot;ebean enhance model fail!&quot;</span><span class="o">);</span>
-  <span class="o">}</span>
-  <span class="n">defineClass</span><span class="o">(</span><span class="s">&quot;your.class.name&quot;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">result</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
-  
+<span class="kt">byte</span><span class="o">[]</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">streamTransform</span><span class="o">.</span><span class="na">transform</span><span class="o">(</span><span class="s">&quot;your.class.name&quot;</span><span class="o">,</span> <span class="n">in</span><span class="o">);</span><span class="c1">//class must be not loaded by classLoader</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="n">in</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="k">if</span> <span class="o">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="n">CannotCompileException</span><span class="o">(</span><span class="s">&quot;ebean enhance model fail!&quot;</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="n">defineClass</span><span class="o">(</span><span class="s">&quot;your.class.name&quot;</span><span class="o">,</span> <span class="n">result</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">result</span><span class="o">.</span><span class="na">length</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -504,6 +499,7 @@ MyApplication
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -511,10 +507,6 @@ MyApplication
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>

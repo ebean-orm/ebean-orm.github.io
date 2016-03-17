@@ -113,7 +113,7 @@
 
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven4">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm-spring<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-spring-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
@@ -122,33 +122,33 @@
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy4">
-<div class="syntax xml"><div class="highlight"><pre><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-spring&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm-spring&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="nd">@Grapes</span><span class="o">(</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
   <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm-spring&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-spring-version'>${version}</span>&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-spring:<span class='avaje-ebeanorm-spring-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-spring:<span class='avaje-ebeanorm-spring-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr4">
-<div class="syntax groovy"><div class="highlight"><pre><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-spring:<span class='avaje-ebeanorm-spring-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm-spring:<span class='avaje-ebeanorm-spring-version'>${version}</span>&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT4">
-<div class="syntax scala"><div class="highlight"><pre><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-spring&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm-spring&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen4">
-<div class="syntax xml"><div class="highlight"><pre>[org.avaje.ebeanorm/avaje-ebeanorm-spring &quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje.ebeanorm/avaje-ebeanorm-spring &quot;<span class='avaje-ebeanorm-spring-version'>${version}</span>&quot;]
 </pre></div>
 </div>
       </div>
@@ -182,43 +182,41 @@
     own Spring FactoryBean like the code below (or the spring boot EbeanFactoryBean example
     <a href="https://github.com/ebean-orm/example-springboot/blob/master/src/main/java/org/example/sboot/service/EbeanFactoryBean.java">Factory Bean (programmatic configuration of EbeanServer)</a>).
   </p>
-  <div class="syntax java"><div class="highlight"><pre>  <span class="cm">/**</span>
-<span class="cm">   * Simple Spring bean factory for creating the EbeanServer.</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEbeanServerFactory</span> <span class="kd">implements</span> <span class="n">FactoryBean</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Simple Spring bean factory for creating the EbeanServer.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEbeanServerFactory</span> <span class="kd">implements</span> <span class="n">FactoryBean</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
 
-    <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
 
-      <span class="k">return</span> <span class="nf">createEbeanServer</span><span class="o">();</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">getObjectType</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSingleton</span><span class="o">()</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="cm">/**</span>
-<span class="cm">    * Create a EbeanServer instance.</span>
-<span class="cm">    */</span>
-    <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
-
-      <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-      <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-
-      <span class="c1">// load configuration from ebean.properties</span>
-      <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
-      <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-      <span class="o">...</span>
-      <span class="c1">// other programmatic configuration</span>
-
-      <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">createEbeanServer</span><span class="o">();</span>
   <span class="o">}</span>
 
-  
+  <span class="kd">public</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">getObjectType</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSingleton</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * Create a EbeanServer instance.</span>
+<span class="cm">  */</span>
+  <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+
+    <span class="c1">// load configuration from ebean.properties</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">...</span>
+    <span class="c1">// other programmatic configuration</span>
+
+    <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -273,6 +271,7 @@
 <!-- /.row -->
 </div>  <!-- /.container -->
   </div>
+  </div>
 
 <footer id="footer">
   <div class="doc-footer">
@@ -280,10 +279,6 @@
       <li><a href="/">Ebean ORM</a></li>
       <li> | </li>
       <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-      <li> | </li>
-      <li><a href="/websitegenerator/index">Website Generator</a></li>
-      <li> | </li>
-      <li><a href="/jetty/index">Jetty Runnable War</a></li>
     </ul>
   </div>
 </footer>
