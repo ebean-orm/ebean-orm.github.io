@@ -16,12 +16,16 @@
 <span class="sourceLineNo">008</span>/**<a name="line.8"></a>
 <span class="sourceLineNo">009</span> * For a timestamp property that is set to the datetime when the entity was last<a name="line.9"></a>
 <span class="sourceLineNo">010</span> * updated.<a name="line.10"></a>
-<span class="sourceLineNo">011</span> */<a name="line.11"></a>
-<span class="sourceLineNo">012</span>@Target({ ElementType.FIELD, ElementType.METHOD })<a name="line.12"></a>
-<span class="sourceLineNo">013</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.13"></a>
-<span class="sourceLineNo">014</span>public @interface UpdatedTimestamp {<a name="line.14"></a>
-<span class="sourceLineNo">015</span><a name="line.15"></a>
-<span class="sourceLineNo">016</span>}<a name="line.16"></a>
+<span class="sourceLineNo">011</span> * &lt;p&gt;<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * This is effectively an alias for @WhenModified which was added as it hints<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * towards a better naming convention (WhenCreated, WhenModified).<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * &lt;/p&gt;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> */<a name="line.15"></a>
+<span class="sourceLineNo">016</span>@Target({ ElementType.FIELD, ElementType.METHOD })<a name="line.16"></a>
+<span class="sourceLineNo">017</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.17"></a>
+<span class="sourceLineNo">018</span>public @interface UpdatedTimestamp {<a name="line.18"></a>
+<span class="sourceLineNo">019</span><a name="line.19"></a>
+<span class="sourceLineNo">020</span>}<a name="line.20"></a>
 
 
 

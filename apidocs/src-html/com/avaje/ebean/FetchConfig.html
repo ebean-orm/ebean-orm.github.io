@@ -257,7 +257,25 @@
 <span class="sourceLineNo">249</span>    return queryAll;<a name="line.249"></a>
 <span class="sourceLineNo">250</span>  }<a name="line.250"></a>
 <span class="sourceLineNo">251</span><a name="line.251"></a>
-<span class="sourceLineNo">252</span>}<a name="line.252"></a>
+<span class="sourceLineNo">252</span>  @Override<a name="line.252"></a>
+<span class="sourceLineNo">253</span>  public boolean equals(Object o) {<a name="line.253"></a>
+<span class="sourceLineNo">254</span>    if (this == o) return true;<a name="line.254"></a>
+<span class="sourceLineNo">255</span>    if (o == null || getClass() != o.getClass()) return false;<a name="line.255"></a>
+<span class="sourceLineNo">256</span><a name="line.256"></a>
+<span class="sourceLineNo">257</span>    FetchConfig that = (FetchConfig) o;<a name="line.257"></a>
+<span class="sourceLineNo">258</span>    if (lazyBatchSize != that.lazyBatchSize) return false;<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    if (queryBatchSize != that.queryBatchSize) return false;<a name="line.259"></a>
+<span class="sourceLineNo">260</span>    return queryAll == that.queryAll;<a name="line.260"></a>
+<span class="sourceLineNo">261</span>  }<a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>  @Override<a name="line.263"></a>
+<span class="sourceLineNo">264</span>  public int hashCode() {<a name="line.264"></a>
+<span class="sourceLineNo">265</span>    int result = lazyBatchSize;<a name="line.265"></a>
+<span class="sourceLineNo">266</span>    result = 92821 * result + queryBatchSize;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    result = 92821 * result + (queryAll ? 1 : 0);<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    return result;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>  }<a name="line.269"></a>
+<span class="sourceLineNo">270</span>}<a name="line.270"></a>
 
 
 

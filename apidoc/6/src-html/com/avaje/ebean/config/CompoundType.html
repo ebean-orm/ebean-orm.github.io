@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean.config;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * API from creating and getting property values from an Immutable Compound<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Value Object.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * &lt;p&gt;<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * A Compound Value object should contain multiple properties that are stored<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * separately. If you only have a single scalar value you should instead look to<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * use {@link ScalarTypeConverter}.<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * &lt;/p&gt;<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;p&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * For each property in the compound type you need to implement the<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * {@link CompoundTypeProperty} interface. These must be returned from<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * {@link #getProperties()} in the same order that the properties appear in the<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * constructor.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;/p&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * &lt;p&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * If your compound type is mutable then you should look to use the JPA Embedded<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * annotation instead of implementing this interface.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * &lt;/p&gt;<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * &lt;p&gt;<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * When using classpath search Ebean will detect and automatically register any<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * implementations of this interface (along with detecting the entity classes<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * etc).<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * &lt;/p&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * <a name="line.27"></a>
+<span class="sourceLineNo">028</span> * @author rbygrave<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * <a name="line.29"></a>
+<span class="sourceLineNo">030</span> * @param &lt;V&gt;<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *          The type of the Value Object<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * <a name="line.32"></a>
+<span class="sourceLineNo">033</span> * @see ScalarTypeConverter<a name="line.33"></a>
+<span class="sourceLineNo">034</span> */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>public interface CompoundType&lt;V&gt; {<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>  /**<a name="line.37"></a>
+<span class="sourceLineNo">038</span>   * Create an instance of the compound type given its property values.<a name="line.38"></a>
+<span class="sourceLineNo">039</span>   */<a name="line.39"></a>
+<span class="sourceLineNo">040</span>  V create(Object[] propertyValues);<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>  /**<a name="line.42"></a>
+<span class="sourceLineNo">043</span>   * Return the properties in the order they appear in the constructor.<a name="line.43"></a>
+<span class="sourceLineNo">044</span>   */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>  CompoundTypeProperty&lt;V, ?&gt;[] getProperties();<a name="line.45"></a>
+<span class="sourceLineNo">046</span>}<a name="line.46"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

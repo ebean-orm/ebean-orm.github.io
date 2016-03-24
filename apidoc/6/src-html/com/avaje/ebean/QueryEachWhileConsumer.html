@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Used to process a query result one bean at a time via a callback to this<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * visitor.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * &lt;p&gt;<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * If you wish to stop further processing return false from the accept method.<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * &lt;/p&gt;<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * &lt;p&gt;<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Unlike findList() and findSet() using a QueryResultVisitor does not require<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * all the beans in the query result to be held in memory at once. This makes<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * QueryResultVisitor useful for processing large queries.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * &lt;/p&gt;<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * &lt;p/&gt;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * &lt;pre class="code"&gt;<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * Query&amp;lt;Customer&amp;gt; query = server.find(Customer.class)<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *     .fetch(&amp;quot;contacts&amp;quot;, new FetchConfig().query(2))<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *     .where().gt(&amp;quot;id&amp;quot;, 0)<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *     .orderBy(&amp;quot;id&amp;quot;)<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *     .setMaxRows(2);<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * query.findEachWhile((Customer customer) -&gt; {<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *     // do something with customer<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *     System.out.println(&amp;quot;-- visit &amp;quot; + customer);<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *     // return true to continue processing or false to stop<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *     return (customer.getId() &lt; 40);<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * });<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * &lt;/pre&gt;<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * @param &lt;T&gt; the type of entity bean being queried.<a name="line.33"></a>
+<span class="sourceLineNo">034</span> */<a name="line.34"></a>
+<span class="sourceLineNo">035</span>public interface QueryEachWhileConsumer&lt;T&gt; {<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>  /**<a name="line.37"></a>
+<span class="sourceLineNo">038</span>   * Process the bean and return true if you want to continue processing more<a name="line.38"></a>
+<span class="sourceLineNo">039</span>   * beans. Return false if you want to stop processing further.<a name="line.39"></a>
+<span class="sourceLineNo">040</span>   *<a name="line.40"></a>
+<span class="sourceLineNo">041</span>   * @param bean the entity bean to process<a name="line.41"></a>
+<span class="sourceLineNo">042</span>   * @return true to continue processing more beans or false to stop.<a name="line.42"></a>
+<span class="sourceLineNo">043</span>   */<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  boolean accept(T bean);<a name="line.44"></a>
+<span class="sourceLineNo">045</span>}<a name="line.45"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

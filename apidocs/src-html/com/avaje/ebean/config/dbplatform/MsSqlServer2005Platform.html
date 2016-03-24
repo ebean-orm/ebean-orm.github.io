@@ -33,7 +33,7 @@
 <span class="sourceLineNo">025</span>    this.idInExpandedForm = true;<a name="line.25"></a>
 <span class="sourceLineNo">026</span>    this.selectCountWithAlias = true;<a name="line.26"></a>
 <span class="sourceLineNo">027</span>    this.sqlLimiter = new MsSqlServer2005SqlLimiter();<a name="line.27"></a>
-<span class="sourceLineNo">028</span>    this.platformDdl = new MsSqlServerDdl(dbTypeMap, dbIdentity);<a name="line.28"></a>
+<span class="sourceLineNo">028</span>    this.platformDdl = new MsSqlServerDdl(this);<a name="line.28"></a>
 <span class="sourceLineNo">029</span>    this.dbIdentity.setIdType(IdType.IDENTITY);<a name="line.29"></a>
 <span class="sourceLineNo">030</span>    this.dbIdentity.setSupportsGetGeneratedKeys(true);<a name="line.30"></a>
 <span class="sourceLineNo">031</span>    this.dbIdentity.setSupportsIdentity(true);<a name="line.31"></a>

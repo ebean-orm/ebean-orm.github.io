@@ -144,35 +144,40 @@
 <span class="sourceLineNo">136</span>  void writeNumber(long value);<a name="line.136"></a>
 <span class="sourceLineNo">137</span><a name="line.137"></a>
 <span class="sourceLineNo">138</span>  /**<a name="line.138"></a>
-<span class="sourceLineNo">139</span>   * Write a BigDecimal value (typically inside a list).<a name="line.139"></a>
+<span class="sourceLineNo">139</span>   * Write a double value.<a name="line.139"></a>
 <span class="sourceLineNo">140</span>   */<a name="line.140"></a>
-<span class="sourceLineNo">141</span>  void writeNumber(BigDecimal value);<a name="line.141"></a>
+<span class="sourceLineNo">141</span>  void writeNumber(double value);<a name="line.141"></a>
 <span class="sourceLineNo">142</span><a name="line.142"></a>
 <span class="sourceLineNo">143</span>  /**<a name="line.143"></a>
-<span class="sourceLineNo">144</span>   * Write a null value.<a name="line.144"></a>
+<span class="sourceLineNo">144</span>   * Write a BigDecimal value (typically inside a list).<a name="line.144"></a>
 <span class="sourceLineNo">145</span>   */<a name="line.145"></a>
-<span class="sourceLineNo">146</span>  void writeNull();<a name="line.146"></a>
+<span class="sourceLineNo">146</span>  void writeNumber(BigDecimal value);<a name="line.146"></a>
 <span class="sourceLineNo">147</span><a name="line.147"></a>
 <span class="sourceLineNo">148</span>  /**<a name="line.148"></a>
-<span class="sourceLineNo">149</span>   * Method that will force generator to copy<a name="line.149"></a>
-<span class="sourceLineNo">150</span>   * input text verbatim with &lt;b&gt;no&lt;/b&gt; modifications (including<a name="line.150"></a>
-<span class="sourceLineNo">151</span>   * that no escaping is done and no separators are added even<a name="line.151"></a>
-<span class="sourceLineNo">152</span>   * if context [array, object] would otherwise require such).<a name="line.152"></a>
-<span class="sourceLineNo">153</span>   * If such separators are desired, use<a name="line.153"></a>
-<span class="sourceLineNo">154</span>   * {@link #writeRawValue(String)} instead.<a name="line.154"></a>
-<span class="sourceLineNo">155</span>   */<a name="line.155"></a>
-<span class="sourceLineNo">156</span>  void writeRaw(String text);<a name="line.156"></a>
-<span class="sourceLineNo">157</span><a name="line.157"></a>
-<span class="sourceLineNo">158</span>  /**<a name="line.158"></a>
-<span class="sourceLineNo">159</span>   * Method that will force generator to copy<a name="line.159"></a>
-<span class="sourceLineNo">160</span>   * input text verbatim without any modifications, but assuming<a name="line.160"></a>
-<span class="sourceLineNo">161</span>   * it must constitute a single legal JSON value (number, string,<a name="line.161"></a>
-<span class="sourceLineNo">162</span>   * boolean, null, Array or List). Assuming this, proper separators<a name="line.162"></a>
-<span class="sourceLineNo">163</span>   * are added if and as needed (comma or colon), and generator<a name="line.163"></a>
-<span class="sourceLineNo">164</span>   * state updated to reflect this.<a name="line.164"></a>
-<span class="sourceLineNo">165</span>   */<a name="line.165"></a>
-<span class="sourceLineNo">166</span>  void writeRawValue(String text);<a name="line.166"></a>
-<span class="sourceLineNo">167</span>}<a name="line.167"></a>
+<span class="sourceLineNo">149</span>   * Write a null value.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>   */<a name="line.150"></a>
+<span class="sourceLineNo">151</span>  void writeNull();<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>  /**<a name="line.153"></a>
+<span class="sourceLineNo">154</span>   * Method that will force generator to copy<a name="line.154"></a>
+<span class="sourceLineNo">155</span>   * input text verbatim with &lt;b&gt;no&lt;/b&gt; modifications (including<a name="line.155"></a>
+<span class="sourceLineNo">156</span>   * that no escaping is done and no separators are added even<a name="line.156"></a>
+<span class="sourceLineNo">157</span>   * if context [array, object] would otherwise require such).<a name="line.157"></a>
+<span class="sourceLineNo">158</span>   * If such separators are desired, use<a name="line.158"></a>
+<span class="sourceLineNo">159</span>   * {@link #writeRawValue(String)} instead.<a name="line.159"></a>
+<span class="sourceLineNo">160</span>   */<a name="line.160"></a>
+<span class="sourceLineNo">161</span>  void writeRaw(String text);<a name="line.161"></a>
+<span class="sourceLineNo">162</span><a name="line.162"></a>
+<span class="sourceLineNo">163</span>  /**<a name="line.163"></a>
+<span class="sourceLineNo">164</span>   * Method that will force generator to copy<a name="line.164"></a>
+<span class="sourceLineNo">165</span>   * input text verbatim without any modifications, but assuming<a name="line.165"></a>
+<span class="sourceLineNo">166</span>   * it must constitute a single legal JSON value (number, string,<a name="line.166"></a>
+<span class="sourceLineNo">167</span>   * boolean, null, Array or List). Assuming this, proper separators<a name="line.167"></a>
+<span class="sourceLineNo">168</span>   * are added if and as needed (comma or colon), and generator<a name="line.168"></a>
+<span class="sourceLineNo">169</span>   * state updated to reflect this.<a name="line.169"></a>
+<span class="sourceLineNo">170</span>   */<a name="line.170"></a>
+<span class="sourceLineNo">171</span>  void writeRawValue(String text);<a name="line.171"></a>
+<span class="sourceLineNo">172</span>}<a name="line.172"></a>
 
 
 

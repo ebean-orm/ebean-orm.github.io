@@ -17,29 +17,33 @@
 <span class="sourceLineNo">009</span> * For a timestamp property that is set to the datetime when the entity is<a name="line.9"></a>
 <span class="sourceLineNo">010</span> * created/inserted.<a name="line.10"></a>
 <span class="sourceLineNo">011</span> * &lt;p&gt;<a name="line.11"></a>
-<span class="sourceLineNo">012</span> * An alternative to using this annotation would be to use insertable=false,<a name="line.12"></a>
-<span class="sourceLineNo">013</span> * updateable=false with @Column and have the DB insert the current time<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * (default value on the DB column is SYSTIME etc).<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * &lt;/p&gt;<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * &lt;p&gt;<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * The downside to this approach is that the inserted entity does not have the<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * timestamp value after the insert has occurred. You need to fetch the entity<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * back to get the inserted timestamp if you want to used it.<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * &lt;/p&gt;<a name="line.20"></a>
-<span class="sourceLineNo">021</span> *<a name="line.21"></a>
-<span class="sourceLineNo">022</span> * &lt;h3&gt;Example:&lt;/h3&gt;<a name="line.22"></a>
-<span class="sourceLineNo">023</span> * &lt;pre&gt;{@code<a name="line.23"></a>
-<span class="sourceLineNo">024</span> *<a name="line.24"></a>
-<span class="sourceLineNo">025</span> *   @CreatedTimestamp<a name="line.25"></a>
-<span class="sourceLineNo">026</span> *   Timestamp whenCreated;<a name="line.26"></a>
-<span class="sourceLineNo">027</span> *<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * }&lt;/pre&gt;<a name="line.28"></a>
-<span class="sourceLineNo">029</span> */<a name="line.29"></a>
-<span class="sourceLineNo">030</span>@Target({ ElementType.FIELD, ElementType.METHOD })<a name="line.30"></a>
-<span class="sourceLineNo">031</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.31"></a>
-<span class="sourceLineNo">032</span>public @interface CreatedTimestamp {<a name="line.32"></a>
-<span class="sourceLineNo">033</span><a name="line.33"></a>
-<span class="sourceLineNo">034</span>}<a name="line.34"></a>
+<span class="sourceLineNo">012</span> * This is effectively an alias for @WhenCreated which was added as it hints<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * towards a better naming convention (WhenCreated, WhenModified).<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * &lt;/p&gt;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * &lt;p&gt;<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * An alternative to using this annotation would be to use insertable=false,<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * updateable=false with @Column and have the DB insert the current time<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * (default value on the DB column is SYSTIME etc).<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * &lt;/p&gt;<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * &lt;p&gt;<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * The downside to this approach is that the inserted entity does not have the<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * timestamp value after the insert has occurred. You need to fetch the entity<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * back to get the inserted timestamp if you want to used it.<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * &lt;/p&gt;<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * &lt;h3&gt;Example:&lt;/h3&gt;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * &lt;pre&gt;{@code<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *   @CreatedTimestamp<a name="line.29"></a>
+<span class="sourceLineNo">030</span> *   Timestamp whenCreated;<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * }&lt;/pre&gt;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> */<a name="line.33"></a>
+<span class="sourceLineNo">034</span>@Target({ ElementType.FIELD, ElementType.METHOD })<a name="line.34"></a>
+<span class="sourceLineNo">035</span>@Retention(RetentionPolicy.RUNTIME)<a name="line.35"></a>
+<span class="sourceLineNo">036</span>public @interface CreatedTimestamp {<a name="line.36"></a>
+<span class="sourceLineNo">037</span><a name="line.37"></a>
+<span class="sourceLineNo">038</span>}<a name="line.38"></a>
 
 
 
