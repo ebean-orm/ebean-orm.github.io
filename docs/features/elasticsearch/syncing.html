@@ -65,8 +65,15 @@
 <li class="active">
   <a href="/docs/features/elasticsearch/syncing">Syncing</a>
 <ul class="nav">
-  <li><a href="#aliases">Aliases</a></li>
+  <li><a href="#post-commit">Post commit</a></li>
+  <li><a href="#transaction-ignore">Transaction mode ignore</a></li>
+  <li><a href="#insert">Insert</a></li>
+  <li><a href="#delete">Delete</a></li>
+  <li><a href="#update">Update</a></li>
 </ul>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/get-started">Getting started</a>
 </li>
 </ul></div>
         </div>
@@ -86,11 +93,288 @@
   <div class="row">
     <div class="col-md-9" role="main">
       <div class="bs-docs-section">
-  <h2 id="overview">Syncing</h2>
+  <h2 id="post-commit">Post commit</h2>
   <p>
-    There are quite a few different reasons why ElasticSearch integration is useful to applications using
-    Ebean ORM.
+    When a transaction successfully commits entity beans that are mapped to ElasticSearch directly
+    via <code>@DocStore</code> or indirectly via being part of an embedded document (de-normalisation)
+    will have changes that need to propagate to ElasticSearch.
   </p>
+  <p>
+    The processing of these entity beans occurs in a background thread so as to not effect the normal
+    response time of the transaction.
+  </p>
+  <p>
+    Changes are propagated based on their <code>DocStoreMode</code>:
+  </p>
+  <ul>
+    <li>UPDATE - changes are sent to ElasticSearch via it's bulk API.</li>
+    <li>QUEUE - changes are pushed onto a queue for later processing.</li>
+    <li>IGNORE - changes are ignored by Ebean with the expectation that the application will find and propagate changes as needed.</li>
+  </ul>
+
+  <h2 id="transaction-ignore">Transaction DocStoreMode.IGNORE</h2>
+  <p>
+    A transaction can be set to <code>DocStoreMode.IGNORE</code> and then Ebean will ignore any and all changes
+    in that transaction.
+    This is intended for use with large batch processing where it is deemed best to have Ebean not perform
+    normal processing of the changes and instead have the application search for changes to propagate to
+    ElasticSearch later.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+<span class="n">transaction</span><span class="o">.</span><span class="na">setDocStoreMode</span><span class="o">(</span><span class="n">DocStoreMode</span><span class="o">.</span><span class="na">IGNORE</span><span class="o">);</span>
+<span class="k">try</span> <span class="o">{</span>
+
+  <span class="c1">// perform lots of changes and we don&#39;t want</span>
+  <span class="c1">// Ebean to propagate those (as it would normall)</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">end</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="c1">// typically application code later finds and</span>
+<span class="c1">// updates indexes as necessary</span>
+<span class="c1">// for example:</span>
+
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">Product</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="s">&quot;whenModified&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">since</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+
+<span class="c1">// update products modified after a given dateTime</span>
+<span class="n">server</span><span class="o">.</span><span class="na">docStore</span><span class="o">().</span><span class="na">indexByQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
+</pre></div>
+</div>
+
+
+  <h2 id="insert">Insert</h2>
+  <p>
+    When a entity bean is inserted it is added as a to the DocStoreUpdate and sent to the DocStoreUpdateProcessor.
+  </p>
+  <p>
+    This translates into a <code>index</code> entry in ElasticSearch bulk updates.
+  </p>
+  <h4>Example: Insert a country</h4>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Country</span> <span class="n">country</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Country</span><span class="o">(</span><span class="s">&quot;SA&quot;</span><span class="o">,</span><span class="s">&quot;South Africa&quot;</span><span class="o">);</span>
+<span class="n">country</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+  <h4>Bulk API</h4>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;index&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;SA&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;South Africa&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+
+  <h2 id="delete">Delete</h2>
+  <p>
+    When a entity bean is deleted it is added as a to the DocStoreUpdate and sent to the DocStoreUpdateProcessor.
+  </p>
+  <p>
+    This translates into a <code>delete</code> entry in ElasticSearch bulk updates.
+  </p>
+
+  <h4>Example: Delete a country</h4>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Ebean</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;SA&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+  <h4>Bulk API</h4>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;delete&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;SA&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+
+  <h2 id="update">Update</h2>
+  <p>
+    Processing updates are more complex than inserts and deletes in that with updates we need to not only
+    update the main <code>@DocStore</code> index but also update any indexes where the effected/updated
+    properties have been included as part of an embedded document (typically via <code>@DocStoreEmbedded</code>).
+  </p>
+
+  <h4>Example: Update country</h4>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Country</span> <span class="n">sa</span> <span class="o">=</span> <span class="n">fetchSaFromDocStore</span><span class="o">();</span>
+<span class="n">sa</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Sud Africa&quot;</span><span class="o">);</span>
+<span class="n">sa</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+  <h4>Bulk API</h4>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;update&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;SA&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;country&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Sud Africa&quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+
+  <h3>Embedded documents</h3>
+  <p>
+    When we update an entity bean we also need to update indexes where the entity bean has been embedded.
+  </p>
+  <p>
+    Each <code>@DocStoreEmbedded</code> represents an embedded document (de-normalisation). When entity beans
+    are updated Ebean will also look to update any related embedded documents.
+  </p>
+  <p>
+    Based on the mapping (<code>@DocStoreEmbedded</code> doc attributes) Ebean knows the <code>nested paths</code>
+    that need to be checked/updated when an entity bean is updated.
+  </p>
+
+  <h4>E.g. Customer embedded in Order and Contacts</h4>
+  <p>
+    For example, let us index Customer but also have customer included as an embedded document
+    within the Order index and Contacts index.
+  </p>
+
+  <h5>Customer indexed</h5>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">...</span>
+</pre></div>
+</div>
+
+  <h5>Customer embedded in Contacts</h5>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
+
+  <span class="o">...</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
+</pre></div>
+</div>
+
+  <h5>Customer embedded in Order</h5>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;o_order&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
+
+  <span class="o">...</span>
+  <span class="nd">@NotNull</span> <span class="nd">@ManyToOne</span>
+  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
+  <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
+</pre></div>
+</div>
+
+  <p>
+    When customer name is updated Ebean needs to:
+  </p>
+  <ul>
+    <li>Update the Customer index</li>
+    <li>Update any related Contacts (based on nested path update)</li>
+    <li>Update any related Orders (based nested path update)</li>
+  </ul>
+  <p>
+    When Ebean starts it uses the mapping, reading the <code>@DocStoreEmbedded</code> <code>doc</code>
+    attributes and determines the nested document structure. If then registers a listener for each
+    <code>nested path</code>. In the example above 2 listeners are registered with customer where one
+    will update contacts (if customer name is changed) and one will update orders (if name, status or
+    billing address is changed).
+  </p>
+  <h5>Change customer name</h5>
+  <p>
+    If we find customer 2 and change it's name to "Roberto" we will see:
+  </p>
+
+  <h5>Bulk API</h5>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;update&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;customer&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Roberto&quot;</span><span class="p">,</span><span class="nt">&quot;whenModified&quot;</span><span class="p">:</span><span class="mi">1459206556280</span><span class="p">,</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;update&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;5&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;order&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;order&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;customer&quot;</span><span class="p">:{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;NEW&quot;</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Roberto&quot;</span><span class="p">,</span><span class="nt">&quot;billingAddress&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}}}</span>
+<span class="p">{</span><span class="nt">&quot;update&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;order&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;order&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;customer&quot;</span><span class="p">:{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;NEW&quot;</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Roberto&quot;</span><span class="p">,</span><span class="nt">&quot;billingAddress&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">}}}</span>
+<span class="p">{</span><span class="nt">&quot;update&quot;</span><span class="p">:{</span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;4&quot;</span><span class="p">,</span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="s2">&quot;contact&quot;</span><span class="p">,</span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="s2">&quot;contact&quot;</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;doc&quot;</span><span class="p">:{</span><span class="nt">&quot;customer&quot;</span><span class="p">:{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Roberto&quot;</span><span class="p">}}}</span>
+</pre></div>
+</div>
+  <ul>
+    <li>The 1st entry updates the Customer index</li>
+    <li>The 2nd and 3rd update Order 5 and Order 2 (Roberto's related orders)</li>
+    <li>The 4th updates Contact 4 (Roberto's related contact)</li>
+  </ul>
+
+  <h4>Nested paths</h4>
+  <p>
+    For each <code>nested path</code> Ebean will execute an ElasticSearch scan query to find the
+    entries in the index that need to be updated.
+  </p>
+  <h5>Find related orders</h5>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;customer.id&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;filtered&quot;</span><span class="p">:{</span>
+  <span class="nt">&quot;filter&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="nt">&quot;customer.id&quot;</span><span class="p">:[</span><span class="mi">2</span><span class="p">]}</span>
+  <span class="p">}</span>
+<span class="p">}}}</span>
+</pre></div>
+</div>
+  <h5>Find related contacts</h5>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;customer.id&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;filtered&quot;</span><span class="p">:{</span>
+  <span class="nt">&quot;filter&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="nt">&quot;customer.id&quot;</span><span class="p">:[</span><span class="mi">2</span><span class="p">]}</span>
+  <span class="p">}</span>
+<span class="p">}}}</span>
+</pre></div>
+</div>
+  <p>
+    It will execute an ORM query against the database to build the JSON to include in the Bulk API call
+    but as above it will execute ElasticSearch scan queries to find all the related entries to update.
+  </p>
+
+  <h4>E.g. Embedded Country</h4>
+  <p>
+    In the example below the Customer index contains embedded documents for
+    both the billing and shipping address and this in turn embeds the country.
+    In this example <code>"billingAddress.country.code"</code> and <code>"shippingAddress.country.code"</code>
+    are <code>nested paths</code> that Ebean needs to check to see which customer indexes need to be
+    updated when a country name is changed.
+  </p>
+
+  <p>
+    In this example below Country is embedded within the Customer index in both the billingAddress
+    and shippingAddress.  When we update a Country we also need to update any Customer documents that
+    contain that country in their billing or shipping address.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
+  <span class="o">...</span>
+  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
+
+  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">Address</span> <span class="n">shippingAddress</span><span class="o">;</span>
+</pre></div>
+</div>
+  <h4>e.g Nested path - billingAddress.country.code</h4>
+  <p>
+    Ebean will execute a scan query against ElasticSearch using the <code>nested path</code> in order to find
+    documents that need to be updated due to the change in the embedded document.
+  </p>
+  <h5>find customer's with billingAddress.country.code = SA</h5>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;billingAddress.id&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;filtered&quot;</span><span class="p">:{</span><span class="nt">&quot;filter&quot;</span><span class="p">:</span>
+      <span class="p">{</span><span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="nt">&quot;billingAddress.country.code&quot;</span><span class="p">:[</span><span class="s2">&quot;SA&quot;</span><span class="p">]}</span>
+    <span class="p">}}</span>
+<span class="p">}}</span>
+</pre></div>
+</div>
+  <h5>find customer's with shippingAddress.country.code = SA</h5>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;shippingAddress.id&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;filtered&quot;</span><span class="p">:{</span><span class="nt">&quot;filter&quot;</span><span class="p">:</span>
+      <span class="p">{</span><span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="nt">&quot;billingAddress.country.code&quot;</span><span class="p">:[</span><span class="s2">&quot;SA&quot;</span><span class="p">]}</span>
+    <span class="p">}}</span>
+<span class="p">}}</span>
+</pre></div>
+</div>
+  <h5>find orders with customer.billingAddress.country.code = SA</h5>
+  <p>
+    Country also is embedded in the Order index via customer.billingAddress so
+    we also find orders that have this embedded country.
+  </p>
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span><span class="s2">&quot;customer.id&quot;</span><span class="p">,</span><span class="s2">&quot;id&quot;</span><span class="p">],</span><span class="nt">&quot;query&quot;</span><span class="p">:{</span><span class="nt">&quot;filtered&quot;</span><span class="p">:{</span>
+  <span class="nt">&quot;filter&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;terms&quot;</span><span class="p">:{</span><span class="nt">&quot;customer.billingAddress.country.code&quot;</span><span class="p">:[</span><span class="s2">&quot;SA&quot;</span><span class="p">]}</span>
+  <span class="p">}</span>
+<span class="p">}}}</span>
+</pre></div>
+</div>
 
 </div>
     </div>
@@ -114,8 +398,15 @@
 <li class="active">
   <a href="/docs/features/elasticsearch/syncing">Syncing</a>
 <ul class="nav">
-  <li><a href="#aliases">Aliases</a></li>
+  <li><a href="#post-commit">Post commit</a></li>
+  <li><a href="#transaction-ignore">Transaction mode ignore</a></li>
+  <li><a href="#insert">Insert</a></li>
+  <li><a href="#delete">Delete</a></li>
+  <li><a href="#update">Update</a></li>
 </ul>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/get-started">Getting started</a>
 </li>
 
         </ul>
