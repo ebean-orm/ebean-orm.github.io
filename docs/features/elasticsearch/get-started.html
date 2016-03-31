@@ -68,6 +68,7 @@
 <li class="active">
   <a href="/docs/features/elasticsearch/get-started">Getting started</a>
 <ul class="nav">
+  <li><a href="#example-application">Example application</a></li>
   <li><a href="#dependencies">Dependencies</a></li>
   <li><a href="#bean-mapping">Bean mapping</a></li>
   <li><a href="#generate-mapping">Generating mapping</a></li>
@@ -92,10 +93,17 @@
   <div class="row">
     <div class="col-md-9" role="main">
       <div class="bs-docs-section">
+
+  <h2 id="example-application">Example application</h2>
+  <p>
+    There is an example application at <a href="https://github.com/ebean-orm-examples/example-elastic">ebean-orm-examples/example-elastic</a>
+    which you can investigate / clone etc.
+  </p>
+
   <h2 id="dependencies">Dependencies</h2>
   <p>
     Add <code>avaje-ebeanorm-elastic</code> as a dependency to your project.
-    This will register with Ebean as the document store implementation.
+    This will automatically register with Ebean as the document store implementation.
   </p>
 
 
@@ -170,7 +178,7 @@
   <ul>
     <li><code>@DocCode</code> on properties that should not be analysed</li>
     <li><code>@DocSortable</code> on properties that we want both analysed and not analysed</li>
-    <li><code>@DocStoreEmbedded</code> to include embedded documents (denormalise) for @ManyToOne and @OneToMany properties</li>
+    <li><code>@DocEmbedded</code> to include embedded documents (denormalise) for @ManyToOne and @OneToMany properties</li>
   </ul>
   <p>
     Refer to <a href="/docs/features/elasticsearch/mapping">mapping</a> for more details.
@@ -240,6 +248,7 @@
 <li class="active">
   <a href="/docs/features/elasticsearch/get-started">Getting started</a>
 <ul class="nav">
+  <li><a href="#example-application">Example application</a></li>
   <li><a href="#dependencies">Dependencies</a></li>
   <li><a href="#bean-mapping">Bean mapping</a></li>
   <li><a href="#generate-mapping">Generating mapping</a></li>

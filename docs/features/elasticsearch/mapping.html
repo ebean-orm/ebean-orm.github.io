@@ -58,7 +58,7 @@
 <ul class="nav">
   <li><a href="#Overview">Overview</a></li>
   <li><a href="#DocStore">@DocStore</a></li>
-  <li><a href="#DocStoreEmbedded">@DocStoreEmbedded</a></li>
+  <li><a href="#DocEmbedded">@DocEmbedded</a></li>
   <li><a href="#DocCode">@DocCode</a></li>
   <li><a href="#DocSortable">@DocSortable</a></li>
   <li><a href="#DocProperty">@DocProperty</a></li>
@@ -144,10 +144,10 @@
     TODO: Add @DocIgnore and @DocProperty(ignore=true) support.
   </p>
 
-  <h2 id="DocStoreEmbedded">@DocStoreEmbedded - Embedded documents</h2>
+  <h2 id="DocEmbedded">@DocEmbedded - Embedded documents</h2>
   <p>
     On @ManyToOne and @OneToMany properties you can specify the properties that should be
-    included in the document that is to be indexed using <code>@DocStoreEmbedded</code>.
+    included in the document that is to be indexed using <code>@DocEmbedded</code>.
   </p>
 
 
@@ -163,7 +163,7 @@
   <span class="o">...</span>
   <span class="c1">// denormalise including the customer id and name</span>
   <span class="c1">// into the &#39;contact&#39; document</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;id,name&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 </pre></div>
@@ -178,11 +178,11 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
 
   <span class="o">...</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span><span class="o">=</span><span class="s">&quot;id,name&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
-  <span class="nd">@DocStoreEmbedded</span>
+  <span class="nd">@DocEmbedded</span>
   <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;order&quot;</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 </pre></div>
@@ -199,11 +199,11 @@
 
   <span class="o">...</span>
   <span class="c1">// embed some customer details including the billingAddress</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,product(id,sku,name)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,product(id,sku,name)&quot;</span><span class="o">)</span>
   <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">,</span> <span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;order&quot;</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 </pre></div>
@@ -433,7 +433,7 @@
 <ul class="nav">
   <li><a href="#Overview">Overview</a></li>
   <li><a href="#DocStore">@DocStore</a></li>
-  <li><a href="#DocStoreEmbedded">@DocStoreEmbedded</a></li>
+  <li><a href="#DocEmbedded">@DocEmbedded</a></li>
   <li><a href="#DocCode">@DocCode</a></li>
   <li><a href="#DocSortable">@DocSortable</a></li>
   <li><a href="#DocProperty">@DocProperty</a></li>

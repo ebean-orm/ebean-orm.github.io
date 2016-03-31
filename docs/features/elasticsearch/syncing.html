@@ -185,7 +185,7 @@
   <p>
     Processing updates are more complex than inserts and deletes in that with updates we need to not only
     update the main <code>@DocStore</code> index but also update any indexes where the effected/updated
-    properties have been included as part of an embedded document (typically via <code>@DocStoreEmbedded</code>).
+    properties have been included as part of an embedded document (typically via <code>@DocEmbedded</code>).
   </p>
 
   <h4>Example: Update country</h4>
@@ -205,11 +205,11 @@
     When we update an entity bean we also need to update indexes where the entity bean has been embedded.
   </p>
   <p>
-    Each <code>@DocStoreEmbedded</code> represents an embedded document (de-normalisation). When entity beans
+    Each <code>@DocEmbedded</code> represents an embedded document (de-normalisation). When entity beans
     are updated Ebean will also look to update any related embedded documents.
   </p>
   <p>
-    Based on the mapping (<code>@DocStoreEmbedded</code> doc attributes) Ebean knows the <code>nested paths</code>
+    Based on the mapping (<code>@DocEmbedded</code> doc attributes) Ebean knows the <code>nested paths</code>
     that need to be checked/updated when an entity bean is updated.
   </p>
 
@@ -234,7 +234,7 @@
 
   <span class="o">...</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -247,7 +247,7 @@
 
   <span class="o">...</span>
   <span class="nd">@NotNull</span> <span class="nd">@ManyToOne</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -261,7 +261,7 @@
     <li>Update any related Orders (based nested path update)</li>
   </ul>
   <p>
-    When Ebean starts it uses the mapping, reading the <code>@DocStoreEmbedded</code> <code>doc</code>
+    When Ebean starts it uses the mapping, reading the <code>@DocEmbedded</code> <code>doc</code>
     attributes and determines the nested document structure. If then registers a listener for each
     <code>nested path</code>. In the example above 2 listeners are registered with customer where one
     will update contacts (if customer name is changed) and one will update orders (if name, status or
@@ -333,11 +333,11 @@
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
   <span class="o">...</span>
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
 
-  <span class="nd">@DocStoreEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">Address</span> <span class="n">shippingAddress</span><span class="o">;</span>
 </pre></div>
