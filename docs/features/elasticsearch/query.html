@@ -70,7 +70,9 @@
   <li><a href="#use-doc-store">Explicit useDocStore(true)</a></li>
   <li><a href="#implied-use-doc-store">Implied useDocStore(true)</a></li>
   <li><a href="#must-must-not-should">Must, must not, should</a></li>
-
+  <li><a href="#match">Match</a></li>
+  <li><a href="#multi-match">Multi match, Text simple etc</a></li>
+  <li><a href="#text-expressions">Text expressions</a></li>
 </ul>
 </li>
 <li >
@@ -381,87 +383,14 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-  <h2 id="criteria-query">Criteria query</h2>
+
+
+  <h2 id="match">Match</h2>
   <p>
-    You can use the standard query criteria API to build queries to execute against ElasticSearch.
+    Match is an ElasticSearch only expression and when used the query is automatically treated as a document store query.
   </p>
-
-
-  <h3>text()</h3>
-  <p>
-    Using <code>text()</code> automatically sets the query to execute against ElasticSearch and
-    there is no need to set <code>useDocStore(true)</code>.
-  </p>
-  <p>
-    The text() method returns <code>TextExpressionList</code> which provides the ability to add
-    "Full text search" expressions (match, multiMatch, textSimple etc)
-    as well as the standard expressions (equalTo, greaterThan, like etc).
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">text</span><span class="o">()</span> <span class="c1">// automatically doc store query</span>
-    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;filtered&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name.raw&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-  <p>
-    <code>text()</code> provides additional "Full text search" expressions such as <code>match</code>,
-    <code>multi match</code>, <code>text simple</code>, <code>text query string</code> and <code>text common terms</code>.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">text</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;customer.name&quot;</span><span class="o">,</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
-</pre></div>
-</div>
-
-  <h2 id="query-beans">Query beans</h2>
-  <p>
-    Query beans provides a type safe "wrapper" over the query criteria API. We can also
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">whenCreated</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;sort&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">],</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;filtered&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-
-
-  <h3>String properties: match()</h3>
   <p>
     For query beans the <code>match()</code> expression is available on properties of type string.
-    If you use match() then this expression is automatically added to the "text expressions" and the
-    query is automatically treated as a document store query.
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
@@ -481,138 +410,14 @@
 </pre></div>
 </div>
 
+  <h2 id="multi-match">Multi match, Text simple etc</h2>
   <p>
-    Multiple expressions are by default added by <code>bool</code> <code>should</code>.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-  <span class="c1">// &quot;match&quot; so automatically a doc store query</span>
-  <span class="c1">// and added to the &#39;text expressions&#39; so goes</span>
-  <span class="c1">// into the ElasticSearch &#39;query context&#39;</span>
-  <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findPagedList</span><span class="o">();</span>
-
-<span class="kt">int</span> <span class="n">totalHits</span> <span class="o">=</span> <span class="n">orders</span><span class="o">.</span><span class="na">getTotalRowCount</span><span class="o">();</span>
-
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">orders</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;bool&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;should&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
-      <span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-
-
-
-  <h3>where</h3>
-  <p>
-    Expressions added after <code>where()</code> are put into the <code>filter context</code>.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-  <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="c1">// after where() so in &quot;filter context&quot;</span>
-    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findPagedList</span><span class="o">();</span>
-
-<span class="kt">int</span> <span class="n">totalRowCount</span> <span class="o">=</span> <span class="n">orders</span><span class="o">.</span><span class="na">getTotalRowCount</span><span class="o">();</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">orders</span><span class="o">.</span><span class="na">getList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span> <span class="p">},</span>
-  <span class="nt">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-
-  <h3>must, should, must not</h3>
-  <p>
-    By default expressions are joined by <code>should</code> and we can explicitly specify
-    <code>must()</code>, <code>mustNot()</code> or <code>should()</code> instead.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
- <span class="c1">// expressions joined by must</span>
- <span class="o">.</span><span class="na">must</span><span class="o">()</span>
-   <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
- <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
- <span class="o">.</span><span class="na">findPagedList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;bool&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;must&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
-      <span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-  
-</pre></div>
-</div>
-
-  <h4>endMust(), endShould(), endMustNot()</h4>
-  <p>
-    If we want to some expressions into <code>must</code> and some others in <code>should</code>
-    then we use <code>endMust()</code> to indicate we have finished adding expressions to the
-    'list of must expressions' and then we can start a <code>should</code>.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
- <span class="o">.</span><span class="na">must</span><span class="o">()</span>
-   <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
- <span class="o">.</span><span class="na">endMust</span><span class="o">()</span> <span class="c1">// end</span>
- <span class="o">.</span><span class="na">should</span><span class="o">()</span>
-   <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">match</span><span class="o">(</span><span class="s">&quot;Bygr&quot;</span><span class="o">)</span>
-   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;bool&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;must&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Rob&quot;</span> <span class="p">}</span> <span class="p">}</span>
-      <span class="p">],</span>
-      <span class="nt">&quot;should&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span> <span class="nt">&quot;match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;customer.name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bygr&quot;</span> <span class="p">}</span> <span class="p">},</span>
-        <span class="p">{</span> <span class="nt">&quot;term&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;COMPLETE&quot;</span> <span class="p">}</span> <span class="p">}</span>
-      <span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-  <h3>Query level expressions:</h3>
-  <h4>multiMatch(), textSimple(), textCommonTerms(), textQueryString()</h4>
-  <p>
-    There are "query level" expressions that can be used: <code>multiMatch()</code>, <code>textSimple()</code>,
-    <code>textCommonTerms()</code> and <code>textQueryString()</code>. These expressions apply to multiple
-    fields or the entire document (_all field).
+    <code>multiMatch()</code>, <code>textSimple()</code>,
+    <code>textCommonTerms()</code> and <code>textQueryString()</code> are all ElasticSearch only
+    expression and using them automatically make the query a document store query.
   </p>
   <p>
-    These expressions are added to the "text expressions" and automatically make the query a document store
-    query.
+    These expression are "query level" expressions that apply to multiple fields or the entire document (_all field).
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">MultiMatch</span> <span class="n">multiMatch</span> <span class="o">=</span>
@@ -640,7 +445,7 @@
 </pre></div>
 </div>
 
-  <h2>Text expressions</h2>
+  <h2 id="text-expressions">Text expressions</h2>
   <h4>match</h4>
   <p>
     <code>match</code> maps to ElasticSearch <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html">match query</a>.
@@ -666,65 +471,6 @@
     <code>text common terms</code> maps to ElasticSearch <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-common-terms-query.html">common terms query</a>.
   </p>
 
-
-  <h2 id="expression-translation">Expression translation</h2>
-
-  <h4>Equal To</h4>
-  <p>
-    Equals to is translated to a <code>term</code>
-  </p>
-  <h6>Ebean example</h6>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>
-</pre></div>
-</div>
-  <h6>Elastic JSON query</h6>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span>{ &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
-</pre></div>
-</div>
-
-  <h4>Greater Than</h4>
-  <p>
-    Greater Than is translated to a <code>range</code>
-  </p>
-  <h6>Ebean example</h6>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
-</pre></div>
-</div>
-  <h6>Elastic JSON query</h6>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span>{&quot;range&quot;:{&quot;customer.id&quot;:{&quot;gt&quot;:42}}}
-</pre></div>
-</div>
-
-
-
-  <h4>All Equals</h4>
-  <p>
-    All equals is translated to a <code>bool</code> <code>must</code> list of <code>term</code>
-  </p>
-  <h6>Ebean example</h6>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">allEq</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;();</span>
-<span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="s">&quot;COMPLETE&quot;</span><span class="o">);</span>
-<span class="n">allEq</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;customer.id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
-
-<span class="o">...</span>
-<span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">allEq</span><span class="o">(</span><span class="n">allEq</span><span class="o">)</span>
-</pre></div>
-</div>
-  <h6>Elastic JSON query</h6>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span>&quot;bool&quot;: {
-  &quot;must&quot;: [
-    { &quot;term&quot;: { &quot;customer.id&quot;: 1 } },
-    { &quot;term&quot;: { &quot;status&quot;: &quot;COMPLETE&quot; } }
-  ]
-}
-</pre></div>
-</div>
 
 </div>
     </div>
@@ -753,7 +499,9 @@
   <li><a href="#use-doc-store">Explicit useDocStore(true)</a></li>
   <li><a href="#implied-use-doc-store">Implied useDocStore(true)</a></li>
   <li><a href="#must-must-not-should">Must, must not, should</a></li>
-
+  <li><a href="#match">Match</a></li>
+  <li><a href="#multi-match">Multi match, Text simple etc</a></li>
+  <li><a href="#text-expressions">Text expressions</a></li>
 </ul>
 </li>
 <li >
