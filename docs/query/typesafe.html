@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Type safe queries - Ebean ORM</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -130,6 +130,139 @@
     For deployment/production you can use the <code>javaagent</code> or <code>maven plugin</code>.
   </p>
 
+  <h2 id="benefits">Benefits</h2>
+
+  <h5>Model changes</h5>
+  <p>
+    When entity bean model changes the query beans are regenerated. If there are queries that are
+    broken by a model change then this results in a compile error (rather than a runtime error) and
+    so breaking model changes are detected easily and early.
+  </p>
+
+  <h5>Typed bind values</h5>
+  <p>
+    Using query beans means that the bind values used for any given property must be compatible with
+    the properties type.  For example, you can bind a String value for a property that has type Timestamp.
+  </p>
+
+  <h5>Speed of development</h5>
+  <p>
+    Using query beans means we can use IDE auto completion to help write our queries. There is no need to
+    check the model when we build our queries. This makes development a little bit faster, safer and fun!!
+  </p>
+
+  <h5>Long term maintenance</h5>
+  <p>
+    When applications get bigger and older using strongly type query beans makes maintenance easier as
+    it helps guide new developers who are less familiar with the model and model changes across large
+    applications are much less risky due to compile type checking relative to string based queries.
+  </p>
+
+  <h2 id="query-examples">Examples</h2>
+  <h4>Example</h4>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+    <h4>Example: nested or() and and()</h4>
+    <p>
+      The following example contains an <code>or()</code> containing a nested <code>and()</code>.
+    </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span>
+  <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">version</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">100</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">country</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">nz</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">registered</span><span class="o">.</span><span class="na">before</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">or</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">icontains</span><span class="o">(</span><span class="s">&quot;Jim&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na field">inactive</span><span class="o">.</span><span class="na">isTrue</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">endAnd</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">endOr</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+  <h4>Example: filterMany</h4>
+  <p>
+    filterMany provides the ability to filter the returned objects of an associated
+    OneToMany or ManyToMany relationship.
+  </p>
+  <p>
+    For example, lets say Customers have a lot of orders and for a specific use case
+    we want to find customers and only want their recent new orders. We want to
+    fetch the orders (a OneToMany) for the customers but want to filter those orders
+    to only contain 'recent new orders'
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Date</span> <span class="n">oneWeekAgo</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1">// Use QOrder to create an expression list ...</span>
+<span class="c1">// .. use this expression list to then filter orders</span>
+<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">recentNewOrders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="n">oneWeekAgo</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">getExpressionList</span><span class="o">();</span>
+
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="c1">// filter the orders (not customers)</span>
+  <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na">filterMany</span><span class="o">(</span><span class="n">recentNewOrders</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+  <h4>Example: select() and fetch()</h4>
+  <p>
+    Use the <code>alias()</code> method to get a shared instance of the <code>query bean</code>
+    that can be used to specify properties for <code>select()</code> and <code>fetch()</code>.
+  </p>
+  <p>
+    Note that the 'alias' instance of the query bean returned by the <code>alias()</code> method
+    does not have an underlying query associated with it and can only be used to provide properties
+    to <code>select()</code> and <code>fetch()</code>.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// special &#39;alias&#39; instances of query beans</span>
+<span class="c1">// used to supply properties to the select() and fetch()</span>
+<span class="n">QCustomer</span> <span class="n">cus</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+<span class="n">QContact</span> <span class="n">con</span> <span class="o">=</span> <span class="n">QContact</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="c1">// query tuning</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cus</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cus</span><span class="o">.</span><span class="na">inactive</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">email</span><span class="o">,</span> <span class="n">con</span><span class="o">.</span><span class="na">firstName</span><span class="o">)</span>
+
+  <span class="c1">// predicates</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// special &#39;alias&#39; instances of query beans</span>
+<span class="c1">// used to supply properties to the select() and fetch()</span>
+<span class="n">QContact</span> <span class="n">con</span> <span class="o">=</span> <span class="n">QContact</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+<span class="n">QCustomer</span> <span class="n">cus</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+<span class="n">QProduct</span> <span class="n">pro</span> <span class="o">=</span> <span class="n">QProduct</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+  <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="c1">// manual query tuning</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cus</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cus</span><span class="o">.</span><span class="na">registered</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na">fetchAll</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na field">details</span><span class="o">.</span><span class="na field">product</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">pro</span><span class="o">.</span><span class="na">name</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">firstName</span><span class="o">)</span>
+    <span class="c1">// predicates</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+</pre></div>
+</div>
 
   <h2 id="dependencies">Dependencies</h2>
 
@@ -409,203 +542,6 @@
   </p>
 
 
-  <h2 id="query-beans">Query beans</h2>
-  <p>
-    For each entity bean a <code>query bean</code> is generated.
-  </p>
-
-  <h4>Example</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain.query</span><span class="o">;</span>
-
-<span class="kn">import</span> <span class="nn">com.avaje.ebean.EbeanServer</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PEnum</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PLong</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PSqlDate</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PTimestamp</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.TQRootBean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.TypeQueryBean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.Order</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.Order.Status</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocAddress</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocCustomer</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocOrderDetail</span><span class="o">;</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Query bean for Order.</span>
-<span class="cm"> */</span>
-<span class="nd">@TypeQueryBean</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QOrder</span> <span class="kd">extends</span> <span class="n">TQRootBean</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">,</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="o">{</span>
-
-  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">QOrder</span> <span class="n">_alias</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Return the shared &#39;Alias&#39; instance used to provide properties to</span>
-<span class="cm">   * &lt;code&gt;select()&lt;/code&gt; and &lt;code&gt;fetch()&lt;/code&gt;</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">QOrder</span> <span class="nf">alias</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">_alias</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">id</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">version</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenCreated</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenUpdated</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PEnum</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">,</span><span class="n">Status</span><span class="o">&gt;</span> <span class="n">status</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">orderDate</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shipDate</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocCustomer</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">customer</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocAddress</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shippingAddress</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocOrderDetail</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
-
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct with a given EbeanServer.</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">(</span><span class="n">EbeanServer</span> <span class="n">server</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">server</span><span class="o">)</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct using the default EbeanServer.</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct for Alias.</span>
-<span class="cm">   */</span>
-  <span class="kd">private</span> <span class="nf">QOrder</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">dummy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">dummy</span><span class="o">);</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-  <h4>Associated Query Beans</h4>
-  <p>
-    Along with <code>query beans</code> you'll see another set of generated beans that look very similar
-    to query beans in a <code>assoc</code> sub-package - these are <code>association query beans</code>
-    and represent beans when they are associated by OneToMany, ManyToOne, OneToOne and ManyToOne or are
-    Embedded.
-  </p>
-  <p>
-    When beans are associated/related they have slightly different expressions like <code>fetch()</code>,
-    <code>filterMany()</code> and <code>equalTo()</code> and need different internals to work as expected.
-    They look a little redundant but they aren't (in order to get a nice representation of the query language
-    features).
-  </p>
-
-  <h2 id="query-examples">Query examples</h2>
-  <p>
-
-  </p>
-  <h4>Example</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-  <h4>Example: nested or() and and()</h4>
-  <p>
-    The following example contains an <code>or()</code> containing a nested <code>and()</code>.
-  </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span>
-  <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">version</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">100</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">country</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">nz</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">registered</span><span class="o">.</span><span class="na">before</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">())</span>
-  <span class="o">.</span><span class="na">or</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">and</span><span class="o">()</span>
-      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">icontains</span><span class="o">(</span><span class="s">&quot;Jim&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na field">inactive</span><span class="o">.</span><span class="na">isTrue</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">endAnd</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">endOr</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-<h4>Example: filterMany</h4>
-<p>
-  filterMany provides the ability to filter the returned objects of an associated
-  OneToMany or ManyToMany relationship.
-</p>
-<p>
-  For example, lets say Customers have a lot of orders and for a specific use case
-  we want to find customers and only want their recent new orders. We want to
-  fetch the orders (a OneToMany) for the customers but want to filter those orders
-  to only contain 'recent new orders'
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Date</span> <span class="n">oneWeekAgo</span> <span class="o">=</span> <span class="o">...</span>
-
-<span class="c1">// Use QOrder to create an expression list ...</span>
-<span class="c1">// .. use this expression list to then filter orders</span>
-<span class="n">ExpressionList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">recentNewOrders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-  <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="n">oneWeekAgo</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">getExpressionList</span><span class="o">();</span>
-
-
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="c1">// filter the orders (not customers)</span>
-  <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na">filterMany</span><span class="o">(</span><span class="n">recentNewOrders</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-<h4>Example: select() and fetch()</h4>
-<p>
-  Use the <code>alias()</code> method to get a shared instance of the <code>query bean</code>
-  that can be used to specify properties for <code>select()</code> and <code>fetch()</code>.
-</p>
-<p>
-  Note that the 'alias' instance of the query bean returned by the <code>alias()</code> method
-  does not have an underlying query associated with it and can only be used to provide properties
-  to <code>select()</code> and <code>fetch()</code>.
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// special &#39;alias&#39; instances of query beans</span>
-<span class="c1">// used to supply properties to the select() and fetch()</span>
-<span class="n">QCustomer</span> <span class="n">cus</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
-<span class="n">QContact</span> <span class="n">con</span> <span class="o">=</span> <span class="n">QContact</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
-
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="c1">// query tuning</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cus</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cus</span><span class="o">.</span><span class="na">inactive</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">email</span><span class="o">,</span> <span class="n">con</span><span class="o">.</span><span class="na">firstName</span><span class="o">)</span>
-
-  <span class="c1">// predicates</span>
-  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// special &#39;alias&#39; instances of query beans</span>
-<span class="c1">// used to supply properties to the select() and fetch()</span>
-<span class="n">QContact</span> <span class="n">con</span> <span class="o">=</span> <span class="n">QContact</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
-<span class="n">QCustomer</span> <span class="n">cus</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
-<span class="n">QProduct</span> <span class="n">pro</span> <span class="o">=</span> <span class="n">QProduct</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
-
-<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
-  <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="c1">// manual query tuning</span>
-    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cus</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cus</span><span class="o">.</span><span class="na">registered</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na">fetchAll</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">orders</span><span class="o">.</span><span class="na field">details</span><span class="o">.</span><span class="na field">product</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">pro</span><span class="o">.</span><span class="na">name</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">firstName</span><span class="o">)</span>
-    <span class="c1">// predicates</span>
-    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
-</pre></div>
-</div>
-
-
-
   <hr/>
 
   <h2 id="manual-generation">Manual generation</h2>
@@ -727,6 +663,94 @@
 </pre></div>
 </div>
 
+
+
+  <h2 id="query-beans">Query bean source</h2>
+  <p>
+    For each entity bean a <code>query bean</code> is generated.
+  </p>
+
+  <h4>Example</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain.query</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.EbeanServer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PEnum</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PLong</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PSqlDate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.PTimestamp</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.TQRootBean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.avaje.ebean.typequery.TypeQueryBean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.domain.Order</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.domain.Order.Status</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocAddress</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocCustomer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocOrderDetail</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Query bean for Order.</span>
+<span class="cm"> */</span>
+<span class="nd">@TypeQueryBean</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QOrder</span> <span class="kd">extends</span> <span class="n">TQRootBean</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">,</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">QOrder</span> <span class="n">_alias</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Return the shared &#39;Alias&#39; instance used to provide properties to</span>
+<span class="cm">   * &lt;code&gt;select()&lt;/code&gt; and &lt;code&gt;fetch()&lt;/code&gt;</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">QOrder</span> <span class="nf">alias</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">_alias</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">id</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">version</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenCreated</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenUpdated</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PEnum</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">,</span><span class="n">Status</span><span class="o">&gt;</span> <span class="n">status</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">orderDate</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shipDate</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">QAssocCustomer</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">customer</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">QAssocAddress</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shippingAddress</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="n">QAssocOrderDetail</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
+
+
+  <span class="cm">/**</span>
+<span class="cm">   * Construct with a given EbeanServer.</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">(</span><span class="n">EbeanServer</span> <span class="n">server</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">server</span><span class="o">)</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Construct using the default EbeanServer.</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Construct for Alias.</span>
+<span class="cm">   */</span>
+  <span class="kd">private</span> <span class="nf">QOrder</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">dummy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="n">dummy</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  <h4>Associated Query Beans</h4>
+  <p>
+    Along with <code>query beans</code> you'll see another set of generated beans that look very similar
+    to query beans in a <code>assoc</code> sub-package - these are <code>association query beans</code>
+    and represent beans when they are associated by OneToMany, ManyToOne, OneToOne and ManyToOne or are
+    Embedded.
+  </p>
+  <p>
+    When beans are associated/related they have slightly different expressions like <code>fetch()</code>,
+    <code>filterMany()</code> and <code>equalTo()</code> and need different internals to work as expected.
+    They look a little redundant but they aren't (in order to get a nice representation of the query language
+    features).
+  </p>
+
 </div>
     </div>
 
@@ -749,12 +773,13 @@
   <a href="/docs/query/typesafe">Type Safe queries</a>
 <ul class="nav">
   <li><a href="#overview">Overview</a></li>
+  <li><a href="#benefits">Benefits</a></li>
+  <li><a href="#query-examples">Examples</a></li>
   <li><a href="#dependencies">Dependencies</a></li>
   <li><a href="#enhancement">Enhancement</a></li>
   <li><a href="#generation">Generation</a></li>
-  <li><a href="#query-beans">Query beans</a></li>
-  <li><a href="#query-examples">Query examples</a></li>
   <li><a href="#manual-generation">Manual generation</a></li>
+  <li><a href="#query-beans">Query bean source</a></li>
 </ul>
 </li>
 <li >
