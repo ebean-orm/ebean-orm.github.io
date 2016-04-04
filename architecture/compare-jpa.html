@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Ebean versus JPA</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -41,7 +41,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
@@ -52,7 +52,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / Architecture </h1>
+    <h1><a href="/architecture">Architecture</a> / Compare with JPA </h1>
   </div>
 </div>
 
@@ -73,130 +73,99 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
+      <h1 id="sessionless">Sessionless architecture</h1>
+<p>
+  JPA is architecture such that the entity beans must be <code>attached</code> to the <code>PersistenceContext</code>
+  in order for the entity beans to be <code>persisted</code>.
+</p>
+<p>
+  That is, JPA mandates <code>attach/detach</code> semantics. This has a number of consequences including:
+</p>
+<ul>
+  <li>Developers can't easily take control and persist selected objects</li>
+  <li>All attached beans must be in a valid state to flush</li>
+  <li>Flush implicitly flushes all dirty state (so dirty state created <em>anywhere</em> flushes implicitly)</li>
+  <li>Flush can reorder statements in unexpected ways (causing deadlocks)</li>
+  <li>The EntityManager scope must now be managed along with the transaction scope</li>
+</ul>
 
-      <div class="bs-docs-section">
+<h3>Ebean persistence</h3>
 
-  <h1 id="load-context">Load Context</h1>
+<h4>Dirty state on each bean</h4>
+<p>
+  For Ebean each entity bean manages it's own dirty state and do not be attached to be persisted.
+</p>
 
-  <h2 id="overview">Overview</h2>
+<h4>JDBC batch control</h4>
+<p>
+  Using JDBC batch is important so that Ebean can get optimal performance when persisting. With Ebean
+  there is a JDBC batch buffer attached to the transaction and can seamlessly batch up persistence
+  calls using JDBC batch.
+</p>
+<p>
+  Ebean provides full control over JDBC batch via the transaction including the
+  <code>batch size</code>, <code>getGeneratedKeys</code>, and <code>cascade behavior</code>.
+  Unlike JPA with Ebean it is easy to fully control and optimise batch processing.
+</p>
+<p>
+  Ebean can match JPA persistence performance without the complexity of attach/detach semantics.
+</p>
 
-  <p>
-    TODO
-  </p>
 
-</div>
-
+<h1 id="jpql">Query language</h1>
+<blockquote>
+  There were no DBA's in the room when JPQL was designed :(
+</blockquote>
+<p>
+  <code>JPQL</code> has both poor support for <code><a href="/docs/query/partialobjects">partial objects</a></code>
+  and poor support for <code><a href="/docs/query/nplus1">optimising complex queries for N + 1</a></code> by defining
+  what part of the object graph should be fetched.
+</p>
+<p>
+  In it's current state <code>JPQL</code> is a poor language for optimising ORM queries. JPA 2.1 added
+  in support for <code>fetch groups</code> as a query hint but there are a number of issues with this:
+  being rather inelegant to use, only a query hint with relatively poor support and ultimately missing
+  some important features for controlling object graph construction from mixed sources (L2, L3 and DB).
+</p>
+<p>
+  In JPA the emphasis on annotations <code>FetchType.Eager</code> and <code>FetchType.Lazy</code>
+  and limitations in JPQL has put JPA in a bad position for optimising ORM queries and it will be
+  interesting if they can get to the level of control over object graph construction that Ebean supports.
+</p>
+<p>
+  To be absolutely clear there is absolutely no intention of supporting <code>JPQL</code>.
+</p>
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/introduction">Introduction</a>
-</li>
-<li >
-  <a href="/docs/enhancement">Enhancement</a>
-</li>
-<li >
-  <a href="/docs/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/serverconfig">ServerConfig</a>
-</li>
-<li >
-  <a href="/docs/guice">Guice</a>
-</li>
-<li >
-  <a href="/docs/spring">Spring</a>
-</li>
-<li >
-  <a href="/docs/activerecord">Active Record</a>
-</li>
-<li >
-  <a href="/docs/dbmigration">DB Migration</a>
-</li>
-<li >
-  <a href="/docs/testing">Testing</a>
-</li>
-<li >
-  <a href="/docs/query-overview">Query Overview</a>
-</li>
-<li >
-  <a href="/docs/query-nplus1">Query N + 1</a>
-</li>
-<li >
-  <a href="/docs/query-partialobjects">Query Partial Objects</a>
-</li>
-<li >
-  <a href="/docs/query-autotune">Query Automatic Tuning</a>
-</li>
-<li >
-  <a href="/docs/query-typesafe">Query Type Safety</a>
-</li>
-<li >
-  <a href="/docs/queries">Queries</a>
-</li>
-<li >
-  <a href="/docs/persisting">Persisting</a>
-</li>
-<li >
-  <a href="/docs/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-<li >
-  <a href="/docs/json">JSON</a>
-</li>
-<li >
-  <a href="/docs/json-in-db">JSON in DB</a>
-</li>
-<li >
-  <a href="/docs/eventlisteners">Event listening</a>
-</li>
-
-<li >
-  <a href="/docs/readauditing">Read Auditing</a>
-</li>
-<li >
-  <a href="/docs/changelog">Change Log</a>
-</li>
-<li >
-  <a href="/docs/history">History</a>
-</li>
-<li >
-  <a href="/docs/draftable">Draftable</a>
-</li>
-<li >
-  <a href="/docs/l2caching">L2 caching</a>
-</li>
-<li >
-  <a href="/docs/jvmlanguages">JVM Languages</a>
-</li>
-
-<li >
-  <a href="/docs/clustering">Clustering</a>
-</li>
-<li >
-  <a href="/docs/monitoring">Monitoring</a>
-</li>
 <li class="active">
-  <a href="/docs/architecture/persistence-context">Architecture</a>
+  <a href="/architecture/compare-jpa">JPA comparison</a>
 <ul class="nav">
-  <li><a href="/docs/architecture/persistence-context">Persistence context</a></li>
-  <li><a href="/docs/architecture/load-context">Load context</a></li>
-  <li><a href="/docs/architecture/jdbc-batch-buffer">JDBC batch buffer</a></li>
-  <li><a href="/docs/architecture/entity-enhancement">Entity Enhancement</a></li>
+  <li><a href="#sessionless">Sessionless architecture</a></li>
+  <li><a href="#jpql">Query language</a></li>
 </ul>
 </li>
+<li >
+  <a href="/architecture/compare-hibernate">Hibernate comparison</a>
+</li>
+<li >
+  <a href="/architecture/persistence-context">Persistence context</a>
+</li>
+
+<li >
+  <a href="/architecture/load-context">Load context</a>
+</li>
+
+
+
         </ul>
       </nav>
     </div>
   </div>
 
 </div>
-<!-- /.row -->
-</div>  <!-- /.container -->
   </div>
   </div>
 

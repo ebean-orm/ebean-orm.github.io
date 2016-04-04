@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Ebean versus Hibernate</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/funding">Funding</a> / Sponsorship </h1>
+    <h1><a href="/architecture">Architecture</a> / Compare with Hibernate </h1>
   </div>
 </div>
 
@@ -73,73 +73,93 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
+      <h1 id="jpa">JPA</h1>
+<p>
+  The issues discussed in the <a href="/architecture/compare-jpa">comparison with JPA</a> also apply to Hibernate.
+  The comparison here apply more specifically to Hibernate.
+</p>
 
-      <div class="container">
+<h1 id="lazyInitialisationException">LazyInitialisationException</h1>
+<p>
+  Hibernate does not allow lazy loading beyond the end of it's Session scope and instead
+  throws <code>LazyInitialisationException</code>.
+</p>
+<blockquote>
+  Ebean does not suffer this limitation.
+</blockquote>
+<h4>Ebean allows lazy loading beyond the initial scope</h4>
+<ul>
+  <li>
+    The transaction isolation level of read committed is used as per the JPA spec. This means
+    there is no effective difference when we lazy load with using another JDBC transaction relative
+    to holding open a transaction (as typically required by Hibernate via "Open session in view").
+  </li>
+  <li>
+    Ebean's entity beans have a reference back to their load context which enables subsequent
+    lazy loading to execute with the same PersistenceContext and also enables batch lazy loading.
+    This means the lazy loading still produces a consistent object graph (just as if it was loaded
+    eagerly).
+  </li>
+</ul>
+<blockquote>
+  With Ebean lazy loading just works!
+</blockquote>
 
-  <div class="row">
+<p>&nbsp;</p>
+<h1 id="open-session-in-view">Open session in view</h1>
+<p>
+  As a byproduct of Ebean supporting lazy loading (beyond transaction scope) Ebean does not require
+  the <code>"Open session in view"</code> pattern.
+</p>
+<p>
+  The "Open session in view" used with Hibernate has the effect of holding a transaction open for a
+  longer time relative to Ebean.
+</p>
 
-    <div class="col-md-6">
-
-      <h1>Sponsored features</h1>
-
-      <h3 id="accolade"><a href="http://accolade.com">Accolade.com</a></h3>
-      <p>
-        Accolade has sponsored the following features of Ebean ORM.
-      </p>
-      <ul>
-        <li><a href="/docs/features/elasticsearch">ElasticSearch integration</a></li>
-        <li><a href="/docs/features/history">History support</a></li>
-        <li><a href="/docs/setup/dbmigration">DB Migration</a></li>
-        <li><a href="/docs/features/changelog">Changelog</a></li>
-        <li><a href="/docs/features/readauditing">Read auditing</a></li>
-        <li><a href="/docs/features/draftable">Draftable</a></li>
-        <li><a href="/docs/features/json-in-db">JSON in the Database</a></li>
-        <li><a href="/docs/features/softdelete">Soft delete</a></li>
-      </ul>
-
-
-      <h3 id="imilia"><a href="http://imilia.com">Imilia.com</a></h3>
-      <p>
-        Imilia contributed the initial version of the <a href="https://github.com/ebean-orm/avaje-ebeanorm-spring">Ebean Spring integration</a>
-        and sponsored the development of <code>@DbEncrypt</code> - transparent encryption.
-      </p>
-
-      <ul>
-        <li><a href="https://github.com/ebean-orm/avaje-ebeanorm-spring">Spring Framework integration</a></li>
-        <li><a href="/docs/mapping">DbEncrypt - transparent encryption</a></li>
-      </ul>
-
-      <blockquote>
-        Imilia successfully uses the @DbEncrypt encryption feature in its flagship product Timerbee to manage
-        appointments and resources in the health care industry where data security is premium.
-      </blockquote>
-
-    </div>
-
-  </div>
-
-</div>
-
+<p>&nbsp;</p>
+<h1 id="set">Set vs List</h1>
+<p>
+  Hibernate has different semantics for <code>Set</code> and <code>List</code> (bag semantics).
+  For Hibernate this tends to promote the use of Set as the preferred collection type.
+</p>
+<p>
+  Ebean does not apply different semantics between <code>Set</code> and <code>List</code>.
+</p>
+<p>
+  The issue with using <code>Set</code> is that it implies the use of <code>hashCode()/equals()</code> and the
+  implementation of hashCode()/equals() is not perfect for the case of entity beans that mutate and don't
+  always have an @Id value (e.g. When the @Id value is not populated via generated value and hence not
+  populated until after the save and hence the @Id value can't be used in hashCode/equals implementation).
+</p>
+<p>
+  For Ebean I'd like to promote the use of <code>List</code> in preference to <code>Set</code> in order to
+  avoid any confusion relating to hashCode()/equals() implementation on mutating entity beans.
+</p>
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/funding">Donate</a>
+  <a href="/architecture/compare-jpa">JPA comparison</a>
+</li>
+<li class="active">
+  <a href="/architecture/compare-hibernate">Hibernate comparison</a>
+<ul class="nav">
+  <li><a href="#lazyInitializationException">LazyInitializationException</a></li>
+  <li><a href="#open-session-in-view">Open session in view</a></li>
+  <li><a href="#set-list">Set vs List</a></li>
+</ul>
+</li>
+<li >
+  <a href="/architecture/persistence-context">Persistence context</a>
 </li>
 
 <li >
-  <a href="/funding/donations">Donation history</a>
+  <a href="/architecture/load-context">Load context</a>
 </li>
 
-<li class="active">
-  <a href="/funding/sponsorship">Sponsorship</a>
-<ul class="nav">
-  <li><a href="#accolade">Accolade.com</a></li>
-  <li><a href="#imilia">Imilia.com</a></li>
-</ul>
-</li>
+
 
         </ul>
       </nav>
@@ -147,8 +167,6 @@
   </div>
 
 </div>
-<!-- /.row -->
-</div>  <!-- /.container -->
   </div>
   </div>
 
