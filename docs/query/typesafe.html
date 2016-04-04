@@ -421,11 +421,83 @@
     for Eclipse) as well as the standard javaagent and maven plugin for load time and compile time enhancement.
   </p>
 
-  <h4>IDEA Query bean plugin</h4>
+  <h3>IDEA Query bean plugin</h3>
   <p>
     In IntelliJ install the <code>Ebean ORM Query bean enhancer</code> plugin. It should then appear as an
     extra item on the <code>Build menu</code> where it can be toggled on and off.
   </p>
+
+  <h3>Maven tile</h3>
+  <p>
+    Ebean supplies a maven tile that brings in both the enhancer for entity beans as well
+    as the enhancement for query beans. This is simpler, cleaner less verbose than
+    defining the plugin in the traditional (non-tile) fashion and now the preferred approach.
+  </p>
+
+  <h5>ebean-enhancement tile</h5>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.8<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;tiles&gt;</span>
+       <span class="c">&lt;!--</span>
+<span class="c">           Leave out java-compile tile if you already</span>
+<span class="c">           have the compile plugin defined</span>
+<span class="c">        --&gt;</span>
+      <span class="c">&lt;!-- &lt;tile&gt;org.avaje.tile:java-compile:1.1&lt;/tile&gt; --&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>org.avaje.tile:ebean-enhancement:1.1<span class="nt">&lt;/tile&gt;</span>
+    <span class="nt">&lt;/tiles&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></div>
+</div>
+  <p>
+    Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.
+  </p>
+
+
+
+  <h3>querybean-maven-plugin</h3>
+  <p>
+    If you do <b>NOT</b> wish to use maven tiles then you can define the <code>querybean-maven-plugin</code>
+    in the more traditional (non-tile) manor as shown below. This is more verbose and less clean than the
+    tile approach and as such using the tile instead is preferred.
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.1.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="c">&lt;!-- enhance code --&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+    <span class="c">&lt;!-- enhance test code --&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;classSource&gt;</span>target/test-classes<span class="nt">&lt;/classSource&gt;</span>
+        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+  <span class="nt">&lt;/executions&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></div>
+</div>
 
   <h4>querybean-agent</h4>
   <p>
@@ -493,43 +565,6 @@
 
   </div>
 
-  <h4>querybean-maven-plugin</h4>
-  <p>
-    You can configure the maven plugin to perform compile time enhancement.
-  </p>
-
-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>querybean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.1.1<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="c">&lt;!-- enhance code --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-    <span class="c">&lt;!-- enhance test code --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;classSource&gt;</span>target/test-classes<span class="nt">&lt;/classSource&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
-</div>
 
   <h2 id="generation">Generation</h2>
   <p>
