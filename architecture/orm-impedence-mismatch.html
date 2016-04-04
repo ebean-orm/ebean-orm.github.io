@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>ORM impedance mismatch - Ebean view</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/architecture">Architecture</a> / ORM impedance mismatch </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+      <h2 id="overview">ORM for OLTP only</h2>
+<p>
+  If you try to look at ORM from the viewpoint of trying to cover the entire feature set
+  of Relational Databases then yes there is absolutely a large mismatch.
+</p>
+<p>
+  Certainly for Ebean ORM and I'd suggest in general ORM is a poor abstraction for a large
+  feature set of Relational Databases and specifically ORM is not well placed to be a
+  good abstraction for <code>Reporting</code> and <code>Data Warehouse</code> features.
+</p>
+<p>
+  Ebean ORM is orientated towards OLTP with reasonably normalised schemas and well known
+  relationships but Relational Databases can do much more than this.
+</p>
+
+<h2>Impedance details</h2>
+<p>
+  Lets continue to look into the ORM impedance details with the view that we are restricting
+  ourselves to OLTP Databases.
+</p>
+
+<h3>Inheritance</h3>
+<p>
+
+</p>
+
+<h3>Object vs Relational relationships</h3>
+<p>
+
+</p>
+
+<h3>Schema ownership conflict</h3>
+<p>
+  Ted makes the point that there can be a conflict if DBA's control the database schema
+  (and thus it is not under control of the development team). This seems like an
+  organisation structure point as opposed to some fundamental issue with ORM.
+</p>
+<p>
+  Ted's point about a schema being "frozen" by denormalisation and reporting requirements
+  seems a stretch. Denormalisation on an OLTP DB design should be additive and non-breaking
+  and a good DB design should be well placed to allow it to be extended by adding columns and tables etc.
+</p>
+<p>
+  Ultimately if the schema is designed well and then there should no major mapping issue.
+</p>
+
+<h3>Discriminator column and Reporting</h3>
+<p>
+  I think Ted makes a reasonable point about inheritance and reporting though. His point there
+  is that typical SQL reporting tools are not often not well placed to handle "discriminator column"
+  and inheritance in general.
+</p>
+<p>
+  For me the mitigation of this issue is to provide views as needed to flatten inheritance schemas for
+  reporting tools.
+</p>
+
+<h3>Dual schema problem</h3>
+<h4>DB Migration</h4>
+<p>
+  Ted's first point is that there is now effectively an Object model (entity beans) and DB model (tables)
+  and there is a issue that these need to be kept in sync.
+</p>
+<p>
+  This issue is reasonably addressed by <code>DB Migration</code> where Ebean generates a <code>DIFF</code>
+  to the DB schema and either <code>FlywayDB</code> or Ebean's own DB Migration runner applies that as an
+  application task.
+</p>
+<h4>DB Refactoring</h4>
+<p>
+  Ted's second point is that the DB is typically a shared resource and that means you can't just refactor
+  the DB design without breaking other applications.
+</p>
+<p>
+  The argument against that is that <code>IF</code> the DB design got to <code>4NF</code> then the only
+  changes to it should be non breaking changes. That is, <code>Normalization</code> has the properties that
+  it can be proven correct and DB multiple designers will get to the same design at 4NF by following the
+  normalisation rules.
+</p>
+<p>
+  Unlike programming DB design via normalisation is somewhat strict and deterministic.
+</p>
+
+
+<h4>Identity</h4>
+<p>
+  I completely disagree with Ted's point regarding identity and that is based on the fact that an ORM
+  is fundamentally presenting the application with a <code>SNAPSHOT</code> view of part of the database.
+</p>
+<p>
+  That is, what we are doing with ORM is <code>exactly the same as what we were doing with client/server</code>
+  tools in terms of presenting a <code>snapshot</code> of part of the database <code>at a given time</code>
+  via a <code>transaction</code> at a particular <code>isolation level</code>.
+</p>
+<p>
+  The issues with identity (Id value to Primary key) and concurrency (optimistic locking via @Version property)
+  are exactly the same as they were with client server tools of old and there is no ORM mismatch issue here with Ebean.
+</p>
+<p>
+  However, an ORM that NEEDS to put unsaved beans that don't yet have an Identity into some "PersistenceContext"
+  and relies on hashCode()/equals() has created a problem for themselves (but that isn't an ORM problem that is
+  an implementation mistake).
+</p>
+
+
+<h4>Partial object problem</h4>
+<p>
+  Ebean solves this well and this IMO a massively important feature for an ORM.
+</p>
+
+<h4>N + 1</h4>
+<p>
+  Ebean solves this well via query language and also provides profiling and automatic
+  query tuning to optimise this per use case.
+</p>
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/architecture/compare-jpa">JPA comparison</a>
+</li>
+<li >
+  <a href="/architecture/compare-hibernate">Hibernate comparison</a>
+</li>
+<li >
+  <a href="/architecture/persistence-context">Persistence context</a>
+</li>
+
+<li >
+  <a href="/architecture/load-context">Load context</a>
+</li>
+
+
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  </body>
+</html>
