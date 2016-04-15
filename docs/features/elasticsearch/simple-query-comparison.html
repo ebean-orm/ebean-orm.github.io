@@ -1,0 +1,635 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidocs">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/avaje-ebeanorm"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+  <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/elasticsearch">ElasticSearch</a> / Simple query comparison </h1>
+</div>
+  <div class="sideNav"><ul class="nav navbar-nav">
+<li >
+  <a href="/docs/features/elasticsearch">Overview</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/indexes">Indexes</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/query">Query</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/syncing">Syncing</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/get-started">Getting started</a>
+</li>
+<li class="active">
+  <a href="/docs/features/elasticsearch/simple-query-comparison">Simple query comparison</a>
+<ul class="nav">
+  <li><a href="#caveats">Caveats</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#query">The query</a></li>
+  <li><a href="#run1">Run mode 1</a></li>
+  <li><a href="#run2">Run mode 2 - Denormalisation</a></li>
+  <li><a href="#run3">Run mode 3 - Selectivity</a></li>
+  <li><a href="#appendix-bean">Appendix: Bean mapping</a></li>
+  <li><a href="#appendix-index">Appendix: Index mapping</a></li>
+  <li><a href="#example-data">Appendix: Example data</a></li>
+</ul>
+</li>
+</ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+      <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/elasticsearch">ElasticSearch</a> / Simple query comparison </h1>
+
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+  <div class="row">
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+
+  <h2 id="caveats">Caveats</h2>
+  <p>
+    Benchmarks are very difficult and then intention here is look at <code>patterns</code> in response
+    times and specifically look at an ORM query that can be executed against both <code>Postgres</code>
+    and <code>ElasticSearch</code> to identify patterns and conditions for certain responses.
+  </p>
+  <p>
+    You should ALWAYS try to run your own benchmarks against your own data. There are so many factors
+    (volume, cardinality, relationships, data skew etc) that randomly generated data does not cater to.
+  </p>
+
+  <blockquote>
+    Don't focus on the absolute numbers
+  </blockquote>
+  <blockquote>
+    ... with ElasticSearch by default we effectively get an index on every property. We generally
+    can't do that on our OLTP database (have an index on every column in the table).
+  </blockquote>
+
+
+  <h2 id="setup">Setup</h2>
+  <p>
+    Populated customers, products, orders, order details
+    (using a modifications to the example application:
+    <a href="https://github.com/ebean-orm-examples/example-kotlin-web">example-kotlin-web</a> with:
+  </p>
+  <ul>
+    <li>Orders: 500,000</li>
+    <li>Customers: 100,000</li>
+    <li>Products: 30,000</li>
+    <li>Order lines: 5,263,023</li>
+  </ul>
+  <p>
+    The orders are are generated with an <code>orderDate</code> spread randomly over 12 months for 2015
+    and a random spread of <code>orderStatus</code>.
+  </p>
+  <p>
+    This is loaded into a Postgres database and additionally indexed into ElasticSearch.
+    This is a relatively small database but it is decent enough to play around with various aspects
+    of the query (selectivity of the order date and denormalisation).
+  </p>
+  <p>
+    For Postgres I did add indexes on order date and status but other wise kept with defaults for both Postgres and
+    ElasticSearch. This is not about getting the best numbers but instead looking at the variations we can see
+    in changing selectivity of predicates and denormalisation.
+  </p>
+  <p>
+    It is also interesting to note that for ElasticSearch this is a non-scoring query (filter query only) so
+    it's good to see how it compares ballpark wise to Postgres for this simple query.
+  </p>
+
+  <h2 id="query">The query</h2>
+  <blockquote>
+    Run a simple ORM query against both Postgres and ElasticSearch ...
+  </blockquote>
+
+  <p>
+    Find <code>Top 100</code> <code>NEW</code> orders after a given <code>orderDate</code>.
+    We can pass in a boolean to switch between running the query against a Postgres database or ElasticSearch.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// top 100 new orders after (given date)</span>
+<span class="c1">// ... run against Postgres or ElasticSearch</span>
+<span class="c1">// ... based on boolean - asDocStore</span>
+
+<span class="k">return</span> <span class="n">Order</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">after</span><span class="o">(</span><span class="n">useDate</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">order</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
+
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setUseDocStore</span><span class="o">(</span><span class="n">asDocStore</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+</pre></div>
+</div>
+
+  <h2>SQL query</h2>
+
+  <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">id</span>                  <span class="n">c0</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">status</span>              <span class="n">c1</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span>          <span class="n">c2</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span>           <span class="n">c3</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="k">version</span>             <span class="n">c4</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">when_created</span>        <span class="n">c5</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">when_modified</span>       <span class="n">c6</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>         <span class="n">c7</span><span class="p">,</span>
+  <span class="n">t0</span><span class="p">.</span><span class="n">shipping_address_id</span> <span class="n">c8</span>
+<span class="k">FROM</span> <span class="n">o_order</span> <span class="n">t0</span>
+<span class="k">WHERE</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="k">IN</span> <span class="p">(</span><span class="o">?</span><span class="p">)</span> <span class="k">AND</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="o">&gt;</span> <span class="o">?</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="k">DESC</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+<span class="k">LIMIT</span> <span class="mi">100</span><span class="p">;</span> <span class="c1">--bind(NEW,2015-12-08)</span>
+</pre></div>
+</div>
+
+  <h2>Elastic query</h2>
+
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="nt">&quot;sort&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="nt">&quot;orderDate&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">],</span>
+  <span class="nt">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;filtered&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;filter&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;bool&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;must&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span> <span class="nt">&quot;terms&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&quot;NEW&quot;</span> <span class="p">]</span> <span class="p">}</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="nt">&quot;range&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;orderDate&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;gt&quot;</span><span class="p">:</span> <span class="mi">1450263600000</span> <span class="p">}</span> <span class="p">}</span> <span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+
+  <h2 id="run1">Run mode 1</h2>
+  <p>
+    In this first run mode I restrict the order date to be <code>dates in December</code> which makes the query
+    reasonably selective. This means the cost of the sort and filter required for the TOP 100 is not too bad.
+  </p>
+
+  <div class="syntax sh"><div class="highlight"><pre><span></span>DB mean: 10.2    std dev: 2.34    min:6    max:18
+ES mean: 8.77    std dev: 1.08    min:7    max:14
+</pre></div>
+</div>
+
+  <p>
+    ElasticSearch and Postgres are in the same ballpark here - near enough to the same which is great.
+  </p>
+  <blockquote>
+    Could we give ElasticSearch this query to run in our application? Yes.
+  </blockquote>
+
+
+  <h2 id="run2">Run mode 2 - Denormalisation effect</h2>
+  <blockquote>
+    Denormalisation benefit in action (ElasticSearch as an alternative to a DB materialised view)
+  </blockquote>
+  <p>
+    ElasticSearch did very well but actually the object it returned contained some additional denormalised
+    information that we didn't have in the Postgres query.
+  </p>
+  <p>
+    Specifically the ElasticSearch order index contains additional details for the <code>customer (id,name)</code>
+    and <code>order details (*,product(id,sku,name))</code>. If we change the ORM query to match the data the
+    index is returning we need to fetch the customer name and order details (with some additional joins).
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// change the ORM query to additionally fetch</span>
+<span class="c1">// customer and order details to match the index</span>
+<span class="c1">// which has been denormalised</span>
+<span class="n">query</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span><span class="s">&quot;id,sku,name&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+  <p>
+    So this is going to make the ORM query against the DB more expensive because now we join to
+    customer, order details and products.
+  </p>
+  <p>
+    In the ElasticSearch index these 'joins' have been denormalised into the index so that will run
+    as before. In a DB we could create a materialised view to get a similar effect.
+  </p>
+
+  <div class="syntax sh"><div class="highlight"><pre><span></span>DB mean: 56.4    std dev: 5.95    min:48   max:95
+ES mean: 8.75    std dev: 1.01    min:7    max:13
+</pre></div>
+</div>
+
+  <p>
+    So denormalisation in the ElasticSearch index when it is needed is good (which is pretty much
+    stating the obvious but it is always good to check).
+  </p>
+  <p>
+    Database materialised views would give us a similar effect but we note that using ElasticSearch
+    also has the advantage of taking load off the database.
+  </p>
+
+  <h2 id="run3">Run mode 3 - less selective</h2>
+  <p>
+    In this run mode we drop fetching the customer and order details etc (so back to run mode 1) but
+    change the <code>order date</code> used such that it is now randomly selected from
+    <code>the first 100 days of the year</code>. This means the query is much less selective and so to
+    get the <code>TOP 100</code> there are many more rows to sort and filter out of the result.
+  </p>
+
+  <div class="syntax sh"><div class="highlight"><pre><span></span>DB mean: 51.3    std dev: 3.71    min:44   max:60
+ES mean: 14.0    std dev: 2.00    min:10   max:22
+</pre></div>
+</div>
+  <p>
+    So here both queries go slower than run mode 1 as we expect (as they have to sort and filter out many more results to
+    obtain the top 100). ElasticSearch does do rather well here in this TOP 100 relatively unselective query
+    in the sense that it didn't really get that much slower.
+  </p>
+  <p>
+    ElasticSearch is orientated to paging query results but this a is pretty impressive result given that this
+    is a non-scoring filter only query.
+  </p>
+
+
+  <h2 id="appendix-bean">Appendix - Bean mapping</h2>
+  <p>
+    The mapping on the order entity bean is:
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// this is Kotlin</span>
+<span class="c1">// .. the @DocEmbedded is what you should look at</span>
+
+<span class="nd">@DocStore</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;o_order&quot;</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">Order</span> <span class="o">:</span> <span class="n">BaseModel</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="o">...</span>
+
+  <span class="n">var</span> <span class="n">status</span><span class="o">:</span> <span class="n">Status</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">;</span>
+
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span> <span class="nd">@NotNull</span>
+  <span class="n">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,product(id,sku,name)&quot;</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="n">arrayOf</span><span class="o">(</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">))</span>
+  <span class="nd">@OrderBy</span><span class="o">(</span><span class="s">&quot;id asc&quot;</span><span class="o">)</span>
+  <span class="n">var</span> <span class="n">details</span><span class="o">:</span> <span class="n">MutableList</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+  <h2 id="appendix-index">Appendix: Index mapping</h2>
+  <p>
+    The mapping for the ElasticSearch order index. Note that enums are automatically treated as codes (hence status
+    is not_analysed). The customer and details mapping from the respective <code>@DocEmbedded</code> annotations.
+  </p>
+
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;mappings&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;order&quot;</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;properties&quot;</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;not_analyzed&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;orderDate&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;shipDate&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;customer&quot;</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;properties&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;long&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;details&quot;</span> <span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;nested&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;properties&quot;</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;long&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;shipQty&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;double&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;product&quot;</span> <span class="p">:</span> <span class="p">{</span>
+              <span class="nt">&quot;properties&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;long&quot;</span> <span class="p">},</span>
+                <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">},</span>
+                <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span> <span class="p">}</span>
+              <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;long&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">},</span>
+            <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;long&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">},</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;date&quot;</span> <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+
+  <h3 id="example-data">Appendix: Example Order</h3>
+  <p>
+    An example from the ElasticSearch index.
+  </p>
+
+  <div class="syntax json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;_index&quot;</span><span class="p">:</span> <span class="s2">&quot;order_v1&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;order&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;72033&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;_version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;found&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;_source&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;NEW&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;orderDate&quot;</span><span class="p">:</span> <span class="mi">1446462000000</span><span class="p">,</span>
+    <span class="nt">&quot;shipDate&quot;</span><span class="p">:</span> <span class="mi">1446721200000</span><span class="p">,</span>
+    <span class="nt">&quot;customer&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">31772</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;big 31775&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;details&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759300</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">78</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">9697</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;A1672&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;A1672&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759301</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">94</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">18351</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;E2322&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;E2322&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759302</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">73</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">12358</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;B2332&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;B2332&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759303</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">11847</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;B1821&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;B1821&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759304</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">34</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">14230</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;C2203&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;C2203&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759305</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">95</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">20625</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;F2595&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;F2595&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759306</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">89</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">11653</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;B1627&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;B1627&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759307</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2237</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;C450&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;C450&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759308</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">3404</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;D726&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;D726&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759309</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">19433</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;F1403&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;F1403&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">759310</span><span class="p">,</span>
+        <span class="nt">&quot;orderQty&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="nt">&quot;unitPrice&quot;</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span>
+        <span class="nt">&quot;product&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">22608</span><span class="p">,</span>
+          <span class="nt">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;G2577&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;G2577&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+        <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;whenCreated&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span><span class="p">,</span>
+    <span class="nt">&quot;whenModified&quot;</span><span class="p">:</span> <span class="mi">1460670857630</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+          
+<li >
+  <a href="/docs/features/elasticsearch">Overview</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/indexes">Indexes</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/query">Query</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/syncing">Syncing</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch/get-started">Getting started</a>
+</li>
+<li class="active">
+  <a href="/docs/features/elasticsearch/simple-query-comparison">Simple query comparison</a>
+<ul class="nav">
+  <li><a href="#caveats">Caveats</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#query">The query</a></li>
+  <li><a href="#run1">Run mode 1</a></li>
+  <li><a href="#run2">Run mode 2 - Denormalisation</a></li>
+  <li><a href="#run3">Run mode 3 - Selectivity</a></li>
+  <li><a href="#appendix-bean">Appendix: Bean mapping</a></li>
+  <li><a href="#appendix-index">Appendix: Index mapping</a></li>
+  <li><a href="#example-data">Appendix: Example data</a></li>
+</ul>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  </body>
+</html>
