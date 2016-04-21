@@ -69,207 +69,104 @@
 </div>
 
 <div class="container">
-    <div class="row">
-      <div class="col-lg-9">
+  <div class="row">
+    <div class="col-lg-9">
+      <div>
 
-        <ul>
-          <li><a href="#example-applications">Example applications</a></li>
-          <li><a href="#get-ebean">Get Ebean</a></li>
-          <li><a href="#setup-enhancement">Setup Enhancement</a></li>
-          <li><a href="#create-model">Create Model</a></li>
-          <li><a href="#configure">Configure</a></li>
-          <li><a href="#use-ebeanserver">Use EbeanServer</a></li>
-        </ul>
+        <h3>1. git clone example-minimal</h3>
 
-        <h2 id="example-applications">Example applications</h2>
-        <p>
-          There are a number of example applications on github that can be cloned from <a target="_blank" href="https://github.com/ebean-orm-examples">ebean-orm-examples</a>.
-          Most of these examples are ready to run using H2 database so just clone them and then view and run the tests.
-        </p>
-
-        <p>
-          <code><a target="_blank" href="https://github.com/ebean-orm-examples/example-java8">example-java8</a></code> is a pretty basic maven project.
-        </p>
-        <ul>
-          <li><a target="_blank" href="https://github.com/ebean-orm-examples/example-java8/blob/master/src/main/resources/ebean.properties">Properties file configuration</a></li>
-          <li><a target="_blank" href="https://github.com/ebean-orm-examples/example-java8/tree/master/src/main/java/org/example/domain">Entity beans (domain model)</a></li>
-          <li><a target="_blank" href="https://github.com/ebean-orm-examples/example-java8/blob/master/src/main/java/org/example/service/LoadExampleData.java">Service to load example data</a></li>
-        </ul>
-
-        <p>
-          <code><a target="_blank" href="https://github.com/ebean-orm-examples/example-springboot">example-springboot</a></code> is an example using Spring boot
-          and has programmatic configuration of the EbeanServer instance.
-        </p>
-
-        <h2 id="get-ebean">Get Ebean</h2>
-        <p>
-          You'll need to add Ebean as dependency in you pom.xml.
-        </p>
-
-
-
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven1">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebeanorm<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>avaje-ebeanorm<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='avaje-ebeanorm-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
+        <div class="syntax sh"><div class="highlight"><pre><span></span>git clone git@github.com:ebean-orm-examples/example-minimal.git
 </pre></div>
 </div>
+
+        <h3>2. mvn clean test</h3>
+
+        <div class="syntax sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> example-minimal
+mvn clean <span class="nb">test</span>
+</pre></div>
+</div>
+
+        <h3>3. Install IDE enhancement plugin</h3>
+
+        <div class="row">
+          <div class="col-lg-5">
+            <div class="media ">
+              <div class="media-left">
+                <div class="media-left">
+                  <a href="https://youtu.be/o4kmglM48Vc">
+                    <img src="/images/movies-64.png" width="64" height="64">
+                  </a>
+                </div>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">IntelliJ plugin</h4>
+                Installing and using the enhancement plugin for IntelliJ IDEA.
+              </div>
+            </div>
+
+          </div>
+          <div class="col-lg-5">
+            <div class="media">
+              <div class="media-left">
+                <div class="media-left">
+                  <a href="https://youtu.be/_DWxNj-_orA">
+                    <img src="/images/movies-64.png" width="64" height="64">
+                  </a>
+                </div>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">Eclipse plugin</h4>
+                Installing the enhancement plugin for Eclipse IDE.
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <h3>4. Play around</h3>
+        <p>
+          Modify the minimal application adding entities, properties, tests etc.
+        </p>
+
+        <p>&nbsp;</p>
+        <hr/>
+        <p>&nbsp;</p>
+
+        <h2>... looking for more?</h2>
+
+        <h3>More examples</h3>
+
+        <h5><a href="https://github.com/ebean-orm-examples/example-java8">example-java8</a></h5>
+        <p>
+          This example project has a larger model of entity beans to look at.
+        </p>
+
+        <h5><a href="https://github.com/ebean-orm-examples/example-springboot">example-springboot</a></h5>
+        <p>
+          This example uses spring boot and programmatically configures the default EbeanServer.
+        </p>
+
+        <h5><a href="https://github.com/ebean-orm-examples/example-kotlin-web">example-example-kotlin-web</a></h5>
+        <p>
+          a Kotlin / Guice / RestEasy / Ebean example project.
+        </p>
+
+        <h3>Create a new project via archetype</h3>
+        <div class="syntax sh"><div class="highlight"><pre><span></span>mvn archetype:generate                                 <span class="se">\</span>
+  -DinteractiveMode<span class="o">=</span>f                                  <span class="se">\</span>
+  -DarchetypeGroupId<span class="o">=</span>org.avaje.ebeanorm                <span class="se">\</span>
+  -DarchetypeArtifactId<span class="o">=</span>ebean-start                    <span class="se">\</span>
+  -DarchetypeVersion<span class="o">=</span>1.0                               <span class="se">\</span>
+  -DgroupId<span class="o">=</span>com.foo.myapp                              <span class="se">\</span>
+  -DartifactId<span class="o">=</span>my-app
+</pre></div>
+</div>
+
       </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-ebeanorm&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebeanorm&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-ebeanorm&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm:<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebeanorm:avaje-ebeanorm:<span class='avaje-ebeanorm-version'>${version}</span>&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-ebeanorm&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje.ebeanorm/avaje-ebeanorm &quot;<span class='avaje-ebeanorm-version'>${version}</span>&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
 
-
-  </div>
-
-        <h2 id="setup-enhancement">Setup Enhancement</h2>
-        <p>
-          If you are using IntelliJ install the Ebean enhancement plugin. <a href="https://youtu.be/o4kmglM48Vc">Video - IntelliJ plugin install</a>
-        </p>
-        <p>
-          Ebean requires that model beans to be enhanced by Ebean's enhancer. This can be done with at build time
-          with your build tool, compile time using an IDE plugin or at runtime using a Java Agent.
-        </p>
-        <p>
-          Refer to <a href="/docs/setup/enhancement">docs / setup / enhancement</a> for more details on enhancement.
-        </p>
-
-
-        <h3 id="create-model">Create model</h3>
-        <p>
-          Use JPA Mapping annotations (and javax bean validation annotations like <code>@Size</code> and <code>@NotNull</code> if you like).
-        </p>
-
-        <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.model</span><span class="o">;</span>
-
-<span class="kn">import</span> <span class="nn">javax.persistence.*</span><span class="o">;</span>
-
-<span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;eg_customer&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
-
-  <span class="nd">@Id</span>
-  <span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
-
-  <span class="nd">@Version</span>
-  <span class="n">Long</span> <span class="n">version</span><span class="o">;</span>
-
-  <span class="nd">@Column</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="o">)</span>
-  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-
-  <span class="c1">// plus getters and setters</span>
-
-<span class="o">}</span>
-</pre></div>
-</div>
-
-        </p>
-
-        <h2 id="configure">Configure</h2>
-
-        <p>
-          Create an <code>test-ebean.properties</code> file and put it in <code>src/test/resources</code>. This properties file
-          holds configuration that is used when Ebean runs tests (or when test-ebean.properties is in the class path).
-        </p>
-
-        <h4>test-ebean.properties</h4>
-        <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.ddl.generate</span><span class="o">=</span><span class="s">true</span>
-<span class="na">ebean.ddl.run</span><span class="o">=</span><span class="s">true</span>
-
-<span class="na">datasource.default</span><span class="o">=</span><span class="s">db</span>
-
-<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
-<span class="na">datasource.db.password</span><span class="o">=</span>
-<span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
-<span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
-</pre></div>
-</div>
-
-        <p>
-          Note that we can programatically configure and create EbeanServer instances using
-          <a href="/docs/setup/serverconfig"><code>ServerConfig</code></a> and typically we want to
-          do that when using <a href="/docs/setup/spring">Spring DI</a> or <a href="/docs/setup/guice">Guice DI</a>.
-        </p>
-
-        <h2 id="use-ebeanserver">Use EbeanServer</h2>
-        <p>
-          Now we are ready to write some code that gets an EbeanServer instance (or just use Ebean).
-        </p>
-
-        <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.avaje.ebean.Ebean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">com.avaje.ebean.EbeanServer</span><span class="o">;</span>
-<span class="o">...</span>
-
-<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;New customer&quot;</span><span class="o">);</span>
-
-<span class="c1">// Get the default server and save</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
-<span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-
-<span class="c1">// or alternatively use Ebean</span>
-<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-
-<span class="c1">// or alternatively if Customer extends com.avaje.ebean.Model</span>
-<span class="c1">// then customer has save()</span>
-<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
-</pre></div>
-</div>
-
-        <h4>Update</h4>
-        <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">4</span><span class="o">);</span>
-<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;New updated name&quot;</span><span class="o">);</span>
-<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-</pre></div>
-</div>
-      </div>
     </div>
   </div>
+</div>
   </div>
   </div>
 
