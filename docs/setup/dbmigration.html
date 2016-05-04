@@ -74,7 +74,44 @@
 
     <div class="col-md-9" role="main">
       <div class="bs-docs-section">
+
+  <h2 id="videos">Introduction</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/n7VXOFwM2og">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">DB Migration introduction</h4>
+  Introduction to DB migration
+  </div>
+</div>
+    </div>
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/cxiacf0wmNk">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Repeatable migrations</h4>
+  Use of @View, extra-ddl.xml and repeatable migrations
+  </div>
+</div>
+    </div>
+  </div>
+
   <h2 id="overview">Overview</h2>
+
   <p>
     DB Migration is a feature for generation of DDL from the entity bean model that supports determining the
     <code>diff</code> from the prior version of the model and generating appropriate DDL changes based on
@@ -215,61 +252,12 @@
 </pre></div>
 </div>
 
-
-  <h2 id="workflow">Workflow</h2>
-  <p>
-    In terms of a developers workflow, the expectation is that a migration is associated with a merge request
-    (git flow feature). A feature requires certain changes to the model (add a property/column) and the DB
-    migration change (DDL to add columns etc) and the actual code changes are all in the same merge request
-    (git flow feature branch). The developer working on their feature runs the DB migration such that they have
-    the DDL changes required to support that feature.
-  </p>
-
-  <h2 id="versioning">Versioning</h2>
-  <p>
-    The "version" numbering format supported is the same as FlywayDB version numbering.
-  </p>
-  <p>
-    In a "git flow feature" workflow a decent versioning schema is to take the pom version and append a number
-    to represent the feature and take the form:
-  </p>
-<div class="syntax xml"><div class="highlight"><pre><span></span>{pom version}_{feature number}_{feature name}
-
-So for:
-  pom version = 4.5.6
-  feature number = 12
-  feature name = support end dating
-
-The resulting apply sql is:
-  4.5.6_12__support-end-dating.sql
-</pre></div>
-</div>
-  <p>
-    The versioning is important for your development workflow (how you process merge requests in terms
-    of ordering) and the related restrictions in terms of running DDL changes in order.
-    For example, in the case of FlywayDB you need to take into
-    account if you allow out of order execution of the sql and this directly effects if you all
-  </p>
-
-  <h4>Future enhancement:</h4>
-  <p>
-    It is possible to resolve issues around DDL execution order and how that can badly impact development workflow
-    (how merge requests are handled) by somehow defining a dependency between sql scripts (for example, define
-    that 4.5.6_12 is dependent on 4.5.6_4) and supporting that via Ebean itself or enhancing FlywayDB.
-  </p>
-  <p>
-    There is certainly an issue here which could be addressed with some effort in order to get both safety in
-    processing DDL in order and allow flexibility in the order with which merge requests are processed.
-  </p>
-
   <h2 id="version">Migration version and name</h2>
   <p>
     For a migration the developer needs to provide the <code>version</code> and <code>name</code>
     and these can be set via environment variables, system properties or ebean.properties or programmatically.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
-
-<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
 <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
@@ -285,19 +273,26 @@ The resulting apply sql is:
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="o">{</span>
 
   <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
-  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;4.5.6_12&quot;</span><span class="o">);</span>
+
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
   <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 
   <span class="c1">// migration will be generated when EbeanServer instance starts</span>
+  <span class="c1">// ... typically by running your application.</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
 <span class="o">}</span>
 </pre></div>
 </div>
 
-  <h2 id="programmatic">Generating migration programmatically</h2>
+  <h2 id="programmatic">Generate offline</h2>
   <p>
-    You can generate the a migration programmatically. For example by a main method in a class in
-    the test source similar to the following code:
+    We can generate a migration programmatically without starting your application.
+    In <code>src/test/java</code> add the following code with a <code>main method</code>.
+  </p>
+  <p>
+    Running this main method will generate the next migration and starts the EbeanServer
+    in <code>offline mode</code>. This offline mode means we don't need to start the application
+    or need a database to generate the migration.
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
@@ -307,25 +302,98 @@ The resulting apply sql is:
 
 <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 
+<span class="cm">/**</span>
+<span class="cm"> * Generate the DB Migration.</span>
+<span class="cm"> */</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDbMigration</span> <span class="o">{</span>
 
+  <span class="cm">/**</span>
+<span class="cm">   * Generate the next &quot;DB schema DIFF&quot; migration.</span>
+<span class="cm">   * &lt;p&gt;</span>
+<span class="cm">   * These migration are typically run using FlywayDB, Liquibase</span>
+<span class="cm">   * or Ebean&#39;s own built in migration runner.</span>
+<span class="cm">   * &lt;/p&gt;</span>
+<span class="cm">   */</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 
+    <span class="c1">// optionally specify the version and name</span>
+    <span class="c1">//System.setProperty(&quot;ddl.migration.version&quot;, &quot;1.1&quot;);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
+
+    <span class="c1">// generate a migration using drops from a prior version</span>
+    <span class="c1">//System.setProperty(&quot;ddl.migration.pendingDropsFor&quot;, &quot;1.2&quot;);</span>
+
     <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
-
-    <span class="c1">// set path that the migration xml and ddl is located</span>
-    <span class="c1">// this defaults to standard maven src/main/resources</span>
-    <span class="c1">//dbMigration.setPathToResources(&quot;src/main/resources&quot;);</span>
-
-    <span class="c1">// Postgres as the target DB</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
-
-    <span class="c1">// generate the migration xml and ddl</span>
+    <span class="c1">// generate the migration ddl and xml</span>
+    <span class="c1">// ... with EbeanServer in &quot;offline&quot; mode</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
+
+  <h2 id="running">Running migration</h2>
+  <p>
+    You can run the migrations using <code>FlywayDb</code>, <code>Liquibase</code> or Ebean's own
+    built in migration runner.
+  </p>
+
+  <h4>Ebean's migration runner</h4>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## run migrations when the EbeanServer starts</span>
+<span class="na">ebean.migration.run</span><span class="o">=</span><span class="s">true</span>
+
+<span class="c">## optionally specify different DB credentials</span>
+<span class="c">## to run the migration (own the tables)</span>
+<span class="na">datasource.db.adminusername</span><span class="o">=</span><span class="s">myDbTableOwner</span>
+<span class="na">datasource.db.adminpassword</span><span class="o">=</span><span class="s">secret</span>
+</pre></div>
+</div>
+  <p>
+    With <code>ebean.migration.run=true</code> then when the EbeanServer starts it will look at the
+    migrations and run any that need to be run.  The migration runner will by default create a table
+    called <code>db_migration</code> that holds the meta data about the migrations that have been run
+    and inserts into this table when migrations are successfully executed.
+  </p>
+
+  <h2 id="repeatable">Repeatable migrations</h2>
+  <p>
+    Repeatable migrations are special migrations that start with <code>R__</code> and do not have a
+    version number.  Repeatable migrations will run if they have not already been run or if there
+    content has changed (MD5 checksum has changed).
+  </p>
+  <p>
+    Repeatable migrations can contain any DDL but for ORM we use these for defining <code>database VIEWS</code>
+    and for example using <code>@View</code> for mapping entity beans to database views rather than tables.
+  </p>
+  <p>
+    Refer to the second video showing repeatable migrations with extra-ddl.xml and use with @View.
+  </p>
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/cxiacf0wmNk">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Repeatable migrations</h4>
+  Use of @View, extra-ddl.xml and repeatable migrations
+  </div>
+</div>
+
+  <h4>FlywayDB note</h4>
+  <p>
+    For use with FlywayDB currently we need to prefix "version migrations" with <code>V</code> in order to
+    support both "version migrations" and "repeatable migrations".  To do this:
+  </p>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## must use V prefix on &quot;version migrations&quot; when using FlywayDB</span>
+<span class="c">## with both &quot;version&quot; and &quot;repeatable&quot; migrations</span>
+<span class="na">ebean.migration.applyPrefix</span><span class="o">=</span><span class="s">V</span>
+</pre></div>
+</div>
+
 
 </div>
     </div>
@@ -358,14 +426,16 @@ The resulting apply sql is:
 <li class="active">
   <a href="/docs/setup/dbmigration">DDL - DB Migration</a>
 <ul class="nav">
+  <li><a href="#introduction">Introduction</a></li>
   <li><a href="#overview">Overview</a></li>
   <li><a href="#migration-xml">Migration XML</a></li>
   <li><a href="#apply-ddl">Apply DDL</a></li>
-  <li><a href="#workflow">Workflow</a></li>
-  <li><a href="#versioning">Versioning</a></li>
   <li><a href="#version">Version and name</a></li>
   <li><a href="#on-startup">Generate on startup</a></li>
-  <li><a href="#programmatic">Generate programmatically</a></li>
+  <li><a href="#programmatic">Generate offline</a></li>
+  <li><a href="#running">Running migration</a></li>
+  <li><a href="#repeatable">Repeatable migrations</a></li>
+
 </ul>
 </li>
 <li >
