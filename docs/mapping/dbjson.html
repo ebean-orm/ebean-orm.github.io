@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / Naming convention </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / @DbJson </h1>
   </div>
 </div>
 
@@ -73,46 +73,7 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <h2 id="naming_convention">Naming convention</h2>
-
-  <p>
-    Ebean has a Naming Convention API to map column names to property names. It also
-    maps entity to table names and can take into account database schema and catalog if
-    required.
-  </p>
-
-  <p>
-    The default <code>UnderscoreNamingConvention</code> converts column names with underscores into
-    normal java camel case property names (e.g. "first_name" maps to "firstName").
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;be_contact&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
-
-  <span class="o">...</span>
-  <span class="c1">// the default underscore naming convention maps</span>
-  <span class="c1">// &quot;firstName&quot; property to column &quot;first_name&quot;</span>
-  <span class="c1">// ... so this @Column annotation is not required</span>
-  <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;first_name&quot;</span><span class="o">)</span>
-  <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
-</pre></div>
-</div>
-
-  <p>
-    Alternatively you can use the <code>MatchingNamingConvention</code> or implement your own naming convention.
-  </p>
-
-  <p>
-    The MatchingNamingConvention names column names to match property names and table names to match entity names.
-    Ebean follows the JPA specification which states that the in the case of no annotations the name of the class will
-    be take as the table name and the name of a property will be taken as the name of the column.
-  </p>
-
-
-  <div class="next pull-right">
-    <a href="constructors" class="btn btn-info">Next: Constructors</a>
-  </div>
+      <h2 id="">DbJson</h2>
     </div>
 
     <div class="col-md-3" role="complementary">

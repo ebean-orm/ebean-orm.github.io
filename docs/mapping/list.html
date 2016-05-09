@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / List / Set </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / Collections </h1>
   </div>
 </div>
 
@@ -73,32 +73,30 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <div class="bs-docs-section">
+      <h2 id="list">List vs Set</h2>
+<p>
+  For mapping collections for <code>@OneToMany</code> or <code>@ManyToMany</code> properties
+  we need to choose between using <code>Set</code> or <code>List</code> for these collections.
+</p>
 
-  <h2 id="list">List vs Set</h2>
-  <p>
-    For mapping collections for <code>@OneToMany</code> or <code>@ManyToMany</code> properties
-    we need to choose between using <code>Set</code> or <code>List</code> for these collections.
-  </p>
+<h4>Hibernate bag semantics</h4>
+<p>
+  With Hibernate there could be a preference for using <code>Set</code> because Set and List have
+  different semantics with Hibernate. Set uses "bag semantics" and is often preferred.
+</p>
 
-  <h4>Hibernate bag semantics</h4>
-  <p>
-    With Hibernate there could be a preference for using <code>Set</code> because Set and List have
-    different semantics with Hibernate. Set uses "bag semantics" and is often preferred.
-  </p>
+<h4>hashCode() / equals()</h4>
+<p>
+  Using Set by implication means that <code>hashCode()/equals()</code> implementation is used.
+  This is problematic as the nature of entity beans is that they a mutating and often don't have
+  an @Id value until after the bean has been persisted.
+</p>
+<p>
+  The difficulty in implementing hashCode()/equals() on entity beans means that <code>List</code>
+  is the recommended collection type to hold @OneToMany and @ManyToMany collections.
+</p>
 
-  <h4>hashCode() / equals()</h4>
-  <p>
-    Using Set by implication means that <code>hashCode()/equals()</code> implementation is used.
-    This is problematic as the nature of entity beans is that they a mutating and often don't have
-    an @Id value until after the bean has been persisted.
-  </p>
-  <p>
-    The difficulty in implementing hashCode()/equals() on entity beans means that <code>List</code>
-    is the recommended collection type to hold @OneToMany and @ManyToMany collections.
-  </p>
-
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;be_customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
   <span class="o">...</span>
@@ -111,56 +109,57 @@
 </pre></div>
 </div>
 
-  <h2 id="enhancement">Enhancement</h2>
-  <p>
-    When you define a collection type enhancement will ensure:
-  </p>
-  <ul>
-    <li>Any List/Set initialisation is removed</li>
-    <li>The List/Set is always initialised by Ebean (and never null)</li>
-  </ul>
+<h2 id="enhancement">Enhancement</h2>
+<p>
+  When you define a collection type enhancement will ensure:
+</p>
+<ul>
+  <li>Any List/Set initialisation is removed</li>
+  <li>The List/Set is always initialised by Ebean (and never null)</li>
+</ul>
 
-  <h3>List/Set initialisation is removed</h3>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// initialisation of the new ArrayList() is removed</span>
+<h3>List/Set initialisation is removed</h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// initialisation of the new ArrayList() is removed</span>
 
 <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;;</span>
 
 <span class="c1">// you can declare an un-initialised List if you wish</span>
 <span class="c1">// and there is no actual difference to an initialised one</span>
+<span class="c1">// because enhancement will always initialise it</span>
 
 <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
 </pre></div>
 </div>
-  <p>
-    In Kotlin we'd typically always want to define it as being not null:
-  </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// kotlin: contacts type not nullable</span>
+<p>
+  In Kotlin we'd typically always want to define it as being not null:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// kotlin: contacts type not nullable</span>
 <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">var</span> <span class="n">contacts</span><span class="o">:</span> <span class="n">MutableList</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">()</span>
 </pre></div>
 </div>
 
-  <h3>The List/Set is always initialised (never null)</h3>
-  <p>
-    Ebean needs to control the initialisation of the List/Set in order to support:
-  </p>
-  <ul>
-    <li>Lazy loading</li>
-    <li>Support @PrivateOwned where we need the list/set to be aware of removals</li>
-    <li>Support @ManyToMany where we need the list/set to be aware of adds and removals</li>
-  </ul>
-  <p>
-    Enhancement ensures that whenever you access a List/Set Ebean will always
-    initialise it and setup the List/Set to listen for adds/removals if necessary
-    (for @PrivateOwned and @ManyToMany).
-  </p>
-  <p>
-    This has the effect that accessing the list/set.
-  </p>
+<h3>The List/Set is always initialised (never null)</h3>
+<p>
+  Ebean needs to control the initialisation of the List/Set in order to support:
+</p>
+<ul>
+  <li>Lazy loading</li>
+  <li>Support @PrivateOwned where we need the list/set to be aware of removals</li>
+  <li>Support @ManyToMany where we need the list/set to be aware of adds and removals</li>
+</ul>
+<p>
+  Enhancement ensures that whenever you access a List/Set Ebean will always
+  initialise it and setup the List/Set to listen for adds/removals if necessary
+  (for @PrivateOwned and @ManyToMany).
+</p>
+<p>
+  This has the effect that accessing the list/set it will always be not null.
+</p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// it &quot;looks&quot; like contacts could be null ...</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// it &quot;looks&quot; like contacts could be null ...</span>
 
 <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
@@ -174,13 +173,20 @@
 <span class="o">}</span>
 </pre></div>
 </div>
-  <p>
-    Enhancement replaces all the <code>GETFIELD</code> instructions for persistent collections
-    and replaces that will code that ensures the List/Set is initialised if required.
-  </p>
+<p>
+  Enhancement replaces all the <code>GETFIELD</code> instructions for <code>persistent collections</code>
+  and replaces that with code that ensures the List/Set is initialised if required.
+</p>
 
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
 
-
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addContact</span><span class="o">(</span><span class="n">Contact</span> <span class="n">contact</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// this is safe to write as contacts</span>
+  <span class="c1">// will never be null here</span>
+  <span class="n">contacts</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">contact</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
 </div>
     </div>
 
@@ -197,11 +203,14 @@
   <a href="/docs/mapping/constructors">Constructors</a>
 </li>
 <li class="active">
-  <a href="/docs/mapping/list">List</a>
+  <a href="/docs/mapping/list">Collections</a>
 <ul class="nav">
   <li><a href="#list">List vs Set</a></li>
   <li><a href="#enhancement">Enhancement</a></li>
 </ul>
+</li>
+<li >
+  <a href="/docs/mapping/id">Id</a>
 </li>
         </ul>
       </nav>
