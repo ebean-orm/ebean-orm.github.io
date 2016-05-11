@@ -20,7 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a>  </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / <a href="/docs/mapping/jpa">JPA</a>  </h1>
   </div>
 </div>
 
@@ -73,29 +73,74 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <div id="layout-body"></div>
+      <h2 id="limitations">Current limitations</h2>
+<p>
+  There are a number of JPA mappings that Ebean does not currently support
+  but would like to in time. These are logged as enhancement requests.
+</p>
+<table class="table">
+  <tr>
+    <td><a href="https://github.com/ebean-orm/avaje-ebeanorm/issues/107">107</a></td>
+    <td>
+      JPA2 - Add support for @PrimaryKeyJoinColumn/@PrimaryKeyJoinColumns.
+    </td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/ebean-orm/avaje-ebeanorm/issues/115">115</a></td>
+    <td>
+      JPA2 - Add support for @ElementCollection.  Note that Ebean does have support
+      for @DbArray (Postgres ARRAY) and @DbJson.
+    </td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/ebean-orm/avaje-ebeanorm/issues/116">116</a></td>
+    <td>
+      Only single table inheritance is supported. This enhancement request is to add support for
+      JOINED or TABLE PER CLASS inheritance strategies.
+    </td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/ebean-orm/avaje-ebeanorm/issues/123">123</a></td>
+    <td>
+      Add support for OneToMany JoinTables.
+    </td>
+  </tr>
+</table>
+<p>
+  You can review the entire list of outstanding issue and enhancements in the
+  <a href="https://github.com/ebean-orm/avaje-ebeanorm/issues">Github Issues</a>
+</p>
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/mapping">Overview</a>
+  <a href="/docs/mapping/jpa/id">@Id</a>
 </li>
 <li >
-  <a href="/docs/mapping/naming-convention">Naming convention</a>
+  <a href="/docs/mapping/jpa/oneToMany">@OneToMany</a>
 </li>
 <li >
-  <a href="/docs/mapping/constructors">Constructors</a>
+  <a href="/docs/mapping/jpa/manyToOne">@ManyToOne</a>
 </li>
 <li >
-  <a href="/docs/mapping/list">Collections</a>
+  <a href="/docs/mapping/jpa/oneToOne">@OneToOne</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa">JPA Mapping</a>
+  <a href="/docs/mapping/jpa/manyToMany">@ManyToMany</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension">Extensions</a>
+  <a href="/docs/mapping/jpa/mappedSuperclass">@MappedSuperclass</a>
+</li>
+<li >
+  <a href="/docs/mapping/jpa/lob">@Version</a>
+</li>
+<li >
+  <a href="/docs/mapping/jpa/lob">@Lob</a>
+</li>
+<li >
+  <a href="/docs/mapping/extension">&nbsp;Next: Extensions</a>
 </li>
         </ul>
       </nav>
