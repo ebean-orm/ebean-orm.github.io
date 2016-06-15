@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Eclipse IDE setup for Ebean ORM Query Bean generation (Java annotation processing / APT)</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -64,7 +64,7 @@
   <div id="main" data-offset="60">
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / <a href="/docs/mapping/jpa">JPA</a> / @OneToOne </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / Eclipse IDE - APT </h1>
   </div>
 </div>
 
@@ -73,96 +73,137 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <h2 id="pair">Relationship Pair</h2>
-<p>
-  We can think of a <code>@OneToOne</code>/<code>@OneToOne</code> relationship pair as
-  the same as a <code>@OneToMany</code>/<code>@ManyToOne</code> relationship pair but with the
-  addition that the "many" side has a cardinality of "at most 1".
-</p>
-<p>
-  From a Relational database perspective the @OneToOne relationship pair is
-  like the @OneToMany/@ManyToOne pair but with the <code>addition of a unique
-  constraint</code> which effectively limits the cardinality of the "many" side to be "at most 1".
-</p>
-<p>
-  From the perspective of Ebean internals. The @OneToOne(mappedBy=) acts much
-  like the @OneToMany(mappedBy=) <em>[the "many" side]</em> and the other @OneToOne acts
-  like the @ManyToOne <em>[the "one" side]</em>.
-</p>
+      <div class="bs-docs-section">
 
-<h2 id="manySide">@OneToOne "many" side</h2>
-<p>
-  The "many" side @OneToOne has the <code>mappedBy</code> attribute (like @OneToMany).
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Wheel</span> <span class="o">...</span>
-
-  <span class="c1">// has &quot;mappedBy&quot; (like @OneToMany)</span>
-  <span class="c1">// ... so we can think of this as the &quot;many&quot; side</span>
-  <span class="c1">// ... with cardinality limited to &quot;at most 1&quot;</span>
-  <span class="nd">@OneToOne</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
-  <span class="n">Tire</span> <span class="n">tire</span><span class="o">;</span>
-  <span class="o">...</span>
-</pre></div>
+  <h2 id="videos">Introduction</h2>
+  <div class="row">
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/_DWxNj-_orA">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Installing the enhancement plugin</h4>
+  This plugin performs both entity bean and query bean enhancement.
+  </div>
 </div>
+    </div>
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/_DWxNj-_orA">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Eclipse IDE APT</h4>
+  Query bean generation (Java annotation) with Eclipse IDE
+  </div>
+</div>
+    </div>
+  </div>
 
-<h2 id="oneSide">@OneToOne "one" side</h2>
-<p>
-  The "one" side @OneToOne has no <code>mappedBy</code> attribute.
-  This side acts almost exactly like @ManyToOne.
-</p>
-<p>
-  This side maps to the foreign key column. If the foreign key column does not match the
-  naming convention we can specify a <code>@JoinColumn</code>.
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tire</span> <span class="o">...</span>
+  <h2 id="overview">Overview</h2>
+  <p>
+    If you want to use <code>Query beans</code> it is best that they are generated
+    via <code>Java annotation processing</code>. Ebean provides <code>querybean-generator</code>
+    which is a java annotation processor that generates query beans.
+  </p>
+  <p>
+    Normally we just need to add the <code>querybean-generator</code> as a maven dependency and
+    it will all automatically work (with Maven and IntelliJ) but with Eclipse IDE we need some extra
+    setup in order for it to work.
+  </p>
+  <p>
+    This page documents the extra setup we need for Eclipse IDE such that it becomes aware of the
+    <code>querybean-generator</code> APT processor and generates query beans for us during development.
+  </p>
 
-  <span class="c1">// no mappedBy (like @OneToMany)</span>
-  <span class="c1">// ... so the &quot;one&quot; side of the relationship</span>
-  <span class="c1">// ... means it maps to the foreign key</span>
-  <span class="c1">// ... use @JoinColumn if needed</span>
-  <span class="nd">@OneToOne</span>
-  <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
-  <span class="n">Wheel</span> <span class="n">wheel</span><span class="o">;</span>
-</pre></div>
+  <h2 id="m2e-apt">1. Install m2e apt plugin</h2>
+  <p>
+    First install the m2e apt plugin (by Redhat) from the Market place.
+  </p>
+  <p>
+    This plugin allows us to configure Eclipse to find java annotation processors
+    in the maven classpath (just like Maven and IntelliJ do automatically).
+  </p>
+  <img src="/images/eclipse/apt/install-m2e-apt.png" class="img-responsive img-thumbnail">
+
+
+  <h2 id="preferences">2. Preferences / Maven / Annotation processing</h2>
+  <p>
+    Goto Preferences / Maven / Annotation processing and select the option.
+    "Automatically configure JDT APT" is usually a fine default.
+  </p>
+  <img src="/images/eclipse/apt/pref-maven-apt.png" class="img-responsive img-thumbnail">
+
+
+  <h2 id="java-compile">3. Project / Java compile / Annotation processing</h2>
+  <p>
+    Turn on annotation processing for the project.
+  </p>
+  <img src="/images/eclipse/apt/javacompile-apt.png" class="img-responsive img-thumbnail">
+
+
+  <h2 id="factory-path">4. Project / Java compile / Annotation processing / Factory Path</h2>
+  <p>
+    Check the <code>Factory Path</code>. It is ok if all entries in the classpath are
+    selected but what MUST be selected is <code>querybean-generator</code> and <code>persistence-api</code>.
+  </p>
+  <img src="/images/eclipse/apt/javacompile-apt-factorypath.png" class="img-responsive img-thumbnail">
+
 </div>
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
+
 <li >
-  <a href="/docs/mapping/jpa/id">@Id</a>
-</li>
-<li >
-  <a href="/docs/mapping/jpa/oneToMany">@OneToMany</a>
-</li>
-<li >
-  <a href="/docs/mapping/jpa/manyToOne">@ManyToOne</a>
+  <a href="/docs/setup/enhancement">Enhancement</a>
 </li>
 <li class="active">
-  <a href="/docs/mapping/jpa/oneToOne">@OneToOne</a>
+  <a href="/docs/setup/eclipse-apt">Eclipse IDE - APT</a>
 <ul class="nav">
-  <li><a href="#pair">Relationship pair</a></li>
-  <li><a href="#manySide">@OneToOne "many" side</a></li>
-  <li><a href="#oneSide">@OneToOne "one" side</a></li>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#m2e-apt">Install m2e apt</a></li>
+  <li><a href="#preferences">Preferences</a></li>
+  <li><a href="#java-compile">Java compile / APT</a></li>
+  <li><a href="#factory-path">Factory Path</a></li>
 </ul>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/manyToMany">@ManyToMany</a>
+  <a href="/docs/setup/logging">Logging</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/mappedSuperclass">@MappedSuperclass</a>
+  <a href="/docs/setup/serverconfig">ServerConfig</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/version">@Version</a>
+  <a href="/docs/setup/guice">Guice</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/lob">@Lob</a>
+  <a href="/docs/setup/spring">Spring</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension">&nbsp;Next: Extensions</a>
+  <a href="/docs/setup/activerecord">Active Record</a>
+</li>
+<li >
+  <a href="/docs/setup/ddl-create-all">DDL - Create All</a>
+</li>
+<li >
+  <a href="/docs/setup/dbmigration">DDL - DB Migration</a>
+</li>
+<li >
+  <a href="/docs/setup/test-properties"> Test properties</a>
+</li>
+<li >
+  <a href="/docs/setup/testing">Testing</a>
 </li>
         </ul>
       </nav>
@@ -170,6 +211,8 @@
   </div>
 
 </div>
+<!-- /.row -->
+</div>  <!-- /.container -->
   </div>
   </div>
 

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Ebean ORM Setup</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -149,12 +149,21 @@
     This can be described as "build time enhancement".
   </p>
 
-  <h3>Maven tile</h3>
+  <h3>Maven tile: ebean-enhancement</h3>
   <p>
     Ebean supplies a maven tile that brings in both the enhancer for entity beans as well
     as the enhancement for query beans. This is simpler, cleaner less verbose than
     defining the plugin in the traditional (non-tile) fashion and now the preferred approach.
   </p>
+
+  <h5>The ebean-enhancement tile brings plugin configuration for:</h5>
+  <ul>
+    <li>Entity bean and @Transactional enhancement for main classes</li>
+    <li>Query bean enhancement for main classes</li>
+    <li>Query bean enhancement for test classes</li>
+    <li>ebean-codegen plugin, helper to generate finders etc</li>
+  </ul>
+
 
   <h5>ebean-enhancement tile</h5>
   <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
@@ -164,12 +173,8 @@
   <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
   <span class="nt">&lt;configuration&gt;</span>
     <span class="nt">&lt;tiles&gt;</span>
-       <span class="c">&lt;!--</span>
-<span class="c">           Leave out java-compile tile if you already</span>
-<span class="c">           have the compile plugin defined</span>
-<span class="c">        --&gt;</span>
-      <span class="c">&lt;!-- &lt;tile&gt;org.avaje.tile:java-compile:1.1&lt;/tile&gt; --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>org.avaje.tile:ebean-enhancement:1.1<span class="nt">&lt;/tile&gt;</span>
+      <span class="c">&lt;!-- other tiles ... --&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>org.avaje.tile:ebean-enhancement:1.4<span class="nt">&lt;/tile&gt;</span>
     <span class="nt">&lt;/tiles&gt;</span>
   <span class="nt">&lt;/configuration&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
@@ -178,6 +183,29 @@
   <p>
     Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.
   </p>
+
+  <h3>Maven tile: test-ebean-enhancement</h3>
+  <p>
+    If a project has entity beans or @Transactional code in <code>src/test</code> we can additionally
+    bring in the <code>test-ebean-enhancement</code> tile which has plugin configuration for entity bean
+    and @Transaction enhancement of test classes.
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.8<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;tiles&gt;</span>
+      <span class="c">&lt;!-- other tiles ... --&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>org.avaje.tile:ebean-enhancement:1.4<span class="nt">&lt;/tile&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>org.avaje.tile:test-ebean-enhancement:1.4<span class="nt">&lt;/tile&gt;</span>
+    <span class="nt">&lt;/tiles&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></div>
+</div>
 
   <h3>Maven plugin</h3>
   <p>
@@ -270,8 +298,8 @@
 
 <div class="syntax xml"><div class="highlight"><pre><span></span>java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar MyApplication
 java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=debug=3 MyApplication
-java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=packages=org.example.model.** MyApplication
-java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=debug=1;packages=org.example.model.**,org.example.model2.**
+java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=packages=org.example.model MyApplication
+java -javaagent:avaje-ebeanorm-agent-<span class='avaje-ebeanorm-mavenenhancer-version'>${version}</span>.jar=debug=1;packages=org.example.model,org.example.model2
 MyApplication
 </pre></div>
 </div>
@@ -342,6 +370,9 @@ MyApplication
   </div>
 
   <h2 id="agent_loader">Agent Loader</h2>
+  <div class="alert alert-danger">
+    Agent Loader is NOT recommended
+  </div>
   <p>
     The agent loader can be used to programmatically load the javaagent onto a running JVM. However,
     this very occasionally does not enhance a bean as an entity bean class somehow gets loaded prior
@@ -494,13 +525,15 @@ MyApplication
 
 <li class="active">
   <a href="/docs/setup/enhancement">Enhancement</a>
-
 <ul class="nav">
   <li><a href="#idea">IDE</a></li>
   <li><a href="#maven">Maven</a></li>
   <li><a href="#agent">Agent</a></li>
   <li><a href="#ant">Ant</a></li>
 </ul>
+</li>
+<li >
+  <a href="/docs/setup/eclipse-apt">Eclipse IDE - APT</a>
 </li>
 <li >
   <a href="/docs/setup/logging">Logging</a>
