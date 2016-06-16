@@ -202,7 +202,7 @@
 
   <span class="o">...</span>
   <span class="c1">// embed some customer details including the billingAddress</span>
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name,status,billingAddress(*,country(*))&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
