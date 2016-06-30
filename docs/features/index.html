@@ -49,13 +49,20 @@
         <div class="mobile-nav">
   <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a>  </h1>
 </div>
-  <div class="sideNav"><ul class="nav navbar-nav">
+  <div class="sideNav"><ul class="nav navbar-nav"><li >
+  <a href="/docs/features/elasticsearch">ElasticSearch</a>
+</li>
+
+<li >
+  <a href="/docs/features/history">History SQL2011</a>
+</li>
+
+<li >
+  <a href="/docs/features/json-in-db">JSON in DB</a>
+</li>
 
 <li >
   <a href="/docs/features/json">JSON</a>
-</li>
-<li >
-  <a href="/docs/features/json-in-db">JSON in DB</a>
 </li>
 <li >
   <a href="/docs/features/eventlistening">Event listening</a>
@@ -76,17 +83,10 @@
   <a href="/docs/features/changelog">Change Log</a>
 </li>
 <li >
-  <a href="/docs/features/history">History SQL2011</a>
-</li>
-<li >
   <a href="/docs/features/draftable">Draftable</a>
 </li>
 <li >
   <a href="/docs/features/l2caching">L2 caching</a>
-</li>
-
-<li >
-  <a href="/docs/features/elasticsearch">ElasticSearch</a>
 </li>
 
 <li >
@@ -121,17 +121,30 @@
   <div class="row">
     <div class="col-md-9" role="main">
       <div class="bs-docs-section">
-  <h3><a href="/docs/features/json">JSON</a></h3>
+
+  <h3><a href="/docs/features/elasticsearch">ElasticSearch integration</a></h3>
   <p>
-    Easily convert your entity bean object graphs to/from JSON.
-    Ebean provides JSON marshalling/unmarshalling support taking into account bi-directional relationships,
-    all the supported types (Enums, Joda, Java8) and partially loaded object graphs.
+    Details on the integration with ElasticSearch. Automatic indexing changes into ElasticSearch etc.
+  </p>
+
+  <h3><a href="/docs/features/history">History SQL2011</a></h3>
+  <p>
+    Support historical queries <code>query.asOf(timestamp)</code> and versions <code>query.findVersionsBetween()</code>
+    against historic/old versions of the rows. This supports Oracle Total Recall and for Postgres/MySql etc will
+    generate the appropriate history tables, triggers and views.
   </p>
 
   <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
   <p>
     Postgres and Oracle especially has built in support for storing JSON documents in the database.
     Ebean has built in support for this included support for query expressions.
+  </p>
+
+  <h3><a href="/docs/features/json">JSON</a></h3>
+  <p>
+    Easily convert your entity bean object graphs to/from JSON.
+    Ebean provides JSON marshalling/unmarshalling support taking into account bi-directional relationships,
+    all the supported types (Enums, Joda, Java8) and partially loaded object graphs.
   </p>
 
   <h3><a href="/docs/features/eventlistening">Event Listening</a></h3>
@@ -150,13 +163,6 @@
     The default implementation logs the events in JSON formatter to a logger.
   </p>
 
-  <h3><a href="/docs/features/history">History SQL2011</a></h3>
-  <p>
-    Support historical queries <code>query.asOf(timestamp)</code> and versions <code>query.findVersionsBetween()</code>
-    against historic/old versions of the rows. This supports Oracle Total Recall and for Postgres/MySql etc will
-    generate the appropriate history tables, triggers and views.
-  </p>
-
   <h3><a href="/docs/features/draftable">Draftable</a></h3>
   <p>
     Uses a second set of tables to provide a "live" and "editing" version of object graphs. Typically this is used
@@ -166,11 +172,6 @@
   <h3><a href="/docs/features/l2caching">L2 Caching</a></h3>
   <p>
     Describes the L2 caching feature and how it is configured and used.
-  </p>
-
-  <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-  <p>
-    Details on the integration with ElasticSearch.
   </p>
 
   <h3><a href="/docs/features/jvmlanguages">JVM Languages</a></h3>
@@ -194,13 +195,20 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          
+          <li >
+  <a href="/docs/features/elasticsearch">ElasticSearch</a>
+</li>
+
+<li >
+  <a href="/docs/features/history">History SQL2011</a>
+</li>
+
+<li >
+  <a href="/docs/features/json-in-db">JSON in DB</a>
+</li>
 
 <li >
   <a href="/docs/features/json">JSON</a>
-</li>
-<li >
-  <a href="/docs/features/json-in-db">JSON in DB</a>
 </li>
 <li >
   <a href="/docs/features/eventlistening">Event listening</a>
@@ -221,17 +229,10 @@
   <a href="/docs/features/changelog">Change Log</a>
 </li>
 <li >
-  <a href="/docs/features/history">History SQL2011</a>
-</li>
-<li >
   <a href="/docs/features/draftable">Draftable</a>
 </li>
 <li >
   <a href="/docs/features/l2caching">L2 caching</a>
-</li>
-
-<li >
-  <a href="/docs/features/elasticsearch">ElasticSearch</a>
 </li>
 
 <li >
