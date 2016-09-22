@@ -230,7 +230,7 @@
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDrop&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDropsFor&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
 
 <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
 <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
