@@ -329,7 +329,7 @@
 <span class="sourceLineNo">321</span>   * Return the supplied value or default to the bean name lower case.<a name="line.321"></a>
 <span class="sourceLineNo">322</span>   */<a name="line.322"></a>
 <span class="sourceLineNo">323</span>  protected String derive(BeanType&lt;?&gt; desc, String suppliedValue) {<a name="line.323"></a>
-<span class="sourceLineNo">324</span>    return (suppliedValue != null &amp;&amp; suppliedValue.length() &gt; 0) ? suppliedValue : desc.getName().toLowerCase();<a name="line.324"></a>
+<span class="sourceLineNo">324</span>    return (suppliedValue != null &amp;&amp; !suppliedValue.isEmpty()) ? suppliedValue : desc.getName().toLowerCase();<a name="line.324"></a>
 <span class="sourceLineNo">325</span>  }<a name="line.325"></a>
 <span class="sourceLineNo">326</span><a name="line.326"></a>
 <span class="sourceLineNo">327</span>  @Override<a name="line.327"></a>

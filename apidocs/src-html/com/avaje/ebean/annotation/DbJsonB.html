@@ -44,7 +44,11 @@
 <span class="sourceLineNo">036</span>@Target(ElementType.FIELD)<a name="line.36"></a>
 <span class="sourceLineNo">037</span>public @interface DbJsonB {<a name="line.37"></a>
 <span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>}<a name="line.39"></a>
+<span class="sourceLineNo">039</span>  /**<a name="line.39"></a>
+<span class="sourceLineNo">040</span>   * For VARCHAR storage specify the column length.<a name="line.40"></a>
+<span class="sourceLineNo">041</span>   */<a name="line.41"></a>
+<span class="sourceLineNo">042</span>  int length() default 0;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>}<a name="line.43"></a>
 
 
 

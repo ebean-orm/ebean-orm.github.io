@@ -8,7 +8,7 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package com.avaje.ebean.dbmigration;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import com.avaje.ebean.config.dbplatform.DbPlatformName;<a name="line.3"></a>
+<span class="sourceLineNo">003</span>import com.avaje.ebean.config.Platform;<a name="line.3"></a>
 <span class="sourceLineNo">004</span>import org.slf4j.Logger;<a name="line.4"></a>
 <span class="sourceLineNo">005</span>import org.slf4j.LoggerFactory;<a name="line.5"></a>
 <span class="sourceLineNo">006</span><a name="line.6"></a>
@@ -22,12 +22,12 @@
 <span class="sourceLineNo">014</span><a name="line.14"></a>
 <span class="sourceLineNo">015</span>  private static final String KEY = "ebean.dboffline";<a name="line.15"></a>
 <span class="sourceLineNo">016</span><a name="line.16"></a>
-<span class="sourceLineNo">017</span>  private static boolean runningMigration;<a name="line.17"></a>
+<span class="sourceLineNo">017</span>  private static boolean generateMigration;<a name="line.17"></a>
 <span class="sourceLineNo">018</span><a name="line.18"></a>
 <span class="sourceLineNo">019</span>  /**<a name="line.19"></a>
 <span class="sourceLineNo">020</span>   * Set the platform to use when creating the next EbeanServer instance.<a name="line.20"></a>
 <span class="sourceLineNo">021</span>   */<a name="line.21"></a>
-<span class="sourceLineNo">022</span>  public static void setPlatform(DbPlatformName dbPlatform) {<a name="line.22"></a>
+<span class="sourceLineNo">022</span>  public static void setPlatform(Platform dbPlatform) {<a name="line.22"></a>
 <span class="sourceLineNo">023</span>    System.setProperty(KEY, dbPlatform.name());<a name="line.23"></a>
 <span class="sourceLineNo">024</span>  }<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
@@ -49,7 +49,7 @@
 <span class="sourceLineNo">041</span>   * Bring up the next EbeanServer instance using the H2 platform.<a name="line.41"></a>
 <span class="sourceLineNo">042</span>   */<a name="line.42"></a>
 <span class="sourceLineNo">043</span>  public static void asH2() {<a name="line.43"></a>
-<span class="sourceLineNo">044</span>    setPlatform(DbPlatformName.H2);<a name="line.44"></a>
+<span class="sourceLineNo">044</span>    setPlatform(Platform.H2);<a name="line.44"></a>
 <span class="sourceLineNo">045</span>  }<a name="line.45"></a>
 <span class="sourceLineNo">046</span><a name="line.46"></a>
 <span class="sourceLineNo">047</span>  /**<a name="line.47"></a>
@@ -63,23 +63,23 @@
 <span class="sourceLineNo">055</span>   * Return true if the migration is running. This typically means don't run the<a name="line.55"></a>
 <span class="sourceLineNo">056</span>   * plugins like full DDL generation.<a name="line.56"></a>
 <span class="sourceLineNo">057</span>   */<a name="line.57"></a>
-<span class="sourceLineNo">058</span>  public static boolean isRunningMigration() {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    return runningMigration;<a name="line.59"></a>
+<span class="sourceLineNo">058</span>  public static boolean isGenerateMigration() {<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    return generateMigration;<a name="line.59"></a>
 <span class="sourceLineNo">060</span>  }<a name="line.60"></a>
 <span class="sourceLineNo">061</span><a name="line.61"></a>
 <span class="sourceLineNo">062</span>  /**<a name="line.62"></a>
 <span class="sourceLineNo">063</span>   * Called when the migration is running is order to stop other plugins<a name="line.63"></a>
 <span class="sourceLineNo">064</span>   * like the full DDL generation from executing.<a name="line.64"></a>
 <span class="sourceLineNo">065</span>   */<a name="line.65"></a>
-<span class="sourceLineNo">066</span>  public static void setRunningMigration() {<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    runningMigration = true;<a name="line.67"></a>
+<span class="sourceLineNo">066</span>  public static void setGenerateMigration() {<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    generateMigration = true;<a name="line.67"></a>
 <span class="sourceLineNo">068</span>  }<a name="line.68"></a>
 <span class="sourceLineNo">069</span><a name="line.69"></a>
 <span class="sourceLineNo">070</span>  /**<a name="line.70"></a>
 <span class="sourceLineNo">071</span>   * Reset the offline platform and runningMigration flag.<a name="line.71"></a>
 <span class="sourceLineNo">072</span>   */<a name="line.72"></a>
 <span class="sourceLineNo">073</span>  public static void reset() {<a name="line.73"></a>
-<span class="sourceLineNo">074</span>    runningMigration = false;<a name="line.74"></a>
+<span class="sourceLineNo">074</span>    generateMigration = false;<a name="line.74"></a>
 <span class="sourceLineNo">075</span>    System.clearProperty(KEY);<a name="line.75"></a>
 <span class="sourceLineNo">076</span>    logger.debug("reset");<a name="line.76"></a>
 <span class="sourceLineNo">077</span>  }<a name="line.77"></a>

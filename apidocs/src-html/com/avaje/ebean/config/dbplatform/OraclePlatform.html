@@ -26,52 +26,53 @@
 <span class="sourceLineNo">018</span>    this.maxConstraintNameLength = 30;<a name="line.18"></a>
 <span class="sourceLineNo">019</span>    this.dbEncrypt = new OracleDbEncrypt();<a name="line.19"></a>
 <span class="sourceLineNo">020</span>    this.sqlLimiter = new RownumSqlLimiter();<a name="line.20"></a>
-<span class="sourceLineNo">021</span>    this.platformDdl = new Oracle10Ddl(this);<a name="line.21"></a>
-<span class="sourceLineNo">022</span>    this.historySupport = new OracleDbHistorySupport();<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>    // Not using getGeneratedKeys as instead we will<a name="line.24"></a>
-<span class="sourceLineNo">025</span>    // batch load sequences which enables JDBC batch execution<a name="line.25"></a>
-<span class="sourceLineNo">026</span>    dbIdentity.setSupportsGetGeneratedKeys(false);<a name="line.26"></a>
-<span class="sourceLineNo">027</span>    dbIdentity.setIdType(IdType.SEQUENCE);<a name="line.27"></a>
-<span class="sourceLineNo">028</span>    dbIdentity.setSupportsSequence(true);<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>    this.treatEmptyStringsAsNull = true;<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>    this.openQuote = "\"";<a name="line.32"></a>
-<span class="sourceLineNo">033</span>    this.closeQuote = "\"";<a name="line.33"></a>
-<span class="sourceLineNo">034</span><a name="line.34"></a>
-<span class="sourceLineNo">035</span>    booleanDbType = Types.INTEGER;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>    dbTypeMap.put(Types.BOOLEAN, new DbType("number(1) default 0"));<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>    dbTypeMap.put(Types.INTEGER, new DbType("number", 10));<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    dbTypeMap.put(Types.BIGINT, new DbType("number", 19));<a name="line.39"></a>
-<span class="sourceLineNo">040</span>    dbTypeMap.put(Types.REAL, new DbType("number", 19, 4));<a name="line.40"></a>
-<span class="sourceLineNo">041</span>    dbTypeMap.put(Types.DOUBLE, new DbType("number", 19, 4));<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    dbTypeMap.put(Types.SMALLINT, new DbType("number", 5));<a name="line.42"></a>
-<span class="sourceLineNo">043</span>    dbTypeMap.put(Types.TINYINT, new DbType("number", 3));<a name="line.43"></a>
-<span class="sourceLineNo">044</span>    dbTypeMap.put(Types.DECIMAL, new DbType("number", 38));<a name="line.44"></a>
-<span class="sourceLineNo">045</span><a name="line.45"></a>
-<span class="sourceLineNo">046</span>    dbTypeMap.put(Types.VARCHAR, new DbType("varchar2", 255));<a name="line.46"></a>
-<span class="sourceLineNo">047</span><a name="line.47"></a>
-<span class="sourceLineNo">048</span>    dbTypeMap.put(Types.LONGVARBINARY, new DbType("blob"));<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    dbTypeMap.put(Types.LONGVARCHAR, new DbType("clob"));<a name="line.49"></a>
-<span class="sourceLineNo">050</span>    dbTypeMap.put(Types.VARBINARY, new DbType("raw", 255));<a name="line.50"></a>
-<span class="sourceLineNo">051</span>    dbTypeMap.put(Types.BINARY, new DbType("raw", 255));<a name="line.51"></a>
-<span class="sourceLineNo">052</span><a name="line.52"></a>
-<span class="sourceLineNo">053</span>    dbTypeMap.put(Types.TIME, new DbType("timestamp"));<a name="line.53"></a>
-<span class="sourceLineNo">054</span>  }<a name="line.54"></a>
-<span class="sourceLineNo">055</span><a name="line.55"></a>
-<span class="sourceLineNo">056</span>  @Override<a name="line.56"></a>
-<span class="sourceLineNo">057</span>  public IdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, String seqName, int batchSize) {<a name="line.57"></a>
-<span class="sourceLineNo">058</span><a name="line.58"></a>
-<span class="sourceLineNo">059</span>    return new OracleSequenceIdGenerator(be, ds, seqName, batchSize);<a name="line.59"></a>
-<span class="sourceLineNo">060</span>  }<a name="line.60"></a>
-<span class="sourceLineNo">061</span><a name="line.61"></a>
-<span class="sourceLineNo">062</span>  @Override<a name="line.62"></a>
-<span class="sourceLineNo">063</span>  protected String withForUpdate(String sql) {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>    return sql + " for update";<a name="line.64"></a>
-<span class="sourceLineNo">065</span>  }<a name="line.65"></a>
-<span class="sourceLineNo">066</span>}<a name="line.66"></a>
+<span class="sourceLineNo">021</span>    this.basicSqlLimiter = new BasicSqlAnsiLimiter();<a name="line.21"></a>
+<span class="sourceLineNo">022</span>    this.platformDdl = new Oracle10Ddl(this);<a name="line.22"></a>
+<span class="sourceLineNo">023</span>    this.historySupport = new OracleDbHistorySupport();<a name="line.23"></a>
+<span class="sourceLineNo">024</span><a name="line.24"></a>
+<span class="sourceLineNo">025</span>    // Not using getGeneratedKeys as instead we will<a name="line.25"></a>
+<span class="sourceLineNo">026</span>    // batch load sequences which enables JDBC batch execution<a name="line.26"></a>
+<span class="sourceLineNo">027</span>    dbIdentity.setSupportsGetGeneratedKeys(false);<a name="line.27"></a>
+<span class="sourceLineNo">028</span>    dbIdentity.setIdType(IdType.SEQUENCE);<a name="line.28"></a>
+<span class="sourceLineNo">029</span>    dbIdentity.setSupportsSequence(true);<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>    this.treatEmptyStringsAsNull = true;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>    this.openQuote = "\"";<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    this.closeQuote = "\"";<a name="line.34"></a>
+<span class="sourceLineNo">035</span><a name="line.35"></a>
+<span class="sourceLineNo">036</span>    booleanDbType = Types.INTEGER;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>    dbTypeMap.put(DbType.BOOLEAN, new DbPlatformType("number(1) default 0"));<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("number", 10));<a name="line.39"></a>
+<span class="sourceLineNo">040</span>    dbTypeMap.put(DbType.BIGINT, new DbPlatformType("number", 19));<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    dbTypeMap.put(DbType.REAL, new DbPlatformType("number", 19, 4));<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    dbTypeMap.put(DbType.DOUBLE, new DbPlatformType("number", 19, 4));<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    dbTypeMap.put(DbType.SMALLINT, new DbPlatformType("number", 5));<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    dbTypeMap.put(DbType.TINYINT, new DbPlatformType("number", 3));<a name="line.44"></a>
+<span class="sourceLineNo">045</span>    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("number", 38));<a name="line.45"></a>
+<span class="sourceLineNo">046</span><a name="line.46"></a>
+<span class="sourceLineNo">047</span>    dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("varchar2", 255));<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>    dbTypeMap.put(DbType.LONGVARBINARY, new DbPlatformType("blob"));<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("clob"));<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    dbTypeMap.put(DbType.VARBINARY, new DbPlatformType("raw", 255));<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    dbTypeMap.put(DbType.BINARY, new DbPlatformType("raw", 255));<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>    dbTypeMap.put(DbType.TIME, new DbPlatformType("timestamp"));<a name="line.54"></a>
+<span class="sourceLineNo">055</span>  }<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>  @Override<a name="line.57"></a>
+<span class="sourceLineNo">058</span>  public PlatformIdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, String seqName, int batchSize) {<a name="line.58"></a>
+<span class="sourceLineNo">059</span><a name="line.59"></a>
+<span class="sourceLineNo">060</span>    return new OracleSequenceIdGenerator(be, ds, seqName, batchSize);<a name="line.60"></a>
+<span class="sourceLineNo">061</span>  }<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>  @Override<a name="line.63"></a>
+<span class="sourceLineNo">064</span>  protected String withForUpdate(String sql) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    return sql + " for update";<a name="line.65"></a>
+<span class="sourceLineNo">066</span>  }<a name="line.66"></a>
+<span class="sourceLineNo">067</span>}<a name="line.67"></a>
 
 
 

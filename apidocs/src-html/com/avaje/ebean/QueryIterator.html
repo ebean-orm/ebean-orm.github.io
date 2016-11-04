@@ -18,54 +18,61 @@
 <span class="sourceLineNo">010</span> * findList(), findSet() etc where all the beans are held in the List or Set<a name="line.10"></a>
 <span class="sourceLineNo">011</span> * etc).<a name="line.11"></a>
 <span class="sourceLineNo">012</span> * &lt;/p&gt;<a name="line.12"></a>
-<span class="sourceLineNo">013</span> * <a name="line.13"></a>
-<span class="sourceLineNo">014</span> * &lt;pre class="code"&gt;<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * <a name="line.15"></a>
-<span class="sourceLineNo">016</span> * Query&amp;lt;Customer&amp;gt; query = server.find(Customer.class)<a name="line.16"></a>
-<span class="sourceLineNo">017</span> *     .fetch(&amp;quot;contacts&amp;quot;, new FetchConfig().query(2))<a name="line.17"></a>
-<span class="sourceLineNo">018</span> *     .where().gt(&amp;quot;id&amp;quot;, 0)<a name="line.18"></a>
-<span class="sourceLineNo">019</span> *     .orderBy(&amp;quot;id&amp;quot;)<a name="line.19"></a>
-<span class="sourceLineNo">020</span> *     .setMaxRows(2);<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * <a name="line.21"></a>
-<span class="sourceLineNo">022</span> * QueryIterator&amp;lt;Customer&amp;gt; it = query.findIterate();<a name="line.22"></a>
-<span class="sourceLineNo">023</span> * try {<a name="line.23"></a>
-<span class="sourceLineNo">024</span> *   while (it.hasNext()) {<a name="line.24"></a>
-<span class="sourceLineNo">025</span> *     Customer customer = it.next();<a name="line.25"></a>
-<span class="sourceLineNo">026</span> *     // do something with customer...<a name="line.26"></a>
-<span class="sourceLineNo">027</span> *   }<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * } finally {<a name="line.28"></a>
-<span class="sourceLineNo">029</span> *   // close the associated resources<a name="line.29"></a>
-<span class="sourceLineNo">030</span> *   it.close();<a name="line.30"></a>
-<span class="sourceLineNo">031</span> * }<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * &lt;/pre&gt;<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * <a name="line.33"></a>
-<span class="sourceLineNo">034</span> * @author rbygrave<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * <a name="line.35"></a>
-<span class="sourceLineNo">036</span> * @param &lt;T&gt;<a name="line.36"></a>
-<span class="sourceLineNo">037</span> *          the type of entity bean in the iteration<a name="line.37"></a>
-<span class="sourceLineNo">038</span> */<a name="line.38"></a>
-<span class="sourceLineNo">039</span>public interface QueryIterator&lt;T&gt; extends Iterator&lt;T&gt;, java.io.Closeable {<a name="line.39"></a>
-<span class="sourceLineNo">040</span><a name="line.40"></a>
-<span class="sourceLineNo">041</span>  /**<a name="line.41"></a>
-<span class="sourceLineNo">042</span>   * Returns &lt;tt&gt;true&lt;/tt&gt; if the iteration has more elements.<a name="line.42"></a>
-<span class="sourceLineNo">043</span>   */<a name="line.43"></a>
-<span class="sourceLineNo">044</span>  boolean hasNext();<a name="line.44"></a>
-<span class="sourceLineNo">045</span><a name="line.45"></a>
-<span class="sourceLineNo">046</span>  /**<a name="line.46"></a>
-<span class="sourceLineNo">047</span>   * Returns the next element in the iteration.<a name="line.47"></a>
-<span class="sourceLineNo">048</span>   */<a name="line.48"></a>
-<span class="sourceLineNo">049</span>  T next();<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>  /**<a name="line.51"></a>
-<span class="sourceLineNo">052</span>   * Remove is not allowed.<a name="line.52"></a>
-<span class="sourceLineNo">053</span>   */<a name="line.53"></a>
-<span class="sourceLineNo">054</span>  void remove();<a name="line.54"></a>
-<span class="sourceLineNo">055</span><a name="line.55"></a>
-<span class="sourceLineNo">056</span>  /**<a name="line.56"></a>
-<span class="sourceLineNo">057</span>   * Close the underlying resources held by this iterator.<a name="line.57"></a>
-<span class="sourceLineNo">058</span>   */<a name="line.58"></a>
-<span class="sourceLineNo">059</span>  void close();<a name="line.59"></a>
-<span class="sourceLineNo">060</span>}<a name="line.60"></a>
+<span class="sourceLineNo">013</span> * &lt;p&gt;<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * Note that findIterate (and findEach and findEachWhile) uses a "per graph"<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * persistence context scope and adjusts jdbc fetch buffer size for large<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * queries. As such it is better to use findList for small queries.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * &lt;/p&gt;<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * &lt;p&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * Remember that with {@link QueryIterator} you must call {@link QueryIterator#close()}<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * when you have finished iterating the results (typically in a finally block).<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * &lt;/p&gt;<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * &lt;pre&gt;{@code<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * <a name="line.24"></a>
+<span class="sourceLineNo">025</span> *  Query&lt;Customer&gt; query = server.find(Customer.class)<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *     .where().gt("id", 0)<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *     .orderBy("id")<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *     .setMaxRows(2);<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *<a name="line.29"></a>
+<span class="sourceLineNo">030</span> *  QueryIterator&lt;Customer&gt; it = query.findIterate();<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *  try {<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *    while (it.hasNext()) {<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *      Customer customer = it.next();<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *      // do something with customer ...<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *    }<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *  } finally {<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *    // close the underlying resources<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *    it.close();<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *  }<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * }&lt;/pre&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * <a name="line.42"></a>
+<span class="sourceLineNo">043</span> * @param &lt;T&gt;<a name="line.43"></a>
+<span class="sourceLineNo">044</span> *          the type of entity bean in the iteration<a name="line.44"></a>
+<span class="sourceLineNo">045</span> */<a name="line.45"></a>
+<span class="sourceLineNo">046</span>public interface QueryIterator&lt;T&gt; extends Iterator&lt;T&gt;, java.io.Closeable {<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>  /**<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   * Returns &lt;tt&gt;true&lt;/tt&gt; if the iteration has more elements.<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   */<a name="line.50"></a>
+<span class="sourceLineNo">051</span>  boolean hasNext();<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>  /**<a name="line.53"></a>
+<span class="sourceLineNo">054</span>   * Returns the next element in the iteration.<a name="line.54"></a>
+<span class="sourceLineNo">055</span>   */<a name="line.55"></a>
+<span class="sourceLineNo">056</span>  T next();<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>  /**<a name="line.58"></a>
+<span class="sourceLineNo">059</span>   * Remove is not allowed.<a name="line.59"></a>
+<span class="sourceLineNo">060</span>   */<a name="line.60"></a>
+<span class="sourceLineNo">061</span>  void remove();<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>  /**<a name="line.63"></a>
+<span class="sourceLineNo">064</span>   * Close the underlying resources held by this iterator.<a name="line.64"></a>
+<span class="sourceLineNo">065</span>   */<a name="line.65"></a>
+<span class="sourceLineNo">066</span>  void close();<a name="line.66"></a>
+<span class="sourceLineNo">067</span>}<a name="line.67"></a>
 
 
 

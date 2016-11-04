@@ -47,83 +47,93 @@
 <span class="sourceLineNo">039</span>  void setDisableLazyLoad(boolean disableLazyLoading);<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span>  /**<a name="line.41"></a>
-<span class="sourceLineNo">042</span>   * Set the loaded state of the property given it's name.<a name="line.42"></a>
-<span class="sourceLineNo">043</span>   *<a name="line.43"></a>
-<span class="sourceLineNo">044</span>   * &lt;p&gt;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>   *   Typically this would be used to set the loaded state of a property<a name="line.45"></a>
-<span class="sourceLineNo">046</span>   *   to false to ensure that the specific property is excluded from a<a name="line.46"></a>
-<span class="sourceLineNo">047</span>   *   stateless update.<a name="line.47"></a>
-<span class="sourceLineNo">048</span>   * &lt;/p&gt;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>   *<a name="line.49"></a>
-<span class="sourceLineNo">050</span>   * &lt;pre&gt;{@code<a name="line.50"></a>
-<span class="sourceLineNo">051</span>   *<a name="line.51"></a>
-<span class="sourceLineNo">052</span>   *   // populate a bean via say JSON<a name="line.52"></a>
-<span class="sourceLineNo">053</span>   *   User user = ...;<a name="line.53"></a>
+<span class="sourceLineNo">042</span>   * Return true if the bean has lazy loading disabled.<a name="line.42"></a>
+<span class="sourceLineNo">043</span>   */<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  boolean isDisableLazyLoad();<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>  /**<a name="line.46"></a>
+<span class="sourceLineNo">047</span>   * Set the loaded state of the property given it's name.<a name="line.47"></a>
+<span class="sourceLineNo">048</span>   *<a name="line.48"></a>
+<span class="sourceLineNo">049</span>   * &lt;p&gt;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   *   Typically this would be used to set the loaded state of a property<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   *   to false to ensure that the specific property is excluded from a<a name="line.51"></a>
+<span class="sourceLineNo">052</span>   *   stateless update.<a name="line.52"></a>
+<span class="sourceLineNo">053</span>   * &lt;/p&gt;<a name="line.53"></a>
 <span class="sourceLineNo">054</span>   *<a name="line.54"></a>
-<span class="sourceLineNo">055</span>   *   // set loaded state on the email property to false so that<a name="line.55"></a>
-<span class="sourceLineNo">056</span>   *   // the email property is not included in a stateless update<a name="line.56"></a>
-<span class="sourceLineNo">057</span>   *   Ebean.getBeanState(user).setPropertyLoaded("email", false);<a name="line.57"></a>
-<span class="sourceLineNo">058</span>   *<a name="line.58"></a>
-<span class="sourceLineNo">059</span>   *   user.update();<a name="line.59"></a>
-<span class="sourceLineNo">060</span>   *<a name="line.60"></a>
-<span class="sourceLineNo">061</span>   * }&lt;/pre&gt;<a name="line.61"></a>
-<span class="sourceLineNo">062</span>   *<a name="line.62"></a>
+<span class="sourceLineNo">055</span>   * &lt;pre&gt;{@code<a name="line.55"></a>
+<span class="sourceLineNo">056</span>   *<a name="line.56"></a>
+<span class="sourceLineNo">057</span>   *   // populate a bean via say JSON<a name="line.57"></a>
+<span class="sourceLineNo">058</span>   *   User user = ...;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>   *<a name="line.59"></a>
+<span class="sourceLineNo">060</span>   *   // set loaded state on the email property to false so that<a name="line.60"></a>
+<span class="sourceLineNo">061</span>   *   // the email property is not included in a stateless update<a name="line.61"></a>
+<span class="sourceLineNo">062</span>   *   Ebean.getBeanState(user).setPropertyLoaded("email", false);<a name="line.62"></a>
 <span class="sourceLineNo">063</span>   *<a name="line.63"></a>
-<span class="sourceLineNo">064</span>   * This will throw an IllegalArgumentException if the property is unknown.<a name="line.64"></a>
-<span class="sourceLineNo">065</span>   */<a name="line.65"></a>
-<span class="sourceLineNo">066</span>  void setPropertyLoaded(String propertyName, boolean loaded);<a name="line.66"></a>
-<span class="sourceLineNo">067</span><a name="line.67"></a>
-<span class="sourceLineNo">068</span>  /**<a name="line.68"></a>
-<span class="sourceLineNo">069</span>   * For partially populated beans returns the properties that are loaded on the<a name="line.69"></a>
-<span class="sourceLineNo">070</span>   * bean.<a name="line.70"></a>
-<span class="sourceLineNo">071</span>   * &lt;p&gt;<a name="line.71"></a>
-<span class="sourceLineNo">072</span>   * Accessing another property will cause lazy loading to occur.<a name="line.72"></a>
-<span class="sourceLineNo">073</span>   * &lt;/p&gt;<a name="line.73"></a>
-<span class="sourceLineNo">074</span>   */<a name="line.74"></a>
-<span class="sourceLineNo">075</span>  Set&lt;String&gt; getLoadedProps();<a name="line.75"></a>
-<span class="sourceLineNo">076</span><a name="line.76"></a>
-<span class="sourceLineNo">077</span>  /**<a name="line.77"></a>
-<span class="sourceLineNo">078</span>   * Return the set of changed properties.<a name="line.78"></a>
+<span class="sourceLineNo">064</span>   *   user.update();<a name="line.64"></a>
+<span class="sourceLineNo">065</span>   *<a name="line.65"></a>
+<span class="sourceLineNo">066</span>   * }&lt;/pre&gt;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>   *<a name="line.67"></a>
+<span class="sourceLineNo">068</span>   *<a name="line.68"></a>
+<span class="sourceLineNo">069</span>   * This will throw an IllegalArgumentException if the property is unknown.<a name="line.69"></a>
+<span class="sourceLineNo">070</span>   */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>  void setPropertyLoaded(String propertyName, boolean loaded);<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>  /**<a name="line.73"></a>
+<span class="sourceLineNo">074</span>   * For partially populated beans returns the properties that are loaded on the<a name="line.74"></a>
+<span class="sourceLineNo">075</span>   * bean.<a name="line.75"></a>
+<span class="sourceLineNo">076</span>   * &lt;p&gt;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>   * Accessing another property will cause lazy loading to occur.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>   * &lt;/p&gt;<a name="line.78"></a>
 <span class="sourceLineNo">079</span>   */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>  Set&lt;String&gt; getChangedProps();<a name="line.80"></a>
+<span class="sourceLineNo">080</span>  Set&lt;String&gt; getLoadedProps();<a name="line.80"></a>
 <span class="sourceLineNo">081</span><a name="line.81"></a>
 <span class="sourceLineNo">082</span>  /**<a name="line.82"></a>
-<span class="sourceLineNo">083</span>   * Return a map of the updated properties and their new and old values.<a name="line.83"></a>
+<span class="sourceLineNo">083</span>   * Return the set of changed properties.<a name="line.83"></a>
 <span class="sourceLineNo">084</span>   */<a name="line.84"></a>
-<span class="sourceLineNo">085</span>  Map&lt;String,ValuePair&gt; getDirtyValues();<a name="line.85"></a>
-<span class="sourceLineNo">086</span>  <a name="line.86"></a>
+<span class="sourceLineNo">085</span>  Set&lt;String&gt; getChangedProps();<a name="line.85"></a>
+<span class="sourceLineNo">086</span><a name="line.86"></a>
 <span class="sourceLineNo">087</span>  /**<a name="line.87"></a>
-<span class="sourceLineNo">088</span>   * Return true if the bean is readOnly.<a name="line.88"></a>
-<span class="sourceLineNo">089</span>   * &lt;p&gt;<a name="line.89"></a>
-<span class="sourceLineNo">090</span>   * If a setter is called on a readOnly bean it will throw an exception.<a name="line.90"></a>
-<span class="sourceLineNo">091</span>   * &lt;/p&gt;<a name="line.91"></a>
-<span class="sourceLineNo">092</span>   */<a name="line.92"></a>
-<span class="sourceLineNo">093</span>  boolean isReadOnly();<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>  /**<a name="line.95"></a>
-<span class="sourceLineNo">096</span>   * Set the readOnly status for the bean.<a name="line.96"></a>
+<span class="sourceLineNo">088</span>   * Return a map of the updated properties and their new and old values.<a name="line.88"></a>
+<span class="sourceLineNo">089</span>   */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>  Map&lt;String,ValuePair&gt; getDirtyValues();<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  <a name="line.91"></a>
+<span class="sourceLineNo">092</span>  /**<a name="line.92"></a>
+<span class="sourceLineNo">093</span>   * Return true if the bean is readOnly.<a name="line.93"></a>
+<span class="sourceLineNo">094</span>   * &lt;p&gt;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>   * If a setter is called on a readOnly bean it will throw an exception.<a name="line.95"></a>
+<span class="sourceLineNo">096</span>   * &lt;/p&gt;<a name="line.96"></a>
 <span class="sourceLineNo">097</span>   */<a name="line.97"></a>
-<span class="sourceLineNo">098</span>  void setReadOnly(boolean readOnly);<a name="line.98"></a>
+<span class="sourceLineNo">098</span>  boolean isReadOnly();<a name="line.98"></a>
 <span class="sourceLineNo">099</span><a name="line.99"></a>
 <span class="sourceLineNo">100</span>  /**<a name="line.100"></a>
-<span class="sourceLineNo">101</span>   * Add a propertyChangeListener.<a name="line.101"></a>
+<span class="sourceLineNo">101</span>   * Set the readOnly status for the bean.<a name="line.101"></a>
 <span class="sourceLineNo">102</span>   */<a name="line.102"></a>
-<span class="sourceLineNo">103</span>  void addPropertyChangeListener(PropertyChangeListener listener);<a name="line.103"></a>
+<span class="sourceLineNo">103</span>  void setReadOnly(boolean readOnly);<a name="line.103"></a>
 <span class="sourceLineNo">104</span><a name="line.104"></a>
 <span class="sourceLineNo">105</span>  /**<a name="line.105"></a>
-<span class="sourceLineNo">106</span>   * Remove a propertyChangeListener.<a name="line.106"></a>
+<span class="sourceLineNo">106</span>   * Add a propertyChangeListener.<a name="line.106"></a>
 <span class="sourceLineNo">107</span>   */<a name="line.107"></a>
-<span class="sourceLineNo">108</span>  void removePropertyChangeListener(PropertyChangeListener listener);<a name="line.108"></a>
+<span class="sourceLineNo">108</span>  void addPropertyChangeListener(PropertyChangeListener listener);<a name="line.108"></a>
 <span class="sourceLineNo">109</span><a name="line.109"></a>
 <span class="sourceLineNo">110</span>  /**<a name="line.110"></a>
-<span class="sourceLineNo">111</span>   * Advanced - Used to programmatically build a partially or fully loaded<a name="line.111"></a>
-<span class="sourceLineNo">112</span>   * entity bean. First create an entity bean via<a name="line.112"></a>
-<span class="sourceLineNo">113</span>   * {@link EbeanServer#createEntityBean(Class)}, then populate its properties<a name="line.113"></a>
-<span class="sourceLineNo">114</span>   * and then call this method specifying which properties where loaded or null<a name="line.114"></a>
-<span class="sourceLineNo">115</span>   * for a fully loaded entity bean.<a name="line.115"></a>
-<span class="sourceLineNo">116</span>   */<a name="line.116"></a>
-<span class="sourceLineNo">117</span>  void setLoaded();<a name="line.117"></a>
-<span class="sourceLineNo">118</span>}<a name="line.118"></a>
+<span class="sourceLineNo">111</span>   * Remove a propertyChangeListener.<a name="line.111"></a>
+<span class="sourceLineNo">112</span>   */<a name="line.112"></a>
+<span class="sourceLineNo">113</span>  void removePropertyChangeListener(PropertyChangeListener listener);<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>  /**<a name="line.115"></a>
+<span class="sourceLineNo">116</span>   * Advanced - Used to programmatically build a partially or fully loaded<a name="line.116"></a>
+<span class="sourceLineNo">117</span>   * entity bean. First create an entity bean via<a name="line.117"></a>
+<span class="sourceLineNo">118</span>   * {@link EbeanServer#createEntityBean(Class)}, then populate its properties<a name="line.118"></a>
+<span class="sourceLineNo">119</span>   * and then call this method specifying which properties where loaded or null<a name="line.119"></a>
+<span class="sourceLineNo">120</span>   * for a fully loaded entity bean.<a name="line.120"></a>
+<span class="sourceLineNo">121</span>   */<a name="line.121"></a>
+<span class="sourceLineNo">122</span>  void setLoaded();<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>  /**<a name="line.124"></a>
+<span class="sourceLineNo">125</span>   * Reset the bean putting it into NEW state such that a save() results in an insert.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>   */<a name="line.126"></a>
+<span class="sourceLineNo">127</span>  void resetForInsert();<a name="line.127"></a>
+<span class="sourceLineNo">128</span>}<a name="line.128"></a>
 
 
 
