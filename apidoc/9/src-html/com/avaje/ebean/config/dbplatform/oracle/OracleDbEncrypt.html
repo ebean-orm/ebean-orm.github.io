@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean.config.dbplatform.oracle;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import com.avaje.ebean.config.dbplatform.AbstractDbEncrypt;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import com.avaje.ebean.config.dbplatform.DbEncryptFunction;<a name="line.4"></a>
+<span class="sourceLineNo">005</span><a name="line.5"></a>
+<span class="sourceLineNo">006</span>/**<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Oracle encryption support.<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * &lt;p&gt;<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * You will typically need to create your own encryption and decryption<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * functions similar to the example ones below.<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * &lt;/p&gt;<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * &lt;pre class="code"&gt;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  // Remember your DB user needs execute privilege on DBMS_CRYPTO<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *  // as well as your encryption and decryption functions<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  // This is an Example Encryption function only - please create your own.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * CREATE OR REPLACE FUNCTION eb_encrypt(data IN VARCHAR, key in VARCHAR) RETURN RAW IS<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *     encryption_mode NUMBER := DBMS_CRYPTO.ENCRYPT_AES128 + DBMS_CRYPTO.CHAIN_CBC  + DBMS_CRYPTO.PAD_PKCS5;<a name="line.24"></a>
+<span class="sourceLineNo">025</span> *<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *     BEGIN<a name="line.26"></a>
+<span class="sourceLineNo">027</span> *          RETURN DBMS_CRYPTO.ENCRYPT(UTL_I18N.STRING_TO_RAW (data, 'AL32UTF8'),<a name="line.27"></a>
+<span class="sourceLineNo">028</span> *            encryption_mode, UTL_I18N.STRING_TO_RAW(key, 'AL32UTF8') );<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *     END;<a name="line.29"></a>
+<span class="sourceLineNo">030</span> *     /<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> *<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *  // This is an Example Decryption function only - please create your own.<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * CREATE OR REPLACE FUNCTION eb_decrypt(data IN RAW, key IN VARCHAR) RETURN VARCHAR IS<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *     encryption_mode NUMBER := DBMS_CRYPTO.ENCRYPT_AES128 + DBMS_CRYPTO.CHAIN_CBC  + DBMS_CRYPTO.PAD_PKCS5;<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *     BEGIN<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *          RETURN UTL_RAW.CAST_TO_VARCHAR2(DBMS_CRYPTO.DECRYPT<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *            (data, encryption_mode, UTL_I18N.STRING_TO_RAW(key, 'AL32UTF8')));<a name="line.42"></a>
+<span class="sourceLineNo">043</span> *     END;<a name="line.43"></a>
+<span class="sourceLineNo">044</span> *     /<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * &lt;/pre&gt;<a name="line.45"></a>
+<span class="sourceLineNo">046</span> */<a name="line.46"></a>
+<span class="sourceLineNo">047</span>public class OracleDbEncrypt extends AbstractDbEncrypt {<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>  /**<a name="line.49"></a>
+<span class="sourceLineNo">050</span>   * Constructs the Oracle10DbEncrypt with default encrypt and decrypt stored procedures.<a name="line.50"></a>
+<span class="sourceLineNo">051</span>   */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>  public OracleDbEncrypt() {<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    this("eb_encrypt", "eb_decrypt");<a name="line.53"></a>
+<span class="sourceLineNo">054</span>  }<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>  /**<a name="line.56"></a>
+<span class="sourceLineNo">057</span>   * Constructs the Oracle10DbEncrypt specifying encrypt and decrypt stored procedures.<a name="line.57"></a>
+<span class="sourceLineNo">058</span>   *<a name="line.58"></a>
+<span class="sourceLineNo">059</span>   * @param encryptFunction the encrypt stored procedure<a name="line.59"></a>
+<span class="sourceLineNo">060</span>   * @param decryptFunction the decrypt stored procedure<a name="line.60"></a>
+<span class="sourceLineNo">061</span>   */<a name="line.61"></a>
+<span class="sourceLineNo">062</span>  public OracleDbEncrypt(String encryptFunction, String decryptFunction) {<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>    this.varcharEncryptFunction = new OraVarcharFunction(encryptFunction, decryptFunction);<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    this.dateEncryptFunction = new OraDateFunction(encryptFunction, decryptFunction);<a name="line.65"></a>
+<span class="sourceLineNo">066</span>  }<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>  /**<a name="line.68"></a>
+<span class="sourceLineNo">069</span>   * VARCHAR encryption/decryption function.<a name="line.69"></a>
+<span class="sourceLineNo">070</span>   */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>  private static class OraVarcharFunction implements DbEncryptFunction {<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>    private final String encryptfunction;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    private final String decryptfunction;<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public OraVarcharFunction(String encryptfunction, String decryptfunction) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>      this.encryptfunction = encryptfunction;<a name="line.77"></a>
+<span class="sourceLineNo">078</span>      this.decryptfunction = decryptfunction;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    }<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>    public String getDecryptSql(String columnWithTableAlias) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>      return decryptfunction + "(" + columnWithTableAlias + ",?)";<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    public String getEncryptBindSql() {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>      return encryptfunction + "(?,?)";<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    }<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>  }<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>  /**<a name="line.91"></a>
+<span class="sourceLineNo">092</span>   * DATE encryption/decryption function.<a name="line.92"></a>
+<span class="sourceLineNo">093</span>   */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>  private static class OraDateFunction implements DbEncryptFunction {<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>    private final String encryptfunction;<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    private final String decryptfunction;<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>    public OraDateFunction(String encryptfunction, String decryptfunction) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>      this.encryptfunction = encryptfunction;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>      this.decryptfunction = decryptfunction;<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    }<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>    public String getDecryptSql(String columnWithTableAlias) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>      return "to_date(" + decryptfunction + "(" + columnWithTableAlias + ",?),'YYYYMMDD')";<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    }<a name="line.106"></a>
+<span class="sourceLineNo">107</span><a name="line.107"></a>
+<span class="sourceLineNo">108</span>    public String getEncryptBindSql() {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>      return encryptfunction + "(to_char(?,'YYYYMMDD'),?)";<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    }<a name="line.110"></a>
+<span class="sourceLineNo">111</span><a name="line.111"></a>
+<span class="sourceLineNo">112</span>  }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>}<a name="line.113"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

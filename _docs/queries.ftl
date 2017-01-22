@@ -67,7 +67,7 @@ List<Order> list = Ebean.find(Order.class)
   <li>more...</li>
 </ul>
 <p>
-Use code completion in your favorite ide or see <a href="/apidocs/com/avaje/ebean/ExpressionList.html">ExpressionList</a> class for more details.
+Use code completion in your favorite ide or see <a href="/apidoc/10//com/avaje/ebean/ExpressionList.html">ExpressionList</a> class for more details.
 </p>
 
 

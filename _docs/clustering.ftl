@@ -70,7 +70,7 @@ mgr.shutdown();
 
 
 <h4>Other notes</h4>
-<p>The <a href="/apidocs/com/avaje/ebean/event/AbstractBeanPersistListener.html">BeanPersistListener</a> listens for committed bean events.</p>
+<p>The <a href="/apidoc/10//com/avaje/ebean/event/AbstractBeanPersistListener.html">BeanPersistListener</a> listens for committed bean events.</p>
 
 <p>These listen events occur after a successful commit. They also occur in a background thread rather than the thread used to perform the actual insert update or delete. In this way there is a delay between the commit and when the listener is notified of the event.</p>
 

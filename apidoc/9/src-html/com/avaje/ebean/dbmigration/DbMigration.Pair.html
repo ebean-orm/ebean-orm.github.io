@@ -1,0 +1,634 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.avaje.ebean.dbmigration;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import com.avaje.ebean.Ebean;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import com.avaje.ebean.EbeanServer;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import com.avaje.ebean.config.DbConstraintNaming;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import com.avaje.ebean.config.DbMigrationConfig;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import com.avaje.ebean.config.Platform;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.avaje.ebean.config.ServerConfig;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import com.avaje.ebean.config.dbplatform.db2.DB2Platform;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import com.avaje.ebean.config.dbplatform.DatabasePlatform;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import com.avaje.ebean.config.dbplatform.h2.H2Platform;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import com.avaje.ebean.config.dbplatform.sqlserver.SqlServerPlatform;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import com.avaje.ebean.config.dbplatform.mysql.MySqlPlatform;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import com.avaje.ebean.config.dbplatform.oracle.OraclePlatform;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import com.avaje.ebean.config.dbplatform.postgres.PostgresPlatform;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import com.avaje.ebean.config.dbplatform.sqlite.SQLitePlatform;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import com.avaje.ebean.dbmigration.ddlgeneration.DdlWrite;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import com.avaje.ebean.dbmigration.migration.Migration;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import com.avaje.ebean.dbmigration.migrationreader.MigrationXmlWriter;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import com.avaje.ebean.dbmigration.model.CurrentModel;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import com.avaje.ebean.dbmigration.model.MConfiguration;<a name="line.21"></a>
+<span class="sourceLineNo">022</span>import com.avaje.ebean.dbmigration.model.MigrationModel;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import com.avaje.ebean.dbmigration.model.MigrationVersion;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import com.avaje.ebean.dbmigration.model.ModelContainer;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import com.avaje.ebean.dbmigration.model.ModelDiff;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import com.avaje.ebean.dbmigration.model.PlatformDdlWriter;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import com.avaje.ebeaninternal.api.SpiEbeanServer;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import com.avaje.ebeaninternal.extraddl.model.DdlScript;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import com.avaje.ebeaninternal.extraddl.model.ExtraDdl;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import com.avaje.ebeaninternal.extraddl.model.ExtraDdlXmlReader;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.slf4j.Logger;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.slf4j.LoggerFactory;<a name="line.32"></a>
+<span class="sourceLineNo">033</span><a name="line.33"></a>
+<span class="sourceLineNo">034</span>import java.io.File;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import java.io.FileWriter;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import java.io.IOException;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import java.util.ArrayList;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import java.util.List;<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>/**<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * Generates DB Migration xml and sql scripts.<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * &lt;p&gt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * Reads the prior migrations and compares with the current model of the EbeanServer<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * and generates a migration 'diff' in the form of xml document with the logical schema<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * changes and a series of sql scripts to apply, rollback the applied changes if necessary<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * and drop objects (drop tables, drop columns).<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * &lt;/p&gt;<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * &lt;p&gt;<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * This does not run the migration or ddl scripts but just generates them.<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * &lt;/p&gt;<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * &lt;pre&gt;{@code<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *       DbMigration migration = new DbMigration();<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *       migration.setPathToResources("src/main/resources");<a name="line.54"></a>
+<span class="sourceLineNo">055</span> *       migration.setPlatform(DbPlatformName.ORACLE);<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *       migration.generateMigration();<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * }&lt;/pre&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span> */<a name="line.60"></a>
+<span class="sourceLineNo">061</span>public class DbMigration {<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>  protected static final Logger logger = LoggerFactory.getLogger(DbMigration.class);<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>  private static final String initialVersion = "1.0";<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>  private static final String GENERATED_COMMENT = "THIS IS A GENERATED FILE - DO NOT MODIFY";<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>  /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>   * Set to true if DbMigration run with online EbeanServer instance.<a name="line.70"></a>
+<span class="sourceLineNo">071</span>   */<a name="line.71"></a>
+<span class="sourceLineNo">072</span>  protected final boolean online;<a name="line.72"></a>
+<span class="sourceLineNo">073</span><a name="line.73"></a>
+<span class="sourceLineNo">074</span>  protected SpiEbeanServer server;<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>  protected DbMigrationConfig migrationConfig;<a name="line.76"></a>
+<span class="sourceLineNo">077</span><a name="line.77"></a>
+<span class="sourceLineNo">078</span>  protected String pathToResources = "src/main/resources";<a name="line.78"></a>
+<span class="sourceLineNo">079</span><a name="line.79"></a>
+<span class="sourceLineNo">080</span>  protected DatabasePlatform databasePlatform;<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>  protected List&lt;Pair&gt; platforms = new ArrayList&lt;&gt;();<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>  protected ServerConfig serverConfig;<a name="line.84"></a>
+<span class="sourceLineNo">085</span><a name="line.85"></a>
+<span class="sourceLineNo">086</span>  protected DbConstraintNaming constraintNaming;<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>  /**<a name="line.88"></a>
+<span class="sourceLineNo">089</span>   * Create for offline migration generation.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>   */<a name="line.90"></a>
+<span class="sourceLineNo">091</span>  public DbMigration() {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    this.online = false;<a name="line.92"></a>
+<span class="sourceLineNo">093</span>  }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>  /**<a name="line.95"></a>
+<span class="sourceLineNo">096</span>   * Create using online EbeanServer.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>   */<a name="line.97"></a>
+<span class="sourceLineNo">098</span>  public DbMigration(EbeanServer server) {<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    this.online = true;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    setServer(server);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>  }<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>  /**<a name="line.103"></a>
+<span class="sourceLineNo">104</span>   * Set the path from the current working directory to the application resources.<a name="line.104"></a>
+<span class="sourceLineNo">105</span>   * &lt;p&gt;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>   * This defaults to maven style 'src/main/resources'.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>   */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>  public void setPathToResources(String pathToResources) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    this.pathToResources = pathToResources;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>  }<a name="line.110"></a>
+<span class="sourceLineNo">111</span><a name="line.111"></a>
+<span class="sourceLineNo">112</span>  /**<a name="line.112"></a>
+<span class="sourceLineNo">113</span>   * Set the server to use to determine the current model.<a name="line.113"></a>
+<span class="sourceLineNo">114</span>   * Typically this is not called explicitly.<a name="line.114"></a>
+<span class="sourceLineNo">115</span>   */<a name="line.115"></a>
+<span class="sourceLineNo">116</span>  public void setServer(EbeanServer ebeanServer) {<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    this.server = (SpiEbeanServer) ebeanServer;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    setServerConfig(server.getServerConfig());<a name="line.118"></a>
+<span class="sourceLineNo">119</span>  }<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span>  /**<a name="line.121"></a>
+<span class="sourceLineNo">122</span>   * Set the serverConfig to use. Typically this is not called explicitly.<a name="line.122"></a>
+<span class="sourceLineNo">123</span>   */<a name="line.123"></a>
+<span class="sourceLineNo">124</span>  public void setServerConfig(ServerConfig config) {<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    if (this.serverConfig == null) {<a name="line.125"></a>
+<span class="sourceLineNo">126</span>      this.serverConfig = config;<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    }<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    if (migrationConfig == null) {<a name="line.128"></a>
+<span class="sourceLineNo">129</span>      this.migrationConfig = serverConfig.getMigrationConfig();<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    if (constraintNaming == null) {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>      this.constraintNaming = serverConfig.getConstraintNaming();<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    }<a name="line.133"></a>
+<span class="sourceLineNo">134</span>  }<a name="line.134"></a>
+<span class="sourceLineNo">135</span><a name="line.135"></a>
+<span class="sourceLineNo">136</span>  /**<a name="line.136"></a>
+<span class="sourceLineNo">137</span>   * Set the specific platform to generate DDL for.<a name="line.137"></a>
+<span class="sourceLineNo">138</span>   * &lt;p&gt;<a name="line.138"></a>
+<span class="sourceLineNo">139</span>   * If not set this defaults to the platform of the default server.<a name="line.139"></a>
+<span class="sourceLineNo">140</span>   * &lt;/p&gt;<a name="line.140"></a>
+<span class="sourceLineNo">141</span>   */<a name="line.141"></a>
+<span class="sourceLineNo">142</span>  public void setPlatform(Platform platform) {<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    setPlatform(getPlatform(platform));<a name="line.143"></a>
+<span class="sourceLineNo">144</span>  }<a name="line.144"></a>
+<span class="sourceLineNo">145</span><a name="line.145"></a>
+<span class="sourceLineNo">146</span>  /**<a name="line.146"></a>
+<span class="sourceLineNo">147</span>   * Set the specific platform to generate DDL for.<a name="line.147"></a>
+<span class="sourceLineNo">148</span>   * &lt;p&gt;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>   * If not set this defaults to the platform of the default server.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>   * &lt;/p&gt;<a name="line.150"></a>
+<span class="sourceLineNo">151</span>   */<a name="line.151"></a>
+<span class="sourceLineNo">152</span>  public void setPlatform(DatabasePlatform databasePlatform) {<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    this.databasePlatform = databasePlatform;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    if (!online) {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>      DbOffline.setPlatform(databasePlatform.getPlatform());<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span>  }<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>  /**<a name="line.159"></a>
+<span class="sourceLineNo">160</span>   * Add an additional platform to write the migration DDL.<a name="line.160"></a>
+<span class="sourceLineNo">161</span>   * &lt;p&gt;<a name="line.161"></a>
+<span class="sourceLineNo">162</span>   * Use this when you want to generate sql scripts for multiple database platforms<a name="line.162"></a>
+<span class="sourceLineNo">163</span>   * from the migration (e.g. generate migration sql for MySql, Postgres and Oracle).<a name="line.163"></a>
+<span class="sourceLineNo">164</span>   * &lt;/p&gt;<a name="line.164"></a>
+<span class="sourceLineNo">165</span>   */<a name="line.165"></a>
+<span class="sourceLineNo">166</span>  public void addPlatform(Platform platform, String prefix) {<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    platforms.add(new Pair(getPlatform(platform), prefix));<a name="line.167"></a>
+<span class="sourceLineNo">168</span>  }<a name="line.168"></a>
+<span class="sourceLineNo">169</span><a name="line.169"></a>
+<span class="sourceLineNo">170</span>  /**<a name="line.170"></a>
+<span class="sourceLineNo">171</span>   * Generate the next migration xml file and associated apply and rollback sql scripts.<a name="line.171"></a>
+<span class="sourceLineNo">172</span>   * &lt;p&gt;<a name="line.172"></a>
+<span class="sourceLineNo">173</span>   * This does not run the migration or ddl scripts but just generates them.<a name="line.173"></a>
+<span class="sourceLineNo">174</span>   * &lt;/p&gt;<a name="line.174"></a>
+<span class="sourceLineNo">175</span>   * &lt;h3&gt;Example: Run for a single specific platform&lt;/h3&gt;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>   * &lt;pre&gt;{@code<a name="line.176"></a>
+<span class="sourceLineNo">177</span>   *<a name="line.177"></a>
+<span class="sourceLineNo">178</span>   *       DbMigration migration = new DbMigration();<a name="line.178"></a>
+<span class="sourceLineNo">179</span>   *       migration.setPathToResources("src/main/resources");<a name="line.179"></a>
+<span class="sourceLineNo">180</span>   *       migration.setPlatform(DbPlatformName.ORACLE);<a name="line.180"></a>
+<span class="sourceLineNo">181</span>   *<a name="line.181"></a>
+<span class="sourceLineNo">182</span>   *       migration.generateMigration();<a name="line.182"></a>
+<span class="sourceLineNo">183</span>   *<a name="line.183"></a>
+<span class="sourceLineNo">184</span>   * }&lt;/pre&gt;<a name="line.184"></a>
+<span class="sourceLineNo">185</span>   * &lt;p&gt;<a name="line.185"></a>
+<span class="sourceLineNo">186</span>   * &lt;h3&gt;Example: Run migration generating DDL for multiple platforms&lt;/h3&gt;<a name="line.186"></a>
+<span class="sourceLineNo">187</span>   * &lt;pre&gt;{@code<a name="line.187"></a>
+<span class="sourceLineNo">188</span>   *<a name="line.188"></a>
+<span class="sourceLineNo">189</span>   *       DbMigration migration = new DbMigration();<a name="line.189"></a>
+<span class="sourceLineNo">190</span>   *       migration.setPathToResources("src/main/resources");<a name="line.190"></a>
+<span class="sourceLineNo">191</span>   *<a name="line.191"></a>
+<span class="sourceLineNo">192</span>   *       migration.addPlatform(DbPlatformName.POSTGRES, "pg");<a name="line.192"></a>
+<span class="sourceLineNo">193</span>   *       migration.addPlatform(DbPlatformName.MYSQL, "mysql");<a name="line.193"></a>
+<span class="sourceLineNo">194</span>   *       migration.addPlatform(DbPlatformName.ORACLE, "mysql");<a name="line.194"></a>
+<span class="sourceLineNo">195</span>   *<a name="line.195"></a>
+<span class="sourceLineNo">196</span>   *       migration.generateMigration();<a name="line.196"></a>
+<span class="sourceLineNo">197</span>   *<a name="line.197"></a>
+<span class="sourceLineNo">198</span>   * }&lt;/pre&gt;<a name="line.198"></a>
+<span class="sourceLineNo">199</span>   */<a name="line.199"></a>
+<span class="sourceLineNo">200</span>  public void generateMigration() throws IOException {<a name="line.200"></a>
+<span class="sourceLineNo">201</span><a name="line.201"></a>
+<span class="sourceLineNo">202</span>    // use this flag to stop other plugins like full DDL generation<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    if (!online) {<a name="line.203"></a>
+<span class="sourceLineNo">204</span>      DbOffline.setGenerateMigration();<a name="line.204"></a>
+<span class="sourceLineNo">205</span>      if (databasePlatform == null &amp;&amp; !platforms.isEmpty()) {<a name="line.205"></a>
+<span class="sourceLineNo">206</span>        // for multiple platform generation set the general platform<a name="line.206"></a>
+<span class="sourceLineNo">207</span>        // to H2 so that it runs offline without DB connection<a name="line.207"></a>
+<span class="sourceLineNo">208</span>        setPlatform(platforms.get(0).platform);<a name="line.208"></a>
+<span class="sourceLineNo">209</span>      }<a name="line.209"></a>
+<span class="sourceLineNo">210</span>    }<a name="line.210"></a>
+<span class="sourceLineNo">211</span>    setDefaults();<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    try {<a name="line.212"></a>
+<span class="sourceLineNo">213</span>      Request request = createRequest();<a name="line.213"></a>
+<span class="sourceLineNo">214</span><a name="line.214"></a>
+<span class="sourceLineNo">215</span>      if (platforms.isEmpty()) {<a name="line.215"></a>
+<span class="sourceLineNo">216</span>        generateExtraDdl(request.migrationDir, databasePlatform);<a name="line.216"></a>
+<span class="sourceLineNo">217</span>      }<a name="line.217"></a>
+<span class="sourceLineNo">218</span><a name="line.218"></a>
+<span class="sourceLineNo">219</span>      String pendingVersion = generatePendingDrop();<a name="line.219"></a>
+<span class="sourceLineNo">220</span>      if (pendingVersion != null) {<a name="line.220"></a>
+<span class="sourceLineNo">221</span>        generatePendingDrop(request, pendingVersion);<a name="line.221"></a>
+<span class="sourceLineNo">222</span>      } else {<a name="line.222"></a>
+<span class="sourceLineNo">223</span>        generateDiff(request);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>      }<a name="line.224"></a>
+<span class="sourceLineNo">225</span><a name="line.225"></a>
+<span class="sourceLineNo">226</span>    } finally {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>      if (!online) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>        DbOffline.reset();<a name="line.228"></a>
+<span class="sourceLineNo">229</span>      }<a name="line.229"></a>
+<span class="sourceLineNo">230</span>    }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>  }<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>  /**<a name="line.233"></a>
+<span class="sourceLineNo">234</span>   * Generate "repeatable" migration scripts.<a name="line.234"></a>
+<span class="sourceLineNo">235</span>   * &lt;p&gt;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>   * These take scrips from extra-dll.xml (typically views) and outputs "repeatable"<a name="line.236"></a>
+<span class="sourceLineNo">237</span>   * migration scripts (starting with "R__") to be run by FlywayDb or Ebean's own<a name="line.237"></a>
+<span class="sourceLineNo">238</span>   * migration runner.<a name="line.238"></a>
+<span class="sourceLineNo">239</span>   * &lt;/p&gt;<a name="line.239"></a>
+<span class="sourceLineNo">240</span>   */<a name="line.240"></a>
+<span class="sourceLineNo">241</span>  private void generateExtraDdl(File migrationDir, DatabasePlatform dbPlatform) throws IOException {<a name="line.241"></a>
+<span class="sourceLineNo">242</span><a name="line.242"></a>
+<span class="sourceLineNo">243</span>    if (dbPlatform != null) {<a name="line.243"></a>
+<span class="sourceLineNo">244</span>      ExtraDdl extraDdl = ExtraDdlXmlReader.read("/extra-ddl.xml");<a name="line.244"></a>
+<span class="sourceLineNo">245</span>      if (extraDdl != null) {<a name="line.245"></a>
+<span class="sourceLineNo">246</span>        List&lt;DdlScript&gt; ddlScript = extraDdl.getDdlScript();<a name="line.246"></a>
+<span class="sourceLineNo">247</span>        for (DdlScript script : ddlScript) {<a name="line.247"></a>
+<span class="sourceLineNo">248</span>          if (ExtraDdlXmlReader.matchPlatform(dbPlatform.getName(), script.getPlatforms())) {<a name="line.248"></a>
+<span class="sourceLineNo">249</span>            writeExtraDdl(migrationDir, script);<a name="line.249"></a>
+<span class="sourceLineNo">250</span>          }<a name="line.250"></a>
+<span class="sourceLineNo">251</span>        }<a name="line.251"></a>
+<span class="sourceLineNo">252</span>      }<a name="line.252"></a>
+<span class="sourceLineNo">253</span>    }<a name="line.253"></a>
+<span class="sourceLineNo">254</span>  }<a name="line.254"></a>
+<span class="sourceLineNo">255</span><a name="line.255"></a>
+<span class="sourceLineNo">256</span>  /**<a name="line.256"></a>
+<span class="sourceLineNo">257</span>   * Write (or override) the "repeatable" migration script.<a name="line.257"></a>
+<span class="sourceLineNo">258</span>   */<a name="line.258"></a>
+<span class="sourceLineNo">259</span>  private void writeExtraDdl(File migrationDir, DdlScript script) throws IOException {<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>    String fullName = repeatableMigrationName(script.getName());<a name="line.261"></a>
+<span class="sourceLineNo">262</span><a name="line.262"></a>
+<span class="sourceLineNo">263</span>    logger.info("writing repeatable script {}", fullName);<a name="line.263"></a>
+<span class="sourceLineNo">264</span><a name="line.264"></a>
+<span class="sourceLineNo">265</span>    File file = new File(migrationDir, fullName);<a name="line.265"></a>
+<span class="sourceLineNo">266</span>    FileWriter writer = new FileWriter(file);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    writer.write(script.getValue());<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    writer.flush();<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    writer.close();<a name="line.269"></a>
+<span class="sourceLineNo">270</span>  }<a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>  private String repeatableMigrationName(String scriptName) {<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    return "R__" + scriptName.replace(' ', '_') + migrationConfig.getApplySuffix();<a name="line.273"></a>
+<span class="sourceLineNo">274</span>  }<a name="line.274"></a>
+<span class="sourceLineNo">275</span><a name="line.275"></a>
+<span class="sourceLineNo">276</span>  /**<a name="line.276"></a>
+<span class="sourceLineNo">277</span>   * Generate the diff migration.<a name="line.277"></a>
+<span class="sourceLineNo">278</span>   */<a name="line.278"></a>
+<span class="sourceLineNo">279</span>  private void generateDiff(Request request) throws IOException {<a name="line.279"></a>
+<span class="sourceLineNo">280</span><a name="line.280"></a>
+<span class="sourceLineNo">281</span>    List&lt;String&gt; pendingDrops = request.getPendingDrops();<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    if (!pendingDrops.isEmpty()) {<a name="line.282"></a>
+<span class="sourceLineNo">283</span>      logger.info("Pending un-applied drops in versions {}", pendingDrops);<a name="line.283"></a>
+<span class="sourceLineNo">284</span>    }<a name="line.284"></a>
+<span class="sourceLineNo">285</span><a name="line.285"></a>
+<span class="sourceLineNo">286</span>    Migration migration = request.createDiffMigration();<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    if (migration == null) {<a name="line.287"></a>
+<span class="sourceLineNo">288</span>      logger.info("no changes detected - no migration written");<a name="line.288"></a>
+<span class="sourceLineNo">289</span>    } else {<a name="line.289"></a>
+<span class="sourceLineNo">290</span>      // there were actually changes to write<a name="line.290"></a>
+<span class="sourceLineNo">291</span>      generateMigration(request, migration, null);<a name="line.291"></a>
+<span class="sourceLineNo">292</span>    }<a name="line.292"></a>
+<span class="sourceLineNo">293</span>  }<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>  /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>   * Generate the migration based on the pendingDrops from a prior version.<a name="line.296"></a>
+<span class="sourceLineNo">297</span>   */<a name="line.297"></a>
+<span class="sourceLineNo">298</span>  private void generatePendingDrop(Request request, String pendingVersion) throws IOException {<a name="line.298"></a>
+<span class="sourceLineNo">299</span><a name="line.299"></a>
+<span class="sourceLineNo">300</span>    Migration migration = request.migrationForPendingDrop(pendingVersion);<a name="line.300"></a>
+<span class="sourceLineNo">301</span><a name="line.301"></a>
+<span class="sourceLineNo">302</span>    generateMigration(request, migration, pendingVersion);<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span>    List&lt;String&gt; pendingDrops = request.getPendingDrops();<a name="line.304"></a>
+<span class="sourceLineNo">305</span>    if (!pendingDrops.isEmpty()) {<a name="line.305"></a>
+<span class="sourceLineNo">306</span>      logger.info("... remaining pending un-applied drops in versions {}", pendingDrops);<a name="line.306"></a>
+<span class="sourceLineNo">307</span>    }<a name="line.307"></a>
+<span class="sourceLineNo">308</span>  }<a name="line.308"></a>
+<span class="sourceLineNo">309</span><a name="line.309"></a>
+<span class="sourceLineNo">310</span>  private Request createRequest() {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>    return new Request();<a name="line.311"></a>
+<span class="sourceLineNo">312</span>  }<a name="line.312"></a>
+<span class="sourceLineNo">313</span><a name="line.313"></a>
+<span class="sourceLineNo">314</span>  private class Request {<a name="line.314"></a>
+<span class="sourceLineNo">315</span><a name="line.315"></a>
+<span class="sourceLineNo">316</span>    final File migrationDir;<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    final File modelDir;<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    final MigrationModel migrationModel;<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    final CurrentModel currentModel;<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    final ModelContainer migrated;<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    final ModelContainer current;<a name="line.321"></a>
+<span class="sourceLineNo">322</span><a name="line.322"></a>
+<span class="sourceLineNo">323</span>    private Request() {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>      this.migrationDir = getMigrationDirectory();<a name="line.324"></a>
+<span class="sourceLineNo">325</span>      this.modelDir = getModelDirectory(migrationDir);<a name="line.325"></a>
+<span class="sourceLineNo">326</span>      this.migrationModel = new MigrationModel(modelDir, migrationConfig.getModelSuffix());<a name="line.326"></a>
+<span class="sourceLineNo">327</span>      this.migrated = migrationModel.read();<a name="line.327"></a>
+<span class="sourceLineNo">328</span>      this.currentModel = new CurrentModel(server, constraintNaming);<a name="line.328"></a>
+<span class="sourceLineNo">329</span>      this.current = currentModel.read();<a name="line.329"></a>
+<span class="sourceLineNo">330</span>    }<a name="line.330"></a>
+<span class="sourceLineNo">331</span><a name="line.331"></a>
+<span class="sourceLineNo">332</span>    /**<a name="line.332"></a>
+<span class="sourceLineNo">333</span>     * Return the migration for the pending drops for a given version.<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     */<a name="line.334"></a>
+<span class="sourceLineNo">335</span>    public Migration migrationForPendingDrop(String pendingVersion) {<a name="line.335"></a>
+<span class="sourceLineNo">336</span><a name="line.336"></a>
+<span class="sourceLineNo">337</span>      Migration migration = migrated.migrationForPendingDrop(pendingVersion);<a name="line.337"></a>
+<span class="sourceLineNo">338</span><a name="line.338"></a>
+<span class="sourceLineNo">339</span>      // register any remaining pending drops<a name="line.339"></a>
+<span class="sourceLineNo">340</span>      migrated.registerPendingHistoryDropColumns(current);<a name="line.340"></a>
+<span class="sourceLineNo">341</span>      return migration;<a name="line.341"></a>
+<span class="sourceLineNo">342</span>    }<a name="line.342"></a>
+<span class="sourceLineNo">343</span><a name="line.343"></a>
+<span class="sourceLineNo">344</span>    /**<a name="line.344"></a>
+<span class="sourceLineNo">345</span>     * Return the list of versions that have pending un-applied drops.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>     */<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    public List&lt;String&gt; getPendingDrops() {<a name="line.347"></a>
+<span class="sourceLineNo">348</span>      return migrated.getPendingDrops();<a name="line.348"></a>
+<span class="sourceLineNo">349</span>    }<a name="line.349"></a>
+<span class="sourceLineNo">350</span><a name="line.350"></a>
+<span class="sourceLineNo">351</span>    /**<a name="line.351"></a>
+<span class="sourceLineNo">352</span>     * Create and return the diff of the current model to the migration model.<a name="line.352"></a>
+<span class="sourceLineNo">353</span>     */<a name="line.353"></a>
+<span class="sourceLineNo">354</span>    public Migration createDiffMigration() {<a name="line.354"></a>
+<span class="sourceLineNo">355</span>      ModelDiff diff = new ModelDiff(migrated);<a name="line.355"></a>
+<span class="sourceLineNo">356</span>      diff.compareTo(current);<a name="line.356"></a>
+<span class="sourceLineNo">357</span>      return diff.isEmpty() ? null : diff.getMigration();<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    }<a name="line.358"></a>
+<span class="sourceLineNo">359</span>  }<a name="line.359"></a>
+<span class="sourceLineNo">360</span><a name="line.360"></a>
+<span class="sourceLineNo">361</span>  private void generateMigration(Request request, Migration dbMigration, String dropsFor) throws IOException {<a name="line.361"></a>
+<span class="sourceLineNo">362</span><a name="line.362"></a>
+<span class="sourceLineNo">363</span>    String fullVersion = getFullVersion(request.migrationModel, dropsFor);<a name="line.363"></a>
+<span class="sourceLineNo">364</span><a name="line.364"></a>
+<span class="sourceLineNo">365</span>    logger.info("generating migration:{}", fullVersion);<a name="line.365"></a>
+<span class="sourceLineNo">366</span>    if (!writeMigrationXml(dbMigration, request.modelDir, fullVersion)) {<a name="line.366"></a>
+<span class="sourceLineNo">367</span>      logger.warn("migration already exists, not generating DDL");<a name="line.367"></a>
+<span class="sourceLineNo">368</span><a name="line.368"></a>
+<span class="sourceLineNo">369</span>    } else {<a name="line.369"></a>
+<span class="sourceLineNo">370</span>      if (!platforms.isEmpty()) {<a name="line.370"></a>
+<span class="sourceLineNo">371</span>        writeExtraPlatformDdl(fullVersion, request.currentModel, dbMigration, request.migrationDir);<a name="line.371"></a>
+<span class="sourceLineNo">372</span><a name="line.372"></a>
+<span class="sourceLineNo">373</span>      } else if (databasePlatform != null) {<a name="line.373"></a>
+<span class="sourceLineNo">374</span>        // writer needs the current model to provide table/column details for<a name="line.374"></a>
+<span class="sourceLineNo">375</span>        // history ddl generation (triggers, history tables etc)<a name="line.375"></a>
+<span class="sourceLineNo">376</span>        DdlWrite write = new DdlWrite(new MConfiguration(), request.current);<a name="line.376"></a>
+<span class="sourceLineNo">377</span>        PlatformDdlWriter writer = createDdlWriter(databasePlatform, "");<a name="line.377"></a>
+<span class="sourceLineNo">378</span>        writer.processMigration(dbMigration, write, request.migrationDir, fullVersion);<a name="line.378"></a>
+<span class="sourceLineNo">379</span>      }<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    }<a name="line.380"></a>
+<span class="sourceLineNo">381</span>  }<a name="line.381"></a>
+<span class="sourceLineNo">382</span><a name="line.382"></a>
+<span class="sourceLineNo">383</span>  /**<a name="line.383"></a>
+<span class="sourceLineNo">384</span>   * Return true if the next pending drop changeSet should be generated as the next migration.<a name="line.384"></a>
+<span class="sourceLineNo">385</span>   */<a name="line.385"></a>
+<span class="sourceLineNo">386</span>  private String generatePendingDrop() {<a name="line.386"></a>
+<span class="sourceLineNo">387</span><a name="line.387"></a>
+<span class="sourceLineNo">388</span>    String nextDrop = System.getProperty("ddl.migration.pendingDropsFor");<a name="line.388"></a>
+<span class="sourceLineNo">389</span>    if (nextDrop != null) {<a name="line.389"></a>
+<span class="sourceLineNo">390</span>      return nextDrop;<a name="line.390"></a>
+<span class="sourceLineNo">391</span>    }<a name="line.391"></a>
+<span class="sourceLineNo">392</span>    return migrationConfig.getGeneratePendingDrop();<a name="line.392"></a>
+<span class="sourceLineNo">393</span>  }<a name="line.393"></a>
+<span class="sourceLineNo">394</span><a name="line.394"></a>
+<span class="sourceLineNo">395</span>  /**<a name="line.395"></a>
+<span class="sourceLineNo">396</span>   * Return the full version for the migration being generated.<a name="line.396"></a>
+<span class="sourceLineNo">397</span>   * &lt;p&gt;<a name="line.397"></a>
+<span class="sourceLineNo">398</span>   * The full version can contain a comment suffix after a "__" double underscore.<a name="line.398"></a>
+<span class="sourceLineNo">399</span>   */<a name="line.399"></a>
+<span class="sourceLineNo">400</span>  private String getFullVersion(MigrationModel migrationModel, String dropsFor) {<a name="line.400"></a>
+<span class="sourceLineNo">401</span><a name="line.401"></a>
+<span class="sourceLineNo">402</span>    String version = migrationConfig.getVersion();<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    if (version == null) {<a name="line.403"></a>
+<span class="sourceLineNo">404</span>      version = migrationModel.getNextVersion(initialVersion);<a name="line.404"></a>
+<span class="sourceLineNo">405</span>    }<a name="line.405"></a>
+<span class="sourceLineNo">406</span><a name="line.406"></a>
+<span class="sourceLineNo">407</span>    String fullVersion = migrationConfig.getApplyPrefix() + version;<a name="line.407"></a>
+<span class="sourceLineNo">408</span>    if (migrationConfig.getName() != null) {<a name="line.408"></a>
+<span class="sourceLineNo">409</span>      fullVersion += "__" + toUnderScore(migrationConfig.getName());<a name="line.409"></a>
+<span class="sourceLineNo">410</span><a name="line.410"></a>
+<span class="sourceLineNo">411</span>    } else if (dropsFor != null) {<a name="line.411"></a>
+<span class="sourceLineNo">412</span>      fullVersion += "__" + toUnderScore("dropsFor_" + MigrationVersion.trim(dropsFor));<a name="line.412"></a>
+<span class="sourceLineNo">413</span><a name="line.413"></a>
+<span class="sourceLineNo">414</span>    } else if (version.equals(initialVersion)) {<a name="line.414"></a>
+<span class="sourceLineNo">415</span>      fullVersion += "__initial";<a name="line.415"></a>
+<span class="sourceLineNo">416</span>    }<a name="line.416"></a>
+<span class="sourceLineNo">417</span>    return fullVersion;<a name="line.417"></a>
+<span class="sourceLineNo">418</span>  }<a name="line.418"></a>
+<span class="sourceLineNo">419</span><a name="line.419"></a>
+<span class="sourceLineNo">420</span>  /**<a name="line.420"></a>
+<span class="sourceLineNo">421</span>   * Replace spaces with underscores.<a name="line.421"></a>
+<span class="sourceLineNo">422</span>   */<a name="line.422"></a>
+<span class="sourceLineNo">423</span>  private String toUnderScore(String name) {<a name="line.423"></a>
+<span class="sourceLineNo">424</span>    return name.replace(' ', '_');<a name="line.424"></a>
+<span class="sourceLineNo">425</span>  }<a name="line.425"></a>
+<span class="sourceLineNo">426</span><a name="line.426"></a>
+<span class="sourceLineNo">427</span>  /**<a name="line.427"></a>
+<span class="sourceLineNo">428</span>   * Write any extra platform ddl.<a name="line.428"></a>
+<span class="sourceLineNo">429</span>   */<a name="line.429"></a>
+<span class="sourceLineNo">430</span>  protected void writeExtraPlatformDdl(String fullVersion, CurrentModel currentModel, Migration dbMigration, File writePath) throws IOException {<a name="line.430"></a>
+<span class="sourceLineNo">431</span><a name="line.431"></a>
+<span class="sourceLineNo">432</span>    for (Pair pair : platforms) {<a name="line.432"></a>
+<span class="sourceLineNo">433</span>      DdlWrite platformBuffer = new DdlWrite(new MConfiguration(), currentModel.read());<a name="line.433"></a>
+<span class="sourceLineNo">434</span>      PlatformDdlWriter platformWriter = createDdlWriter(pair);<a name="line.434"></a>
+<span class="sourceLineNo">435</span>      File subPath = platformWriter.subPath(writePath, pair.prefix);<a name="line.435"></a>
+<span class="sourceLineNo">436</span>      platformWriter.processMigration(dbMigration, platformBuffer, subPath, fullVersion);<a name="line.436"></a>
+<span class="sourceLineNo">437</span><a name="line.437"></a>
+<span class="sourceLineNo">438</span>      generateExtraDdl(subPath, pair.platform);<a name="line.438"></a>
+<span class="sourceLineNo">439</span>    }<a name="line.439"></a>
+<span class="sourceLineNo">440</span>  }<a name="line.440"></a>
+<span class="sourceLineNo">441</span><a name="line.441"></a>
+<span class="sourceLineNo">442</span>  private PlatformDdlWriter createDdlWriter(Pair pair) {<a name="line.442"></a>
+<span class="sourceLineNo">443</span>    return createDdlWriter(pair.platform, pair.prefix);<a name="line.443"></a>
+<span class="sourceLineNo">444</span>  }<a name="line.444"></a>
+<span class="sourceLineNo">445</span><a name="line.445"></a>
+<span class="sourceLineNo">446</span>  private PlatformDdlWriter createDdlWriter(DatabasePlatform platform, String prefix) {<a name="line.446"></a>
+<span class="sourceLineNo">447</span>    return new PlatformDdlWriter(platform, serverConfig, prefix, migrationConfig);<a name="line.447"></a>
+<span class="sourceLineNo">448</span>  }<a name="line.448"></a>
+<span class="sourceLineNo">449</span><a name="line.449"></a>
+<span class="sourceLineNo">450</span>  /**<a name="line.450"></a>
+<span class="sourceLineNo">451</span>   * Write the migration xml.<a name="line.451"></a>
+<span class="sourceLineNo">452</span>   */<a name="line.452"></a>
+<span class="sourceLineNo">453</span>  protected boolean writeMigrationXml(Migration dbMigration, File resourcePath, String fullVersion) {<a name="line.453"></a>
+<span class="sourceLineNo">454</span><a name="line.454"></a>
+<span class="sourceLineNo">455</span>    String modelFile = fullVersion + migrationConfig.getModelSuffix();<a name="line.455"></a>
+<span class="sourceLineNo">456</span>    File file = new File(resourcePath, modelFile);<a name="line.456"></a>
+<span class="sourceLineNo">457</span>    if (file.exists()) {<a name="line.457"></a>
+<span class="sourceLineNo">458</span>      return false;<a name="line.458"></a>
+<span class="sourceLineNo">459</span>    }<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    String comment = migrationConfig.isIncludeGeneratedFileComment() ? GENERATED_COMMENT : null;<a name="line.460"></a>
+<span class="sourceLineNo">461</span>    MigrationXmlWriter xmlWriter = new MigrationXmlWriter(comment);<a name="line.461"></a>
+<span class="sourceLineNo">462</span>    xmlWriter.write(dbMigration, file);<a name="line.462"></a>
+<span class="sourceLineNo">463</span>    return true;<a name="line.463"></a>
+<span class="sourceLineNo">464</span>  }<a name="line.464"></a>
+<span class="sourceLineNo">465</span><a name="line.465"></a>
+<span class="sourceLineNo">466</span>  /**<a name="line.466"></a>
+<span class="sourceLineNo">467</span>   * Set default server and platform if necessary.<a name="line.467"></a>
+<span class="sourceLineNo">468</span>   */<a name="line.468"></a>
+<span class="sourceLineNo">469</span>  protected void setDefaults() {<a name="line.469"></a>
+<span class="sourceLineNo">470</span>    if (server == null) {<a name="line.470"></a>
+<span class="sourceLineNo">471</span>      setServer(Ebean.getDefaultServer());<a name="line.471"></a>
+<span class="sourceLineNo">472</span>    }<a name="line.472"></a>
+<span class="sourceLineNo">473</span>    if (databasePlatform == null &amp;&amp; platforms.isEmpty()) {<a name="line.473"></a>
+<span class="sourceLineNo">474</span>      // not explicitly set not set a list of platforms so<a name="line.474"></a>
+<span class="sourceLineNo">475</span>      // default to the platform of the default server<a name="line.475"></a>
+<span class="sourceLineNo">476</span>      databasePlatform = server.getDatabasePlatform();<a name="line.476"></a>
+<span class="sourceLineNo">477</span>      logger.debug("set platform to {}", databasePlatform.getName());<a name="line.477"></a>
+<span class="sourceLineNo">478</span>    }<a name="line.478"></a>
+<span class="sourceLineNo">479</span>  }<a name="line.479"></a>
+<span class="sourceLineNo">480</span><a name="line.480"></a>
+<span class="sourceLineNo">481</span>  /**<a name="line.481"></a>
+<span class="sourceLineNo">482</span>   * Return the file path to write the xml and sql to.<a name="line.482"></a>
+<span class="sourceLineNo">483</span>   */<a name="line.483"></a>
+<span class="sourceLineNo">484</span>  protected File getMigrationDirectory() {<a name="line.484"></a>
+<span class="sourceLineNo">485</span><a name="line.485"></a>
+<span class="sourceLineNo">486</span>    // path to src/main/resources in typical maven project<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    File resourceRootDir = new File(pathToResources);<a name="line.487"></a>
+<span class="sourceLineNo">488</span>    String resourcePath = migrationConfig.getMigrationPath();<a name="line.488"></a>
+<span class="sourceLineNo">489</span><a name="line.489"></a>
+<span class="sourceLineNo">490</span>    // expect to be a path to something like - src/main/resources/dbmigration/model<a name="line.490"></a>
+<span class="sourceLineNo">491</span>    File path = new File(resourceRootDir, resourcePath);<a name="line.491"></a>
+<span class="sourceLineNo">492</span>    if (!path.exists()) {<a name="line.492"></a>
+<span class="sourceLineNo">493</span>      if (!path.mkdirs()) {<a name="line.493"></a>
+<span class="sourceLineNo">494</span>        logger.debug("Unable to ensure migration directory exists at {}", path.getAbsolutePath());<a name="line.494"></a>
+<span class="sourceLineNo">495</span>      }<a name="line.495"></a>
+<span class="sourceLineNo">496</span>    }<a name="line.496"></a>
+<span class="sourceLineNo">497</span>    return path;<a name="line.497"></a>
+<span class="sourceLineNo">498</span>  }<a name="line.498"></a>
+<span class="sourceLineNo">499</span><a name="line.499"></a>
+<span class="sourceLineNo">500</span>  /**<a name="line.500"></a>
+<span class="sourceLineNo">501</span>   * Return the model directory (relative to the migration directory).<a name="line.501"></a>
+<span class="sourceLineNo">502</span>   */<a name="line.502"></a>
+<span class="sourceLineNo">503</span>  protected File getModelDirectory(File migrationDirectory) {<a name="line.503"></a>
+<span class="sourceLineNo">504</span>    String modelPath = migrationConfig.getModelPath();<a name="line.504"></a>
+<span class="sourceLineNo">505</span>    if (modelPath == null || modelPath.isEmpty()) {<a name="line.505"></a>
+<span class="sourceLineNo">506</span>      return migrationDirectory;<a name="line.506"></a>
+<span class="sourceLineNo">507</span>    }<a name="line.507"></a>
+<span class="sourceLineNo">508</span>    File modelDir = new File(migrationDirectory, migrationConfig.getModelPath());<a name="line.508"></a>
+<span class="sourceLineNo">509</span>    if (!modelDir.exists() &amp;&amp; !modelDir.mkdirs()) {<a name="line.509"></a>
+<span class="sourceLineNo">510</span>      logger.debug("Unable to ensure migration model directory exists at {}", modelDir.getAbsolutePath());<a name="line.510"></a>
+<span class="sourceLineNo">511</span>    }<a name="line.511"></a>
+<span class="sourceLineNo">512</span>    return modelDir;<a name="line.512"></a>
+<span class="sourceLineNo">513</span>  }<a name="line.513"></a>
+<span class="sourceLineNo">514</span><a name="line.514"></a>
+<span class="sourceLineNo">515</span>  /**<a name="line.515"></a>
+<span class="sourceLineNo">516</span>   * Return the DatabasePlatform given the platform key.<a name="line.516"></a>
+<span class="sourceLineNo">517</span>   */<a name="line.517"></a>
+<span class="sourceLineNo">518</span>  protected DatabasePlatform getPlatform(Platform platform) {<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    switch (platform) {<a name="line.519"></a>
+<span class="sourceLineNo">520</span>      case H2:<a name="line.520"></a>
+<span class="sourceLineNo">521</span>        return new H2Platform();<a name="line.521"></a>
+<span class="sourceLineNo">522</span>      case POSTGRES:<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        return new PostgresPlatform();<a name="line.523"></a>
+<span class="sourceLineNo">524</span>      case MYSQL:<a name="line.524"></a>
+<span class="sourceLineNo">525</span>        return new MySqlPlatform();<a name="line.525"></a>
+<span class="sourceLineNo">526</span>      case ORACLE:<a name="line.526"></a>
+<span class="sourceLineNo">527</span>        return new OraclePlatform();<a name="line.527"></a>
+<span class="sourceLineNo">528</span>      case SQLSERVER:<a name="line.528"></a>
+<span class="sourceLineNo">529</span>        return new SqlServerPlatform();<a name="line.529"></a>
+<span class="sourceLineNo">530</span>      case DB2:<a name="line.530"></a>
+<span class="sourceLineNo">531</span>        return new DB2Platform();<a name="line.531"></a>
+<span class="sourceLineNo">532</span>      case SQLITE:<a name="line.532"></a>
+<span class="sourceLineNo">533</span>        return new SQLitePlatform();<a name="line.533"></a>
+<span class="sourceLineNo">534</span><a name="line.534"></a>
+<span class="sourceLineNo">535</span>      default:<a name="line.535"></a>
+<span class="sourceLineNo">536</span>        throw new IllegalArgumentException("Platform missing? " + platform);<a name="line.536"></a>
+<span class="sourceLineNo">537</span>    }<a name="line.537"></a>
+<span class="sourceLineNo">538</span>  }<a name="line.538"></a>
+<span class="sourceLineNo">539</span><a name="line.539"></a>
+<span class="sourceLineNo">540</span>  /**<a name="line.540"></a>
+<span class="sourceLineNo">541</span>   * Holds a platform and prefix. Used to generate multiple platform specific DDL<a name="line.541"></a>
+<span class="sourceLineNo">542</span>   * for a single migration.<a name="line.542"></a>
+<span class="sourceLineNo">543</span>   */<a name="line.543"></a>
+<span class="sourceLineNo">544</span>  public static class Pair {<a name="line.544"></a>
+<span class="sourceLineNo">545</span><a name="line.545"></a>
+<span class="sourceLineNo">546</span>    /**<a name="line.546"></a>
+<span class="sourceLineNo">547</span>     * The platform to generate the DDL for.<a name="line.547"></a>
+<span class="sourceLineNo">548</span>     */<a name="line.548"></a>
+<span class="sourceLineNo">549</span>    public final DatabasePlatform platform;<a name="line.549"></a>
+<span class="sourceLineNo">550</span><a name="line.550"></a>
+<span class="sourceLineNo">551</span>    /**<a name="line.551"></a>
+<span class="sourceLineNo">552</span>     * A prefix included into the file/resource names indicating the platform.<a name="line.552"></a>
+<span class="sourceLineNo">553</span>     */<a name="line.553"></a>
+<span class="sourceLineNo">554</span>    public final String prefix;<a name="line.554"></a>
+<span class="sourceLineNo">555</span><a name="line.555"></a>
+<span class="sourceLineNo">556</span>    public Pair(DatabasePlatform platform, String prefix) {<a name="line.556"></a>
+<span class="sourceLineNo">557</span>      this.platform = platform;<a name="line.557"></a>
+<span class="sourceLineNo">558</span>      this.prefix = prefix;<a name="line.558"></a>
+<span class="sourceLineNo">559</span>    }<a name="line.559"></a>
+<span class="sourceLineNo">560</span>  }<a name="line.560"></a>
+<span class="sourceLineNo">561</span><a name="line.561"></a>
+<span class="sourceLineNo">562</span>}<a name="line.562"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

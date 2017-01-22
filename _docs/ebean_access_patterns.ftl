@@ -155,7 +155,7 @@ query functionality.
 
 <h4>Extend Model, add Finder:</h4>
 
-<p>Ebean provides <a href="http://127.0.0.1:4000/apidocs/com/avaje/ebean/Model.html">Model</a> that provides convenience methods for inserting, updating and deleting beans.</p>
+<p>Ebean provides <a href="http://127.0.0.1:4000/apidoc/10//com/avaje/ebean/Model.html">Model</a> that provides convenience methods for inserting, updating and deleting beans.</p>
 
 <p>It is a @MappedSuperclass base class.  To use it, you have your entity beans extend it, and it provides am 'Active Record' style programming model for you entities.</p>
 
@@ -236,7 +236,7 @@ The Finder provides convenience methods querying.
           .findList();
 ```
 
-Use code completion in your favorite ide or see <a href="/apidocs/com/avaje/ebean/Model.html">Model</a> and <a href="/apidocs/com/avaje/ebean/Model.Finder.html">Model.Finder</a> classes for more details.
+Use code completion in your favorite ide or see <a href="/apidoc/10//com/avaje/ebean/Model.html">Model</a> and <a href="/apidoc/10//com/avaje/ebean/Model.Finder.html">Model.Finder</a> classes for more details.
 
 
 
