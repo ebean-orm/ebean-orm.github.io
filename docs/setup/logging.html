@@ -80,7 +80,7 @@
   <h2 id="sql">SQL and Transaction logging</h2>
   <p>
     During development it is expected that you include logging of
-    <code>org.avaje.ebean.SQL</code> and <code>org.avaje.ebean.TXN</code>.
+    <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
     These log the sql statements executed, bind values for statement execution
     and transaction demarcation.
   </p>
@@ -89,17 +89,17 @@
   <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
 <span class="c">&lt;!-- SQL and bind values --&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 
 <span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
   <h2 id="summary">Summary logging</h2>
 
   <p>
-    The summary logging of <code>org.avaje.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
+    The summary logging of <code>io.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
     back to origin queries. This is useful when looking at more complex object graphs are
     built. In tuning queries for N+1 etc.
   </p>
@@ -107,7 +107,7 @@
   <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
 <span class="c">&lt;!-- Summary level details --&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
@@ -122,10 +122,10 @@
   <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
  <span class="c">&lt;!-- L2 logging --&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
