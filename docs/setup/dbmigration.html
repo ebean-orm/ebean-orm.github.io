@@ -328,8 +328,8 @@
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">com.avaje.ebean.config.dbplatform.DbPlatformName</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">com.avaje.ebean.dbmigration.DbMigration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.Platform</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.dbmigration.DbMigration</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
 
@@ -355,7 +355,7 @@
     <span class="c1">//System.setProperty(&quot;ddl.migration.pendingDropsFor&quot;, &quot;1.2&quot;);</span>
 
     <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
-    <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
     <span class="c1">// generate the migration ddl and xml</span>
     <span class="c1">// ... with EbeanServer in &quot;offline&quot; mode</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>

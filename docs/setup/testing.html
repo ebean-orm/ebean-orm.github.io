@@ -136,7 +136,7 @@ replacing the default EbeanServer instance with a mock.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
-<span class="kn">import</span> <span class="nn">com.avaje.ebeaninternal.server.core.DefaultServer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebeaninternal.server.core.DefaultServer</span><span class="o">;</span>
 <span class="o">...</span>
 
   <span class="nd">@Test</span>
@@ -162,7 +162,7 @@ replacing the default EbeanServer instance with a mock.
     <span class="k">try</span> <span class="o">{</span>
 
       <span class="c1">// Ebean singleton &#39;default server&#39; now returns the mock instance</span>
-      <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+      <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
 
       <span class="c1">// always returns the someBeanId setup by Mockito</span>
       <span class="n">Object</span> <span class="n">beanId</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">getBeanId</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
@@ -176,16 +176,16 @@ replacing the default EbeanServer instance with a mock.
       <span class="n">mockiEbean</span><span class="o">.</span><span class="na">restoreOriginal</span><span class="o">();</span>
     <span class="o">}</span>
 
-    <span class="n">EbeanServer</span> <span class="n">restoredServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+    <span class="n">EbeanServer</span> <span class="n">restoredServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
     <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">restoredServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>
   <span class="o">}</span>
 </pre></div>
 </div>
 <h4>MoickiEbean Maven dependency</h4>
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-mocker<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>1.0.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>10.3.1<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
