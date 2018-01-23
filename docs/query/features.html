@@ -303,7 +303,7 @@
     <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
 <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
 <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
-<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -328,7 +328,7 @@
 <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details&quot;</span><span class="o">)</span> <span class="c1">// all fields from details</span>
 <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;details.product&quot;</span><span class="o">,</span> <span class="s">&quot;sku&quot;</span><span class="o">)</span> <span class="c1">// just sku field from product</span>
 <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
-<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
 </div>
     <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span> <span class="n">c3</span><span class="p">,</span>
@@ -357,7 +357,7 @@
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
 <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 
 <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;CoolName&quot;</span><span class="o">);</span>
 
@@ -839,7 +839,7 @@ where id in (?,?,?,?,?)
 <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;orderDate&quot;</span><span class="o">)</span>
 <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">idEq</span><span class="o">(</span><span class="mi">12</span><span class="o">)</span>
-<span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+<span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 
 <span class="c1">// shipDate is not in the partially populated order</span>
 <span class="c1">// ... so it will lazy load all the missing properties</span>
@@ -880,11 +880,11 @@ where id in (?,?,?,?,?)
     queries are per entity type (not global as they are in JPA).</p>
 
   <p>Once you get a named query you set any named parameters and then execute it – in the
-    case below we use findUnique() as we expect only one object graph returned.</p>
+    case below we use findOne() as we expect only one object graph returned.</p>
 
     <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">User</span> <span class="n">u</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;bugsSummary&quot;</span><span class="o">)</span>
           <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
-          <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+          <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -1329,7 +1329,7 @@ example: shows the use of FutureList:
 
 <span class="n">SqlRow</span> <span class="n">bug</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findUnique</span><span class="o">();</span>
+  <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 <span class="n">String</span> <span class="n">prodName</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;product_name&quot;</span><span class="o">);</span>
 <span class="n">String</span> <span class="n">title</span> <span class="o">=</span> <span class="n">bug</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">);</span>
 </pre></div>
