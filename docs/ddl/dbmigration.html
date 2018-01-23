@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Ebean ORM Setup</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / DB Migration </h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+      <div class="bs-docs-section">
+
+  <h2 id="videos">Introduction</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/n7VXOFwM2og">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">DB Migration introduction</h4>
+  Introduction to DB migration
+  </div>
+</div>
+    </div>
+    <div class="col-md-6">
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/cxiacf0wmNk">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Repeatable migrations</h4>
+  Use of @View, extra-ddl.xml and repeatable migrations
+  </div>
+</div>
+    </div>
+  </div>
+
+  <h2 id="overview">Overview</h2>
+
+  <p>
+    DB Migration is a feature for generation of DDL from the entity bean model that supports determining the
+    <code>diff</code> from the prior version of the model and generating appropriate DDL changes based on
+    the model difference.
+  </p>
+  <p>
+    You are expected to run the <code>diff</code> DDL using <code>FlywayDb</code>, <code>LiquiBase</code>
+    or similar tool. In the future Ebean will likely have built in support to run the DDL as it already has
+    most of the capability and could address some current issues with developer workflow and DDL script ordering.
+  </p>
+  <p>
+    DB migration has 2 output files:
+  </p>
+  <ul>
+    <li><b>Migration model XML</b> - This has the logical diff of the model as an <code>apply</code> or <code>pendingDrops</code> change set</li>
+    <li><b>Apply SQL</b> - This is the DDL script of the apply changes</li>
+  </ul>
+
+  <p>
+    When the DbMigration is run it loads any prior migration xml and combines that together
+    to define the prior model which is then compared against the existing entity beans.
+  </p>
+
+  <h4>Pending Drops</h4>
+  <p>
+    Only non-destructive changes are included in <code>apply</code> and changes like <code>drop table</code> and
+    <code>drop column</code> are put into a <code>pendingDrops</code> changeSet.
+  </p>
+  <p>
+    The drop pending changes need to be explicitly selected to go into a migration.
+  </p>
+  <p>
+    Given applications running in a clustered environment, pending drops typically need to trail the normal apply
+    changes by at least 1 migration. This delay could be minutes, days and some drops might not ever be run.
+  </p>
+
+
+  <h2 id="migration-xml">Migration xml</h2>
+  <p>
+    When DbMigration is run the <code>diff</code> to the model is determined and output
+    as the migration model xml document. This diff can have <code>apply</code> changes or <code>pendingDrops</code> changes.
+  </p>
+  <p>
+    From the migration <code>apply</code> changeSet the actual DDL that will be applied is generated.
+  </p>
+
+  <h4>Logical changes</h4>
+  <p>
+    Note that the changes
+    in the migration xml are database agnostic and a single migration xml document can be used
+    to generate migration DDL for multiple databases. For example, you can generate migration DDL
+    scripts for Postgres, Oracle and SQL Server from the single migration xml. In the migration xml
+    you will see logical types like JSON types (storing JSON documents in the DB) and for Postgres
+    that could translate to a JSONB and for Oracle to a CLOB.
+  </p>
+  <p>
+    The changes are also "logical" in the sense that changes to entities with @History and @Draftable
+    typically translates into multiple changes. For example adding a property to a @History entity could
+    add a column to the base table, add a column to the history table and a change the triggers as required.
+  </p>
+
+  <h4>Example migration xml</h4>
+  <p>
+    Below is an example migration xml generated with <code>apply</code> changes. The customer table
+    has 2 new columns added to it.
+  </p>
+  <p>
+    If the customer table has @History support this could also add columns to the history table and
+    update the associated db triggers.
+  </p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;registered&quot;</span> <span class="na">type=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;comments&quot;</span> <span class="na">type=</span><span class="s">&quot;varchar(1000)&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/addColumn&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
+</pre></div>
+</div>
+
+  <h4>Example migration with pendingDrops</h4>
+  <p>
+    Below is an example migration xml generated with <code>pendingDrops</code> changes.
+  </p>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;pendingDrops&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
+</pre></div>
+</div>
+  <p>
+    Pending drop changes are not incorporated into the apply DDL script unless they are explicitly selected.
+    Once pending drops are applied they drop off the 'pending drops' list.
+  </p>
+
+  <h2 id="apply-ddl">Apply DDL</h2>
+  <p>
+    The apply ddl script contains the changes that we want to apply to the database.
+    This is the DDL script that you get FlywayDB or similar to run.
+  </p>
+
+  <h2>Applying pending drops</h2>
+
+  <div class="syntax sh"><div class="highlight"><pre><span></span>INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions <span class="o">[</span>1.2<span class="o">]</span>
+</pre></div>
+</div>
+
+  <p>
+    The DB migration will log <code>INFO</code> level messages saying which migrations contain
+    pending drops that have not yet been applied.  At some point it is decided to apply one of
+    the pending drops as the next migration.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDropsFor&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
+
+<span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
+<span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+<span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
+</pre></div>
+</div>
+  <p>
+    A migration is then generated with <code>dropsFor</code> set to the version of the migration that
+    had the pending drops that we want to apply.  Additionally the migration apply ddl contains the
+    various drop statements that will be executed.
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span> <span class="na">dropsFor=</span><span class="s">&quot;1.2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/changeSet&gt;</span>
+<span class="nt">&lt;/migration&gt;</span>
+</pre></div>
+</div>
+
+  <h2 id="version-format">Version format</h2>
+  <p>
+    The "version" numbering format supported is the same as FlywayDB version numbering where you may use
+    "." or "_" (period or underscore) as separating characters.
+  </p>
+  <h5>Examples:</h5>
+  <p>
+    So <code>1.1</code> and <code>1_1</code> both translate as version <code>1.1</code>.
+  </p>
+  <p>
+    Note that version numbering controls the order in which migrations are executed and follows semantic
+    versioning so for example <code>1.1.1</code> would execute before <code>1.2</code>. By this means we
+    can add a "patch" migration.
+  </p>
+
+  <h3>Workflow</h3>
+  <p>
+    If you use Ebean's migration runner to execute the migration note that to run a migration the
+    <code>requirement is that the previous migration needs to have been run</code>.  This is slightly
+    different from FlywayDB which requires either strict version number order (or we can disable that to
+    allow any ordering).
+  </p>
+  <p>
+    If you are using a workflow similar to "git flow" then Ebean's migration runner allows you to
+    process merge requests in a non-strict order. The assumption made for this to work is that in the case
+    where there are 2 or more merge requests (that are being reviewed and not yet merged into a common
+    DEV branch) will not have conflicting DB migration changes (If they do Ebean will allow the migration
+    to run but the migration itself will error).
+  </p>
+
+
+  <h2 id="version">Migration version and name</h2>
+  <p>
+    For a migration the developer needs to provide the <code>version</code> and <code>name</code>
+    and these can be set via environment variables, system properties or ebean.properties or programmatically.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
+<span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+
+  <h2 id="on-startup">Generating migration on startup</h2>
+  <p>
+    The DB migration can be generated when the EbeanServer instance is started by setting <code>ddl.migration.generate</code>
+    system property or environment variable to true.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">generate</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.generate&quot;</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
+
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
+  <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
+
+  <span class="c1">// migration will be generated when EbeanServer instance starts</span>
+  <span class="c1">// ... typically by running your application.</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  <h2 id="programmatic">Generate offline</h2>
+  <p>
+    We can generate a migration programmatically without starting your application.
+    In <code>src/test/java</code> add the following code with a <code>main method</code>.
+  </p>
+  <p>
+    Running this main method will generate the next migration and starts the EbeanServer
+    in <code>offline mode</code>. This offline mode means we don't need to start the application
+    or need a database to generate the migration.
+  </p>
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.Platform</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.dbmigration.DbMigration</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Generate the DB Migration.</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDbMigration</span> <span class="o">{</span>
+
+  <span class="cm">/**</span>
+<span class="cm">   * Generate the next &quot;DB schema DIFF&quot; migration.</span>
+<span class="cm">   * &lt;p&gt;</span>
+<span class="cm">   * These migration are typically run using FlywayDB, Liquibase</span>
+<span class="cm">   * or Ebean&#39;s own built in migration runner.</span>
+<span class="cm">   * &lt;/p&gt;</span>
+<span class="cm">   */</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+
+    <span class="c1">// optionally specify the version and name</span>
+    <span class="c1">//System.setProperty(&quot;ddl.migration.version&quot;, &quot;1.1&quot;);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
+
+    <span class="c1">// generate a migration using drops from a prior version</span>
+    <span class="c1">//System.setProperty(&quot;ddl.migration.pendingDropsFor&quot;, &quot;1.2&quot;);</span>
+
+    <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+    <span class="c1">// generate the migration ddl and xml</span>
+    <span class="c1">// ... with EbeanServer in &quot;offline&quot; mode</span>
+    <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  <h2 id="running">Running migration</h2>
+  <p>
+    You can run the migrations using <code>FlywayDb</code>, <code>Liquibase</code> or Ebean's own
+    built in migration runner.
+  </p>
+
+  <h4>Ebean's migration runner</h4>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## run migrations when the EbeanServer starts</span>
+<span class="na">ebean.migration.run</span><span class="o">=</span><span class="s">true</span>
+
+<span class="c">## optionally specify different DB credentials</span>
+<span class="c">## to run the migration (own the tables)</span>
+<span class="na">datasource.db.adminusername</span><span class="o">=</span><span class="s">myDbTableOwner</span>
+<span class="na">datasource.db.adminpassword</span><span class="o">=</span><span class="s">secret</span>
+</pre></div>
+</div>
+  <p>
+    With <code>ebean.migration.run=true</code> then when the EbeanServer starts it will look at the
+    migrations and run any that need to be run.  The migration runner will by default create a table
+    called <code>db_migration</code> that holds the meta data about the migrations that have been run
+    and inserts into this table when migrations are successfully executed.
+  </p>
+
+  <h2 id="repeatable">Repeatable migrations</h2>
+  <p>
+    Repeatable migrations are special migrations that start with <code>R__</code> and do not have a
+    version number.  Repeatable migrations will run if they have not already been run or if there
+    content has changed (MD5 checksum has changed).
+  </p>
+  <p>
+    Repeatable migrations can contain any DDL but for ORM we use these for defining <code>database VIEWS</code>
+    and for example using <code>@View</code> for mapping entity beans to database views rather than tables.
+  </p>
+  <p>
+    Refer to the second video showing repeatable migrations with extra-ddl.xml and use with @View.
+  </p>
+<div class="media ">
+  <div class="media-left">
+    <div class="media-left">
+    <a href="https://youtu.be/cxiacf0wmNk">
+      <img src="/images/movies-64.png" width="64" height="64" >
+    </a>
+    </div>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">Repeatable migrations</h4>
+  Use of @View, extra-ddl.xml and repeatable migrations
+  </div>
+</div>
+
+  <h4>FlywayDB note</h4>
+  <p>
+    For use with FlywayDB currently we need to prefix "version migrations" with <code>V</code> in order to
+    support both "version migrations" and "repeatable migrations".  To do this:
+  </p>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## must use V prefix on &quot;version migrations&quot; when using FlywayDB</span>
+<span class="c">## with both &quot;version&quot; and &quot;repeatable&quot; migrations</span>
+<span class="na">ebean.migration.applyPrefix</span><span class="o">=</span><span class="s">V</span>
+</pre></div>
+</div>
+
+
+</div>
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/setup/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/setup/eclipse-apt">Eclipse IDE - APT</a>
+</li>
+<li >
+  <a href="/docs/setup/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/setup/serverconfig">ServerConfig</a>
+</li>
+<li >
+  <a href="/docs/setup/guice">Guice</a>
+</li>
+<li >
+  <a href="/docs/setup/spring">Spring</a>
+</li>
+<li >
+  <a href="/docs/setup/activerecord">Active Record</a>
+</li>
+<li >
+  <a href="/docs/setup/ddl-create-all">DDL - Create All</a>
+</li>
+<li class="active">
+  <a href="/docs/setup/dbmigration">DDL - DB Migration</a>
+<ul class="nav">
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#migration-xml">Migration XML</a></li>
+  <li><a href="#apply-ddl">Apply DDL</a></li>
+  <li><a href="#version">Version and name</a></li>
+  <li><a href="#on-startup">Generate on startup</a></li>
+  <li><a href="#programmatic">Generate offline</a></li>
+  <li><a href="#running">Running migration</a></li>
+  <li><a href="#repeatable">Repeatable migrations</a></li>
+
+</ul>
+</li>
+<li >
+  <a href="/docs/setup/test-properties"> Test properties</a>
+</li>
+<li >
+  <a href="/docs/setup/testing">Testing</a>
+</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  </body>
+</html>

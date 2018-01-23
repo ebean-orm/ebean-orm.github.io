@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Introduction</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+    <div class="container">
+        <h1><a href="/docs">Documentation</a> / Introduction </h1>
+    </div>
+</div>
+<div class="container doc-index bs-docs-container">
+
+    <div class="row">
+
+        <div class="col-md-9" role="main">
+            <h2>Why Ebean exists</h2>
+<p>
+  There are 3 parts to the JPA standard. It defines how objects are <code>Mapped</code>, <code>Persisted</code>
+  and <code>Queried</code>.
+</p>
+<p>
+  The Ebean view is that:
+</p>
+<ul>
+  <li>JPA Mapping is pretty good</li>
+  <li>JPA Persisting is not so great</li>
+  <li>JPA querying is not so great</li>
+  <li>Hibernate is not sufficient</li>
+</ul>
+<h3>Ebean</h3>
+<ul>
+  <li>Is a session-less ORM making it easier to use and understand</li>
+  <li>Provides much better control over queries / what to fetch</li>
+  <li>Provides better control over persisting</li>
+</ul>
+
+<h2>JPA Query</h2>
+<p>
+  The view is that the JPA Query language does not have good support for controlling how much to fetch.  In terms
+  of JPA they have introduced the <code>FetchGraph</code> hints which do this but there are a few downsides to this:
+</p>
+<ul>
+  <li>FetchGraph hints are just hints and are effectively ignored by Hibernate</li>
+  <li>Hibernate instead (roughly) promotes the idea of creating DTO objects and fetching into those instead</li>
+  <li>FetchGraph fell out of the ugly tree - not pretty to use, not part of JPQL</li>
+</ul>
+<p>
+  That is, the ability to fetch <code>partial objects</code> in JPA is poor and this can lead to poor
+  performance fetching data from the database. We want the ability to control the this much better than what JPA provides.
+</p>
+
+<h2>JPA Persisting</h2>
+<p>
+  The JPA API requires that persisting beans are attached to the persistence context. This means that developers
+  don't explicitly control which beans are persisted and have little control over the order in which beans are
+  persisted to the database. The lack of ordering control can lead to deadlock issues. The lack of explicit control
+  means that the behavior is less obvious and the interactions with bulk updates and external SQL on the JPA
+  persistence context needs to be managed (explicitly detach beans etc).
+</p>
+<p>
+  Ebean's approach is that beans are <code>explicitly persisted</code> and that persisting does not involve the
+  persistence context.  This means that the developer has:
+</p>
+<ul>
+  <li>Control over exactly what is persisted</li>
+  <li>Control over the ordering of statements</li>
+  <li>No concerns when using bulk updates</li>
+</ul>
+
+<h2>Hibernate</h2>
+<p>
+  Respect to these people, it is a huge amount of work to build an ORM - but the view is that we want a better ORM.
+  An ORM that is easier to understand, makes the simple stuff simple, makes the hard stuff doable and provides
+  the performance and control that is needed when both fetching data and persisting it.
+</p>
+<p>
+  With Hibernate 5 it could be we are seeing a move to better partial object support with their changes towards using
+  bytecode enhancement (lazy loading on partially populated beans, dirty checking etc) - should be interesting.
+</p>
+
+<h2>Can Ebean implement JPA?</h2>
+<p>
+  The JPA API has the concepts of <code>attached</code> and <code>detached</code> beans - that is, it is
+  fundamental to JPA that persisting beans are attached to the persistence context. This is not the case with
+  Ebean - we have effectively removed the need for those concepts and instead just have <code>save() and delete()</code>.
+</p>
+<p>
+  That is, Ebean has no EntityManager to manage and as such can been called a <code>session-less orm</code>.
+  Ideally Ebean is be as close to JPA as possible with mapping and behavior - but it is a session-less API which
+  is fundamentally different to JPA and we believe much easier to use.
+</p>
+<ul>
+  <li>Ebean is a "session-less" ORM</li>
+  <li>Unlike JPA Ebean has no EntityManager to manage</li>
+  <li>Simpler to use and understand</li>
+</ul>
+<h3>
+  <a href="/docs/architecture/compare-jpa">How Ebean is architected to be a session-less ORM</a>
+</h3>
+<h3>
+  <a href="/docs/architecture/compare-hibernate">More detailed comparison to Hibernate</a>
+</h3>
+<p>
+  &nbsp;
+</p>
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+                <ul class="nav bs-docs-sidenav">
+<li class="active">
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/maven">Maven setup</a>
+</li>
+<li >
+  <a href="/docs/gradle">Gradle setup</a>
+</li>
+
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/setup">Configuration</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+
+<li >
+  <a href="/docs/ddl">DDL generation</a>
+</li>
+<li >
+  <a href="/docs/codestyle">Coding style</a>
+</li>
+
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/query">Query</a>
+</li>
+<li >
+  <a href="/docs/persist">Persisting</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+
+<li >
+  <a href="/docs/features/l2caching">L2 Caching</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch">ElasticSearch</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Performance monitoring</a>
+</li>
+<li >
+  <a href="/docs/features">Features</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  </body>
+</html>

@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Introduction</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+<div class="jumbotron mini">
+    <div class="container">
+        <h1><a href="/docs">Documentation</a> / Coding style </h1>
+    </div>
+</div>
+<div class="container doc-index bs-docs-container">
+
+    <div class="row">
+
+        <div class="col-md-9" role="main">
+            <h2 id="overview">Overview</h2>
+
+<p>
+  Active record is a pattern originally named by
+  <a href="https://en.wikipedia.org/wiki/Active_record_pattern">Martin Fowler</a> and is not specific to Ebean but
+  instead a a pattern common in many persistence frameworks.
+</p>
+<p>
+  In general terms it means the entity beans have the capability to <code>save()</code> and <code>delete()</code>
+  by themselves. You can contrast this to a traditional <code>DAO</code> approach where the entity beans are
+  instead passed to a DAO for saving and deleting.
+</p>
+
+<h4>Play framework</h4>
+<p>
+  For Ebean the active record pattern has been inherited from the Play framework. The original Model and Finder implementations
+  found in Ebean to implement the active record pattern originated from Play framework and that code has migrated over into Ebean.
+</p>
+
+<h2 id="criticism">Criticism</h2>
+<p>
+  The two main criticisms to the active record pattern are:
+</p>
+<ul>
+  <li><b>Combining concerns</b> - The 'model' and 'how it is persisted' are tightly combined</li>
+  <li><b>Testability</b> - Active record is in theory harder to test</li>
+</ul>
+<p>
+  It should be noted that Ebean provides a testing mechanism via <code>ebean-mocker</code> such
+  that the active record patterns for both saving and finding are fully testable.
+</p>
+
+<h2 id="jpa">Rob's view: JPA and active record</h2>
+<p>
+  My opinion is that JPA is not well suited to the active record pattern. This is based on my personal experience
+  with Grails/GORM/Hibernate. Specifically, GORM is effectively hiding the existence of Hibernate Session
+  from the developer. My experience suggests that this works well with simple cases but in more complex case developers
+  find a situation where they need to know about and deal with the Session/EntityManager object explicitly.
+</p>
+<p>
+  The save() delete() semantics of active record don't match the underlying attach/detach/flush semantics of JPA and in the
+  more complex cases that mismatch comes out (abstraction leaks). This typically results in a change to both
+  coding style and thinking and a code base containing both styles.
+</p>
+
+<h2 id="ebean">Rob's view: Ebean and active record</h2>
+<p>
+  EbeanServer is a "session-less" ORM and specifically unlike JPA there are no attach/detach semantics.
+  This makes Ebean well suited to the active record pattern as there is no mismatch between the
+  active record API/abstraction and that of the underlying EbeanServer.
+</p>
+<p>
+  The complex persistence cases with Ebean means you want/need full control over JDBC batch mechanism.
+  In these more complex cases the active record save() and delete() still work as expected and desired but
+  instead you additionally adjust JDBC batch control via the transaction (programmatically or via @Transactional).
+  That is, there is no need to change style in complex cases.
+</p>
+
+<h2 id="testing">Testing</h2>
+
+<p>
+  Ebean provides the <code>ebean-mocker</code> project and that supports the testing requirements
+  when using active record pattern. It supports using test doubles for EbeanServer in both persisting and
+  finding and provides DelegateEbeanServer as a good out of the box test double for persisting and finding.
+</p>
+
+<h3>DelegateEbeanServer provides</h3>
+<ul>
+  <li>Capture persisting calls, assert saved beans etc</li>
+  <li>findById stub/mock responses</li>
+  <li>static Finder stub/mock test doubles</li>
+  <li>SQL capture</li>
+</ul>
+
+<h2 id="benefits">Rob's view: Active record benefits</h2>
+<p>
+  For some people active record combines concerns and that ends the conversation and that is fine.
+</p>
+
+<h4>Not missing out on testability</h4>
+<p>
+  Personally when I compare what I call the traditional DAO/Inject approach with active record
+  I note firstly that I don't lose out on testability - Active record with Ebean can be just as
+  testable as the DAO/Inject style.
+</p>
+
+<h4>Simple things kept simple</h4>
+<p>
+  Secondly the major plus to active record is that "simple things" are kept simple. What I mean
+  by that is save(), delete(), get reference, find by id and find by unique key are all very
+  simple and very clean in code. In DAO/Inject code what I have seen is that for each type of
+  entity bean you inject a DAO - for a service that deals with 4 different entity bean types you
+  then end up injecting 4 DAOs. For constructor injection in particular injecting DAO's can lead
+  to relatively ugly constructors and 'workarounds' very quickly.
+</p>
+<blockquote>With active record, the simple things are kept simple</blockquote>
+
+<h4>In balance I'd choose active record</h4>
+<p>
+  If someone asks me whether to choose between active record style or traditional DAO/Inject style
+  I would suggest the active record style due to the very nice clean simple code that results.
+  We don't miss out on testability (due to ebean-mocker) and I'm ok that the entity beans
+  have save() delete() methods (mixed concerns).
+</p>
+
+
+<h2 id="model">Model</h2>
+
+<p>
+  When your entity beans extend the
+  <a href="https://github.com/ebean-orm/ebean/blob/master/src/main/java/io/ebean/Model.java"><code>io.ebean.Model</code></a> object they
+  inherit some convenience methods save(), delete() etc. When these methods are called internally
+  the default EbeanServer is used to perform the save() and delete().
+</p>
+
+<p>
+  Ebean Model provides the following convenience methods:
+</p>
+<ul>
+  <li>save() - Saves the entity</li>
+  <li>update() - Explicitly update the entity</li>
+  <li>insert() - Explicitly insert the entity</li>
+  <li>delete() - Delete the entity</li>
+  <li>refresh() - Refreshes the entity from the database</li>
+  <li>markAsDirty() - this is used so that when a bean that is otherwise unmodified is updated the version property is updated</li>
+  <li>update(String server) - Update the entity using the specified Ebean server</li>
+  <li>insert(String server)- Insert the entity using the specified server</li>
+  <li>delete(String server)- Delete the entity using the specified server</li>
+</ul>
+
+
+<h4>Example: extend Model</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* Extend Model to get the save(), delete() etc</span>
+<span class="cm">* methods on the bean itself (active record style).</span>
+<span class="cm">*/</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;o_customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+<span class="nd">@Id</span>
+<span class="n">Long</span> <span class="n">id</span><span class="o">;</span>
+
+<span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+<span class="n">Date</span> <span class="n">registered</span><span class="o">;</span>
+
+<span class="n">String</span> <span class="n">comments</span><span class="o">;</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+
+<h4>Example: save()</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
+
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="finder">Finder</h2>
+<p>
+  Finder provides some convenience query methods but also it suggests a way to
+  organise 'finder' code.
+</p>
+<p>
+
+</p>
+
+
+<h4>Example: find by id</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h4>Example: get reference</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h4>Example: delete by id</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">deleteById</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h4>Example: find where</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;rob%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+                <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/maven">Maven setup</a>
+</li>
+<li >
+  <a href="/docs/gradle">Gradle setup</a>
+</li>
+
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/setup">Configuration</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+
+<li >
+  <a href="/docs/ddl">DDL generation</a>
+</li>
+<li class="active">
+  <a href="/docs/codestyle">Code style</a>
+</li>
+
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/query">Query</a>
+</li>
+<li >
+  <a href="/docs/persist">Persisting</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+
+<li >
+  <a href="/docs/features/l2caching">L2 Caching</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch">ElasticSearch</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Performance monitoring</a>
+</li>
+<li >
+  <a href="/docs/features">Features</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+<!-- /.row -->
+</div>  <!-- /.container -->
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  </body>
+</html>
