@@ -79,7 +79,7 @@
 
     <div class="col-md-9" role="main">
       
-<h2>EbeanServer</h2>
+<h2 id="ebeanserver">EbeanServer</h2>
 <p>
   The EbeanServer provides the main API for creating <code>queries</code>, <code>saving</code>, <code>deleting</code>,
   <code>transactions</code> etc. It effectively provides all the functionality.
@@ -92,21 +92,79 @@
 <p>
   Applications that only use a single database only have one instance of EbeanServer.
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// save customer to the database</span>
+<span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
+<span class="n">ebeanServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+</pre></div>
+</div>
 
-<h3>The default EbeanServer</h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// fetch some customers from the database</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="defaultserver">The "default" EbeanServer</h2>
 <p>
   We can define one of the EbeanServer instances to be the <code>default EbeanServer</code>. This is the <code>main</code>
   or <code>primary</code> EbeanServer instance that the application uses.
 </p>
-<h2>Ebean</h2>
+
+<h2 id="ebean">Ebean</h2>
 <p>
-  Ebean provides a convenient way to call methods on the <code>default EbeanServer</code>. The methods on the Ebean
-  proxy through to the underlying default EbeanServer instance.
+    When an EbeanServer instance is created it is registered with Ebean. We can use <code>Ebean</code> to obtain those
+    EbeanServer instances by name and we can obtain the default server via <code>Ebean.getDefaultServer()</code>.
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the &quot;default&quot; server</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+</pre></div>
+</div>
 <p>
-  When an EbeanServer instance is created it is registered with Ebean and the default EbeanServer instance is registered
+  When there are many EbeanServer instances they are registered with Ebean with a <code>name</code> and we can use that
+    to obtain them via Ebean.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the HR server by name</span>
+<span class="n">EbeanServer</span> <span class="n">hrServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>
+  Ebean provides a convenient way to call methods on the default EbeanServer. The <code>methods on Ebean
+    proxy through to the underlying default EbeanServer instance</code>.
 </p>
 
+
+<h3>Ebean convenience methods</h3>
+<p>
+  Ebean has static convenience methods that proxy through to the default server.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1">// save customer to the database</span>
+<span class="c1">// using the &#39;default&#39; ebeanServer</span>
+<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+<span class="c1">// which is the same as</span>
+<span class="n">EbeanServer</span> <span class="n">defaultServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">()</span>
+<span class="n">defaultServer</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h2 id="model">Optional use of Model and Finder</h2>
+<p>
+ Due to the way we can access the <code>default server</code> a coding style / approach has evolved that
+ uses <code>io.ebean.Model</code> and <code>io.ebean.Finder</code> to provide an active record style approach.
+</p>
+<p>
+    We discuss the use of Model and Finder in more detail at <a href="/docs/codestyle">coding style options</a>.
+</p>
+
+<div class="next pull-right">
+    <a href="serverconfig" class="btn btn-info">Next: ServerConfig</a>
+</div>
 
     </div>
 
@@ -117,14 +175,20 @@
 <li >
   <a href="/docs/introduction/why">Why Ebean</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/introduction/ebeanserver">EbeanServer</a>
+<ul class="nav">
+  <li><a href="#ebeanserver">EbeanServer</a></li>
+  <li><a href="#defaultserver">Default server</a></li>
+  <li><a href="#ebean">Ebean</a></li>
+  <li><a href="#model">Model</a></li>
+</ul>
+</li>
+<li >
+  <a href="/docs/introduction/serverconfig">ServerConfig</a>
 </li>
 <li >
   <a href="/docs/introduction/manifest">ebean.mf</a>
-</li>
-<li >
-  <a href="/docs/setup/serverconfig">ServerConfig</a>
 </li>
         </ul>
       </nav>

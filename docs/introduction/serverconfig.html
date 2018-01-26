@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/introduction/">Introduction</a> / ebean.mf</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/introduction/">Introduction</a> / ServerConfig</h1>
   </div>
 </div>
 
@@ -79,53 +79,29 @@
 
     <div class="col-md-9" role="main">
       
-<h2>ebean.mf</h2>
+<h2>ServerConfig and EbeanServerFactory</h2>
 <p>
-  The <code>ebean.mf</code> manifest file controls the enhancement. It controls:
+  <code>ServerConfig</code> is a bean that has all the configuration options used to create
+  EbeanServer instances.
 </p>
-<ul>
-  <li>What packages are enhanced</li>
-  <li>What enhancement features are used</li>
-</ul>
 <p>
-  It is typically located in <code>src/main/resources/ebean.mf</code>.
+  We pass a <code>ServerConfig</code> instance to <code>EbeanServerFactory</code> to programmatically
+  create an EbeanServer instance.
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
 
-<h3>Example 1</h3>
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
-<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
-<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">none</span>
+<span class="c1">// set configuration options</span>
+<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
+<span class="o">...</span>
+<span class="c1">// and/or load configuration properties file</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+
+<span class="c1">// create the EbeanServer instance</span>
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
 </pre></div>
 </div>
-<p>
-  With example 1 we are enhancing entity beans in the <code>org.example.domain</code> package, we are also
-  enhancing <code>@Transactional</code> methods but we are not using query bean enhancement.
-</p>
-
-
-<h3>Example 2</h3>
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">profile-location</span><span class="o">:</span> <span class="s">true</span>
-<span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
-<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
-<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">org.example</span>
-</pre></div>
-</div>
-<p>
-  With example 2 turns on <code>profile-location</code> enhancement and <code>query bean</code> enhancement.
-</p>
-
-<h3>Tooling</h3>
-<p>
-  The ebean.mf file is read by all the tooling that performs enhancement. It is read by:
-</p>
-<ul>
-  <li>IntelliJ IDEA plugin</li>
-  <li>Eclipse plugin</li>
-  <li>Maven enhancement plugin</li>
-  <li>Gradle enhancement plugin</li>
-</ul>
 <div class="next pull-right">
-  <a href="/docs/tooling/" class="btn btn-info">Next: Tooling</a>
+  <a href="manifest" class="btn btn-info">Next: Ebean.mf</a>
 </div>
 
     </div>
@@ -140,7 +116,7 @@
 <li >
   <a href="/docs/introduction/ebeanserver">EbeanServer</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/introduction/serverconfig">ServerConfig</a>
 </li>
 <li >
