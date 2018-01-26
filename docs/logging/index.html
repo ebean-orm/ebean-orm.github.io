@@ -82,49 +82,13 @@
 
 <p>Ebean uses <a href="http://www.slf4j.org/">SLF4J</a> for logging.</p>
 
-<h2 id="sql">SQL and Transaction logging</h2>
-<p>
-  During development it is expected that you include logging of
-  <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
-  These log the sql statements executed, bind values for statement execution
-  and transaction demarcation.
-</p>
+<h2 id="typical">Typical logback configuration</h2>
 
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.DDL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
-
-<span class="c">&lt;!-- SQL and bind values --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-
-<span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-
-<h2 id="summary">Summary logging</h2>
-
-<p>
-  The summary logging of <code>io.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
-  back to origin queries. This is useful when looking at more complex object graphs are
-  built. In tuning queries for N+1 etc.
-</p>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
-
-<span class="c">&lt;!-- Summary level details --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-
-<h2 id="l2cache">L2 Cache logging</h2>
-
-<p>The L2 cache events can be logged using the logger entries below.
-  This is useful when you are starting out using the L2 cache and looking
-  at the behaviour with L2 caching.
-</p>
-
-
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- LOGBACK configuration --&gt;</span>
 
 <span class="c">&lt;!-- L2 logging --&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
@@ -134,69 +98,91 @@
 </pre></div>
 </div>
 
+<h2 id="ddl">DDL</h2>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.DDL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="sql">SQL</h2>
+<p>
+  During development it is expected that you include logging of
+  <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
+  These log the sql statements executed, bind values for statement execution.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- SQL and bind values --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="txn">Transaction</h2>
+<p>
+  During development it is expected that you include logging of
+  <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
+  These log the transaction demarcation.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="summary">Summary logging</h2>
+<p>
+  The summary logging of <code>io.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
+  back to origin queries. This is useful when looking at more complex object graphs are
+  built. In tuning queries for N+1 etc.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Summary level details --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="l2">L2 Cache logging</h2>
+
+<p>The L2 cache events can be logged using the logger entries below.
+  This is useful when you are starting out using the L2 cache and looking
+  at the behaviour with L2 caching.
+</p>
+
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- L2 logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="elastic">Elastic logging</h2>
+<p>
+  Logging queries and updates to ElasticSearch.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Elastic logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ELA&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ELQ&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.BULK&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/introduction">Introduction</a>
-</li>
-<li >
-  <a href="/docs/maven">Maven setup</a>
-</li>
-<li >
-  <a href="/docs/gradle">Gradle setup</a>
-</li>
-
-<li >
-  <a href="/docs/enhancement">Enhancement</a>
-</li>
 <li class="active">
-  <a href="/docs/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/setup">Configuration</a>
-</li>
-<li >
-  <a href="/docs/testing">Testing</a>
-</li>
-
-<li >
-  <a href="/docs/ddl">DDL generation</a>
-</li>
-<li >
-  <a href="/docs/codestyle">Coding style</a>
-</li>
-
-<li >
-  <a href="/docs/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/query">Query</a>
-</li>
-<li >
-  <a href="/docs/persist">Persisting</a>
-</li>
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-
-<li >
-  <a href="/docs/features/l2caching">L2 Caching</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch">ElasticSearch</a>
-</li>
-<li >
-  <a href="/docs/monitoring">Performance monitoring</a>
-</li>
-<li >
-  <a href="/docs/features">Features</a>
-</li>
-<li >
-  <a href="/docs/architecture">Architecture</a>
+  <a href="/docs/logging/">Logging</a>
+<ul class="nav">
+    <li><a href="#typical">Example</a></li>
+    <li><a href="#ddl">DDL</a></li>
+    <li><a href="#sql">SQL</a></li>
+    <li><a href="#txn">Transaction</a></li>
+    <li><a href="#sum">Summary</a></li>
+    <li><a href="#l2">L2 Cache</a></li>
+    <li><a href="#elastic">ElasticSearch</a></li>
+</ul>
 </li>
         </ul>
       </nav>
