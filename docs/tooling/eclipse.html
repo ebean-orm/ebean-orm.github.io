@@ -128,6 +128,59 @@
 </p>
 
 
+
+
+<div style="display: none">
+  <h2 id="maven_eclipse">Eclipse + Maven enhancement</h2>
+
+  <p>Eclipse can be configured to enhance the classes during build using maven configuration</p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;plugins&gt;</span>
+    <span class="c">&lt;!-- plugins here --&gt;</span>
+  <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;pluginManagement&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+      <span class="c">&lt;!--This plugin&#39;s configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. --&gt;</span>
+      <span class="nt">&lt;plugin&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;configuration&gt;</span>
+          <span class="nt">&lt;lifecycleMappingMetadata&gt;</span>
+            <span class="nt">&lt;pluginExecutions&gt;</span>
+              <span class="nt">&lt;pluginExecution&gt;</span>
+                <span class="nt">&lt;pluginExecutionFilter&gt;</span>
+                  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+                  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                  <span class="nt">&lt;versionRange&gt;</span>[<span class='ebean-maven-plugin-version'>${version}</span>,)<span class="nt">&lt;/versionRange&gt;</span>
+                  <span class="nt">&lt;goals&gt;</span>
+                    <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+                  <span class="nt">&lt;/goals&gt;</span>
+                <span class="nt">&lt;/pluginExecutionFilter&gt;</span>
+                <span class="nt">&lt;action&gt;</span>
+                  <span class="nt">&lt;execute&gt;</span>
+                    <span class="nt">&lt;runOnConfiguration&gt;</span>true<span class="nt">&lt;/runOnConfiguration&gt;</span>
+                    <span class="nt">&lt;runOnIncremental&gt;</span>true<span class="nt">&lt;/runOnIncremental&gt;</span>
+                  <span class="nt">&lt;/execute&gt;</span>
+                <span class="nt">&lt;/action&gt;</span>
+              <span class="nt">&lt;/pluginExecution&gt;</span>
+            <span class="nt">&lt;/pluginExecutions&gt;</span>
+          <span class="nt">&lt;/lifecycleMappingMetadata&gt;</span>
+        <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+  <span class="nt">&lt;/pluginManagement&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
+</pre></div>
+</div>
+
+</div>
+<div class="next pull-right">
+  <a href="maven" class="btn btn-info">Next: Maven</a>
+</div>
+
+
     </div>
 
     <div class="col-md-3" role="complementary">
