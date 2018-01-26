@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Documentation</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
     <link rel="stylesheet" href="/css/site.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -62,42 +63,47 @@
 
   </div>
   <div id="main" data-offset="60">
+
 <div class="jumbotron mini">
   <div class="container">
+    <form class="pull-right">
+      <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
+    </form>
     <h1>Documentation</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
-
   <div class="row">
+    <div class="col-md-9" role="main">
+      
 
-    <div class="col-md-9 docs-index" role="main">
-
+<div class="container doc-index bs-docs-container">
+  <div class="row">
+    <div class="col-md-3 docs-index" role="main">
       <h3><a href="/docs/introduction">Introduction</a></h3>
-      <h3><a href="/docs/maven">Maven setup</a></h3>
-      <h3><a href="/docs/gradle">Gradle setup</a></h3>
+      <h3><a href="/docs/maven">Maven</a></h3>
+      <h3><a href="/docs/gradle">Gradle</a></h3>
       <h3><a href="/docs/setup/enhancement">Enhancement</a></h3>
       <h3><a href="/docs/setup/logging">Logging</a></h3>
       <h3><a href="/docs/setup">Configuration</a></h3>
-
       <h3><a href="/docs/testing">Testing</a></h3>
-
-      <h3><a href="/docs/ddl">DDL generation and DB Migrations</a></h3>
-
-      <h3><a href="/docs/codestyle">Coding style</a></h3>
+      <h3><a href="/docs/ddl">DDL generation</a></h3>
+      <h3><a href="/docs/ddl">DB Migrations</a></h3>
       <!--<ul>-->
-        <!--<li><a href="/docs/code/model-finder">Model & Finder / Active record</a></li>-->
-        <!--<li><a href="/docs/code/repository">Repository</a></li>-->
+      <!--<li><a href="/docs/code/model-finder">Model & Finder / Active record</a></li>-->
+      <!--<li><a href="/docs/code/repository">Repository</a></li>-->
       <!--</ul>-->
-
+    </div>
+    <div class="col-md-3 docs-index" role="main">
+      <h3><a href="/docs/codestyle">Coding style</a></h3>
       <h3><a href="/docs/mapping">Mapping</a></h3>
       <!--<ul>-->
-        <!--<li><a href="/docs/mapping/jpa/">Standard JPA Mapping</a></li>-->
-        <!--<li><a href="/docs/mapping/extension/">Ebean mapping extensions</a></li>-->
-        <!--<li><a href="/docs/mapping/naming-convention">Naming convention</a></li>-->
-        <!--<li><a href="/docs/mapping/constructors">Constructors</a></li>-->
-        <!--<li><a href="/docs/mapping/list">Collection types - List vs Set</a></li>-->
+      <!--<li><a href="/docs/mapping/jpa/">Standard JPA Mapping</a></li>-->
+      <!--<li><a href="/docs/mapping/extension/">Ebean mapping extensions</a></li>-->
+      <!--<li><a href="/docs/mapping/naming-convention">Naming convention</a></li>-->
+      <!--<li><a href="/docs/mapping/constructors">Constructors</a></li>-->
+      <!--<li><a href="/docs/mapping/list">Collection types - List vs Set</a></li>-->
       <!--</ul>-->
 
       <h3><a href="/docs/query">Query</a></h3>
@@ -105,11 +111,47 @@
       <h3><a href="/docs/transactions">Transactions</a></h3>
       <h3><a href="/docs/features/l2caching">L2 Caching</a></h3>
       <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-      <h3><a href="/docs/monitoring">Performance monitoring</a></h3>
+      <h3><a href="/docs/monitoring">Monitoring</a></h3>
+    </div>
 
+    <div class="col-md-3 docs-index" role="main">
+
+      <h3><a href="/docs/features">Examples</a></h3>
+      <ul>
+        <li><a href="https://github.com/ebean-orm-examples/example-java8">Java 8 maven</a></li>
+
+        <li><a href="https://github.com/ebean-orm-examples/example-kotlin">Kotlin maven</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-minimal">Minimal Java 8</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-gradle-java">Gradle Java</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-gradle-kotlin">Gradle Kotlin</a></li>
+
+      </ul>
+
+      <h3><a href="/docs/features">Feature examples</a></h3>
+      <ul>
+        <li><a href="https://github.com/ebean-orm-examples/example-elastic">ElasticSearch</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-elasticsearch-only">ElasticSearch only (no rdbms)</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-history">SQL2011 History</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-postgis">Postgres PostGIS</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-draftable">Draftable</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-multi-tenancy-partition">Multi-tenancy - Partition</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-multi-tenancy-schema">Multi-tenancy - Schema</a></li>
+        <li><a href="https://github.com/ebean-orm-examples/example-multi-tenancy-db">Multi-tenancy - DB</a></li>
+      </ul>
+
+    </div>
+
+  </div>
+
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-md-3 docs-index" role="main">
       <h3><a href="/docs/features">Features</a></h3>
       <ul>
-        <li><a href="/docs/features/history">SQL2011 @History support</a></li>
+        <li><a href="/docs/features/history">SQL2011 @History</a></li>
         <li><a href="/docs/features/eventlistening">Event listening</a></li>
         <li><a href="/docs/features/softdelete">Soft delete</a></li>
         <li><a href="/docs/features/draftable">Draftable</a></li>
@@ -119,7 +161,9 @@
         <li><a href="/docs/features/changelog">Change log</a></li>
         <li><a href="/docs/features/readauditing">Read auditing</a></li>
       </ul>
+    </div>
 
+    <div class="col-md-3 docs-index" role="main">
       <h3><a href="/docs/architecture">Architecture</a></h3>
       <ul>
         <li><a href="/docs/architecture/compare-jpa">JPA comparison</a></li>
@@ -129,10 +173,23 @@
       </ul>
 
       <h3><a href="/funding">Funding & Sponsorship</a></h3>
-
     </div>
 
   </div>
+</div>
+
+    </div>
+    <!--<div class="col-md-3" role="complementary">-->
+      <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">-->
+        <!--<ul class="nav bs-docs-sidenav">-->
+          <!--$menuNav-->
+        <!--</ul>-->
+      <!--</nav>-->
+    <!--</div>-->
+  </div>
+</div>
+
+
   </div>
   </div>
 
@@ -164,5 +221,14 @@
     ga('create', 'UA-75181644-1', 'auto');
     ga('send', 'pageview');
 
-  </script>  </body>
+  </script>  <!-- at the end of the BODY -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+  <script type="text/javascript"> docsearch({
+	  apiKey: 'fee4c0c671ae9d80039c22e5a47bf4ec',
+	  indexName: 'ebean',
+	  inputSelector: '#search-input',
+	  debug: true
+  });
+  </script>
+  </body>
 </html>

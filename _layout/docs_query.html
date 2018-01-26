@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
     <link rel="stylesheet" href="/css/site.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -62,9 +63,13 @@
 
   </div>
   <div id="main" data-offset="60">
+
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/query">Query</a>  </h1>
+    <form class="pull-right">
+      <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
+    </form>
+    <h1><a href="/docs/">Documentation</a> / Query</h1>
   </div>
 </div>
 
@@ -73,7 +78,9 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <div id="layout-body"></div>
+      
+<div id="layout-body"></div>
+
     </div>
 
     <div class="col-md-3" role="complementary">
@@ -104,8 +111,8 @@
   </div>
 
 </div>
-<!-- /.row -->
-</div>  <!-- /.container -->
+
+
   </div>
   </div>
 
@@ -137,5 +144,14 @@
     ga('create', 'UA-75181644-1', 'auto');
     ga('send', 'pageview');
 
-  </script>  </body>
+  </script>  <!-- at the end of the BODY -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+  <script type="text/javascript"> docsearch({
+	  apiKey: 'fee4c0c671ae9d80039c22e5a47bf4ec',
+	  indexName: 'ebean',
+	  inputSelector: '#search-input',
+	  debug: true
+  });
+  </script>
+  </body>
 </html>

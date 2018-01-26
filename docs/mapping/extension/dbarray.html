@@ -14,7 +14,8 @@
     <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
     <link rel="stylesheet" href="/css/site.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
-      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -62,6 +63,7 @@
 
   </div>
   <div id="main" data-offset="60">
+
 <div class="jumbotron mini">
   <div class="container">
     <h1><a href="/docs">Documentation</a> / <a href="/docs/mapping">Mapping</a> / <a href="/docs/mapping/extension">Extension</a> / @DbArray </h1>
@@ -73,7 +75,9 @@
   <div class="row">
 
     <div class="col-md-9" role="main">
-      <h2 id="postgres">Postgres</h2>
+      
+
+<h2 id="postgres">Postgres</h2>
 <p>
   The primary target database for <code>@DbArray</code> is Postgres as single dimension array.
   In time, we could also map this to Oracle nested tables but at this stage that will be done
@@ -191,6 +195,8 @@
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">where</span> <span class="n">coalesce</span><span class="p">(</span><span class="k">cardinality</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">ph_nums</span><span class="p">),</span><span class="mi">0</span><span class="p">)</span> <span class="o">&lt;&gt;</span> <span class="mi">0</span>
 </pre></div>
 </div>
+
+
     </div>
 
     <div class="col-md-3" role="complementary">
@@ -254,6 +260,8 @@
   </div>
 
 </div>
+
+
   </div>
   </div>
 
@@ -285,5 +293,14 @@
     ga('create', 'UA-75181644-1', 'auto');
     ga('send', 'pageview');
 
-  </script>  </body>
+  </script>  <!-- at the end of the BODY -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+  <script type="text/javascript"> docsearch({
+	  apiKey: 'fee4c0c671ae9d80039c22e5a47bf4ec',
+	  indexName: 'ebean',
+	  inputSelector: '#search-input',
+	  debug: true
+  });
+  </script>
+  </body>
 </html>
