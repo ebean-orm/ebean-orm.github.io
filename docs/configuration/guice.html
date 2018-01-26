@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/configuration/">Configuration</a> / ServerConfig</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/configuration/">Configuration</a> / Spring</h1>
   </div>
 </div>
 
@@ -80,91 +80,77 @@
     <div class="col-md-9" role="main">
       
 
-
-<h2>ServerConfig and EbeanServerFactory</h2>
+<h2 id="provider">Provider</h2>
 <p>
-  <code>ServerConfig</code> is a bean that has all the configuration options used to create
-  EbeanServer instances.
+  Create a Guice Provider that programmatically creates a EbeanServer instance.
 </p>
+
+<h4>Example 1</h4>
 <p>
-  We pass a <code>ServerConfig</code> instance to <code>EbeanServerFactory</code> to programmatically
-  create an EbeanServer instance.
+  Example provider implementation using <code>ServerConfig</code> and <code>EbeanServerFactory</code>.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>
 
-<span class="c1">// set configuration options</span>
-<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
-<span class="o">...</span>
-<span class="c1">// and/or load configuration properties file</span>
-<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EbeanServerProvider</span> <span class="kd">implements</span> <span class="n">Provider</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
 
-<span class="c1">// create the EbeanServer instance</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+    <span class="c1">// load configuration from ebean.properties</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">...</span>
+    <span class="c1">// other programmatic configuration</span>
+
+    <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
-<h2 id="register">Register</h2>
-<p>
-  By default ServerConfig has register=true and this means that the EbeanServer instance is registered with
-  the Ebean singleton and can be later accessed via <code>Ebean.getServer(serverName)</code>
-</p>
-<p>
-  You need to explicitly ServerConfig.setRegister(false) if you don't this feature.
-</p>
+  <h4>Example 2</h4>
+  <p>
+    Example provider implementation using <code>Ebean</code> that implicitly creates the
+    <code>default</code> EbeanServer using ebean.properties.
+  </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="o">...</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EbeanServerProvider</span> <span class="kd">implements</span> <span class="n">Provider</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
 
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
 
-<span class="o">...</span>
-
-<span class="c1">// Later on we can get the server instance</span>
-<span class="c1">// using it&#39;s name via Ebean</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+    <span class="c1">// EbeanServer configured by ebean.properties</span>
+    <span class="k">return</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
 </pre></div>
 </div>
-<h2 id="default">Default server</h2>
+<h2 id="module">Module bind</h2>
 <p>
-  You can set ServerConfig.setDefaultServer(true) to indicate that the EbeanServer instance created should
-  be the 'default' EbeanServer and can be later accessed via <code>Ebean.getDefaultServer()</code>
+  In the Guice module bind the provider using eager singleton so that the EbeanServer is
+  created eagerly at startup.
 </p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-<span class="o">...</span>
-
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-
-<span class="o">...</span>
-
-<span class="c1">// Later on we can get the server instance ...</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
-
-<span class="c1">// Note: serverName of null is the same as getting the default server</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// bind the provider as eager singleton</span>
+<span class="n">bind</span><span class="o">(</span><span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">toProvider</span><span class="o">(</span><span class="n">EbeanServerProvider</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">asEagerSingleton</span><span class="o">()</span>
 </pre></div>
 </div>
 
-
-<h2 id="di">Dependency injection</h2>
+<h2 id="activerecord">Inject and ActiveRecord</h2>
 <p>
-  For dependency injection with Guice, Spring and similar DI frameworks typically a "provider" or "factory"
-  is required that creates a ServerConfig, configures it as required perhaps using ebean.properties or
-  external properties and then uses <code>EbeanServerFactory</code> to create the EbeanServer instance.
-</p>
-<h4>Inject and ActiveRecord</h4>
-<p>
-  It is common and expected that you want to be able to both <code>@Inject</code> <code>EbeanServer</code>
-  instances in the traditional DI coding style <em>and also</em> use the active record style.  This can be done
-  when the EbeanServer instances are created with <code>register</code> as true and one instance marked
-  as the <code>default server</code>.
+  As long as  <code>ServerConfig.setRegister(true)</code> and <code>ServerConfig.setDefaultServer(true)</code>
+  are used in the Guice provider then the EbeanServer instance created is also available via the Ebean
+  singleton and that means both <code>@Inject</code> and the <code>active record</code> style can be used.
 </p>
 
 <div class="next pull-right">
-  <a href="spring" class="btn btn-info">Next: Spring</a>
+  <a href="manifest" class="btn btn-info">Next: Ebean.mf</a>
 </div>
 
 
@@ -177,19 +163,13 @@
 <li >
   <a href="/docs/configuration/manifest">Ebean.mf</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/configuration/serverconfig">ServerConfig</a>
-<ul class="nav">
-  <li><a href="#ebeanserver">EbeanServer</a></li>
-  <li><a href="#defaultserver">Default server</a></li>
-  <li><a href="#ebean">Ebean</a></li>
-  <li><a href="#model">Model</a></li>
-</ul>
 </li>
 <li >
   <a href="/docs/configuration/spring">Spring</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/configuration/guice">Guice</a>
 </li>
 

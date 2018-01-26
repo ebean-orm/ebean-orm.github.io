@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="layout-head" />
+    <title>Introduction</title>
+    <link rel="shortcut icon" href="/images/favicon.ico" >
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div id="wrap">
+    <div id="header">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="/images/logo-black-3.png" width="32" style="display: inline;">Ebean ORM</a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main" data-offset="60">
+
+<div class="jumbotron mini">
+  <div class="container">
+    <form class="pull-right">
+      <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
+    </form>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/configuration/">Configuration</a> / Spring</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+      
+
+<h2 id="spring-boot">Spring boot</h2>
+<p>
+  Ebean is now aware of Spring boot runnable jar structure (for scanning the classpath). There is an
+  <a href="https://github.com/ebean-orm/example-springboot">example application</a> showing:
+</p>
+
+<ul>
+  <li><a href="https://github.com/ebean-orm/example-springboot/blob/master/src/main/java/org/example/sboot/service/EbeanFactoryBean.java">Factory Bean (programmatic configuration of EbeanServer)</a></li>
+  <li>The EbeanFactoryBean also loads and uses configuration Properties from application.properties</li>
+  <li><a href="https://github.com/ebean-orm/example-springboot/blob/master/src/test/resources/test-ebean.properties">test-ebean.properties</a></li>
+</ul>
+<p>
+  This example does not show integration with Spring transactions (and instead uses Ebean's own transactions). Please
+  review the <code>ebean-spring</code> project for that.
+</p>
+
+<h2 id="factorybean">FactoryBean</h2>
+<p>
+  Rather than use the implementation provided in <code>ebean-spring</code> you can write your
+  own Spring FactoryBean like the code below (or the spring boot EbeanFactoryBean example
+  <a href="https://github.com/ebean-orm/example-springboot/blob/master/src/main/java/org/example/sboot/service/EbeanFactoryBean.java">Factory Bean (programmatic configuration of EbeanServer)</a>).
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* Simple Spring bean factory for creating the EbeanServer.</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyEbeanServerFactory</span> <span class="kd">implements</span> <span class="n">FactoryBean</span><span class="o">&lt;</span><span class="n">EbeanServer</span><span class="o">&gt;</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+    <span class="k">return</span> <span class="n">createEbeanServer</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">getObjectType</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSingleton</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * Create a EbeanServer instance.</span>
+<span class="cm">  */</span>
+  <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+
+    <span class="c1">// load configuration from ebean.properties</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">...</span>
+    <span class="c1">// other programmatic configuration</span>
+
+    <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+
+  <h2 id="ebean-spring">ebean-spring</h2>
+  <p>
+    The ebean-spring provides a FactoryBean as well as integration with Spring transactions.
+  </p>
+
+
+
+
+  <div role="tabpanel">
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#Maven4" aria-controls="Maven4" role="tab" data-toggle="tab">Maven</a></li>
+      <li role="presentation"><a href="#Ivy4" aria-controls="Ivy4" role="tab" data-toggle="tab">Ivy</a></li>
+      <li role="presentation"><a href="#Grape4" aria-controls="Grape4" role="tab" data-toggle="tab">Grape</a></li>
+      <li role="presentation"><a href="#Gradle4" aria-controls="Gradle4" role="tab" data-toggle="tab">Gradle</a></li>
+      <li role="presentation"><a href="#Buildr4" aria-controls="Buildr4" role="tab" data-toggle="tab">Buildr</a></li>
+      <li role="presentation"><a href="#SBT4" aria-controls="SBT4" role="tab" data-toggle="tab">SBT</a></li>
+      <li role="presentation"><a href="#Leiningen4" aria-controls="Leiningen4" role="tab" data-toggle="tab">Leiningen</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="Maven4">
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-spring<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='ebean-spring-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Ivy4">
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;io.ebean&quot;</span> <span class="na">name=</span><span class="s">&quot;ebean-spring&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='ebean-spring-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Grape4">
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;ebean-spring&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='ebean-spring-version'>${version}</span>&#39;</span><span class="o">)</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Gradle4">
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-spring:<span class='ebean-spring-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Buildr4">
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-spring:<span class='ebean-spring-version'>${version}</span>&#39;</span>
+</pre></div>
+</div>    </div>
+      <div role="tabpanel" class="tab-pane" id="SBT4">
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;io.ebean&quot;</span> <span class="o">%</span> <span class="s">&quot;ebean-spring&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='ebean-spring-version'>${version}</span>&quot;</span>
+</pre></div>
+</div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="Leiningen4">
+<div class="syntax xml"><div class="highlight"><pre><span></span>[io.ebean/ebean-spring &quot;<span class='ebean-spring-version'>${version}</span>&quot;]
+</pre></div>
+</div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <h5>EbeanServerFactoryBean</h5>
+  <p>
+    <code>EbeanServerFactoryBean</code> is a spring FactoryBean that also holds a serverConfig.
+    It is expected to be used in conjunction with <code>default-ebean-server.xml</code> which specifically
+    registers <code>SpringAwareJdbcTransactionManager</code> as the external transaction manager on the ServerConfig.
+  </p>
+
+  <h5>SpringAwareJdbcTransactionManager</h5>
+  <p>
+    <code>SpringAwareJdbcTransactionManager</code> implements Ebean's ExternalTransactionManager API and provides the
+    integration into Spring transaction management.
+  </p>
+
+  <h5>SpringJdbcTransaction</h5>
+  <p>
+    <code>SpringJdbcTransaction</code> extends Ebean's <code>ExternalJdbcTransaction</code> and
+    is used by SpringAwareJdbcTransactionManager.
+  </p>
+
+
+  <div class="next pull-right">
+  <a href="guice" class="btn btn-info">Next: Guice</a>
+</div>
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/configuration/manifest">Ebean.mf</a>
+</li>
+<li >
+  <a href="/docs/configuration/serverconfig">ServerConfig</a>
+</li>
+<li class="active">
+  <a href="/docs/configuration/spring">Spring</a>
+</li>
+<li >
+  <a href="/docs/configuration/guice">Guice</a>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+  </div>
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/json2.js"></script>
+  <script src="/js/jquery.cookie.min.js"></script>
+  <script src="/js/jquery.storageapi.min.js"></script>
+
+  <script src="/js/ebean-site.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>  <!-- at the end of the BODY -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+  <script type="text/javascript"> docsearch({
+	  apiKey: 'fee4c0c671ae9d80039c22e5a47bf4ec',
+	  indexName: 'ebean',
+	  inputSelector: '#search-input',
+	  debug: true
+  });
+  </script>
+  </body>
+</html>
