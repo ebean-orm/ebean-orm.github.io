@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / Testing</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Docker</h1>
   </div>
 </div>
 
@@ -80,26 +80,12 @@
     <div class="col-md-9" role="main">
       
 
+<h2>Docker</h2>
 
-<h3><a href="test-properties">Test properties</a></h3>
-<p>
-  Use <code>test-ebean.properties</code> to configure EbeanServer for running tests. Typically we want
-  to control <code>ddl generation</code> and run against <code>h2</code> in-memory database or a <code>docker</code>
-  container database.
-</p>
+<div class="next pull-right">
+  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+</div>
 
-<h3><a href="docker-run">Docker</a></h3>
-<p>
-  Use <code>docker-run</code> to automatically start docker database containers to run tests against. We can get
-  these containers to automatically start and be created with an appropriate database and user so that we can just
-  run our tests.
-</p>
-
-<h3><a href="mocki">Mocki Ebean</a></h3>
-<p>
-  With <code>docker-run</code> there is now not much cause for using Mocki-Ebean these days. Still ... its here
-  in case we want to still go down that path.
-</p>
 
 
     </div>
@@ -111,7 +97,7 @@
 <li >
   <a href="/docs/testing/test-properties">Test properties</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/docker-run">Docker</a>
 </li>
 <li >

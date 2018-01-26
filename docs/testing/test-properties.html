@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / Testing</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Test properties</h1>
   </div>
 </div>
 
@@ -79,27 +79,58 @@
 
     <div class="col-md-9" role="main">
       
-
-
-<h3><a href="test-properties">Test properties</a></h3>
+<h2 id="test-properties">test-ebean.properties</h2>
 <p>
-  Use <code>test-ebean.properties</code> to configure EbeanServer for running tests. Typically we want
-  to control <code>ddl generation</code> and run against <code>h2</code> in-memory database or a <code>docker</code>
-  container database.
+  When you want to run all tests against <code>H2</code> in memory database a simple way to do this is to add a
+  <code>src/test/resources/test-ebean.properties</code> to your project. In the <code>test-ebean.properties</code>
+  you can effectively override the properties of the datasource and specify to use <code>H2</code>.
 </p>
-
-<h3><a href="docker-run">Docker</a></h3>
 <p>
-  Use <code>docker-run</code> to automatically start docker database containers to run tests against. We can get
-  these containers to automatically start and be created with an appropriate database and user so that we can just
-  run our tests.
+  When an EbeanServer is created automatically via <code>Ebean.getDefaultServer()</code> or <code>Ebean.getServer(name)</code>
+  then Ebean will look for the existence of test-ebean.properties in the classpath. If found this then typically
+  specifies to use an in memory <code>H2</code> datasource.
 </p>
-
-<h3><a href="mocki">Mocki Ebean</a></h3>
 <p>
-  With <code>docker-run</code> there is now not much cause for using Mocki-Ebean these days. Still ... its here
-  in case we want to still go down that path.
+  When programmatically creating an EbeanServer using <code>ServerConfig</code> and <code>EbeanServerFactory</code>
+  there is a method <code>serverConfig.loadTestProperties()</code> which will similarly look for a test-ebean.properties
+  file if present.
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">EbeanServer</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+<span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">);</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="o">...</span>
+
+<span class="c1">// load test-ebean.properties if present for running tests</span>
+<span class="c1">// typically using H2 in memory database</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadTestProperties</span><span class="o">();</span>
+
+<span class="c1">// set as default and register so that Model can be</span>
+<span class="c1">// used if desired for save() and update() etc</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setRegister</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+
+<span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>Example test-ebean.properties</h3>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>
+
+<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
+<span class="na">datasource.db.password</span><span class="o">=</span>
+<span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
+<span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+</pre></div>
+</div>
+
+<div class="next pull-right">
+  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+</div>
 
 
     </div>
@@ -108,7 +139,7 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 
-<li >
+<li class="active">
   <a href="/docs/testing/test-properties">Test properties</a>
 </li>
 <li >

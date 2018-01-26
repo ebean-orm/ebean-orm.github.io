@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / Testing</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/configuration/">Configuration</a> / ebean.mf</h1>
   </div>
 </div>
 
@@ -79,28 +79,55 @@
 
     <div class="col-md-9" role="main">
       
-
-
-<h3><a href="test-properties">Test properties</a></h3>
+<h2>ebean.mf</h2>
 <p>
-  Use <code>test-ebean.properties</code> to configure EbeanServer for running tests. Typically we want
-  to control <code>ddl generation</code> and run against <code>h2</code> in-memory database or a <code>docker</code>
-  container database.
+  The <code>ebean.mf</code> manifest file controls the enhancement. It controls:
+</p>
+<ul>
+  <li>What packages are enhanced</li>
+  <li>What enhancement features are used</li>
+</ul>
+<p>
+  It is typically located in <code>src/main/resources/ebean.mf</code>.
 </p>
 
-<h3><a href="docker-run">Docker</a></h3>
+
+<h3>Example 1</h3>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
+<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
+<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">none</span>
+</pre></div>
+</div>
 <p>
-  Use <code>docker-run</code> to automatically start docker database containers to run tests against. We can get
-  these containers to automatically start and be created with an appropriate database and user so that we can just
-  run our tests.
+  With example 1 we are enhancing entity beans in the <code>org.example.domain</code> package, we are also
+  enhancing <code>@Transactional</code> methods but we are not using query bean enhancement.
 </p>
 
-<h3><a href="mocki">Mocki Ebean</a></h3>
+
+<h3>Example 2</h3>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">profile-location</span><span class="o">:</span> <span class="s">true</span>
+<span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
+<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
+<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">org.example</span>
+</pre></div>
+</div>
 <p>
-  With <code>docker-run</code> there is now not much cause for using Mocki-Ebean these days. Still ... its here
-  in case we want to still go down that path.
+  With example 2 turns on <code>profile-location</code> enhancement and <code>query bean</code> enhancement.
 </p>
 
+<h3>Tooling</h3>
+<p>
+  The ebean.mf file is read by all the tooling that performs enhancement. It is read by:
+</p>
+<ul>
+  <li>IntelliJ IDEA plugin</li>
+  <li>Eclipse plugin</li>
+  <li>Maven enhancement plugin</li>
+  <li>Gradle enhancement plugin</li>
+</ul>
+<div class="next pull-right">
+  <a href="serverconfig" class="btn btn-info">Next: ServerConfig</a>
+</div>
 
     </div>
 
@@ -108,16 +135,12 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 
-<li >
-  <a href="/docs/testing/test-properties">Test properties</a>
+<li class="active">
+  <a href="/docs/configuration/manifest">Ebean.mf</a>
 </li>
 <li >
-  <a href="/docs/testing/docker-run">Docker</a>
+  <a href="/docs/configuration/serverconfig">ServerConfig</a>
 </li>
-<li >
-  <a href="/docs/testing/mocki">Mocki Ebean</a>
-</li>
-
         </ul>
       </nav>
     </div>

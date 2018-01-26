@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / Testing</h1>
+    <h1><a href="/docs/">Documentation</a> / Configuration</h1>
   </div>
 </div>
 
@@ -80,27 +80,29 @@
     <div class="col-md-9" role="main">
       
 
-
-<h3><a href="test-properties">Test properties</a></h3>
+<h3><a href="manifest">Configuring enhancement via ebean.mf</a></h3>
 <p>
-  Use <code>test-ebean.properties</code> to configure EbeanServer for running tests. Typically we want
-  to control <code>ddl generation</code> and run against <code>h2</code> in-memory database or a <code>docker</code>
-  container database.
+  Controlling the enhancement via <code>src/main/resources/ebean.mf</code>
 </p>
 
-<h3><a href="docker-run">Docker</a></h3>
+<h3><a href="serverconfig">ServerConfig</a></h3>
 <p>
-  Use <code>docker-run</code> to automatically start docker database containers to run tests against. We can get
-  these containers to automatically start and be created with an appropriate database and user so that we can just
-  run our tests.
+  Configuration of the EbeanServer instance via <code>ServerConfig</code>.
 </p>
 
-<h3><a href="mocki">Mocki Ebean</a></h3>
+<h3><a href="/docs/testing/test-properties">test-ebean.properties</a></h3>
 <p>
-  With <code>docker-run</code> there is now not much cause for using Mocki-Ebean these days. Still ... its here
-  in case we want to still go down that path.
+  Testing configuration via <code>test-ebean.properties</code>.
 </p>
 
+<h3><a href="/docs/testing/docker-run">docker-run.properties</a></h3>
+<p>
+  Controlling docker containers for testing via <code>docker-run.properties</code>.
+</p>
+
+<div class="next pull-right">
+  <a href="/docs/testing/" class="btn btn-info">Next: Testing</a>
+</div>
 
     </div>
 
@@ -109,15 +111,11 @@
         <ul class="nav bs-docs-sidenav">
 
 <li >
-  <a href="/docs/testing/test-properties">Test properties</a>
+  <a href="/docs/configuration/manifest">Ebean.mf</a>
 </li>
 <li >
-  <a href="/docs/testing/docker-run">Docker</a>
+  <a href="/docs/configuration/serverconfig">ServerConfig</a>
 </li>
-<li >
-  <a href="/docs/testing/mocki">Mocki Ebean</a>
-</li>
-
         </ul>
       </nav>
     </div>
