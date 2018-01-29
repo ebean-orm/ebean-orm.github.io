@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Create All DDL | Docs | Ebean</title>
+    <title>DDL | Docs | Ebean</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -21,7 +21,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
+  </head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/ddl/">DDL</a> / Create all</h1>
+    <h1><a href="/docs/">Documentation</a> / DDL</h1>
   </div>
 </div>
 
@@ -79,52 +79,21 @@
 
     <div class="col-md-9" role="main">
       
-
-  <h2 id="overview">Overview</h2>
-  <p>
-    Ebean has the ability to generate and execute <code>CREATE ALL</code> and <code>DROP ALL</code> DDL
-    scripts which create all the tables. These are typically used when running tests and frequently these tests
-    run against H2 database rather than the target Postgres/Oracle/MySql/SQL Server ... database.
-    That is, when running a test or suite of tests the DB is created entirely from scratch.
-  </p>
-  <blockquote>
-    When running a test or suite of tests the DB is created entirely from scratch
-  </blockquote>
-
-  <h2 id="properties">test-ebean.properties</h2>
-  <p>
-    Usually you set both <code>ebean.ddl.generate</code> and <code>ebean.ddl.run</code> to true in the
-    <code>test-ebean.properties</code> (which is in src/test/resources) and in this way the <code>CREATE ALL</code>
-    DDL is only generated and executed when running tests.
-  </p>
-
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.ddl.generate</span><span class="o">=</span><span class="s">true</span>
-<span class="na">ebean.ddl.run</span><span class="o">=</span><span class="s">true</span>
-</pre></div>
-</div>
-
-  <h2>DB Migration</h2>
-  <p>
-    <a href="dbmigration">DB Migration</a> is different in that <code>DIFF</code> DDL scripts are generated for the changes to the model
-    and these <code>DIFF</code> DDL scripts can be applied to the target Postgres/Oracle/MySql/SQL Server ... database and
-    often <code>FlywayDb</code> or <code>Liquibase</code> is used to apply those DDL changes.
-  </p>
-
+<div id="layout-body"></div>
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li class="active">
+<li >
   <a href="/docs/ddl/ddl-create-all">DDL - Create All</a>
-<ul class="nav">
-  <li><a href="#overview">Overview</a></li>
-  <li><a href="#properties">Properties</a></li>
-</ul>
 </li>
 <li >
   <a href="/docs/ddl/dbmigration">DDL - DB Migration</a>
+</li>
+<li >
+  <a href="/docs/testing/">Testing</a>
 </li>
         </ul>
       </nav>
