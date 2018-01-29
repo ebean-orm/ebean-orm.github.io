@@ -202,7 +202,7 @@ names are used in place of column names.</p>
 <span class="n">server</span><span class="o">.</span><span class="na">createUpdate</span><span class="o">(</span><span class="n">OrderDetail</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;delete from orderDetail&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
 
 <span class="c1">// sql bulk update uses table and column names</span>
-<span class="n">server</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="s">&quot;delete from o_country&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
+<span class="n">server</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="s">&quot;delete from country&quot;</span><span class="o">).</span><span class="na">execute</span><span class="o">();</span>
 </pre></div>
 </div>`
 
@@ -252,9 +252,9 @@ procedure calls (if CallableSql doesn't do the business for you).</p>
   <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
   <span class="c1">// use raw JDBC</span>
   <span class="o">...</span>
-  <span class="c1">// assuming we updated the &quot;o_shipping_details&quot; table</span>
+  <span class="c1">// assuming we updated the &quot;shipping_detail&quot; table</span>
   <span class="c1">// inform Ebean so it can maintain it&#39;s &#39;L2&#39; cache</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">addModification</span><span class="o">(</span><span class="s">&quot;o_shipping_details&quot;</span><span class="o">,</span><span class="kc">false</span><span class="o">,</span><span class="kc">true</span><span class="o">,</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">addModification</span><span class="o">(</span><span class="s">&quot;shipping_detail&quot;</span><span class="o">,</span><span class="kc">false</span><span class="o">,</span><span class="kc">true</span><span class="o">,</span><span class="kc">false</span><span class="o">);</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">commitTransaction</span><span class="o">();</span>
 <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
   <span class="n">Ebean</span><span class="o">.</span><span class="na">endTransaction</span><span class="o">();</span>
@@ -263,7 +263,7 @@ procedure calls (if CallableSql doesn't do the business for you).</p>
 </div>
 
 <p>The <b>transaction.addModification()</b> in the code above informs Ebean that your jdbc code
-updated the o_shipping_details table. Ebean uses this information to automatically
+updated the shipping_details table. Ebean uses this information to automatically
 manage its "L2" cache as well as maintain Lucene text indexes.</p>
 
 <h2 id="batch_processing">JDBC Batch</h2>
@@ -302,7 +302,7 @@ manage its "L2" cache as well as maintain Lucene text indexes.</p>
   <span class="c1">// for batch processing via raw SQL you can inform</span>
   <span class="c1">// Ebean what tables were modified so that it can</span>
   <span class="c1">// clear the appropriate L2 caches</span>
-  <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;o_customer&quot;</span><span class="o">;</span>
+  <span class="n">String</span> <span class="n">tableName</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">;</span>
   <span class="kt">boolean</span> <span class="n">inserts</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
   <span class="kt">boolean</span> <span class="n">upates</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
   <span class="kt">boolean</span> <span class="n">deletes</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>

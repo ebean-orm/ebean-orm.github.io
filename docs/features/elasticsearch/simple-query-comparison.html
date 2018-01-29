@@ -170,7 +170,7 @@
   <span class="n">t0</span><span class="p">.</span><span class="n">when_modified</span>       <span class="n">c6</span><span class="p">,</span>
   <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>         <span class="n">c7</span><span class="p">,</span>
   <span class="n">t0</span><span class="p">.</span><span class="n">shipping_address_id</span> <span class="n">c8</span>
-<span class="k">FROM</span> <span class="n">o_order</span> <span class="n">t0</span>
+<span class="k">FROM</span> <span class="n">orders</span> <span class="n">t0</span>
 <span class="k">WHERE</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="k">IN</span> <span class="p">(</span><span class="o">?</span><span class="p">)</span> <span class="k">AND</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="o">&gt;</span> <span class="o">?</span>
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="k">DESC</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
 <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">;</span> <span class="c1">--bind(NEW,2015-12-08)</span>
@@ -296,7 +296,7 @@ ES mean: 14.0    std dev: 2.00    min:10   max:22
 
 <span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;o_order&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">class</span> <span class="nc">Order</span> <span class="o">:</span> <span class="n">BaseModel</span><span class="o">()</span> <span class="o">{</span>
 
   <span class="o">...</span>

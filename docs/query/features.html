@@ -315,7 +315,7 @@
 </div>
 
     <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c1</span>
-<span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
 <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span> <span class="p">;</span> <span class="c1">--bind(1)</span>
 </pre></div>
 </div>
@@ -343,10 +343,10 @@
 <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c6</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">ship_qty</span> <span class="n">c8</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">unit_price</span> <span class="n">c9</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="k">version</span> <span class="n">c10</span><span class="p">,</span>
 <span class="n">t2</span><span class="p">.</span><span class="n">when_created</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c13</span><span class="p">,</span>
 <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="n">c14</span><span class="p">,</span> <span class="n">t3</span><span class="p">.</span><span class="n">sku</span> <span class="n">c15</span> <span class="c1">-- product sku</span>
-<span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
-<span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
-<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_order_detail</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
-<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_product</span> <span class="n">t3</span> <span class="k">on</span> <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t2</span><span class="p">.</span><span class="n">product_id</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">order_detail</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">product</span> <span class="n">t3</span> <span class="k">on</span> <span class="n">t3</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t2</span><span class="p">.</span><span class="n">product_id</span>
 <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="o">?</span>
 <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="k">asc</span><span class="p">;</span> <span class="c1">--bind(1)</span>
 </pre></div>
@@ -419,7 +419,7 @@ name=Ford, ]
 </pre></div>
 </div>
 
-    ... results in the "left outer join o_contact" and related t2.* columns being included in the
+    ... results in the "left outer join contact" and related t2.* columns being included in the
     query (so they won't be lazy loaded later).
 
     <div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- This first query includes the customer contacts</span>
@@ -428,9 +428,9 @@ name=Ford, ]
 <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c2</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c3</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="n">c4</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
 <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="n">c12</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c13</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c14</span><span class="p">,</span> <span class="p">...</span> <span class="c1">-- truncated</span>
 <span class="n">t2</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c19</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="n">c20</span>
-<span class="k">from</span> <span class="n">o_order</span> <span class="n">t0</span>
-<span class="k">join</span> <span class="n">o_customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
-<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">o_contact</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">contact</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span>
 <span class="k">order</span> <span class="k">by</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
 </pre></div>
 </div>
@@ -441,7 +441,7 @@ name=Ford, ]
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- This second query fetchs the order details associated</span>
 <span class="c1">-- with the orders that were returned by the first query</span>
 <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_qty</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">from</span> <span class="n">o_order_detail</span> <span class="n">t0</span>
+<span class="k">from</span> <span class="n">order_detail</span> <span class="n">t0</span>
 <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">,</span><span class="o">?</span><span class="p">)</span>
 <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
 <span class="c1">--bind(2,1,1,1,3,3,3,4,4,4)</span>
@@ -465,7 +465,7 @@ name=Ford, ]
   <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">inactive</span> <span class="n">c1</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="n">c2</span><span class="p">,</span> <span class="p">...</span>
 <span class="n">t0</span><span class="p">.</span><span class="n">when_updated</span> <span class="n">c7</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span> <span class="n">c8</span><span class="p">,</span> <span class="p">...</span>
 <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="n">c10</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">first_name</span> <span class="n">c11</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">last_name</span> <span class="n">c12</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">from</span> <span class="n">o_customer</span> <span class="n">t0</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
 <span class="k">left</span> <span class="k">outer</span> <span class="k">join</span> <span class="n">be_contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
 <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
 </pre></div>
@@ -685,7 +685,7 @@ where id in (?,?,?,?,?)
     <div class="syntax xml"><div class="highlight"><pre><span></span>// query 1 … the main query
 <span class="nt">&lt;sql</span> <span class="na">summary=</span><span class="s">&#39;Order&#39;</span><span class="nt">&gt;</span>
   select o.id c0, o.status c1, o.ship_date c2, o.customer_id c3
-  from o_order o
+  from orders o
 <span class="nt">&lt;/sql&gt;</span>
 </pre></div>
 </div>
@@ -698,8 +698,8 @@ where id in (?,?,?,?,?)
   select c.id c0, c.name c1
   , cs.id c2, cs.line_1 c3, cs.city c4
   , cc.id c5, cc.first_name c6, cc.last_name c7, cc.mobile c8
-  from o_customer c
-  left outer join o_address cs on cs.id = c.shipping_address_id
+  from customer c
+  left outer join address cs on cs.id = c.shipping_address_id
   left outer join contact cc on cc.customer_id = c.id
   where c.id in (?,?,?,?,?,?,?,?,?,?)
   order by c.id
@@ -715,9 +715,9 @@ where id in (?,?,?,?,?)
   select o.id c0
   , od.id c1, od.order_qty c2, od.unit_price c3
   , odp.id c4, odp.sku c5, odp.name c6
-  from o_order o
-  left outer join o_order_detail od on od.order_id = o.id
-  left outer join o_product odp on odp.id = od.product_id
+  from orders o
+  left outer join order_detail od on od.order_id = o.id
+  left outer join product odp on odp.id = od.product_id
   where o.id in (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
   order by o.id
 <span class="nt">&lt;/sql&gt;</span>
@@ -787,8 +787,8 @@ where id in (?,?,?,?,?)
   select c.id c0, c.name c1, cs.id c2, cs.line_1 c3, cs.line_2 c4, cs.city c5,
   cs.cretime c6, cs.updtime c7, cs.country_code c8,
   cc.id c9, cc.phone c10, cc.email c11
-  from o_customer c
-  left outer join o_address cs on cs.id = c.shipping_address_id
+  from customer c
+  left outer join address cs on cs.id = c.shipping_address_id
   left outer join contact cc on cc.customer_id = c.id
   where c.id in (?,?,?,?,?)
   order by c.id
@@ -1147,9 +1147,9 @@ example: shows the use of FutureList:
 
 <span class="n">String</span> <span class="n">sql</span>
 <span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
-<span class="o">+</span> <span class="s">&quot; from o_order o&quot;</span>
-<span class="o">+</span> <span class="s">&quot; join o_customer c on c.id = o.kcustomer_id &quot;</span>
-<span class="o">+</span> <span class="s">&quot; join o_order_detail d on d.order_id = o.id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; from orders o&quot;</span>
+<span class="o">+</span> <span class="s">&quot; join customer c on c.id = o.kcustomer_id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; join order_detail d on d.order_id = o.id &quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
 
 <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
@@ -1187,7 +1187,7 @@ example: shows the use of FutureList:
 
 <span class="n">String</span> <span class="n">sql</span>
 <span class="o">=</span> <span class="s">&quot; select order_id, sum(d.order_qty*d.unit_price) as totalAmount &quot;</span>
-<span class="o">+</span> <span class="s">&quot; from o_order_detail d&quot;</span>
+<span class="o">+</span> <span class="s">&quot; from order_detail d&quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
 
 <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
@@ -1280,9 +1280,9 @@ example: shows the use of FutureList:
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
 <span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
-<span class="s">&quot;from o_order o join o_customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
-<span class="s">&quot;join o_order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
-<span class="s">&quot;join o_product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;from orders o join customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
 <span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
 <span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
 
