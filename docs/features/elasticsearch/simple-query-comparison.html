@@ -21,7 +21,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
+  </head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -42,49 +42,22 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
 </ul>        </div>
         <div class="mobile-nav">
-  <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/elasticsearch">ElasticSearch</a> / Simple query comparison </h1>
-</div>
-  <div class="sideNav"><ul class="nav navbar-nav">
-<li >
-  <a href="/docs/features/elasticsearch">Overview</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch/indexes">Indexes</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch/query">Query</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch/syncing">Syncing</a>
-</li>
-<li >
-  <a href="/docs/features/elasticsearch/get-started">Getting started</a>
-</li>
-<li class="active">
-  <a href="/docs/features/elasticsearch/simple-query-comparison">Simple query comparison</a>
-<ul class="nav">
-  <li><a href="#caveats">Caveats</a></li>
-  <li><a href="#setup">Setup</a></li>
-  <li><a href="#query">The query</a></li>
-  <li><a href="#run1">Run mode 1</a></li>
-  <li><a href="#run2">Run mode 2 - Denormalisation</a></li>
-  <li><a href="#run3">Run mode 3 - Selectivity</a></li>
-  <li><a href="#appendix-bean">Appendix: Bean mapping</a></li>
-  <li><a href="#appendix-index">Appendix: Index mapping</a></li>
-  <li><a href="#example-data">Appendix: Example data</a></li>
-</ul>
-</li>
-</ul></div>
-        </div>
+<ul class="nav navbar-nav pull-right">
+  <li ><a href="/"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
+</ul>        </div>
       </div>
     </div>
 
@@ -93,16 +66,20 @@
 
 <div class="jumbotron mini">
   <div class="container">
-      <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/elasticsearch">ElasticSearch</a> / Simple query comparison </h1>
-
+    <form class="pull-right">
+      <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
+    </form>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/features/">Features</a> / <a href="/docs/features/elasticsearch/">Elastic</a> / Simple query comparison</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
       
-<div class="bs-docs-section">
+
 
   <h2 id="caveats">Caveats</h2>
   <p>
@@ -557,14 +534,15 @@ ES mean: 14.0    std dev: 2.00    min:10   max:22
 <span class="p">}</span>
 </pre></div>
 </div>
-  </div>
+
+
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          
+
 <li >
   <a href="/docs/features/elasticsearch">Overview</a>
 </li>
@@ -597,7 +575,6 @@ ES mean: 14.0    std dev: 2.00    min:10   max:22
   <li><a href="#example-data">Appendix: Example data</a></li>
 </ul>
 </li>
-
         </ul>
       </nav>
     </div>
