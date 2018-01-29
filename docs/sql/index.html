@@ -42,7 +42,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
@@ -53,7 +53,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
@@ -69,116 +69,73 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1>Documentation</h1>
+    <h1><a href="/docs/">Documentation</a> / SQL</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
       
+<h2>Abstraction</h2>
+<p>
+    ORM is an abstraction for SQL databases. Sometimes that abstraction is not sufficient and we want to either
+    <code>bypass</code> part or all of that abstraction and use SQL directly.
+</p>
+<p>
+    Ebean provides mechanisms to use SQL directly.
+</p>
 
-<div class="container doc-index bs-docs-container">
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/introduction/">Introduction</a></h3>
-      <h3><a href="/docs/tooling/">Tooling</a></h3>
-      <h3><a href="/docs/logging">Logging</a></h3>
-      <h3><a href="/docs/configuration">Configuration</a></h3>
-      <h3><a href="/docs/testing">Testing</a></h3>
-      <h3><a href="/docs/ddl">DDL generation</a></h3>
-    </div>
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/ddl">DB Migration</a></h3>
-      <h3><a href="/docs/codestyle">Coding style</a></h3>
-      <h3><a href="/docs/mapping">Mapping</a></h3>
-      <h3><a href="/docs/query">Query</a></h3>
-      <h3><a href="/docs/persist">Persisting</a></h3>
-      <h3><a href="/docs/transactions">Transactions</a></h3>
+<h3>Queries</h3>
+<ul>
+    <li>Where raw() expression</li>
+    <li>Query.findNative</li>
+    <li>Query RawSql</li>
+    <li>SqlQuery</li>
+    <li>SQL Views</li>
+</ul>
 
-    </div>
+<h3>Bulk Updates</h3>
+<h3>Stored procedures</h3>
+<h3>JDBC</h3>
 
-    <div class="col-md-3 docs-index" role="main">
 
-      <h3><a href="/docs/examples">Examples</a></h3>
-      <ul>
-        <li><a href="/docs/examples#java-maven">Maven</a> and <a href="/docs/examples#java-gradle">Gradle</a></li>
-        <li><a href="/docs/examples#java">Java</a> and <a href="/docs/examples#kotlin">Kotlin</a></li>
-        <li><a href="/docs/examples#elasticSearch">ElasticSearch</a></li>
-        <li><a href="/docs/examples#history">SQL2011 History</a></li>
-        <li><a href="/docs/examples#postgis">PostGIS</a></li>
-        <li><a href="/docs/examples#multi-tenancy">Multi-tenancy</a></li>
-        <li><a href="/docs/examples#draftable">Draftable</a></li>
-      </ul>
+<!--<div class="next pull-right">-->
+    <!--<a href="/docs/transactions" class="btn btn-info">Next: Transactions</a>-->
+<!--</div>-->
+
 
     </div>
 
-  </div>
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
 
-  <p>&nbsp;</p>
-  <h3>Topics</h3>
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/sql/">SQL</a></h3>
-      <h3><a href="/docs/kotlin">Kotlin</a></h3>
-      <h3><a href="/docs/features/l2caching">L2 Caching</a></h3>
-    </div>
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/tuning">Tuning</a></h3>
-      <h3><a href="/docs/monitoring">Monitoring</a></h3>
-      <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-    </div>
-  </div>
-
-  <p>&nbsp;</p>
-
-  <h3>Features</h3>
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/history">SQL2011 @History</a></h3>
-      <h3><a href="/docs/features/eventlistening">Event listening</a></h3>
-      <h3><a href="/docs/features/softdelete">Soft delete</a></h3>
-      <h3><a href="/docs/features/draftable">Draftable</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
-      <h3><a href="/docs/features/json">JSON</a></h3>
-      <h3><a href="/docs/features/who">Who auditing</a></h3>
-      <h3><a href="/docs/features/changelog">Change log</a></h3>
-      <h3><a href="/docs/features/readauditing">Read auditing</a></h3>
-    </div>
-
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Architecture</h2>
-      <h3><a href="/docs/architecture/compare-jpa">JPA comparison</a></h3>
-      <h3><a href="/docs/architecture/compare-hibernate">Hibernate comparison</a></h3>
-      <h3><a href="/docs/architecture/persistence-context">Persistence context</a></h3>
-      <h3><a href="/docs/architecture/load-context">Load context</a></h3>
-
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Funding</h2>
-      <h3><a href="/funding">Funding & Sponsorship</a></h3>
+<li><a href="/docs/sql/queries">Queries</a>
+<ul class="nav" style="display: block;">
+  <li><a href="#whereraw">Where raw()</a></li>
+  <li><a href="#native">Native SQL</a></li>
+  <li><a href="#rawsql">RawSQL</a></li>
+  <li><a href="#sqlquery">SqlQuery</a></li>
+  <li><a href="#view">Views</a></li>
+</ul>
+</li>
+<li >
+  <a href="/docs/sql/updates">Bulk Updates</a>
+</li>
+<li >
+  <a href="/docs/sql/storedprocs">Stored procedures</a>
+</li>
+<li >
+  <a href="/docs/sql/jdbc">JDBC</a>
+</li>
+        </ul>
+      </nav>
     </div>
   </div>
-</div>
 
-    </div>
-    <!--<div class="col-md-3" role="complementary">-->
-      <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">-->
-        <!--<ul class="nav bs-docs-sidenav">-->
-          <!--$menuNav-->
-        <!--</ul>-->
-      <!--</nav>-->
-    <!--</div>-->
-  </div>
 </div>
 
 
