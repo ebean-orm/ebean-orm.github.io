@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Documentation</title>
+    <title>Introduction</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / SQL</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling/">Tooling</a> / Gradle</h1>
   </div>
 </div>
 
@@ -79,32 +79,64 @@
 
     <div class="col-md-9" role="main">
       
-<h2>Abstraction</h2>
+
+<h2>APT - Query Beans</h2>
 <p>
-    ORM is an abstraction for SQL databases. Sometimes that abstraction is not sufficient and we want to either
-    <code>bypass</code> part or all of that abstraction and use SQL directly.
-</p>
-<p>
-    Ebean provides mechanisms to use SQL directly.
+    We can additionally generate <code>Query beans</code> using <code>APT</code> (Java annotation processing).
+    To do this we need to make some additional changes to <code>build.gradle</code>.
 </p>
 
-<h3>Queries</h3>
-<ul>
-    <li>Where raw() expression</li>
-    <li>Query.findNative</li>
-    <li>Query RawSql</li>
-    <li>SqlQuery</li>
-    <li>SQL Views</li>
-</ul>
+<h4>1) configurations apt</h4>
+<p>
+    Add <code>apt</code> to the configurations section.
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">configurations</span> <span class="o">{</span>
+  <span class="n">apt</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
-<h3>Bulk Updates</h3>
-<h3>Stored procedures</h3>
-<h3>JDBC</h3>
+<h4>ebean queryBeans</h4>
+<p>
+    Set <code>queryBeans</code> to true in the ebean section. This tells the ebean plugin to add query bean
+    generation to the build.
+</p>
+
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">ebean</span> <span class="o">{</span>
+    <span class="n">debugLevel</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">queryBeans</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h4>ebean-querybean dependency</h4>
+<p>
+    Add <code>ebean-querybean</code> as a compile dependency.
+</p>
+
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.1.1&#39;</span>
+</pre></div>
+</div>
 
 
-<!--<div class="next pull-right">-->
-    <!--<a href="/docs/transactions" class="btn btn-info">Next: Transactions</a>-->
-<!--</div>-->
+<h4>Idea</h4>
+<p>
+    For IntelliJ IDEA we also should tell it to add <code>generated</code> directory to the sourceDirs. We do this
+    such that we can run tests in the IDE and IntelliJ will 'see' the generated query beans.
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">idea</span> <span class="o">{</span>
+    <span class="n">module</span> <span class="o">{</span>
+        <span class="n">sourceDirs</span> <span class="o">+=</span> <span class="n">file</span><span class="o">(</span><span class="s2">&quot;$projectDir/generated&quot;</span><span class="o">)</span>
+        <span class="n">generatedSourceDirs</span> <span class="o">+=</span> <span class="n">file</span><span class="o">(</span><span class="s2">&quot;$projectDir/generated&quot;</span><span class="o">)</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+
+<div class="next pull-right">
+    <a href="agent" class="btn btn-info">Next: Agent</a>
+</div>
 
 
     </div>
@@ -113,28 +145,29 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 
-<li><a href="/docs/sql/queries">Queries</a>
-<ul class="nav" style="display: block;">
-  <li><a href="#whereraw">Where raw()</a></li>
-  <li><a href="#native">Native SQL</a></li>
-  <li><a href="#rawsql">RawSQL</a></li>
-  <li><a href="#sqlquery">SqlQuery</a></li>
-  <li><a href="#view">Views</a></li>
+<li >
+  <a href="/docs/tooling/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/tooling/idea">IntelliJ IDEA</a>
+</li>
+<li >
+  <a href="/docs/tooling/eclipse">Eclipse IDE</a>
+</li>
+<li >
+  <a href="/docs/tooling/maven">Maven</a>
+</li>
+<li class="active">
+  <a href="/docs/tooling/gradle">Gradle</a>
+<ul class="nav">
+    <li><a href="/docs/tooling/gradle">Plugin</a></li>
+    <li><a href="/docs/tooling/gradle-apt">APT</a></li>
+    <li><a href="/docs/tooling/gradle-plugin-source">Plugin source</a></li>
 </ul>
 </li>
 <li >
-  <a href="/docs/sql/updates#bulk">Bulk Updates</a>
+  <a href="/docs/tooling/agent">Agent</a>
 </li>
-<li >
-  <a href="/docs/sql/updates#storedprocs">Stored procedures</a>
-</li>
-<li >
-  <a href="/docs/sql/updates#jdbc">JDBC</a>
-</li>
-<li >
-  <a href="/docs/sql/olap">OLTP vs OLAP</a>
-</li>
-
         </ul>
       </nav>
     </div>

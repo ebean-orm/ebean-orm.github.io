@@ -80,7 +80,101 @@
     <div class="col-md-9" role="main">
       
 
-<h2>Gradle</h2>
+<h2>Ebean plugin</h2>
+
+<h4>1) buildscript dependency</h4>
+<p>
+  Add the <code>ebean-gradle-plugin</code> dependency to the <code>buildscript</code> section.
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">buildscript</span> <span class="o">{</span>
+  <span class="n">repositories</span> <span class="o">{</span>
+    <span class="n">mavenCentral</span><span class="o">()</span>
+  <span class="o">}</span>
+  <span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">classpath</span> <span class="s2">&quot;io.ebean:ebean-gradle-plugin:11.5.3&quot;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h4>2) apply</h4>
+<p>
+  Add <code>'io.ebean'</code> to the apply plugin section like:
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;io.ebean&#39;</span>
+</pre></div>
+</div>
+
+<h4>3) ebean</h4>
+<p>
+  Add a <code>ebean</code> section to control the debug level of the enhancement. This is optional but generally a good idea.
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">ebean</span> <span class="o">{</span>
+  <span class="n">debugLevel</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+
+<h4>4) test output</h4>
+<p>
+  Gradle by default suppresses output logging. If we want to see SQL, DDL, Transaction logging etc we
+  need to set <code>testLogging.showStandardStreams</code> = <code>true</code> in the test section like:
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">{</span>
+  <span class="n">testLogging</span><span class="o">.</span><span class="na">showStandardStreams</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2>Example project</h2>
+<p>
+  Have a look at the <a href="https://github.com/ebean-orm-examples/example-gradle-java">Example Gradle Java</a> for
+  a full example -  it's <a href="https://github.com/ebean-orm-examples/example-gradle-java/blob/master/build.gradle">build.gradle</a>.
+</p>
+
+
+<h2>Test output</h2>
+<p>
+  Below is a example output from <code>./gradlew clean test</code>. Specifically we can see:
+</p>
+<ul>
+  <li>The classes being enhanced (due to ebean debugLevel = 1)</li>
+  <li>The DDL, SQL and Transactions (controlled by logback-test.xml in this case)</li>
+</ul>
+<pre>
+$ ./gradlew clean test
+
+> Task :compileJava
+ebean-enhance> cls: org/example/domain/BaseDomain  msg: enhanced
+ebean-enhance> cls: org/example/domain/Customer  msg: enhanced
+
+> Task :test
+enhancement prior to running tests
+
+Gradle suite > Gradle test > org.example.domain.CustomerTest.saveAndFind STANDARD_OUT
+14:48:49.900 [Test worker] INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
+14:48:50.063 [Test worker] TRACE io.ebean.TXN - txn[1001] Begin
+14:48:50.064 [Test worker] INFO  io.ebean.DDL - Executing db-create-all.sql - 1 statements
+14:48:50.064 [Test worker] DEBUG io.ebean.DDL - executing 1 of 1 create table customer ( id                            bigint auto_increment not...
+14:48:50.076 [Test worker] DEBUG io.ebean.TXN - txn[1001] Commit
+14:48:50.086 [Test worker] DEBUG io.ebean.SQL - txn[1002] insert into customer (name, start_date, comments, version) values (?,?,?,?); --bind(Hello Rob,2018-01-30,[LOB],1)
+14:48:50.098 [Test worker] DEBUG io.ebean.SUM - txn[1002] Inserted [Customer] [1]
+14:48:50.098 [Test worker] DEBUG io.ebean.TXN - txn[1002] Commit
+14:48:50.122 [Test worker] DEBUG io.ebean.SQL - txn[1003] select t0.id, t0.name, t0.start_date, t0.version from customer t0 where t0.id = ?  ; --bind(1, )
+14:48:50.124 [Test worker] DEBUG io.ebean.SUM - txn[1003] FindBean type[Customer] origin[D88YBi.A.A] exeMicros[3052] rows[1] bind[1, ]
+14:48:50.129 [Test worker] DEBUG io.ebean.SQL - txn[1004] select t0.id, t0.name, t0.start_date, t0.version from customer t0 where t0.id is not null ; --bind()
+14:48:50.130 [Test worker] DEBUG io.ebean.SUM - txn[1004] FindMany type[Customer] origin[D88YBm.A.A] exeMicros[0] rows[0] predicates[t0.id is not null ] bind[]
+hello Hello Rob
+.. started on: 2018-01-30
+14:48:50.136 [Test worker] DEBUG io.ebean.SQL - txn[1005] select t0.id, t0.name, t0.start_date, t0.version from customer t0 where t0.name like ?  and t0.id > ? ; --bind(BatOutOfHell%,1)
+14:48:50.136 [Test worker] DEBUG io.ebean.SUM - txn[1005] FindMany type[Customer] origin[D88YBj.A.A] exeMicros[1619] rows[0] predicates[t0.name like ?  and t0.id > ? ] bind[BatOutOfHell%,1]
+bats:BeanList size[0] list[]
+
+
+BUILD SUCCESSFUL in 1s
+</pre>
+
 
 <div class="next pull-right">
   <a href="agent" class="btn btn-info">Next: Agent</a>
@@ -107,6 +201,11 @@
 </li>
 <li class="active">
   <a href="/docs/tooling/gradle">Gradle</a>
+<ul class="nav">
+    <li><a href="/docs/tooling/gradle">Plugin</a></li>
+    <li><a href="/docs/tooling/gradle-apt">APT</a></li>
+    <li><a href="/docs/tooling/gradle-plugin-source">Plugin source</a></li>
+</ul>
 </li>
 <li >
   <a href="/docs/tooling/agent">Agent</a>
