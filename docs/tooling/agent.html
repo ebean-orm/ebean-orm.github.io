@@ -245,43 +245,42 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
 <span class="o">...</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
-<span class="c1">// Load the agent into the running JVM process</span>
-<span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model&quot;</span><span class="o">))</span> <span class="o">{</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
-<span class="o">}</span>
+  <span class="c1">// Load the agent into the running JVM process</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1&quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
 
 
+<!--<#&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--<h2 id="ant">Ant enhancement</h2>-->
 
-<h2 id="ant">Ant enhancement</h2>
+<!--<p>Modify your ant build.xml file to: </p>-->
 
-<p>Modify your ant build.xml file to: </p>
+<!--<ol>-->
+  <!--<li>Define the AntEnhanceTask.</li>-->
+  <!--<li>Create a target that uses the AntEnhanceTask to enhance the entity classes.</li>-->
+<!--</ol>-->
 
-<ol>
-  <li>Define the AntEnhanceTask.</li>
-  <li>Create a target that uses the AntEnhanceTask to enhance the entity classes.</li>
-</ol>
+<!--<!--<taskdef-->
+        <!--name="ebeanEnhance"-->
+        <!--classname="io.ebean.enhance.ant.AntEnhanceTask"-->
+        <!--classpath="your_path_to/ebean-x.x.x.jar"/>-->
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;taskdef</span>
-        <span class="na">name=</span><span class="s">&quot;ebeanEnhance&quot;</span>
-        <span class="na">classname=</span><span class="s">&quot;io.ebean.enhance.ant.AntEnhanceTask&quot;</span>
-        <span class="na">classpath=</span><span class="s">&quot;your_path_to/ebean-x.x.x.jar&quot;</span><span class="nt">/&gt;</span>
+<!--<target name="ormEnhance" depends="clean,compile">-->
+  <!--&lt;!&ndash;-->
+  <!--classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.-->
 
-<span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;ormEnhance&quot;</span> <span class="na">depends=</span><span class="s">&quot;clean,compile&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!--</span>
-<span class="c">  classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.</span>
-
-<span class="c">  packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .</span>
-<span class="c">  --&gt;</span>
-  <span class="nt">&lt;ebeanEnhance</span>
-          <span class="na">classSource=</span><span class="s">&quot;your_classes_directory&quot;</span>
-          <span class="na">packages=</span><span class="s">&quot;app.domain.*&quot;</span>
-          <span class="na">transformArgs=</span><span class="s">&quot;debug=1&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/target&gt;</span>
-</pre></div>
-</div>
+  <!--packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .-->
+  <!--&ndash;&gt;-->
+  <!--<ebeanEnhance-->
+          <!--classSource="your_classes_directory"-->
+          <!--packages="app.domain.*"-->
+          <!--transformArgs="debug=1"/>-->
+<!--</target>-->
+<!---->
 
 
     </div>
