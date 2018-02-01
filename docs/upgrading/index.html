@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Documentation</title>
+    <title>Introduction</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -42,7 +42,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
@@ -53,7 +53,7 @@
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a target="_blank" href="/apidoc/10">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
   <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fa fa-github"></i> Github</a></li>
@@ -69,118 +69,112 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1>Documentation</h1>
+    <h1><a href="/docs/">Documentation</a> / Upgrading</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
       
+<h2>Upgrading</h2>
+<p>
+  A summary of changes needed in migrating to a later version of Ebean.
+</p>
 
-<div class="container doc-index bs-docs-container">
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/introduction/">Introduction</a></h3>
-      <h3><a href="/docs/tooling/">Tooling</a></h3>
-      <h3><a href="/docs/logging">Logging</a></h3>
-      <h3><a href="/docs/configuration">Configuration</a></h3>
-      <h3><a href="/docs/testing">Testing</a></h3>
-      <h3><a href="/docs/ddl">DDL generation</a></h3>
-    </div>
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/ddl">DB Migration</a></h3>
-      <h3><a href="/docs/codestyle">Coding style</a></h3>
-      <h3><a href="/docs/mapping">Mapping</a></h3>
-      <h3><a href="/docs/query">Query</a></h3>
-      <h3><a href="/docs/persist">Persisting</a></h3>
-      <h3><a href="/docs/transactions">Transactions</a></h3>
+<h2>Upgrading to 11.x from 10.x</h2>
 
-    </div>
+<h5>methods</h5>
+<ul>
+  <li>findUnique() -> findOne()</li>
+</ul>
+<h5>packages</h5>
+<ul>
+  <li>io.ebean.Platform; -> io.ebean.annotation.Platform;</li>
+</ul>
+<h5>other</h5>
+<ul>
+  <li>new DbMigration(); -> DbMigration.create();</li>
+</ul>
 
-    <div class="col-md-3 docs-index" role="main">
 
-      <h3><a href="/docs/examples">Examples</a></h3>
-      <ul>
-        <li><a href="/docs/examples#java-maven">Maven</a> and <a href="/docs/examples#java-gradle">Gradle</a></li>
-        <li><a href="/docs/examples#java">Java</a> and <a href="/docs/examples#kotlin">Kotlin</a></li>
-        <li><a href="/docs/examples#elasticSearch">ElasticSearch</a></li>
-        <li><a href="/docs/examples#history">SQL2011 History</a></li>
-        <li><a href="/docs/examples#postgis">PostGIS</a></li>
-        <li><a href="/docs/examples#multi-tenancy">Multi-tenancy</a></li>
-        <li><a href="/docs/examples#draftable">Draftable</a></li>
-      </ul>
+<h2>Upgrading to 10.x from 9.x</h2>
+<p>
+  Please help add documentation here - <a href="">Edit page</a>
+</p>
+
+
 
     </div>
 
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/introduction">Introduction</a>
+</li>
+<li >
+  <a href="/docs/maven">Maven setup</a>
+</li>
+<li >
+  <a href="/docs/gradle">Gradle setup</a>
+</li>
+
+<li >
+  <a href="/docs/enhancement">Enhancement</a>
+</li>
+<li >
+  <a href="/docs/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/setup">Configuration</a>
+</li>
+<li >
+  <a href="/docs/testing">Testing</a>
+</li>
+
+<li >
+  <a href="/docs/ddl">DDL generation</a>
+</li>
+<li >
+  <a href="/docs/codestyle">Coding style</a>
+</li>
+
+<li >
+  <a href="/docs/mapping">Mapping</a>
+</li>
+<li >
+  <a href="/docs/query">Query</a>
+</li>
+<li >
+  <a href="/docs/persist">Persisting</a>
+</li>
+<li >
+  <a href="/docs/transactions">Transactions</a>
+</li>
+
+<li >
+  <a href="/docs/features/l2caching">L2 Caching</a>
+</li>
+<li >
+  <a href="/docs/features/elasticsearch">ElasticSearch</a>
+</li>
+<li >
+  <a href="/docs/monitoring">Performance monitoring</a>
+</li>
+<li >
+  <a href="/docs/features">Features</a>
+</li>
+<li >
+  <a href="/docs/architecture">Architecture</a>
+</li>
+        </ul>
+      </nav>
+    </div>
   </div>
 
-  <p>&nbsp;</p>
-  <h3>Topics</h3>
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/sql/">SQL</a></h3>
-      <h3><a href="/docs/kotlin">Kotlin</a></h3>
-      <h3><a href="/docs/features/l2caching">L2 Caching</a></h3>
-      <h3><a href="/docs/upgrading">Upgrading</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/tuning">Tuning</a></h3>
-      <h3><a href="/docs/monitoring">Monitoring</a></h3>
-      <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-    </div>
-  </div>
-
-  <p>&nbsp;</p>
-
-  <h3>Features</h3>
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/history">SQL2011 @History</a></h3>
-      <h3><a href="/docs/features/eventlistening">Event listening</a></h3>
-      <h3><a href="/docs/features/softdelete">Soft delete</a></h3>
-      <h3><a href="/docs/features/draftable">Draftable</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
-      <h3><a href="/docs/features/json">JSON</a></h3>
-      <h3><a href="/docs/features/who">Who auditing</a></h3>
-      <h3><a href="/docs/features/changelog">Change log</a></h3>
-      <h3><a href="/docs/features/readauditing">Read auditing</a></h3>
-    </div>
-
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Architecture</h2>
-      <h3><a href="/docs/architecture/compare-jpa">JPA comparison</a></h3>
-      <h3><a href="/docs/architecture/compare-hibernate">Hibernate comparison</a></h3>
-      <h3><a href="/docs/architecture/persistence-context">Persistence context</a></h3>
-      <h3><a href="/docs/architecture/load-context">Load context</a></h3>
-
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Funding</h2>
-      <h3><a href="/funding">Funding & Sponsorship</a></h3>
-    </div>
-  </div>
-</div>
-
-    </div>
-    <!--<div class="col-md-3" role="complementary">-->
-      <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">-->
-        <!--<ul class="nav bs-docs-sidenav">-->
-          <!--$menuNav-->
-        <!--</ul>-->
-      <!--</nav>-->
-    <!--</div>-->
-  </div>
 </div>
 
 
