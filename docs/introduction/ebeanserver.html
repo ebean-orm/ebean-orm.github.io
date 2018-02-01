@@ -104,13 +104,15 @@
   <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
 <h2 id="defaultserver">The "default" EbeanServer</h2>
 <p>
   We can define one of the EbeanServer instances to be the <code>default EbeanServer</code>. This is the
-  <code>main</code> or <code>primary</code> EbeanServer instance that the application uses.
+  <code>main</code>
+  or <code>primary</code> EbeanServer instance that the application uses.
 </p>
 
 <h2 id="ebean">Ebean</h2>
@@ -126,10 +128,10 @@
   When there are many EbeanServer instances they are registered with Ebean with a <code>name</code> and we can use that
   to obtain them via Ebean.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the HR server by name</span>
-<span class="n">EbeanServer</span> <span class="n">hrServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
-</pre></div>
-</div>
+```java
+// obtain the HR server by name
+EbeanServer hrServer = Ebean.getServer("hr");
+```
 <p>
   Ebean provides a convenient way to call methods on the default EbeanServer. The <code>methods on Ebean
   proxy through to the underlying default EbeanServer instance</code>.
@@ -141,6 +143,7 @@
   Ebean has static convenience methods that proxy through to the default server.
 </p>
 
+```
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
 
 <span class="c1">// save customer to the database</span>
