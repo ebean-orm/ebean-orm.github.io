@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling/">Tooling</a> / Eclipse</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling/">Tooling</a> / <a href="/docs/tooling/eclipse">Eclipse</a> / APT and Maven</h1>
   </div>
 </div>
 
@@ -80,7 +80,7 @@
     <div class="col-md-9" role="main">
       
 
-<h2>Eclipse IDE Enhancement plugin</h2>
+<h2>Eclipse, APT and Maven</h2>
 
 <h2>Videos</h2>
 <div class="row mvm">
@@ -116,27 +116,56 @@
   </div>
 </div>
 
-<p class="mvm">
-  The Eclipse IDE plugin is installed from: <code>http://ebean-orm.github.io/eclipse/update</code>
-</p>
-
-<h2 id="recommendation">Recommendation</h2>
-<blockquote>
-  Use <b>both</b> IDE plugin enhancement (Idea or Eclipse) plus build time enhancement (maven or gradle).
-</blockquote>
+<h2 id="overview">Overview</h2>
 <p>
-  That is, the IDE plugin is good to use during development enhancing the beans as the IDE compiles the
-  classes. The IDE plugin can perform the enhancement during development and unit testing.
-  For production you can then choose between build time enhancement (via maven or gradle) or run time
-  enhancement via javaagent.
+  If you want to use <code>Query beans</code> it is best that they are generated
+  via <code>Java annotation processing</code>. Ebean provides <code>querybean-generator</code>
+  which is a java annotation processor that generates query beans.
 </p>
-
-
-<h2>Query bean generation with Maven and APT</h2>
 <p>
-  We can use APT to generate <b>Query beans</b>. To do this with Eclipse and maven have a look at
-  <a href="eclipse-maven-apt">Query bean generation with Eclipse + APT + Maven</a>.
+  Normally we just need to add the <code>querybean-generator</code> as a maven dependency and
+  it will all automatically work (with Maven and IntelliJ) but with Eclipse IDE we need some extra
+  setup in order for it to work.
 </p>
+<p>
+  This page documents the extra setup we need for Eclipse IDE such that it becomes aware of the
+  <code>querybean-generator</code> APT processor and generates query beans for us during development.
+</p>
+
+<h2 id="m2e-apt">1. Install m2e apt plugin</h2>
+<p>
+  First install the m2e apt plugin (by Redhat) from the Market place.
+</p>
+<p>
+  This plugin allows us to configure Eclipse to find java annotation processors
+  in the maven classpath (just like Maven and IntelliJ do automatically).
+</p>
+<img src="/images/eclipse/apt/install-m2e-apt.png" class="img-responsive img-thumbnail">
+
+
+<h2 id="preferences">2. Preferences / Maven / Annotation processing</h2>
+<p>
+  Goto Preferences / Maven / Annotation processing and select the option.
+  "Automatically configure JDT APT" is usually a fine default.
+</p>
+<img src="/images/eclipse/apt/pref-maven-apt.png" class="img-responsive img-thumbnail">
+
+
+<h2 id="java-compile">3. Project / Java compile / Annotation processing</h2>
+<p>
+  Turn on annotation processing for the project.
+</p>
+<img src="/images/eclipse/apt/javacompile-apt.png" class="img-responsive img-thumbnail">
+
+
+<h2 id="factory-path">4. Project / Java compile / Annotation processing / Factory Path</h2>
+<p>
+  Check the <code>Factory Path</code>. It is ok if all entries in the classpath are
+  selected but what MUST be selected is <code>querybean-generator</code> and additionally
+  <code>persistence-api</code> and <code>ebean</code> (we need these last 2 as
+  they contain annotations that querybean-generator is reading as part of it's code generation).
+</p>
+<img src="/images/eclipse/apt/javacompile-apt-factorypath.png" class="img-responsive img-thumbnail">
 
 <div class="next pull-right">
   <a href="maven" class="btn btn-info">Next: Maven</a>
