@@ -126,14 +126,7 @@
   <span class="kd">private</span> <span class="n">EbeanServer</span> <span class="nf">createEbeanServer</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-
-    <span class="c1">// load configuration from ebean.properties</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-    <span class="o">...</span>
-    <span class="c1">// other programmatic configuration</span>
-
+    <span class="c1">// plus any programmatic configuration</span>
     <span class="k">return</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>

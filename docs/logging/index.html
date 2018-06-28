@@ -95,6 +95,9 @@
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- Testing with Docker containers --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.docker&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
 
@@ -164,6 +167,18 @@
 <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.BULK&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
+
+<h2 id="docker">Docker logging</h2>
+<p>
+  Logging of docker commands used to start test containers with <a href="/docs/testing">ebean-test-config</a>.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Docker commands for starting test containers  --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.docker&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+
 <div class="next pull-right">
   <a href="/docs/configuration" class="btn btn-info">Next: Configuration</a>
 </div>
@@ -184,6 +199,7 @@
     <li><a href="#sum">Summary</a></li>
     <li><a href="#l2">L2 Cache</a></li>
     <li><a href="#elastic">ElasticSearch</a></li>
+  <li><a href="#docker">Docker</a></li>
 </ul>
 </li>
         </ul>
