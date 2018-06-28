@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Testing properties - DDL</title>
+    <title>Testing with SQL Server</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Test properties</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / SQL Server</h1>
   </div>
 </div>
 
@@ -79,57 +79,33 @@
 
     <div class="col-md-9" role="main">
       
-<h2 id="test-properties">Test properties</h2>
+
+<h2>SQL Server</h2>
+
 <p>
-  If we are using <code>ebean-test-config</code> that will automatically set appropriate DLL properties for
-  testing. If we are not using that or just want to understand more and have finer control read on ...
+  With SQL Server we have to decide if we are going to use the <code>sqlserver17</code> or the default older one.
 </p>
-
-<h3>DDL generation and run</h3>
+<h3>sqlserver17</h3>
 <p>
-  Controlling the generation and running of db-create-all.sql and db-drop-all.sql.
+  To setup to use sqlserver17 we should set the <code>databasePlatformName</code> to sqlserver17 at either the
+  `ebean.databasePlatformName` level or at `ebean.test.sqlserver.databasePlatformName` level.
 </p>
-<table class="table">
-  <tr>
-    <th>Property</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>ddl.generate</td>
-    <td>Set to true to generate the db-create-all.sql and db-drop-all.sql DDL scripts.</td>
-  </tr>
-  <tr>
-    <td>ddl.run</td>
-    <td>Set to true to run the db-create-all.sql, db-drop-all.sql and extra DDL scripts</td>
-  </tr>
-  <tr>
-    <td>ddl.createOnly</td>
-    <td>
-      Set to true to run the db-create-all.sql but <b>NOT</b> run the db-drop-all.sql. Mostly used with H2 database
-      in-memory testing when we know that the database is not populated / there are no tables to drop first.
-    </td>
-  </tr>
-  <tr>
-    <td>ebean.migraton.run</td>
-    <td>Set to true or false to run the migrations when the EbeanServer starts</td>
-  </tr>
-</table>
+<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
+  databasePlatformName: sqlserver17  <span class="c1">## only using sql server</span>
+  test:
+    sqlserver: postgres <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    dbName: <span class="nb">test</span>
 
-
-<h3>Example application-test.properties</h3>
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>
-<span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>
-
-<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
-<span class="na">datasource.db.password</span><span class="o">=</span>
-<span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
-<span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+    sqlserver:
+      databasePlatformName: sqlserver17  <span class="c1">## put here when testing multiple platforms</span>
 </pre></div>
 </div>
 
 <div class="next pull-right">
-  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+  <a href="/docs/testing/mocki" class="btn btn-info">Next: Mocki Ebean</a>
 </div>
+
 
 
     </div>
@@ -141,13 +117,13 @@
 <li >
   <a href="/docs/testing">Quickstart</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/testing/test-properties">Test properties</a>
 </li>
 <li >
   <a href="/docs/testing/postgres">Postgres</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/sqlserver">SQL Server</a>
 </li>
 <li >

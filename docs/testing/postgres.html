@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Testing properties - DDL</title>
+    <title>Testing with Postgres</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Test properties</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Postgres</h1>
   </div>
 </div>
 
@@ -79,56 +79,59 @@
 
     <div class="col-md-9" role="main">
       
-<h2 id="test-properties">Test properties</h2>
+<h3><a href="extensions">Extensions</a></h3>
 <p>
-  If we are using <code>ebean-test-config</code> that will automatically set appropriate DLL properties for
-  testing. If we are not using that or just want to understand more and have finer control read on ...
+  We may want to use extensions like <code>hstore</code> and <code>pgcrypto</code>.
+  Note that when using ebean-test-config with docker it will automatically add those 2
+  extensions by default.
 </p>
-
-<h3>DDL generation and run</h3>
 <p>
-  Controlling the generation and running of db-create-all.sql and db-drop-all.sql.
+  We can specify extensions that should be installed automatically via:
 </p>
-<table class="table">
-  <tr>
-    <th>Property</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>ddl.generate</td>
-    <td>Set to true to generate the db-create-all.sql and db-drop-all.sql DDL scripts.</td>
-  </tr>
-  <tr>
-    <td>ddl.run</td>
-    <td>Set to true to run the db-create-all.sql, db-drop-all.sql and extra DDL scripts</td>
-  </tr>
-  <tr>
-    <td>ddl.createOnly</td>
-    <td>
-      Set to true to run the db-create-all.sql but <b>NOT</b> run the db-drop-all.sql. Mostly used with H2 database
-      in-memory testing when we know that the database is not populated / there are no tables to drop first.
-    </td>
-  </tr>
-  <tr>
-    <td>ebean.migraton.run</td>
-    <td>Set to true or false to run the migrations when the EbeanServer starts</td>
-  </tr>
-</table>
-
-
-<h3>Example application-test.properties</h3>
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>
-<span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>
-
-<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
-<span class="na">datasource.db.password</span><span class="o">=</span>
-<span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>
-<span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>
+<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
+  test:
+    platform: postgres <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    dbName: myapp
+    postgres:
+      extensions: pgcrypto, hstore
+</pre></div>
+</div>
+<p>
+  In terms of logging / debugged we can see the extensions added via:
+</p>
+<div class="syntax sh"><div class="highlight"><pre><span></span>17:07:17.078 DEBUG io.ebean.docker.commands.Commands - create database extensions pgcrypto,hstore
+17:07:17.078 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d <span class="nb">test</span> -c create extension <span class="k">if</span> not exists pgcrypto
+17:07:17.187 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d <span class="nb">test</span> -c create extension <span class="k">if</span> not exists hstore
 </pre></div>
 </div>
 
+<h3><a id="schema">Schema</a></h3>
+<p>
+  With Postgres it could be considered good practice to create our tables into a named schema (and not the public schema).
+  If we want to do this we have made this easy in Ebean version 11.18.2 where we can specify <code>ebean.dbSchema</code>
+  and this is then used for both DB migrations and create-all.sql.
+</p>
+<p>
+  It is advisable that the DB User matches the DB Schema. When this is done then there is no need to use
+  <code>currentSchema</code> or modify the <code>search path</code>. For example, if I want to use a schema called
+  <code>myapp</code> it is advisable to have the DB user/role match and be <code>myapp</code>.
+</p>
+<h5>application.yaml</h5>
+<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
+  dbSchema: myapp  <span class="c1">## use this schema for migrations and testing</span>
+</pre></div>
+</div>
+
+<h5>ServerConfig</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">serverConfig</span><span class="o">.</span><span class="na">setDbSchema</span><span class="o">(</span><span class="s">&quot;myapp&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+
+
 <div class="next pull-right">
-  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+  <a href="/docs/testing/sqlserver" class="btn btn-info">Next: SQL Server</a>
 </div>
 
 
@@ -141,11 +144,15 @@
 <li >
   <a href="/docs/testing">Quickstart</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/testing/test-properties">Test properties</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/postgres">Postgres</a>
+<ul class="nav">
+  <li><a href="#extensions">Extensions</a></li>
+  <li><a href="#schema">Schema</a></li>
+</ul>
 </li>
 <li >
   <a href="/docs/testing/sqlserver">SQL Server</a>
