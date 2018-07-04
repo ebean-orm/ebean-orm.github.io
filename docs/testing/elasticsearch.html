@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Introduction</title>
+    <title>Testing with ElasticSearch</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -69,7 +69,7 @@
     <form class="pull-right">
       <input class="form-control ds-input" id="search-input" placeholder="Search..." autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-owns="algolia-autocomplete-listbox-0" style="position: relative; vertical-align: top;" dir="auto" type="search">
     </form>
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Docker</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / ElasticSearch</h1>
   </div>
 </div>
 
@@ -79,13 +79,70 @@
 
     <div class="col-md-9" role="main">
       
+<h2>Elastic</h2>
+<p>
+  To test against ElasticSearch we can set the <code>elastic version</code> property like
+  the example below which will then start Elastic as a docker container automatically.
+</p>
+<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
+  test:
+<span class="c1">#    useDocker: false</span>
+<span class="c1">#    shutdown: stop # stop | remove</span>
+    platform: h2 <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
+    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    dbName: myapp
 
-<h2>Docker</h2>
+  docstore:
+    url: http://127.0.0.1:9201
+    active: <span class="nb">true</span>
+    generateMapping: <span class="nb">true</span>
+    dropCreate: <span class="nb">true</span>
 
-<div class="next pull-right">
-  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+    elastic:
+      version: 5.6.0
+      port: 9201
+</pre></div>
+</div>
+<p>
+  In terms of logging we can see:
+</p>
+<div class="syntax sh"><div class="highlight"><pre><span></span>21:57:06.587 INFO  io.ebean.docker.commands.Commands - Start container ut_elastic with port:9201
+</pre></div>
 </div>
 
+
+<h3><a id="options">Properties</a></h3>
+
+<table class="table">
+  <tr>
+    <th>Property</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ebean.docstore.active</td>
+    <td>Set to true to enable docstore use</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.url</td>
+    <td>URL that ElasticSearch is expected to be using</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.generateMapping</td>
+    <td>When true generate the index mapping</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.dropCreate</td>
+    <td>When true drop the indexes and recreate them</td>
+  </tr>
+</table>
+
+<p>
+  For more <a href="/docs/features/elasticsearch">details on the ElasticSearch</a>.
+</p>
+
+<div class="next pull-right">
+  <a href="/docs/testing/postgres" class="btn btn-info">Next: Postgres</a>
+</div>
 
 
     </div>
@@ -100,7 +157,7 @@
 <li >
   <a href="/docs/testing/test-properties">Test properties</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/elasticsearch">ElasticSearch</a>
 </li>
 <li >
