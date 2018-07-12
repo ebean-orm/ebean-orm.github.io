@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta id="layout-head" />
-    <title>Ebean ORM - Java/Kotlin/JVM</title>
+    <title>Introduction</title>
     <link rel="shortcut icon" href="/images/favicon.ico" >
     <!--<link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <!-- Latest compiled and minified CSS -->
@@ -21,7 +21,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
+  </head>
   <body>
   <div id="wrap">
     <div id="header">
@@ -66,7 +66,7 @@
 
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/funding">Funding</a>  </h1>
+    <h1><a href="/docs/">Documentation</a> / Database</h1>
   </div>
 </div>
 
@@ -76,71 +76,125 @@
 
     <div class="col-md-9" role="main">
 
-      
-
-<div class="container">
-
-  <div class="row">
-
-    <div class="col-md-6">
-
-      <h1 id="donate">Donations</h1>
-      <p>
-        Donations to the Ebean ORM project are greatly appreciated.
-        These donations help fund ongoing maintenance and upkeep of the project.
-      </p>
-
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-        <input type="hidden" name="cmd" value="_s-xclick">
-        <input type="hidden" name="hosted_button_id" value="H6L329ZDD5ZTS">
-        <button class="btn btn-danger" type="submit">Donate to Ebean ORM project</button>
-        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
       </form>
 
+      
 
-      <p>&nbsp;</p>
-
-      <!--<h1 id="forward">Pay it forward</h1>-->
-      <!--<p>-->
-        <!--The Ebean project and it's users lean on other open source projects for our success.-->
-        <!--As such Ebean has a <code>Pay it forward</code> policy that means 10 percentage of-->
-        <!--donations to this project are paid forward on an annual basis.-->
-      <!--</p>-->
-
-      <!--<h4>10% of donations will be paid forward to:</h4>-->
-      <!--<ul>-->
-        <!--<li><a href="http://www.h2database.com">H2 database</a></li>-->
-        <!--<li><a href="https://github.com/FasterXML/jackson">Jackson</a></li>-->
-      <!--</ul>-->
-
-      <p>&nbsp;</p>
-      <h4 id="history">Donation history</h4>
-      <p>
-        Goto <b><a href="/funding/donations">donation history</a></b> to view a log of total donations
-        and associated "Pay it forward" donations.
-      </p>
+<h2>Database Platforms</h2>
 
 
-      <h1><a href="/funding/sponsorship">Sponsorship</a></h1>
-      <p>
-        Ebean has gratefully received sponsorship from
-        <a href="/funding/sponsorship#wealthsystems">Wealth Systems</a>,
-        <a href="/funding/sponsorship#accolade">Accolade.com</a> and
-        <a href="/funding/sponsorship#imilia">Imilia.com</a>
-        and their support has played a big part in making Ebean the product it is today.
-      </p>
-      <p>
-        The goal is to be <code>AWESOME</code>. We are getting closer every day!
-      </p>
-      <p>
-        If your organisation would like to sponsor a feature just get in touch, thanks.
-      </p>
+<table class="table">
+  <tr>
+    <th>Platform</th>
+    <th>Identity</th>
+    <th>DbArray</th>
+    <th>DbJson/DbJsonB</th>
+    <th>History</th>
+    <th>Notes</th>
+  </tr>
 
-    </div>
-  </div>
+  <tr>
+    <td>H2</td>
+    <td>*Identity & Sequence</td>
+    <td>Partial</td>
+    <td>Simulated</td>
+    <td>Triggers</td>
+    <td></td>
+  </tr>
 
+  <tr>
+    <td>Postgres</td>
+    <td>*Identity & Sequence</td>
+    <td>Full</td>
+    <td>Full</td>
+    <td>Triggers</td>
+    <td>Schema, Extensions</td>
+  </tr>
+
+  <tr>
+    <td>MySQL</td>
+    <td>Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td>Triggers</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>Oracle</td>
+    <td>*Sequence & Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td>Native</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>SQL Server 17</td>
+    <td>*Sequence & Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td>Native</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>SQL Server 16</td>
+    <td>*Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td>Native</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>SQLite</td>
+    <td>*Identity</td>
+    <td>Partial</td>
+    <td>Simulated</td>
+    <td>None</td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>DB2</td>
+    <td>*Identity & Sequence</td>
+    <td>None</td>
+    <td>-</td>
+    <td>-</td>
+    <td></td>
+  </tr>
+
+</table>
+
+<h3><a href="/docs/database/postgres">Postgres</a></h3>
+<h5>Schema</h5>
+<p>
+
+</p>
+
+<h5>Extensions</h5>
+<p>
+
+</p>
+
+
+<div class="next pull-right">
+  <a href="/docs/testing/" class="btn btn-info">Next: Testing</a>
 </div>
-
 
 
     </div>
@@ -148,14 +202,15 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li class="active">
-  <a href="/funding">Donate</a>
+
+<li >
+  <a href="/docs/database/postgres">Postgres</a>
 </li>
 <li >
-  <a href="/funding/donations">Donation history</a>
+  <a href="/docs/database/sqlserver">SQL Server</a>
 </li>
 <li >
-  <a href="/funding/sponsorship">Sponsorship</a>
+  <a href="/docs/database/oracle">Oracle</a>
 </li>
 
         </ul>
@@ -164,8 +219,6 @@
   </div>
 
 </div>
-<!-- /.row -->
-</div>  <!-- /.container -->
 
 
   </div>
