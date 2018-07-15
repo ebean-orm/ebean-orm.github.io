@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / <a href="/docs/mapping/extension">Extension</a> / @Formula</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / @MappedSuperclass</h1>
   </div>
 </div>
 
@@ -89,8 +89,48 @@
 
 
 
-<h2 id="overview">Overview</h2>
+<h2>MappedSuperclass</h2>
+<p>
+  We use <code>@MappedSuperclass</code> to have a bean that holds common properties. For example:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="o">{</span>
 
+  <span class="nd">@Id</span>
+  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="nd">@Version</span>
+  <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
+
+
+  <span class="c1">// plus getters and setters ...</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  We then create <code>entity</code> beans that extend the <code>MappedSuperclass</code> bean.
+
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseDomain</span> <span class="o">{</span>
+
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="nd">@ManyToOne</span>
+  <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
+
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
 
 
@@ -100,56 +140,28 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/mapping/extension/dbenumvalue">@DbEnumValue</a>
+  <a href="/docs/mapping/id">@Id</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension/dbjson">@DbJson</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/dbarray">@DbArray</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/dbhstore">@DbHstore</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/dbcomment">@DbComment</a>
-</li>
-
-<li >
-  <a href="/docs/mapping/extension/whencreated">@WhenCreated</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/whenmodified">@WhenModified</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/whocreated">@WhoCreated</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/whomodified">@WhoModified</a>
-</li>
-
-<li >
-  <a href="/docs/mapping/extension/softdelete">@SoftDelete</a>
-</li>
-<li >
-  <a href="/docs/mapping/extension/encrypted">@Encrypted</a>
+  <a href="/docs/mapping/version">@Version</a>
 </li>
 <li class="active">
-  <a href="/docs/mapping/extension/formula">@Formula</a>
+  <a href="/docs/mapping/mapped-superclass">@MappedSuperclass</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension/view">@View</a>
-</li>
-
-
-<li >
-  <a href="/docs/mapping/extension/history">@History</a>
+  <a href="/docs/mapping/one-to-many">@OneToMany</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension/changelog">@ChangeLog</a>
+  <a href="/docs/mapping/many-to-one">@ManyToOne</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension/readaudit">@ReadAudit</a>
+  <a href="/docs/mapping/one-to-one">@OneToOne</a>
+</li>
+<li >
+  <a href="/docs/mapping/many-to-many">@ManyToMany</a>
+</li>
+<li >
+  <a href="/docs/mapping/lob">@Lob</a>
 </li>
         </ul>
       </nav>

@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / Mapping</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / Collections</h1>
   </div>
 </div>
 
@@ -87,16 +87,22 @@
 
       
 
-<h2 id="list">List vs Set</h2>
+
+<h2 id="recommendation">Recommendation - Use List</h2>
 <p>
-  For mapping collections for <code>@OneToMany</code> or <code>@ManyToMany</code> properties
-  we need to choose between using <code>Set</code> or <code>List</code> for these collections.
+  The recommendation is to use <code>List</code> to map collection properties
+  of <code>@OneToMany</code> or <code>@ManyToMany</code>.
+</p>
+<p>
+  This means we avoid implicit use of <code>hashCode() / equals()</code> which
+  occurs with the use of <code>Set</code>.
 </p>
 
+<h2 id="list">List vs Set</h2>
 <h4>Hibernate bag semantics</h4>
 <p>
   With Hibernate there could be a preference for using <code>Set</code> because Set and List have
-  different semantics with Hibernate. Set uses "bag semantics" and is often preferred.
+  different semantics with Hibernate. Set uses "bag semantics" and is often preferred with Hibernate.
 </p>
 
 <h4>hashCode() / equals()</h4>
@@ -209,27 +215,25 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/mapping">Overview</a>
-</li>
-<li >
-  <a href="/docs/mapping/naming-convention">Naming convention</a>
-</li>
+
 <li >
   <a href="/docs/mapping/constructors">Constructors</a>
 </li>
 <li class="active">
-  <a href="/docs/mapping/list">Collections</a>
+  <a href="/docs/mapping/collections">Collections</a>
 <ul class="nav">
   <li><a href="#list">List vs Set</a></li>
   <li><a href="#enhancement">Enhancement</a></li>
 </ul>
 </li>
 <li >
-  <a href="/docs/mapping/jpa">JPA Mapping</a>
+  <a href="/docs/mapping/naming-convention">Naming convention</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension">Extensions</a>
+  <a href="/docs/mapping#validation-annotations">@Size and @NotNull</a>
+</li>
+<li >
+  <a href="/docs/mapping#limitations">Mapping limitations</a>
 </li>
         </ul>
       </nav>

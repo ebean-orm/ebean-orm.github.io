@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / JPA</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / @Encrypted</h1>
   </div>
 </div>
 
@@ -88,43 +88,8 @@
       
 
 
-<h2 id="limitations">Current limitations</h2>
-<p>
-  There are a number of JPA mappings that Ebean does not currently support
-  but would like to in time. These are logged as enhancement requests.
-</p>
-<table class="table">
-  <tr>
-    <td><a href="https://github.com/ebean-orm/ebean/issues/107">107</a></td>
-    <td>
-      JPA2 - Add support for @PrimaryKeyJoinColumn/@PrimaryKeyJoinColumns.
-    </td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/ebean-orm/ebean/issues/115">115</a></td>
-    <td>
-      JPA2 - Add support for @ElementCollection.  Note that Ebean does have support
-      for @DbArray (Postgres ARRAY) and @DbJson.
-    </td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/ebean-orm/ebean/issues/116">116</a></td>
-    <td>
-      Only single table inheritance is supported. This enhancement request is to add support for
-      JOINED or TABLE PER CLASS inheritance strategies.
-    </td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/ebean-orm/ebean/issues/123">123</a></td>
-    <td>
-      Add support for OneToMany JoinTables.
-    </td>
-  </tr>
-</table>
-<p>
-  You can review the entire list of outstanding issue and enhancements in the
-  <a href="https://github.com/ebean-orm/ebean/issues">Github Issues</a>
-</p>
+
+<h2 id="overview">Overview</h2>
 
 
 
@@ -135,31 +100,56 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/mapping/jpa/id">@Id</a>
+  <a href="/docs/mapping/dbenumvalue">@DbEnumValue</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/oneToMany">@OneToMany</a>
+  <a href="/docs/mapping/dbjson">@DbJson</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/manyToOne">@ManyToOne</a>
+  <a href="/docs/mapping/dbarray">@DbArray</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/oneToOne">@OneToOne</a>
+  <a href="/docs/mapping/dbhstore">@DbHstore</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/manyToMany">@ManyToMany</a>
+  <a href="/docs/mapping/dbcomment">@DbComment</a>
+</li>
+
+<li >
+  <a href="/docs/mapping/when-created">@WhenCreated</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/mappedSuperclass">@MappedSuperclass</a>
+  <a href="/docs/mapping/when-modified">@WhenModified</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/version">@Version</a>
+  <a href="/docs/mapping/who-created">@WhoCreated</a>
 </li>
 <li >
-  <a href="/docs/mapping/jpa/lob">@Lob</a>
+  <a href="/docs/mapping/who-modified">@WhoModified</a>
+</li>
+
+<li >
+  <a href="/docs/mapping/soft-delete">@SoftDelete</a>
+</li>
+<li class="active">
+  <a href="/docs/mapping/encrypted">@Encrypted</a>
 </li>
 <li >
-  <a href="/docs/mapping/extension">&nbsp;Next: Extensions</a>
+  <a href="/docs/mapping/formula">@Formula</a>
+</li>
+<li >
+  <a href="/docs/mapping/view">@View</a>
+</li>
+
+
+<li >
+  <a href="/docs/mapping/history">@History</a>
+</li>
+<li >
+  <a href="/docs/mapping/change-log">@ChangeLog</a>
+</li>
+<li >
+  <a href="/docs/mapping/read-audit">@ReadAudit</a>
 </li>
         </ul>
       </nav>
