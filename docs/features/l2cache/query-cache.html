@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Ebean ORM - Java/Kotlin/JVM</title>
+  <title>L2 Cache | Ebean ORM</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
@@ -41,33 +41,16 @@
 </ul>
         </div>
         <div class="mobile-nav">
-  <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / Using query cache </h1>
-</div>
-  <div class="sideNav"><ul class="nav navbar-nav">
-<li >
-  <a href="/docs/features/l2caching">Overview</a>
-</li>
-
-<li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
-</li>
-<li class="active">
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
-<ul class="nav">
-  <li><a href="#setUseQueryCache">setUseQueryCache(true)</a></li>
-  <li><a href="#cacheQueryTuning">@CacheQueryTuning</a></li>
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
 </ul>
-</li>
-<li >
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
-</li>
-</ul></div>
         </div>
       </div>
     </div>
@@ -77,49 +60,86 @@
     
 <div class="jumbotron mini">
   <div class="container">
-      <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / Using query cache </h1>
-
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/features/">Features</a> / <a href="/docs/features/l2cache/">L2 Cache</a> / Query cache</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
       
 
-  <h2 id="setUseQueryCache">setUseQueryCache(true)</h2>
-  <p>
-    To use the query cache you have to <code>explicitly</code> specify its use on a query.
-  </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use the query cache</span>
+
+<h2>Query cache</h2>
+<p>
+  Query caching is not enabled by default. To use Query caching we need to explicitly enable it
+  on the <code>@Cache</code> mapping annotation for the entity bean types we want to use it.
+</p>
+
+<h3>Enabling query cache</h3>
+<p>
+  The example below enables query caching on the Customer entity bean.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="n">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3 id="setUseQueryCache">setUseQueryCache(true)</h3>
+<p>
+  To use the query cache you have to <code>explicitly</code> specify its use on a query.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use the query cache</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Country</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setUseQueryCache</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;New%&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-  <p>
-    The query cache is generally useful for returning lists that are very infrequently changed.
-    These lists would often be used to populate drop down lists / combo boxes in user interfaces.
-  </p>
+<p>
+  The query cache is generally useful for returning lists that are very infrequently changed.
+  These lists would often be used to populate drop down lists / combo boxes in user interfaces.
+</p>
 
-  <p>
-    If you are familiar with the term "Lookup Tables" or "Reference Tables" these are typical candidates
-    for using cached queries. Some examples of lookup/reference tables could be, countries, currencies
-    and order status.
-  </p>
-  <p>
-    Query cache lists are read only.
-  </p>
+<p>
+  If you are familiar with the term "Lookup Tables" or "Reference Tables" these are typical candidates
+  for using cached queries. Some examples of lookup/reference tables could be, countries, currencies
+  and order status.
+</p>
+<p>
+  Query cache lists are read only.
+</p>
 
-  <h2 id="cacheQueryTuning">@CacheQueryTuning</h2>
-  <p>
-    All query caching implementations (including Hazelcast and Apache Ignite) uses near caches
-    and can be tuned using <code>@CacheQueryTuning</code>.
-  </p>
+<h3 id="cacheQueryTuning">@CacheQueryTuning</h3>
+<p>
+  All query caching implementations (including Hazelcast and Apache Ignite) uses near caches
+  and can be tuned using <code>@CacheQueryTuning</code>.
+</p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@CacheStrategy</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="n">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
 <span class="nd">@CacheQueryTuning</span><span class="o">(</span><span class="n">maxSecsToLive</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span>  <span class="o">{</span>
@@ -127,36 +147,37 @@
 </div>
 
 
+
+
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          
+
 <li >
-  <a href="/docs/features/l2caching">Overview</a>
+  <a href="/docs/features/l2cache">Overview</a>
 </li>
 
 <li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
+  <a href="/docs/features/l2cache/bean-cache">Bean caching</a>
 </li>
 <li class="active">
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
+  <a href="/docs/features/l2cache/query-cache">Query caching</a>
 <ul class="nav">
   <li><a href="#setUseQueryCache">setUseQueryCache(true)</a></li>
   <li><a href="#cacheQueryTuning">@CacheQueryTuning</a></li>
 </ul>
 </li>
 <li >
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
+  <a href="/docs/features/l2cache/hazelcast">Hazelcast</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
+  <a href="/docs/features/l2cache/apache-ignite">Apache Ignite</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
+  <a href="/docs/features/l2cache/elasticsearch">ElasticSearch</a>
 </li>
-
         </ul>
       </nav>
     </div>

@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Ebean ORM - Java/Kotlin/JVM</title>
+  <title>L2 Cache | Ebean ORM</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
@@ -41,32 +41,16 @@
 </ul>
         </div>
         <div class="mobile-nav">
-  <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / ElasticSearch </h1>
-</div>
-  <div class="sideNav"><ul class="nav navbar-nav">
-<li >
-  <a href="/docs/features/l2caching">Overview</a>
-</li>
-
-<li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
-</li>
-<li class="active">
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
-<ul class="nav">
-  <li><a href="#todo">TODO</a></li>
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
 </ul>
-</li>
-</ul></div>
         </div>
       </div>
     </div>
@@ -76,15 +60,34 @@
     
 <div class="jumbotron mini">
   <div class="container">
-      <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / ElasticSearch </h1>
-
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/features/">Features</a> / L2 Cache</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
       
+
+
   <h2>TODO</h2>
   <p>
     Currently ElasticSearch is not used transparently in L2 caching but we want it to because
@@ -93,35 +96,36 @@
     Hazelcast / Ignite although there might be some debate about that).
   </p>
 
+
+
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          
+
 <li >
-  <a href="/docs/features/l2caching">Overview</a>
+  <a href="/docs/features/l2cache">Overview</a>
 </li>
 
 <li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
+  <a href="/docs/features/l2cache/bean-cache">Bean caching</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
+  <a href="/docs/features/l2cache/query-cache">Query caching</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
+  <a href="/docs/features/l2cache/hazelcast">Hazelcast</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
+  <a href="/docs/features/l2cache/apache-ignite">Apache Ignite</a>
 </li>
 <li class="active">
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
+  <a href="/docs/features/l2cache/elasticsearch">ElasticSearch</a>
 <ul class="nav">
   <li><a href="#todo">TODO</a></li>
 </ul>
 </li>
-
         </ul>
       </nav>
     </div>

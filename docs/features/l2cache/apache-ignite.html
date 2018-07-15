@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Ebean ORM - Java/Kotlin/JVM</title>
+  <title>L2 Cache | Ebean ORM</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/quickstart">Quick Start</a></li>
   <li ><a href="/support">Support</a></li>
@@ -41,37 +41,16 @@
 </ul>
         </div>
         <div class="mobile-nav">
-  <div class="locationBar">  <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / Hazelcast </h1>
-</div>
-  <div class="sideNav"><ul class="nav navbar-nav">
-<li >
-  <a href="/docs/features/l2caching">Overview</a>
-</li>
-
-<li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
-</li>
-<li class="active">
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
-<ul class="nav">
-  <li><a href="#client-server">Client/server mode</a></li>
-  <li><a href="#server-mode">Server mode</a></li>
-  <li><a href="#dependency">Dependency</a></li>
-  <li><a href="#disable">Disable L2 cache</a></li>
-  <li><a href="#configuration">Configuration</a></li>
-  <li><a href="#getting-started">Getting started</a></li>
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
 </ul>
-</li>
-<li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
-</li>
-<li >
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
-</li>
-</ul></div>
         </div>
       </div>
     </div>
@@ -81,61 +60,69 @@
     
 <div class="jumbotron mini">
   <div class="container">
-      <h1><a href="/docs">Documentation</a> / <a href="/docs/features">Features</a> / <a href="/docs/features/l2caching">L2 caching</a> / Hazelcast </h1>
-
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/features/">Features</a> / <a href="/docs/features/l2cache/">L2 Cache</a> / Apache Ignite</h1>
   </div>
 </div>
 
 <div class="container doc-index bs-docs-container">
+
   <div class="row">
+
     <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
       
-  <h2>Overview</h2>
+
+
+  <h2>Apache Ignite</h2>
   <p>
-    <a href="https://hazelcast.com/">Hazelcast</a> provides a very nice set of features for
+    <a href="https://ignite.apache.org/">Apache Ignite</a> provides a very nice set of features for
     distributed caching (which is what we use it for with L2 caching) plus "Data grid" features.
   </p>
   <p>
     My expectation is that most people will prefer client/server mode with use of near caches.
   </p>
 
-  <h2 id="client-server">Client/server mode</h2>
+  <h3 id="client-server">Client/server mode</h3>
   <p>
-    We can use Hazelcast in <code>client/server</code> mode which means that our application uses a
-    <code>Hazelcast client</code> to talk to a Hazelcast cluster (of servers).
+    We can use Ignite in <code>client/server</code> mode which means that our application uses a
+    <code>Ignite client</code> to talk to a Ignite cluster (of servers).
   </p>
   <p>
-    In this mode the bean cache data is partitioned across all the Hazelcast servers in the cluster
+    In this mode the bean cache data is partitioned across all the Ignite servers in the cluster
     and not in our application. We can choose to use a <code>near cache</code> for some or all of our bean
     types and in doing so improve performance (by having local data) but increase memory footprint in our
     application (as it now holds some cache data).
   </p>
 
-  <h5>Configuration</h5>
+  <h3 id="server-mode">Server mode</h3>
   <p>
-    For client/server mode the configuration file should be a <code>hazelcast-client.xml</code>
-  </p>
-
-  <h2 id="server-mode">Server mode</h2>
-  <p>
-    In server mode our application starts a <code>Hazelcast server instance</code> which is a full fledged member
-    of the Hazelcast cluster. This means that it will hold data etc.
-  </p>
-
-  <h5>Configuration</h5>
-  <p>
-    For server mode the configuration file should be a <code>hazelcast.xml</code>.
+    In server mode our application starts a <code>Ignite server instance</code> which is a full fledged member
+    of the Ignite cluster. This means that it will hold data etc.
   </p>
 
 
-
-  <h2 id="dependency">Dependency</h2>
+  <h3 id="dependency">Dependency</h3>
   <p>
-    Add a dependency to <code>ebean-hazelcast</code>. When Ebean starts ebean-hazelcast is
+    Add a dependency to <code>ebean-ignite</code>. When Ebean starts ebean-ignite is
     automatically registered as the L2 cache implementation.
   </p>
 
-  <h2 id="disable">Disable L2 cache</h2>
+  <h3 id="disable">Disable L2 cache</h3>
   <p>
     During development and testing it is often useful to disable the use of the l2 cache.
   </p>
@@ -149,39 +136,36 @@
 
   </p>
 
-  <h2 id="configuration">Configuration</h2>
+  <h3 id="configuration">Configuration</h3>
 
-  <h4>XML configuration</h4>
+  <h3>XML configuration</h3>
   <p>
-    Hazelcast will operate without any configuration but typically you will want to add a <code>hazelcast-client.xml</code>
-    or <code>hazelcast.xml</code> configuration for client/server or server mode respectively.
-  </p>
-  <p>
-    In hazelcast-client.xml you can specify the use of <code>near cache</code> for example which is a common need.
+
   </p>
 
-  <h4>Programmatic configuration</h4>
+  <h3>Programmatic configuration</h3>
   <p>
-    You can programmatically configure Hazelcast by creating an instance of Hazelcast <code>ClientConfig</code> or
-    <code>Config</code> and setting it via: <code></code>
+    You can programmatically configure Ignite by creating an instance of <code>IgniteConfiguration</code>
+    and setting it via: <code></code>
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ClientConfig</span> <span class="n">configuration</span> <span class="o">=</span> <span class="o">...;</span>
-<span class="n">serverConfig</span><span class="o">.</span><span class="na">setServiceObject</span><span class="o">(</span><span class="s">&quot;hazelcastConfiguration&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">IgniteConfiguration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">serverConfig</span><span class="o">.</span><span class="na">setServiceObject</span><span class="o">(</span><span class="s">&quot;igniteConfiguration&quot;</span><span class="o">,</span> <span class="n">configuration</span><span class="o">);</span>
 </pre></div>
 </div>
   <p>
-    If this configuration instance is passed in Ebean will use it to configure a Hazelcast client or server instance.
-    Otherwise it will use default configuration and Hazelcast will automatically search for and use the xml configuration
-    files.
+    If this configuration instance is passed in Ebean will use it to configure the Ignite instance.
+    Otherwise it will use properties and avaje IgniteConfigBuilder.
   </p>
 
-  <h2 id="getting-started">Getting started</h2>
+  <h3 id="getting-started">Getting started</h3>
   <ul>
-    <li>Annotate beans with @CacheStrategy</li>
-    <li>Add maven dependency ebean-hazelcast</li>
-    <li>Optionally add hazelcast-client.xml or hazelcast.xml</li>
-    <li>For client/server mode you need a running Hazelcast server</li>
+    <li>Annotate beans with @Cache</li>
+    <li>Add maven dependency ebean-ignite</li>
+    <li>Optionally add ebean-ignite-config.xml</li>
+    <li>For client/server mode you need a running Ignite server</li>
   </ul>
+
+
 
 
 
@@ -190,19 +174,22 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          
+
 <li >
-  <a href="/docs/features/l2caching">Overview</a>
+  <a href="/docs/features/l2cache">Overview</a>
 </li>
 
 <li >
-  <a href="/docs/features/l2caching/using-bean-cache">Using bean caching</a>
+  <a href="/docs/features/l2cache/bean-cache">Bean caching</a>
 </li>
 <li >
-  <a href="/docs/features/l2caching/using-query-cache">Using query caching</a>
+  <a href="/docs/features/l2cache/query-cache">Query caching</a>
+</li>
+<li >
+  <a href="/docs/features/l2cache/hazelcast">Hazelcast</a>
 </li>
 <li class="active">
-  <a href="/docs/features/l2caching/hazelcast">Hazelcast</a>
+  <a href="/docs/features/l2cache/apache-ignite">Apache Ignite</a>
 <ul class="nav">
   <li><a href="#client-server">Client/server mode</a></li>
   <li><a href="#server-mode">Server mode</a></li>
@@ -213,12 +200,8 @@
 </ul>
 </li>
 <li >
-  <a href="/docs/features/l2caching/apache-ignite">Apache Ignite</a>
+  <a href="/docs/features/l2cache/elasticsearch">ElasticSearch</a>
 </li>
-<li >
-  <a href="/docs/features/l2caching/elasticsearch">ElasticSearch</a>
-</li>
-
         </ul>
       </nav>
     </div>
