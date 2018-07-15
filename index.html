@@ -109,15 +109,14 @@
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
 
-<span class="nd">@Column</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="o">)</span>
-<span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="nd">@Column</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="o">)</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
-<span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
-<span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
 
-<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
-<span class="n">List</span>
-<span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
 </div>
@@ -132,20 +131,18 @@
         </p>
       </div>
       <div class="col-md-3 feature mtl">
-
-        <h5>Multi-tenancy</h5>
-        <h5>JSON in Database</h5>
-        <h5>Soft Delete</h5>
-        <h5>Encryption</h5>
-
+        <h5><a href="/docs/features/elasticsearch">Elastic Search</a></h5>
+        <h5><a href="/docs/features/json-in-db">JSON in Database</a></h5>
+        <h5><a href="/docs/features/softdelete">Soft Delete</a></h5>
+        <h5><a href="/docs/features/draftable">Draftable</a></h5>
+        <h5><a href="/docs/features/multi-tenant">Multi-tenancy</a></h5>
       </div>
       <div class="col-md-3 feature mtl">
-
-        <h5>SQL 2011 History</h5>
-        <h5>Elastic Search</h5>
-        <h5>Who Created / Modified</h5>
-        <h5>Draftable</h5>
-
+        <h5><a href="/docs/features/history">SQL 2011 History</a></h5>
+        <h5><a href="/docs/features/encryption">Encryption</a></h5>
+        <h5><a href="/docs/features/who">Who Created / Modified</a></h5>
+        <h5><a href="/docs/features/changelog">Change log</a></h5>
+        <h5><a href="/docs/features/readauditing">Read auditing</a></h5>
       </div>
     </div>
 
