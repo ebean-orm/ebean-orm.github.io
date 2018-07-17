@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Getting started | Ebean</title>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/quickstart">Quick Start</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / First entity</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+
+
+<h2>First Entity</h2>
+<p>
+  Create a package <code>org.example.domain</code> and in that create an entity bean
+  like <code>Customer.java</code>
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.persistence.Id</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2>Add ebean.mf</h2>
+<p>
+  In <code>src/main/resources</code> add <code>ebean.mf</code> which tells the build plugins which packages
+  should be enhanced.
+</p>
+<div class="syntax sh"><div class="highlight"><pre><span></span>entity-packages: org.example.domain
+transactional-packages: org.example
+querybean-packages: org.example
+</pre></div>
+</div>
+<p>
+  If you have the <code>ebeaninit</code> command line tool installed you can run it and get it to generate
+  the <code>ebean.mf</code> manifest file.
+</p>
+<p>
+  If your entity beans are in a different package (not <code>org.example.domain</code>) then adjust the
+  <code>ebean.mf</code> file to suit.
+</p>
+
+
+<h2>Add application-test.yml</h2>
+<p>
+  In <code>src/test/resources</code> add <code>application-test.yml</code> which tells Ebean how to run
+  tests.
+</p>
+<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
+  test:
+<span class="c1">#    shutdown: stop # stop | remove</span>
+    platform: h2 <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
+    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    dbName: myapp
+</pre></div>
+</div>
+<p>
+  This tells Ebean which <code>DDL mode</code> to use like dropCreate or migration. <code>dropCreate</code>
+  is mode we would use the most (and we haven't generated migrations yet).
+</p>
+<p>
+  If we chose a database platform like Postgres, MySql, SQL Server or Oracle then a
+  <code>docker container</code> will automatically be started and setup to run the tests against.
+</p>
+<p>
+  <code>ebeaninit</code> can add a <code>application-test.ymll</code> if you have it installed.
+</p>
+
+
+<h2>Add logback-test.yml (optional)</h2>
+<p>
+  We don't have to setup logging but it is a good idea to be able to see the <code>DDL</code> and <code>SQL</code>
+  that is being generated and executed to help understand what is going on.
+</p>
+<h5>Example logback entries (add to logback-test.xml)</h5>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Testing with Docker containers --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.docker&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.DDL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- L2 cache logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>
+  <code>ebeaninit</code> can add a <code>logback-test.xml</code> if you have it installed.
+</p>
+
+
+<h2>First Test</h2>
+<p>
+  Create a test in <code>src/test</code> like <code>CustomerTest.java</code>
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerTest</span> <span class="o">{</span>
+
+ <span class="nd">@Test</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insertFindDelete</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello world&quot;</span><span class="o">);</span>
+
+
+  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+
+  <span class="c1">// insert the customer in the DB</span>
+  <span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+
+  <span class="c1">// Find by Id</span>
+  <span class="n">Customer</span> <span class="n">foundHello</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
+
+  <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;hello &quot;</span> <span class="o">+</span> <span class="n">foundHello</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+
+  <span class="c1">// delete the customer</span>
+  <span class="n">server</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+ <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2>Run test</h2>
+<p>
+  Run the test via the IDE and via Maven or Gradle. Check the logs to confirm you see the
+  <code>DDL</code> and <code>SQL</code> that you expect.
+</p>
+
+<div class="syntax sh"><div class="highlight"><pre><span></span>00:49:58.787 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.EbeanVersion - ebean version: 11.18.5
+00:49:58.851 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.config.properties.LoadContext - loaded properties from <span class="o">[</span>application.yml, application-test.yml<span class="o">]</span>
+00:49:58.921 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.t.c.provider.ProviderAutoConfig - <span class="k">for</span> testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to <span class="nb">set</span> current user and tenant in tests.
+00:49:58.943 <span class="o">[</span>main<span class="o">]</span> INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool <span class="o">[</span>db<span class="o">]</span> autoCommit<span class="o">[</span>false<span class="o">]</span> transIsolation<span class="o">[</span>READ_COMMITTED<span class="o">]</span> min<span class="o">[</span>2<span class="o">]</span> max<span class="o">[</span>200<span class="o">]</span>
+00:49:59.063 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
+00:49:59.242 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-drop-all.sql - <span class="m">1</span> statements
+00:49:59.242 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> drop table <span class="k">if</span> exists customer
+00:49:59.248 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-create-all.sql - <span class="m">1</span> statements
+00:49:59.248 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> create table customer <span class="o">(</span> id                            bigint auto_increment not...
+00:49:59.271 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1001<span class="o">]</span> insert into customer <span class="o">(</span>name<span class="o">)</span> values <span class="o">(</span>?<span class="o">)</span><span class="p">;</span> --bind<span class="o">(</span>Hello world<span class="o">)</span>
+00:49:59.290 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1001<span class="o">]</span> Inserted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
+00:49:59.291 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1001<span class="o">]</span> Commit
+00:49:59.318 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1003<span class="o">]</span> <span class="k">select</span> t0.id, t0.name from customer t0 where t0.id <span class="o">=</span> ?  <span class="p">;</span> --bind<span class="o">(</span>1, <span class="o">)</span>
+00:49:59.320 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1003<span class="o">]</span> FindBean type<span class="o">[</span>Customer<span class="o">]</span> origin<span class="o">[</span>D88YBi.A.A<span class="o">]</span> exeMicros<span class="o">[</span>3324<span class="o">]</span> rows<span class="o">[</span>1<span class="o">]</span> bind<span class="o">[</span>1, <span class="o">]</span>
+00:49:59.320 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1004<span class="o">]</span> <span class="k">select</span> t0.id, t0.name from customer t0 where t0.id <span class="o">=</span> ?  <span class="p">;</span> --bind<span class="o">(</span>1, <span class="o">)</span>
+00:49:59.321 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1004<span class="o">]</span> FindBean type<span class="o">[</span>Customer<span class="o">]</span> origin<span class="o">[</span>D88YBi.A.A<span class="o">]</span> exeMicros<span class="o">[</span>247<span class="o">]</span> rows<span class="o">[</span>1<span class="o">]</span> bind<span class="o">[</span>1, <span class="o">]</span>
+hello Hello world 00:49:59.322 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1005<span class="o">]</span> delete from customer where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>1<span class="o">)</span>
+00:49:59.323 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1005<span class="o">]</span> Deleted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
+00:49:59.323 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1005<span class="o">]</span> Commit
+</pre></div>
+</div>
+
+
+<div class="next pull-right">
+  <a href="/docs/getting-started/first-entity" class="btn btn-info">Next: First Entity</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/getting-started#ide">1. IDE Plugin</a>
+</li>
+<li >
+  <a href="/docs/getting-started/dependencies">2. Dependencies</a>
+</li>
+<li >
+  <a href="/docs/getting-started/maven">3a. Maven</a>
+</li>
+<li >
+  <a href="/docs/getting-started/gradle">3b. Gradle</a>
+</li>
+<li >
+  <a href="/docs/getting-started/cli-tool">4. CLI Tool</a>
+</li>
+<li class="active">
+  <a href="/docs/getting-started/cli-tool">5. First entity</a>
+</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
