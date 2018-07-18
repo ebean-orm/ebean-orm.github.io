@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Maven plugin | Getting started | Ebean</title>
+  <title>Getting started | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/maven">Maven</a> / Maven Plugin</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/kotlin-first-entity">Kotlin</a> / Constructors</h1>
   </div>
 </div>
 
@@ -88,52 +88,76 @@
       
 
 
-<h3>Maven enhancement plugin</h3>
+<h2>Constructors</h2>
 <p>
-  If you do not want to use maven tiles you can specify the maven enhancement
-  plugin in 'normal' fashion.
+  We don't need a default constructor and this means we can give our entity beans a constructor
+  that takes arguments. Typically the arguments are properties that should always be supplied
+  when creating a new bean of that type.
 </p>
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="c">&lt;!-- enhance main classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
+<h4>e.g. Customer must have a name</h4>
+<p>
+  The name property is now in the constructor and also we can make it a <code>non null type</code>.
+  Ebean knows it is a non null type and DDL defines the column as <code>NOT NULL</code>.
+</p>
 
-      <span class="c">&lt;!-- enhance test classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>testEnhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nd">@Entity</span>
+<span class="kd">class</span> <span class="nf">Customer</span><span class="o">(</span>
 
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
+  <span class="n">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span>
+
+<span class="o">)</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="n">var</span> <span class="n">id</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  The test code now changes to:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Hello entity bean&quot;</span><span class="o">)</span>
+<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
+</pre></div>
+</div>
+
+<h2>Kotlin non-null types</h2>
+<p>
+  Ebean is aware of Kotlin non-null types and automatically maps those properties to database <code>NOT NULL</code>
+  constraints.
+</p>
+
+<h4>e.g. Order must have a Customer and order date</h4>
+<p>
+  The Order entity bean constructor takes both orderDate and customer and
+  both are defined as <code>NOT NULL</code> from a code and DB perspective.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nf">Order</span><span class="o">(</span>
+
+  <span class="n">var</span> <span class="n">orderDate</span><span class="o">:</span> <span class="n">LocalDate</span><span class="o">,</span>
+
+  <span class="nd">@ManyToOne</span>
+  <span class="n">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span>
+<span class="o">)</span> <span class="o">{</span>
+
+  <span class="c1">// other properties</span>
+
+<span class="o">}</span>
 </pre></div>
 </div>
 
 
 <div class="next pull-right">
-  <a href="/docs/getting-started/cli-tool" class="btn btn-info">Next: CLI Tool</a>
+  <a href="/docs/getting-started/kotlin-mapped-superclass" class="btn btn-info">Next: MappedSuperclass</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/kotlin-constructors.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -149,7 +173,7 @@
 <li >
   <a href="/docs/getting-started/dependencies">Dependencies</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/getting-started/maven">Maven</a>
 </li>
 <li >
@@ -184,7 +208,7 @@
 <li >
   <a href="/docs/getting-started/kotlin-first-entity">First entity</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/kotlin-constructors">Constructors</a>
 </li>
 <li >

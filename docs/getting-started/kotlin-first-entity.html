@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/java-first-entity">Java</a> / First entity</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/kotlin-first-entity">Kotlin</a> / First entity</h1>
   </div>
 </div>
 
@@ -91,36 +91,21 @@
 <h2>First Entity</h2>
 <p>
   Create a package <code>org.example.domain</code> and in that create an entity bean
-  like <code>Customer.java</code>
+  like <code>Customer.kt</code>
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
 
-<span class="kn">import</span> <span class="nn">javax.persistence.Id</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Id</span>
 
 <span class="nd">@Entity</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+<span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
 
   <span class="nd">@Id</span>
-  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+  <span class="n">var</span> <span class="n">id</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
 
-  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="n">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span>
 
-  <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
-  <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -203,37 +188,29 @@ querybean-packages: org.example
   Create a test in <code>src/test</code> like <code>CustomerTest.java</code>
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
 
-<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.Ebean</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span>
 
-<span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
+<span class="kd">class</span> <span class="nc">CustomerTest</span>  <span class="o">{</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerTest</span> <span class="o">{</span>
+  <span class="nd">@Test</span>
+  <span class="n">fun</span> <span class="nf">insert_update_delete</span><span class="o">()</span> <span class="o">{</span>
 
- <span class="nd">@Test</span>
- <span class="kd">public</span> <span class="kt">void</span> <span class="nf">insertFindDelete</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">val</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">()</span>
+    <span class="n">customer</span><span class="o">.</span><span class="na">name</span>  <span class="o">=</span> <span class="s">&quot;Hello entity bean&quot;</span>
 
-  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Hello world&quot;</span><span class="o">);</span>
+    <span class="c1">// insert</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
 
+    <span class="c1">// update</span>
+    <span class="n">customer</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">&quot;Goodbye&quot;</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
 
-  <span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
-
-  <span class="c1">// insert the customer in the DB</span>
-  <span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
-
-
-  <span class="c1">// Find by Id</span>
-  <span class="n">Customer</span> <span class="n">foundHello</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">1</span><span class="o">);</span>
-
-  <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">&quot;hello &quot;</span> <span class="o">+</span> <span class="n">foundHello</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-
-  <span class="c1">// delete the customer</span>
-  <span class="n">server</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
- <span class="o">}</span>
-
+    <span class="c1">// delete the bean</span>
+    <span class="n">Ebean</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -244,33 +221,32 @@ querybean-packages: org.example
   <code>DDL</code> and <code>SQL</code> that you expect.
 </p>
 
-<div class="syntax sh"><div class="highlight"><pre><span></span>00:49:58.787 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.EbeanVersion - ebean version: 11.18.5
-00:49:58.851 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.config.properties.LoadContext - loaded properties from <span class="o">[</span>application.yml, application-test.yml<span class="o">]</span>
-00:49:58.921 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.t.c.provider.ProviderAutoConfig - <span class="k">for</span> testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to <span class="nb">set</span> current user and tenant in tests.
-00:49:58.943 <span class="o">[</span>main<span class="o">]</span> INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool <span class="o">[</span>db<span class="o">]</span> autoCommit<span class="o">[</span>false<span class="o">]</span> transIsolation<span class="o">[</span>READ_COMMITTED<span class="o">]</span> min<span class="o">[</span>2<span class="o">]</span> max<span class="o">[</span>200<span class="o">]</span>
-00:49:59.063 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
-00:49:59.242 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-drop-all.sql - <span class="m">1</span> statements
-00:49:59.242 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> drop table <span class="k">if</span> exists customer
-00:49:59.248 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-create-all.sql - <span class="m">1</span> statements
-00:49:59.248 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> create table customer <span class="o">(</span> id                            bigint auto_increment not...
-00:49:59.271 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1001<span class="o">]</span> insert into customer <span class="o">(</span>name<span class="o">)</span> values <span class="o">(</span>?<span class="o">)</span><span class="p">;</span> --bind<span class="o">(</span>Hello world<span class="o">)</span>
-00:49:59.290 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1001<span class="o">]</span> Inserted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
-00:49:59.291 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1001<span class="o">]</span> Commit
-00:49:59.318 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1003<span class="o">]</span> <span class="k">select</span> t0.id, t0.name from customer t0 where t0.id <span class="o">=</span> ?  <span class="p">;</span> --bind<span class="o">(</span>1, <span class="o">)</span>
-00:49:59.320 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1003<span class="o">]</span> FindBean type<span class="o">[</span>Customer<span class="o">]</span> origin<span class="o">[</span>D88YBi.A.A<span class="o">]</span> exeMicros<span class="o">[</span>3324<span class="o">]</span> rows<span class="o">[</span>1<span class="o">]</span> bind<span class="o">[</span>1, <span class="o">]</span>
-00:49:59.320 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1004<span class="o">]</span> <span class="k">select</span> t0.id, t0.name from customer t0 where t0.id <span class="o">=</span> ?  <span class="p">;</span> --bind<span class="o">(</span>1, <span class="o">)</span>
-00:49:59.321 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1004<span class="o">]</span> FindBean type<span class="o">[</span>Customer<span class="o">]</span> origin<span class="o">[</span>D88YBi.A.A<span class="o">]</span> exeMicros<span class="o">[</span>247<span class="o">]</span> rows<span class="o">[</span>1<span class="o">]</span> bind<span class="o">[</span>1, <span class="o">]</span>
-hello Hello world 00:49:59.322 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1005<span class="o">]</span> delete from customer where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>1<span class="o">)</span>
-00:49:59.323 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1005<span class="o">]</span> Deleted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
-00:49:59.323 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1005<span class="o">]</span> Commit
+<div class="syntax sh"><div class="highlight"><pre><span></span>23:40:09.040 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.EbeanVersion - ebean version: 11.19.1
+23:40:09.087 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.config.properties.LoadContext - loaded properties from <span class="o">[</span>application.yml, application-test.yml<span class="o">]</span>
+23:40:09.163 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.t.c.provider.ProviderAutoConfig - <span class="k">for</span> testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to <span class="nb">set</span> current user and tenant in tests.
+23:40:09.190 <span class="o">[</span>main<span class="o">]</span> INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool <span class="o">[</span>db<span class="o">]</span> autoCommit<span class="o">[</span>false<span class="o">]</span> transIsolation<span class="o">[</span>READ_COMMITTED<span class="o">]</span> min<span class="o">[</span>2<span class="o">]</span> max<span class="o">[</span>200<span class="o">]</span>
+23:40:09.297 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
+23:40:09.550 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-drop-all.sql - <span class="m">1</span> statements
+23:40:09.551 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> drop table <span class="k">if</span> exists customer
+23:40:09.557 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-create-all.sql - <span class="m">1</span> statements
+23:40:09.557 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> create table customer <span class="o">(</span> id                            bigint auto_increment not...
+23:40:09.587 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1001<span class="o">]</span> insert into customer <span class="o">(</span>name<span class="o">)</span> values <span class="o">(</span>?<span class="o">)</span><span class="p">;</span> --bind<span class="o">(</span>Hello entity bean<span class="o">)</span>
+23:40:09.608 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1001<span class="o">]</span> Inserted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
+23:40:09.609 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1001<span class="o">]</span> Commit
+23:40:09.615 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1002<span class="o">]</span> update customer <span class="nb">set</span> <span class="nv">name</span><span class="o">=</span>? where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>Goodbye,1<span class="o">)</span>
+23:40:09.616 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1002<span class="o">]</span> Updated <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
+23:40:09.617 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1002<span class="o">]</span> Commit
+23:40:09.618 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1003<span class="o">]</span> delete from customer where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>1<span class="o">)</span>
+23:40:09.619 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1003<span class="o">]</span> Deleted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
+23:40:09.619 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1003<span class="o">]</span> Commit
 </pre></div>
 </div>
 
 <div class="next pull-right">
-  <a href="/docs/getting-started/java-constructors" class="btn btn-info">Next: Constructors</a>
+  <a href="/docs/getting-started/kotlin-constructors" class="btn btn-info">Next: Constructors</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/java-first-entity.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/kotlin-first-entity.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -296,7 +272,7 @@ hello Hello world 00:49:59.322 <span class="o">[</span>main<span class="o">]</sp
   <a href="/docs/getting-started/cli-tool">CLI Tool</a>
 </li>
 <li><b>Java</b></li>
-<li class="active">
+<li >
   <a href="/docs/getting-started/java-first-entity">First entity</a>
 </li>
 <li >
@@ -318,7 +294,7 @@ hello Hello world 00:49:59.322 <span class="o">[</span>main<span class="o">]</sp
   <a href="/docs/getting-started/java-next-steps">Next steps</a>
 </li>
 <li><b>Kotlin</b></li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/kotlin-first-entity">First entity</a>
 </li>
 <li >

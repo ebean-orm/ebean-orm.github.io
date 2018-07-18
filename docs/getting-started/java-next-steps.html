@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Maven plugin | Getting started | Ebean</title>
+  <title>Getting started | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/maven">Maven</a> / Maven Plugin</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/java-first-entity">Java</a> / Next steps</h1>
   </div>
 </div>
 
@@ -88,53 +88,16 @@
       
 
 
-<h3>Maven enhancement plugin</h3>
-<p>
-  If you do not want to use maven tiles you can specify the maven enhancement
-  plugin in 'normal' fashion.
-</p>
+<h2>Next steps</h2>
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="c">&lt;!-- enhance main classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-
-      <span class="c">&lt;!-- enhance test classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>testEnhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">one</div>
+    <div class="col-md-3">two</div>
+    <div class="col-md-3">three</div>
+  </div>
 </div>
 
-
-<div class="next pull-right">
-  <a href="/docs/getting-started/cli-tool" class="btn btn-info">Next: CLI Tool</a>
-</div>
-<p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
-</p>
 
 
 
@@ -149,7 +112,7 @@
 <li >
   <a href="/docs/getting-started/dependencies">Dependencies</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/getting-started/maven">Maven</a>
 </li>
 <li >
@@ -177,7 +140,7 @@
 <li >
   <a href="/docs/getting-started/java-repository">Repository</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/java-next-steps">Next steps</a>
 </li>
 <li><b>Kotlin</b></li>

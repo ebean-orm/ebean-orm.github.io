@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Maven plugin | Getting started | Ebean</title>
+  <title>Getting started | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/maven">Maven</a> / Maven Plugin</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/kotlin-first-entity">Kotlin</a> / MappedSuperclass</h1>
   </div>
 </div>
 
@@ -88,52 +88,88 @@
       
 
 
-<h3>Maven enhancement plugin</h3>
+<h2>MappedSuperclass</h2>
 <p>
-  If you do not want to use maven tiles you can specify the maven enhancement
-  plugin in 'normal' fashion.
+  We can use <code>@MappedSuperclass</code> for common properties used across many entity beans.
+</p>
+<p>
+  It is common to have a mapped superclass with <code>@Id</code>, <code>@Version</code> and <code>@WhenModified</code>
+  properties like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.annotation.WhenCreated</span>
+<span class="kn">import</span> <span class="nn">io.ebean.annotation.WhenModified</span>
+<span class="kn">import</span> <span class="nn">java.time.Instant</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Id</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.MappedSuperclass</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Version</span>
+
+<span class="nd">@MappedSuperclass</span>
+<span class="n">open</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="n">var</span> <span class="n">id</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="nd">@Version</span>
+  <span class="n">var</span> <span class="n">version</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="nd">@WhenModified</span>
+  <span class="n">lateinit</span> <span class="n">var</span> <span class="n">whenModified</span><span class="o">:</span> <span class="n">Instant</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="n">lateinit</span> <span class="n">var</span> <span class="n">whenCreated</span><span class="o">:</span> <span class="n">Instant</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  Our entity beans then extend this to inherit the common properties.
+</p>
+<p>
+  Note that we are using Kotlin <code>lateinit</code> on the <code>@WhenModified</code> and <code>@WhenCreated</code>
+  properties.  We are treating these as non-null types that will have their values set when the bean is saved.
 </p>
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="c">&lt;!-- enhance main classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
+<h4>Customer extends BaseDomain</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
 
-      <span class="c">&lt;!-- enhance test classes --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>testEnhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span>
 
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
+<span class="nd">@Entity</span>
+<span class="kd">class</span> <span class="nf">Customer</span><span class="o">(</span>
+
+  <span class="n">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span>
+
+<span class="o">)</span> <span class="o">:</span> <span class="n">BaseDomain</span><span class="o">()</span>
+</pre></div>
+</div>
+
+<h4>Order extends BaseDomain</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
+
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.*</span>
+
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nf">Order</span><span class="o">(</span>
+
+  <span class="n">var</span> <span class="n">orderDate</span><span class="o">:</span> <span class="n">LocalDate</span><span class="o">,</span>
+
+  <span class="nd">@ManyToOne</span>
+  <span class="n">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span>
+
+<span class="o">):</span> <span class="n">BaseDomain</span><span class="o">()</span>
 </pre></div>
 </div>
 
 
 <div class="next pull-right">
-  <a href="/docs/getting-started/cli-tool" class="btn btn-info">Next: CLI Tool</a>
+  <a href="/docs/getting-started/kotlin-model" class="btn btn-info">Next: Model</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/kotlin-mapped-superclass.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -149,7 +185,7 @@
 <li >
   <a href="/docs/getting-started/dependencies">Dependencies</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/getting-started/maven">Maven</a>
 </li>
 <li >
@@ -187,7 +223,7 @@
 <li >
   <a href="/docs/getting-started/kotlin-constructors">Constructors</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/kotlin-mapped-superclass">MappedSuperclass</a>
 </li>
 <li >

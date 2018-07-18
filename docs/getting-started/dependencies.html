@@ -88,9 +88,9 @@
       
 
 
-<h3>Step 2: Add dependencies</h3>
+<h2>Add dependencies</h2>
 
-<h4 id="main-dep">2A - Main dependency</h4>
+<h4 id="main-dep">Main dependency</h4>
 <p>
   Add the ebean dependency.
 </p>
@@ -154,14 +154,17 @@
 
   </div>
 
-<h4 id="jdbc-dep">2B - JDBC Driver(s)</h4>
+<h4 id="jdbc-dep">JDBC Driver(s)</h4>
 <p>
   Add the dependency for the JDBC Driver(s) you want to use.
 </p>
 
 <ul class="nav nav-tabs mytabs">
   <li role="presentation" class="active"><a href="#h2">H2</a></li>
-  <li role="presentation"><a href="#postgres">Postrges</a></li>
+  <li role="presentation"><a href="#postgres">Postgres</a></li>
+  <li role="presentation"><a href="#mysql">MySql</a></li>
+  <li role="presentation"><a href="#sqlserver">SQL Server</a></li>
+  <li role="presentation"><a href="#oracle">Oracle</a></li>
 </ul>
 
 <div class="tab-content">
@@ -175,10 +178,25 @@
 </pre></div>
 </div>
   </div>
+  <div role="tabpanel" class="tab-pane" id="mysql">
+    <div class="syntax sh"><div class="highlight"><pre><span></span>mysql : mysql-connector-java : 8.0.11
+</pre></div>
+</div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="sqlserver">
+    <div class="syntax sh"><div class="highlight"><pre><span></span>com.microsoft.sqlserver : mssql-jdbc : 6.4.0.jre8
+</pre></div>
+</div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="oracle">
+    <div class="syntax sh"><div class="highlight"><pre><span></span>com.oracle.jdbc : ojdbc8 : 12.2.0.1
+</pre></div>
+</div>
+  </div>
 </div>
 
 
-<h4 id="test-dep">2C - Test Dependency</h4>
+<h4 id="test-dep">Test Dependency</h4>
 <p>
   Add the following test dependency.
 </p>
@@ -242,14 +260,11 @@
 
   </div>
 
-
-<h4>Next</h4>
 <p class="pull-right">
-  Add build plugins for
-  <a class="btn btn-info" href="/docs/getting-started/maven">Next: Using Maven</a> or
-  <a class="btn btn-info" href="/docs/getting-started/gradle">Next: Using Gradle</a>.
+  <b>Next:</b> Add build plugins for
+  <a class="btn btn-info" href="/docs/getting-started/maven">Maven</a>
+  <a class="btn btn-info" href="/docs/getting-started/gradle">Gradle</a>
 </p>
-
 
 
     </div>
@@ -258,23 +273,19 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/getting-started#ide">1. IDE Plugin</a>
+  <a href="/docs/getting-started#ide">IDE Plugin</a>
 </li>
 <li class="active">
-  <a href="/docs/getting-started/dependencies">2. Dependencies</a>
-<ul class="nav">
-  <li><a href="#main-dep">Main dependencies</a></li>
-  <li><a href="#test-dep">Test dependencies</a></li>
-</ul>
+  <a href="/docs/getting-started/dependencies">Dependencies</a>
 </li>
 <li >
-  <a href="/docs/getting-started/maven">3a. Maven</a>
+  <a href="/docs/getting-started/maven">Maven</a>
 </li>
 <li >
-  <a href="/docs/getting-started/gradle">3b. Gradle</a>
+  <a href="/docs/getting-started/gradle">Gradle</a>
 </li>
 <li >
-  <a href="/docs/getting-started/cli-tool">4. CLI Tool</a>
+  <a href="/docs/getting-started/cli-tool">CLI Tool</a>
 </li>
 <li><b>Java</b></li>
 <li >
@@ -295,6 +306,9 @@
 <li >
   <a href="/docs/getting-started/java-repository">Repository</a>
 </li>
+<li >
+  <a href="/docs/getting-started/java-next-steps">Next steps</a>
+</li>
 <li><b>Kotlin</b></li>
 <li >
   <a href="/docs/getting-started/kotlin-first-entity">First entity</a>
@@ -303,15 +317,17 @@
   <a href="/docs/getting-started/kotlin-constructors">Constructors</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-mapped-superclass">6. MappedSuperclass</a>
+  <a href="/docs/getting-started/kotlin-mapped-superclass">MappedSuperclass</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-model">7. Model</a>
+  <a href="/docs/getting-started/kotlin-model">Model</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-finder">8. Finder</a>
+  <a href="/docs/getting-started/kotlin-finder">Finder</a>
 </li>
-
+<li >
+  <a href="/docs/getting-started/kotlin-next-steps">Next steps</a>
+</li>
         </ul>
       </nav>
     </div>

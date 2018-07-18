@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / MappedSuperclass</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/java-first-entity">Java</a> / MappedSuperclass</h1>
   </div>
 </div>
 
@@ -93,7 +93,7 @@
   We can use <code>@MappedSuperclass</code> for common properties used across many entity beans.
 </p>
 <p>
-  It is common to have a mapped superclass with <code>@Id</code>, <code>@Versiond</code> and <code>@WhenModified</code>
+  It is common to have a mapped superclass with <code>@Id</code>, <code>@Version</code> and <code>@WhenModified</code>
   properties like:
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span><span class="o">;</span>
@@ -125,37 +125,8 @@
   <span class="nd">@WhenModified</span>
   <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setId</span><span class="o">(</span><span class="kt">long</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">Long</span> <span class="nf">getVersion</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">version</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setVersion</span><span class="o">(</span><span class="n">Long</span> <span class="n">version</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">version</span> <span class="o">=</span> <span class="n">version</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">Instant</span> <span class="nf">getWhenCreated</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">whenCreated</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setWhenCreated</span><span class="o">(</span><span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">whenCreated</span> <span class="o">=</span> <span class="n">whenCreated</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">Instant</span> <span class="nf">getWhenModified</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">whenModified</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setWhenModified</span><span class="o">(</span><span class="n">Instant</span> <span class="n">whenModified</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">whenModified</span> <span class="o">=</span> <span class="n">whenModified</span><span class="o">;</span>
-  <span class="o">}</span>
+  <span class="c1">// getters and setters</span>
+  <span class="o">...</span>
 
 <span class="o">}</span>
 </pre></div>
@@ -164,10 +135,10 @@
   Our entity beans then extend this to inherit the common properties.
 </p>
 
-<h2>Customer extends BaseDomain</h2>
+<h4>Customer extends BaseDomain</h4>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseDomain</span> <span class="o">{</span>
 
   <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
@@ -176,10 +147,10 @@
 </pre></div>
 </div>
 
-<h2>Order extends BaseDomain</h2>
+<h4>Order extends BaseDomain</h4>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BaseDomain</span> <span class="o">{</span>
 
   <span class="nd">@ManyToOne</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
@@ -205,19 +176,19 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/getting-started#ide">1. IDE Plugin</a>
+  <a href="/docs/getting-started#ide">IDE Plugin</a>
 </li>
 <li >
-  <a href="/docs/getting-started/dependencies">2. Dependencies</a>
+  <a href="/docs/getting-started/dependencies">Dependencies</a>
 </li>
 <li >
-  <a href="/docs/getting-started/maven">3a. Maven</a>
+  <a href="/docs/getting-started/maven">Maven</a>
 </li>
 <li >
-  <a href="/docs/getting-started/gradle">3b. Gradle</a>
+  <a href="/docs/getting-started/gradle">Gradle</a>
 </li>
 <li >
-  <a href="/docs/getting-started/cli-tool">4. CLI Tool</a>
+  <a href="/docs/getting-started/cli-tool">CLI Tool</a>
 </li>
 <li><b>Java</b></li>
 <li >
@@ -238,6 +209,9 @@
 <li >
   <a href="/docs/getting-started/java-repository">Repository</a>
 </li>
+<li >
+  <a href="/docs/getting-started/java-next-steps">Next steps</a>
+</li>
 <li><b>Kotlin</b></li>
 <li >
   <a href="/docs/getting-started/kotlin-first-entity">First entity</a>
@@ -246,15 +220,17 @@
   <a href="/docs/getting-started/kotlin-constructors">Constructors</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-mapped-superclass">6. MappedSuperclass</a>
+  <a href="/docs/getting-started/kotlin-mapped-superclass">MappedSuperclass</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-model">7. Model</a>
+  <a href="/docs/getting-started/kotlin-model">Model</a>
 </li>
 <li >
-  <a href="/docs/getting-started/kotlin-finder">8. Finder</a>
+  <a href="/docs/getting-started/kotlin-finder">Finder</a>
 </li>
-
+<li >
+  <a href="/docs/getting-started/kotlin-next-steps">Next steps</a>
+</li>
         </ul>
       </nav>
     </div>
