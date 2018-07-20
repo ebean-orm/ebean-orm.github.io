@@ -108,11 +108,18 @@
 
 <h4 id="linux">Linux install</h4>
 
+<div class="syntax sh"><div class="highlight"><pre><span></span>curl -s https://ebean-orm.github.io/cli-dist/install <span class="p">|</span> bash
+</pre></div>
+</div>
+
+<h4 id="manual">Alternate manual installation (Linux)</h4>
+
 <div class="syntax sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/.local/bin
 
-curl https://ebean-orm.github.io/cli-dist/ebean-init-1.3.jar &gt; ebean-init-1.3.jar
+curl https://ebean-orm.github.io/cli-dist/ebean-init-1.4.jar &gt; ebean-init-1.4.jar
 curl https://ebean-orm.github.io/cli-dist/ebeaninit &gt; ebeaninit
 
+ln -s ebean-init-1.4.jar ebean-init.jar
 chmod +x ebeaninit
 </pre></div>
 </div>
