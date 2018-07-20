@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-installJar="ebean-init-1.3.jar";
+installJar="ebean-init-1.4.jar";
 
 installDir="NOTSET";
 
