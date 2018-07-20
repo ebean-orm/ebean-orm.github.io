@@ -13,7 +13,23 @@ if [ ! -x "$JAVACMD" ] ; then
   exit 1
 fi
 
+
+installDir="NOTSET";
+
+if [ -d "${HOME}/bin" ]; then
+  installDir="${HOME}/bin"
+fi
+
+if [ -d "${HOME}/.local/bin" ]; then
+  installDir="${HOME}/.local/bin"
+fi
+
+if [ "${installDir}" = "NOTSET" ]; then
+  echo "Unable to determine installed directory?  Failing badly ..."
+  exit 0;
+fi
+
 ##
 ## assumes ebean-init.jar is also in .local/bin
 ##
-exec "$JAVACMD" -jar ~/.local/bin/ebean-init-1.3.jar "$@"
+exec "$JAVACMD" -jar "${installDir}/ebean-init.jar" "$@"

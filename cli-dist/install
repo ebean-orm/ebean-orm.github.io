@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+installJar="ebean-init-1.3.jar";
+
+installDir="NOTSET";
+
+if [ -d "${HOME}/bin" ]; then
+  installDir="${HOME}/bin"
+fi
+
+if [ -d "${HOME}/.local/bin" ]; then
+  installDir="${HOME}/.local/bin"
+fi
+
+if [ "${installDir}" = "NOTSET" ]; then
+  echo "Unable to find ~/.local/bin or ~/bin directory to install into?  Failing to install ..."
+  exit 0;
+fi
+
+
+if [ ! -f $installDir/$installJar ]; then
+  echo "downloading ebean-init jar ..."
+  curl -# --location --insecure https://ebean-orm.github.io/cli-dist/ebean-init-1.3.jar > ebean-init-1.3.jar > $installDir/$installJar
+  rm -f $installDir/ebean-init.jar
+  ln -s $installDir/$installJar $installDir/ebean-init.jar
+fi
+
+if [ ! -f $installDir/ebeaninit ]; then
+  echo "setup ebean-init ..."
+  curl -# --location --insecure https://ebean-orm.github.io/cli-dist/ebeaninit > $installDir/ebeaninit
+  chmod +x $installDir/ebeaninit
+fi
+
+
+echo ""
+echo "Installed ebeaninit into: $installDir"
+echo "done."
+
