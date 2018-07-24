@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-installJar="ebean-init-1.4.jar";
+installHost="https://ebean-orm.github.io";
+installVersion="$(curl --insecure --silent "${installHost}/cli-dist/version.txt")";
+installJar="ebean-init-${installVersion}.jar";
+installUrl="${installHost}/cli-dist/${installJar}";
 
 installDir="NOTSET";
 
@@ -18,16 +21,16 @@ if [ "${installDir}" = "NOTSET" ]; then
 fi
 
 
-if [ ! -f $installDir/$installJar ]; then
-  echo "downloading ebean-init jar ..."
-  curl -# --location --insecure https://ebean-orm.github.io/cli-dist/ebean-init-1.3.jar > ebean-init-1.3.jar > $installDir/$installJar
+if [ ! -f "${installDir}/${installJar}" ]; then
+  echo "downloading ${installUrl} ..."
+  curl -# --location --insecure "${installUrl}" > $installDir/$installJar
   rm -f $installDir/ebean-init.jar
   ln -s $installDir/$installJar $installDir/ebean-init.jar
 fi
 
 if [ ! -f $installDir/ebeaninit ]; then
   echo "setup ebean-init ..."
-  curl -# --location --insecure https://ebean-orm.github.io/cli-dist/ebeaninit > $installDir/ebeaninit
+  curl -# --location --insecure "${installHost}/cli-dist/ebeaninit" > $installDir/ebeaninit
   chmod +x $installDir/ebeaninit
 fi
 
