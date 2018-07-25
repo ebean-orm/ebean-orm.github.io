@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Introduction</title>
+  <title>Documentation</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -43,7 +43,7 @@
         <div class="mobile-nav">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / Database</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/mapping">Mapping</a> / <a href="/docs/mapping/type">Type</a> / DB Array</h1>
   </div>
 </div>
 
@@ -87,120 +87,10 @@
 
       
 
-<h2>Database Platforms</h2>
+
+<h2>DB Array</h2>
 
 
-<table class="table">
-  <tr>
-    <th>Platform</th>
-    <th>Identity</th>
-    <th>DbArray</th>
-    <th>DbJson</th>
-    <th>UUID</th>
-    <th>History</th>
-  </tr>
-
-  <tr>
-    <td>H2</td>
-    <td>*Identity & Sequence</td>
-    <td>Partial</td>
-    <td>Simulated</td>
-    <td>Native</td>
-    <td>Triggers</td>
-  </tr>
-
-  <tr>
-    <td>Postgres</td>
-    <td>*Identity & Sequence</td>
-    <td>Full</td>
-    <td>Full</td>
-    <td>Native</td>
-    <td>Triggers</td>
-  </tr>
-
-  <tr>
-    <td>MySQL</td>
-    <td>Identity</td>
-    <td>Simulated</td>
-    <td>Full</td>
-    <td></td>
-    <td>Triggers</td>
-  </tr>
-
-  <tr>
-    <td>Oracle</td>
-    <td>*Sequence & Identity</td>
-    <td>Simulated</td>
-    <td>Full</td>
-    <td></td>
-    <td>Native</td>
-  </tr>
-
-  <tr>
-    <td>SQL Server 17</td>
-    <td>*Sequence & Identity</td>
-    <td>Simulated</td>
-    <td>Full</td>
-    <td>Native</td>
-    <td>Native</td>
-  </tr>
-
-  <tr>
-    <td>SQL Server 16</td>
-    <td>*Identity</td>
-    <td>Simulated</td>
-    <td>Full</td>
-    <td></td>
-    <td>Native</td>
-  </tr>
-
-  <tr>
-    <td>SQLite</td>
-    <td>*Identity</td>
-    <td>Partial</td>
-    <td>Simulated</td>
-    <td></td>
-    <td>None</td>
-  </tr>
-
-  <tr>
-    <td>DB2</td>
-    <td>*Identity & Sequence</td>
-    <td>None</td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-
-</table>
-
-<h3><a href="/docs/database/postgres">Postgres</a></h3>
-
-<h5>Schema</h5>
-<p>
-  Often with Postgres we want to have the database objects created in a named schema rather than the
-  public schema. We can do this be setting:
-</p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean.dbSchema<span class="o">=</span>myapp
-</pre></div>
-</div>
-<p>
-  When using a named schema with Postgres it is common that we connect using a DB user which is the same
-  as the schema such that the default <code>search path</code> finds the DB tables/objects and we do not
-  need to specify a custom search path (via the connection url etc).
-</p>
-
-<h5>Extensions</h5>
-<p>
-  We also often want to use extensions.  When testing using <a href="/docs/testing">ebean-test-config</a>
-  we can specify a list of extensions that we want to be installed as part of the test database setup
-  (via docker) - refer to <a href="/docs/testing/postgres">testing with Postgres</a>.
-</p>
-
-
-<div class="next pull-right">
-  <a href="/docs/testing/" class="btn btn-info">Next: Testing</a>
-</div>
 
 
     </div>
@@ -210,13 +100,31 @@
         <ul class="nav bs-docs-sidenav">
 
 <li >
-  <a href="/docs/database/postgres">Postgres</a>
+  <a href="/docs/mapping/type/enum">Enum</a>
 </li>
 <li >
-  <a href="/docs/database/sqlserver">SQL Server</a>
+  <a href="/docs/mapping/type/uuid">UUID</a>
 </li>
 <li >
-  <a href="/docs/database/oracle">Oracle</a>
+  <a href="/docs/mapping/type/file">File</a>
+</li>
+<li >
+  <a href="/docs/mapping/type/boolean">Boolean</a>
+</li>
+<li >
+  <a href="/docs/mapping/type/time">Date and Time</a>
+</li>
+<li >
+  <a href="/docs/mapping/type/numeric">Numeric</a>
+</li>
+<li class="active">
+  <a href="/docs/mapping/type/db-array">DB Array</a>
+</li>
+<li >
+  <a href="/docs/mapping/type/db-json">DB Json</a>
+</li>
+<li >
+  <a href="/docs/mapping/type#other">Other</a>
 </li>
 
         </ul>
