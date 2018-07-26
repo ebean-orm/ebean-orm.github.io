@@ -87,9 +87,210 @@
 
       
 
-<h2>RawSql</h2>
+
+<h3>RawSql</h3>
+<p>
+  You can explicitly specify the SQL to use and have that mapped into Objects. You
+  may want to do this so use aggregate functions like sum() max() etc or in cases
+  where you just need exact control over the SQL.
+</p>
+<p>
+  This is useful for "Reporting" type requirements where you want to use aggregate functions such as
+  sum(), count(), max(), etc. It is also useful if you need to use Database specific SQL for whatever
+  reason.
+</p>
+<p>
+  You can programmatically use raw SQL like the following examples or put the Raw SQL and column
+  mappings into ebean-orm.xml file and reference them as 'named queries' - see
+  ebeanServer.createNamedQuery().
+</p>
+
+<p>
+  You can use RawSql with ebean enhanced entity beans. You can fetch only the properties that are need
+  (creating partially populated entity beans). All ebean enhanced entity beans built with RawSql invoke
+  lazy loading etc and act just the same as if they where populated via Ebean generated SQL.
+</p>
+
+<p>
+  If you let Ebean 'parse' the raw SQL then Ebean can add expressions to the WHERE and HAVING clauses as
+  well as set the ORDER BY and LIMIT OFFSET clauses.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Use raw SQL with an aggregate function</span>
+
+<span class="n">String</span> <span class="n">sql</span>
+<span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
+<span class="o">+</span> <span class="s">&quot; from orders o&quot;</span>
+<span class="o">+</span> <span class="s">&quot; join customer c on c.id = o.kcustomer_id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; join order_detail d on d.order_id = o.id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
+
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+<span class="n">RawSqlBuilder</span>
+  <span class="c1">// let ebean parse the SQL so that it can</span>
+  <span class="c1">// add expressions to the WHERE and HAVING</span>
+  <span class="c1">// clauses</span>
+  <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+    <span class="c1">// map resultSet columns to bean properties</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;o.status&quot;</span><span class="o">,</span> <span class="s">&quot;order.status&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.id&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.name&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
 
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+  <span class="c1">// add expressions to the WHERE and HAVING clauses</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+
+  <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<p>
+  This example uses FetchConfig to fetch other parts of the object graph. After the raw SQL query is
+  executed Ebean uses 'query joins' to fetch some order and customer properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// You can also use FetchConfig to get Ebean to</span>
+<span class="c1">// fetch additional parts of the object graph</span>
+<span class="c1">// after the Raw SQL query is executed.</span>
+
+<span class="n">String</span> <span class="n">sql</span>
+<span class="o">=</span> <span class="s">&quot; select order_id, sum(d.order_qty*d.unit_price) as totalAmount &quot;</span>
+<span class="o">+</span> <span class="s">&quot; from order_detail d&quot;</span>
+<span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
+
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+<span class="n">RawSqlBuilder</span>
+  <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+
+<span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+    <span class="c1">// get ebean to fetch parts of the order and customer</span>
+    <span class="c1">// after the raw SQL query is executed</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
+</pre></div>
+</div>
+</p>
+
+<p>
+  This is the OrderAggregate bean used in the examples above.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">com.avaje.tests.model.basic</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.persistence.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.persistence.OneToOne</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.avaje.ebean.annotation.Sql</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm">* An example of an Aggregate object.</span>
+<span class="cm">*</span>
+<span class="cm">* Note the @Sql indicates to Ebean that this bean is not based on a table but</span>
+<span class="cm">* instead uses RawSql.</span>
+<span class="cm">*</span>
+<span class="cm">*/</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Sql</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderAggregate</span> <span class="o">{</span>
+
+  <span class="nd">@OneToOne</span>
+  <span class="n">Order</span> <span class="n">order</span><span class="o">;</span>
+
+  <span class="n">Double</span> <span class="n">totalAmount</span><span class="o">;</span>
+
+  <span class="n">Double</span> <span class="n">totalItems</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; totalAmount:&quot;</span> <span class="o">+</span> <span class="n">totalAmount</span> <span class="o">+</span> <span class="s">&quot; totalItems:&quot;</span> <span class="o">+</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Order</span> <span class="nf">getOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setOrder</span><span class="o">(</span><span class="n">Order</span> <span class="n">order</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">order</span> <span class="o">=</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalAmount</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">totalAmount</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalAmount</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalAmount</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">totalAmount</span> <span class="o">=</span> <span class="n">totalAmount</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Double</span> <span class="nf">getTotalItems</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTotalItems</span><span class="o">(</span><span class="n">Double</span> <span class="n">totalItems</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">totalItems</span> <span class="o">=</span> <span class="n">totalItems</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>tableAliasMapping()</h3>
+<p>
+  tableAliasMapping() will automatically map columns from the query results to the associated object based
+  on its path. It does this using the query alias. This is a convenience mathod so that you don't have to
+  map each column individually.
+</p>
+
+<p>
+  So a test case looks like:
+
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
+<span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
+<span class="s">&quot;from orders o join customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;join product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
+<span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
+<span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
+
+
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;d&quot;</span><span class="o">,</span> <span class="s">&quot;details&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;details.product&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">ordersFromRaw</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;maxOrderId&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;productId&quot;</span><span class="o">,</span> <span class="mi">1</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  Rather than using columnMapping like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.status&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.id&quot;</span><span class="o">,</span> <span class="s">&quot;customer.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.name&quot;</span><span class="o">,</span> <span class="s">&quot;customer.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t2.order_qty&quot;</span><span class="o">,</span> <span class="s">&quot;details.orderQty&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.id&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t3.name&quot;</span><span class="o">,</span> <span class="s">&quot;details.product.name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</pre></div>
+</div>
 
 
     </div>

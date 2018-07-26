@@ -87,7 +87,33 @@
 
       
 
-<h2>findFutureList</h2>
+
+<h3>findFutureList</h3>
+<p>
+  findFutureList allows for the background execution of a query which we can wait for and cancel if desired.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find list using a background thread</span>
+<span class="n">FutureList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">futureList</span> <span class="o">=</span>
+  <span class="n">Order</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findFutureList</span><span class="o">();</span>
+
+  <span class="c1">// do something else ...</span>
+
+<span class="k">if</span> <span class="o">(!</span><span class="n">futureList</span><span class="o">.</span><span class="na">isDone</span><span class="o">()){</span>
+  <span class="c1">// you can cancel the query. If supported by the JDBC</span>
+  <span class="c1">// driver and database this will actually cancel the</span>
+  <span class="c1">// sql query execution on the database</span>
+  <span class="n">futureList</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">// wait for the query to finish ... no timeout</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+<span class="c1">// wait for the query to finish ... with a 30sec timeout</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">30</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</pre></div>
+</div>
 
 
 
