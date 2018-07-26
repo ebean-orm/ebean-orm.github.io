@@ -87,7 +87,33 @@
 
       
 
-<h2>findOne</h2>
+<h3>findOne</h3>
+<p>
+  Used when a query is expected to return 1 or zero beans.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+
+  <span class="n">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.bar&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h3>findOneOrEmpty</h3>
+<p>
+  The same as findOne but returns an <code>Optional</code> holding the bean.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customer</span> <span class="o">=</span>
+
+  <span class="n">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.bar&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findOneOrEmpty</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  These methods throw <code>javax.persistence.NonUniqueResultException</code> if there is more that one matching
+  result for the query.
+</p>
 
 
 

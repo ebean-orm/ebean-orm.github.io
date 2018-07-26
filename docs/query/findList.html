@@ -87,7 +87,22 @@
 
       
 
-<h2>findList</h2>
+<h3>findList</h3>
+<p>
+  Returns a list of beans for the query.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+
+  <span class="n">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  Note that we hold all the beans in memory when executing this query.  As such it is good when we
+  expect to fetch hundreds of beans but we should consider using a <a href="/findEach">findEach</a>
+  query when we look to query and read a very large number of results.
+</p>
 
 
 
