@@ -89,8 +89,63 @@
 
 
 
-<h2 id="overview">Overview</h2>
 
+<h2>@WhenModified</h2>
+<p>
+  A date time property managed by Ebean that is set on both <code>insert</code> and <code>update</code>.
+</p>
+<p>
+  Typically we use both <code>@WhenCreated</code> and <code>@WhenModified</code> on a mapped superclass.
+</p>
+<p>&nbsp;</p>
+
+<h4>Example</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@WhenCreated</span>
+<span class="kd">private</span> <span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+<span class="nd">@WhenModified</span>
+<span class="kd">private</span> <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+
+<h4>Example on mapped superclass</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="kd">protected</span> <span class="n">UUID</span> <span class="n">id</span><span class="o">;</span>
+
+    <span class="nd">@Version</span>
+    <span class="kd">private</span> <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
+
+    <span class="nd">@WhenCreated</span>
+    <span class="kd">private</span> <span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+    <span class="nd">@WhenModified</span>
+    <span class="kd">private</span> <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">UUID</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">long</span> <span class="nf">getVersion</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">version</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Instant</span> <span class="nf">getWhenCreated</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">whenCreated</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">Instant</span> <span class="nf">getWhenModified</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">whenModified</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
 
 
