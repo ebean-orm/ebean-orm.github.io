@@ -92,7 +92,7 @@
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean.test<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-test-config<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>11.18.2<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.20.1<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
@@ -183,6 +183,18 @@
         <dd><b>url:</b> jdbc:postgresql://localhost:{port}/{databaseName}</dd>
         <dd><b>driver:</b> org.postgresql.Driver</dd>
         <dd><b>image:</b> postgres:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>postgis</td>
+    <td>Run against Postgres Postgis docker DB.
+      <dl>
+        <dd><b>port:</b> 7432</dd>
+        <dd><b>password:</b> test</dd>
+        <dd><b>url:</b> jdbc:postgresql_lwgis://localhost:{port}/{databaseName}</dd>
+        <dd><b>driver:</b> org.postgis.DriverWrapperLW</dd>
+        <dd><b>image:</b> mdillon/postgis:{version}</dd>
       </dl>
     </td>
   </tr>
