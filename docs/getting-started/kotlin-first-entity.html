@@ -118,9 +118,9 @@
   In <code>src/main/resources</code> add <code>ebean.mf</code> which tells the build plugins which packages
   should be enhanced.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>entity-packages: org.example.domain
-transactional-packages: org.example
-querybean-packages: org.example
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">entity-packages</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">org.example.domain</span>
+<span class="l l-Scalar l-Scalar-Plain">transactional-packages</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">org.example</span>
+<span class="l l-Scalar l-Scalar-Plain">querybean-packages</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">org.example</span>
 </pre></div>
 </div>
 <p>
@@ -138,12 +138,12 @@ querybean-packages: org.example
   In <code>src/test/resources</code> add <code>application-test.yml</code> which tells Ebean how to run
   tests.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
 <span class="c1">#    shutdown: stop # stop | remove</span>
-    platform: h2 <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: myapp
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
 </pre></div>
 </div>
 <p>
@@ -224,24 +224,24 @@ querybean-packages: org.example
   <code>DDL</code> and <code>SQL</code> that you expect.
 </p>
 
-<div class="syntax sh"><div class="highlight"><pre><span></span>23:40:09.040 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.EbeanVersion - ebean version: 11.19.1
-23:40:09.087 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.config.properties.LoadContext - loaded properties from <span class="o">[</span>application.yml, application-test.yml<span class="o">]</span>
-23:40:09.163 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.t.c.provider.ProviderAutoConfig - <span class="k">for</span> testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to <span class="nb">set</span> current user and tenant in tests.
-23:40:09.190 <span class="o">[</span>main<span class="o">]</span> INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool <span class="o">[</span>db<span class="o">]</span> autoCommit<span class="o">[</span>false<span class="o">]</span> transIsolation<span class="o">[</span>READ_COMMITTED<span class="o">]</span> min<span class="o">[</span>2<span class="o">]</span> max<span class="o">[</span>200<span class="o">]</span>
-23:40:09.297 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
-23:40:09.550 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-drop-all.sql - <span class="m">1</span> statements
-23:40:09.551 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> drop table <span class="k">if</span> exists customer
-23:40:09.557 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-create-all.sql - <span class="m">1</span> statements
-23:40:09.557 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> create table customer <span class="o">(</span> id                            bigint auto_increment not...
-23:40:09.587 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1001<span class="o">]</span> insert into customer <span class="o">(</span>name<span class="o">)</span> values <span class="o">(</span>?<span class="o">)</span><span class="p">;</span> --bind<span class="o">(</span>Hello entity bean<span class="o">)</span>
-23:40:09.608 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1001<span class="o">]</span> Inserted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
-23:40:09.609 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1001<span class="o">]</span> Commit
-23:40:09.615 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1002<span class="o">]</span> update customer <span class="nb">set</span> <span class="nv">name</span><span class="o">=</span>? where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>Goodbye,1<span class="o">)</span>
-23:40:09.616 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1002<span class="o">]</span> Updated <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
-23:40:09.617 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1002<span class="o">]</span> Commit
-23:40:09.618 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SQL - txn<span class="o">[</span>1003<span class="o">]</span> delete from customer where <span class="nv">id</span><span class="o">=</span>?<span class="p">;</span> --bind<span class="o">(</span>1<span class="o">)</span>
-23:40:09.619 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.SUM - txn<span class="o">[</span>1003<span class="o">]</span> Deleted <span class="o">[</span>Customer<span class="o">]</span> <span class="o">[</span>1<span class="o">]</span>
-23:40:09.619 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.TXN - txn<span class="o">[</span>1003<span class="o">]</span> Commit
+<div class="syntax text"><div class="highlight"><pre><span></span>23:40:09.040 [main] INFO  io.ebean.EbeanVersion - ebean version: 11.19.1
+23:40:09.087 [main] INFO  i.e.config.properties.LoadContext - loaded properties from [application.yml, application-test.yml]
+23:40:09.163 [main] INFO  i.e.t.c.provider.ProviderAutoConfig - for testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to set current user and tenant in tests.
+23:40:09.190 [main] INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool [db] autoCommit[false] transIsolation[READ_COMMITTED] min[2] max[200]
+23:40:09.297 [main] INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
+23:40:09.550 [main] INFO  io.ebean.DDL - Executing db-drop-all.sql - 1 statements
+23:40:09.551 [main] DEBUG io.ebean.DDL - executing 1 of 1 drop table if exists customer
+23:40:09.557 [main] INFO  io.ebean.DDL - Executing db-create-all.sql - 1 statements
+23:40:09.557 [main] DEBUG io.ebean.DDL - executing 1 of 1 create table customer ( id                            bigint auto_increment not...
+23:40:09.587 [main] DEBUG io.ebean.SQL - txn[1001] insert into customer (name) values (?); --bind(Hello entity bean)
+23:40:09.608 [main] DEBUG io.ebean.SUM - txn[1001] Inserted [Customer] [1]
+23:40:09.609 [main] DEBUG io.ebean.TXN - txn[1001] Commit
+23:40:09.615 [main] DEBUG io.ebean.SQL - txn[1002] update customer set name=? where id=?; --bind(Goodbye,1)
+23:40:09.616 [main] DEBUG io.ebean.SUM - txn[1002] Updated [Customer] [1]
+23:40:09.617 [main] DEBUG io.ebean.TXN - txn[1002] Commit
+23:40:09.618 [main] DEBUG io.ebean.SQL - txn[1003] delete from customer where id=?; --bind(1)
+23:40:09.619 [main] DEBUG io.ebean.SUM - txn[1003] Deleted [Customer] [1]
+23:40:09.619 [main] DEBUG io.ebean.TXN - txn[1003] Commit
 </pre></div>
 </div>
 

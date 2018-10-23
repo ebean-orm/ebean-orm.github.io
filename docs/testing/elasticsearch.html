@@ -91,29 +91,29 @@
   To test against ElasticSearch we can set the <code>elastic version</code> property like
   the example below which will then start Elastic as a docker container automatically.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
 <span class="c1">#    useDocker: false</span>
 <span class="c1">#    shutdown: stop # stop | remove</span>
-    platform: h2 <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: myapp
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
 
-  docstore:
-    url: http://127.0.0.1:9201
-    active: <span class="nb">true</span>
-    generateMapping: <span class="nb">true</span>
-    dropCreate: <span class="nb">true</span>
+  <span class="l l-Scalar l-Scalar-Plain">docstore</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:9201</span>
+    <span class="l l-Scalar l-Scalar-Plain">active</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">generateMapping</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">dropCreate</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 
-    elastic:
-      version: 5.6.0
-      port: 9201
+    <span class="l l-Scalar l-Scalar-Plain">elastic</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5.6.0</span>
+      <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
 </pre></div>
 </div>
 <p>
   In terms of logging we can see:
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>21:57:06.587 INFO  io.ebean.docker.commands.Commands - Start container ut_elastic with port:9201
+<div class="syntax text"><div class="highlight"><pre><span></span>21:57:06.587 INFO  io.ebean.docker.commands.Commands - Start container ut_elastic with port:9201
 </pre></div>
 </div>
 

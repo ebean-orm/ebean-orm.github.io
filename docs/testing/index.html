@@ -105,11 +105,11 @@
   Add into <code>src/test/resources</code> a <code>application-test.yml</code> configuration file
   that we use for testing.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
-    platform: h2 <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: myapp
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
 </pre></div>
 </div>
 <p>
@@ -260,54 +260,54 @@
   We can see/review what is occurring by increasing the logging for <code>io.ebean.docker</code> to <code>TRACE</code>.
   When we do that we can see log messages like:
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>15:15:02.232 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.EbeanVersion - ebean version: 11.18.2
+<div class="syntax text"><div class="highlight"><pre><span></span>15:15:02.232 [main] INFO  io.ebean.EbeanVersion - ebean version: 11.18.2
 
 
-<span class="c1">## PROPERTIES FILE(S)</span>
+## PROPERTIES FILE(S)
 
-15:15:02.284 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.config.properties.LoadContext - loaded properties from <span class="o">[</span>application.yml, application-test.yml<span class="o">]</span>
+15:15:02.284 [main] INFO  i.e.config.properties.LoadContext - loaded properties from [application.yml, application-test.yml]
 
 
-<span class="c1">## DOCKER COMMANDS</span>
+## DOCKER COMMANDS
 
 15:15:02.537 INFO  io.ebean.docker.commands.Commands - Container ut_postgres running with port:6432 db:test_ex user:test_ex mode:Create shutdown:
-15:15:02.538 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres pg_isready -h localhost -p 5432
-15:15:02.645 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -c <span class="k">select</span> datname from pg_database
-15:15:02.753 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -c <span class="k">select</span> rolname from pg_roles where <span class="nv">rolname</span> <span class="o">=</span> <span class="s1">&#39;test_ex&#39;</span>
-15:15:02.871 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -c <span class="k">select</span> <span class="m">1</span> from pg_database where <span class="nv">datname</span> <span class="o">=</span> <span class="s1">&#39;test_ex&#39;</span>
+15:15:02.538 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres pg_isready -h localhost -p 5432
+15:15:02.645 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select datname from pg_database
+15:15:02.753 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select rolname from pg_roles where rolname = &#39;test_ex&#39;
+15:15:02.871 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select 1 from pg_database where datname = &#39;test_ex&#39;
 15:15:02.960 DEBUG io.ebean.docker.commands.Commands - create database extensions hstore,pgcrypto
-15:15:02.960 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d test_ex -c create extension <span class="k">if</span> not exists hstore
-15:15:03.058 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d test_ex -c create extension <span class="k">if</span> not exists pgcrypto
+15:15:02.960 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test_ex -c create extension if not exists hstore
+15:15:03.058 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test_ex -c create extension if not exists pgcrypto
 15:15:03.143 DEBUG io.ebean.docker.commands.Commands - waitForConnectivity ut_postgres ...
 15:15:03.143 DEBUG io.ebean.docker.commands.Commands - checkConnectivity on ut_postgres ...
-15:15:03.190 DEBUG io.ebean.docker.commands.Commands - connectivity confirmed <span class="k">for</span> ut_postgres
+15:15:03.190 DEBUG io.ebean.docker.commands.Commands - connectivity confirmed for ut_postgres
 15:15:03.190 DEBUG io.ebean.docker.commands.Commands - Container ut_postgres ready with port 6432
 
 
-<span class="c1">## FOR TESTING ... set a current user and tenant provider</span>
+## FOR TESTING ... set a current user and tenant provider
 
-15:15:03.194 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.t.c.provider.ProviderAutoConfig - <span class="k">for</span> testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to <span class="nb">set</span> current user and tenant in tests.
-
-
-<span class="c1">## SELECTED PLATFORM</span>
-
-15:15:03.239 <span class="o">[</span>main<span class="o">]</span> INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool <span class="o">[</span>db<span class="o">]</span> autoCommit<span class="o">[</span>false<span class="o">]</span> transIsolation<span class="o">[</span>READ_COMMITTED<span class="o">]</span> min<span class="o">[</span>2<span class="o">]</span> max<span class="o">[</span>200<span class="o">]</span>
-15:15:03.277 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:postgres
+15:15:03.194 [main] INFO  i.e.t.c.provider.ProviderAutoConfig - for testing purposes a current user and tenant provider has been configured. Use io.ebean.test.UserContext to set current user and tenant in tests.
 
 
-<span class="c1">## EXECUTE DDL</span>
+## SELECTED PLATFORM
 
-15:15:03.618 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing extra-dll - <span class="m">0</span> statements
-15:15:03.618 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-drop-all.sql - <span class="m">26</span> statements
-15:15:03.649 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">26</span> alter table <span class="k">if</span> exists address drop constraint <span class="k">if</span> exists fk_address_country_code
-15:15:03.651 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">2</span> of <span class="m">26</span> drop index <span class="k">if</span> exists ix_address_country_code
+15:15:03.239 [main] INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool [db] autoCommit[false] transIsolation[READ_COMMITTED] min[2] max[200]
+15:15:03.277 [main] INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:postgres
+
+
+## EXECUTE DDL
+
+15:15:03.618 [main] INFO  io.ebean.DDL - Executing extra-dll - 0 statements
+15:15:03.618 [main] INFO  io.ebean.DDL - Executing db-drop-all.sql - 26 statements
+15:15:03.649 [main] DEBUG io.ebean.DDL - executing 1 of 26 alter table if exists address drop constraint if exists fk_address_country_code
+15:15:03.651 [main] DEBUG io.ebean.DDL - executing 2 of 26 drop index if exists ix_address_country_code
 ...
-15:15:03.701 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing db-create-all.sql - <span class="m">28</span> statements
-15:15:03.701 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">28</span> create table address <span class="o">(</span> id                            bigserial not null, line1...
-15:15:03.709 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">2</span> of <span class="m">28</span> create table contact <span class="o">(</span> id                            bigserial not null, first_n...
+15:15:03.701 [main] INFO  io.ebean.DDL - Executing db-create-all.sql - 28 statements
+15:15:03.701 [main] DEBUG io.ebean.DDL - executing 1 of 28 create table address ( id                            bigserial not null, line1...
+15:15:03.709 [main] DEBUG io.ebean.DDL - executing 2 of 28 create table contact ( id                            bigserial not null, first_n...
 ...
-15:15:03.841 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing extra-dll - <span class="m">1</span> statements
-15:15:03.842 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> create or replace view order_agg_vw as <span class="k">select</span> d.order_id as id, d.order_id as or...
+15:15:03.841 [main] INFO  io.ebean.DDL - Executing extra-dll - 1 statements
+15:15:03.842 [main] DEBUG io.ebean.DDL - executing 1 of 1 create or replace view order_agg_vw as select d.order_id as id, d.order_id as or...
 </pre></div>
 </div>
 
@@ -329,12 +329,12 @@
   docker container after running all the tests. To do this we set <code>shutdown</code> to either
   <code>stop</code> (to just stop the container) or <code>remove</code> (to stop and remove the container).
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
-    shutdown: stop  <span class="c1"># stop | remove</span>
-    platform: postgres <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: myapp
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">stop</span>  <span class="c1"># stop | remove</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
 </pre></div>
 </div>
 
@@ -351,16 +351,16 @@
   When we are using  <code>useDocker: false</code> the database and user are expected to already exist along with
   permissions (and Postgres extension).
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
-    useDocker: <span class="nb">false</span>  <span class="c1">## DO NOT USE DOCKER</span>
-    platform: postgres <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: <span class="nb">test</span>
-    postgres:
-      username: <span class="nb">test</span>
-      password: <span class="nb">test</span>
-      url: jdbc:postgresql://localhost:5432/test
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">useDocker</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>  <span class="c1">## DO NOT USE DOCKER</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+      <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+      <span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://localhost:5432/test</span>
 </pre></div>
 </div>
 

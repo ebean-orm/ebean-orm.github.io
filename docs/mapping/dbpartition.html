@@ -153,9 +153,9 @@ select partition_init(date &#39;2015-01-01&#39;, &#39;month&#39;, &#39;event_log
   some for us when it is executing the <code>create all ddl</code>. In the logs we will see messages like
   the ones below when this occurs.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>12:18:47.711 <span class="o">[</span>main<span class="o">]</span> INFO  i.e.dbmigration.DdlGenerator - No table partitions <span class="k">for</span> table event
-12:18:47.711 <span class="o">[</span>main<span class="o">]</span> INFO  io.ebean.DDL - Executing initial table partitions - <span class="m">1</span> statements
-12:18:47.711 <span class="o">[</span>main<span class="o">]</span> DEBUG io.ebean.DDL - executing <span class="m">1</span> of <span class="m">1</span> <span class="k">select</span> partition<span class="o">(</span><span class="s1">&#39;week&#39;</span>,<span class="s1">&#39;event&#39;</span>,<span class="s1">&#39;id&#39;</span>,<span class="s1">&#39;when_occurred&#39;</span>,1<span class="o">)</span>
+<div class="syntax text"><div class="highlight"><pre><span></span>12:18:47.711 [main] INFO  i.e.dbmigration.DdlGenerator - No table partitions for table event
+12:18:47.711 [main] INFO  io.ebean.DDL - Executing initial table partitions - 1 statements
+12:18:47.711 [main] DEBUG io.ebean.DDL - executing 1 of 1 select partition(&#39;week&#39;,&#39;event&#39;,&#39;id&#39;,&#39;when_occurred&#39;,1)
 </pre></div>
 </div>
 <p>

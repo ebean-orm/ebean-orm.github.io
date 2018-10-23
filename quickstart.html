@@ -72,14 +72,14 @@
 
         <h3>1. git clone example-minimal</h3>
 
-        <div class="syntax sh"><div class="highlight"><pre><span></span>git clone git@github.com:ebean-orm-examples/example-minimal.git
+        <div class="syntax text"><div class="highlight"><pre><span></span>git clone git@github.com:ebean-orm-examples/example-minimal.git
 </pre></div>
 </div>
 
         <h3>2. mvn clean test</h3>
 
-        <div class="syntax sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> example-minimal
-mvn clean <span class="nb">test</span>
+        <div class="syntax text"><div class="highlight"><pre><span></span>cd example-minimal
+mvn clean test
 </pre></div>
 </div>
 
@@ -149,13 +149,13 @@ mvn clean <span class="nb">test</span>
         </p>
 
         <h3>Create a new project via archetype</h3>
-        <div class="syntax sh"><div class="highlight"><pre><span></span>mvn archetype:generate                                 <span class="se">\</span>
-  -DinteractiveMode<span class="o">=</span>f                                  <span class="se">\</span>
-  -DarchetypeGroupId<span class="o">=</span>org.avaje.ebean                <span class="se">\</span>
-  -DarchetypeArtifactId<span class="o">=</span>archetype-start                    <span class="se">\</span>
-  -DarchetypeVersion<span class="o">=</span>1.0                               <span class="se">\</span>
-  -DgroupId<span class="o">=</span>com.foo.myapp                              <span class="se">\</span>
-  -DartifactId<span class="o">=</span>my-app
+        <div class="syntax text"><div class="highlight"><pre><span></span>mvn archetype:generate                                 \
+  -DinteractiveMode=f                                  \
+  -DarchetypeGroupId=org.avaje.ebean                \
+  -DarchetypeArtifactId=archetype-start                    \
+  -DarchetypeVersion=1.0                               \
+  -DgroupId=com.foo.myapp                              \
+  -DartifactId=my-app
 </pre></div>
 </div>
 

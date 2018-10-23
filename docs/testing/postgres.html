@@ -95,21 +95,21 @@
 <p>
   We can specify extensions that should be installed automatically via:
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  test:
-    platform: postgres <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: myapp
-    postgres:
-      extensions: pgcrypto, hstore
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
+    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">extensions</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pgcrypto, hstore</span>
 </pre></div>
 </div>
 <p>
   In terms of logging / debugged we can see the extensions added via:
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>17:07:17.078 DEBUG io.ebean.docker.commands.Commands - create database extensions pgcrypto,hstore
-17:07:17.078 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d <span class="nb">test</span> -c create extension <span class="k">if</span> not exists pgcrypto
-17:07:17.187 DEBUG io.ebean.docker.commands.Commands - docker <span class="nb">exec</span> -i ut_postgres psql -U postgres -d <span class="nb">test</span> -c create extension <span class="k">if</span> not exists hstore
+<div class="syntax text"><div class="highlight"><pre><span></span>17:07:17.078 DEBUG io.ebean.docker.commands.Commands - create database extensions pgcrypto,hstore
+17:07:17.078 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test -c create extension if not exists pgcrypto
+17:07:17.187 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test -c create extension if not exists hstore
 </pre></div>
 </div>
 
@@ -125,8 +125,8 @@
   <code>myapp</code> it is advisable to have the DB user/role match and be <code>myapp</code>.
 </p>
 <h5>application.yaml</h5>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  dbSchema: myapp  <span class="c1">## use this schema for migrations and testing</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">dbSchema</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>  <span class="c1">## use this schema for migrations and testing</span>
 </pre></div>
 </div>
 
@@ -143,14 +143,14 @@
   This will automatically download and run the container making live a little easier.
   Note the use of the Postgis specfic driver and url.
 </p>
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  geometrySRID: <span class="m">4674</span>  <span class="c1"># If we don&#39;t want the default geometrySRID of 4326</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">geometrySRID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>  <span class="c1"># If we don&#39;t want the default geometrySRID of 4326</span>
 
-  test:
-    shutdown: none <span class="c1"># stop | remove | none</span>
-    platform: postgis
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: mygisapp
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
 </pre></div>
 </div>
 <p>
@@ -163,20 +163,20 @@
   <li>Uses <code>mdillon/postgis</code> docker image with Postgis installed</li>
 </ul>
 
-<div class="syntax sh"><div class="highlight"><pre><span></span>ebean:
-  geometrySRID: 4674
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">geometrySRID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>
 
-  test:
-    shutdown: none <span class="c1"># stop | remove | none</span>
-    platform: postgres
-    ddlMode: dropCreate <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    dbName: mygisapp
-    postgres:
-      containerName: postgis
-      image: mdillon/postgis
-      extensions: postgis
-      url: jdbc:postgresql_lwgis://127.0.0.1:7432/mygisapp
-      driver: org.postgis.DriverWrapperLW
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
+    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">containerName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mdillon/postgis</span>
+      <span class="l l-Scalar l-Scalar-Plain">extensions</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql_lwgis://127.0.0.1:7432/mygisapp</span>
+      <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgis.DriverWrapperLW</span>
 </pre></div>
 </div>
 
