@@ -123,33 +123,18 @@
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.11<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.12<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
   <span class="nt">&lt;configuration&gt;</span>
     <span class="nt">&lt;tiles&gt;</span>
       <span class="c">&lt;!-- other tiles ... --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:5.2<span class="nt">&lt;/tile&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:5.6<span class="nt">&lt;/tile&gt;</span>
     <span class="nt">&lt;/tiles&gt;</span>
   <span class="nt">&lt;/configuration&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
 </pre></div>
 </div>
 
-<h4>3. Run <code>mvn ebean:init</code></h4>
-<div class="syntax sh"><div class="highlight"><pre><span></span>mvn ebean:init
-</pre></div>
-</div>
-<p>
-    Run the ebean interactive project setup. This will prompt you as to what you would like to
-    do with the project.
-</p>
-<p>
-    Typically we want to:
-</p>
-<ul>
-    <li>Add an ebean.mf ... to control the enhancement</li>
-    <li>Add support for testing and logging</li>
-</ul>
 
 <hr/>
 
@@ -159,15 +144,11 @@
     as the enhancement for query beans. This is simpler, cleaner less verbose than
     defining the plugin in the traditional (non-tile) fashion and is the preferred approach.
 </p>
-<p>
-    The maven tile also brings in the code generation plugin that is run by <code>mvn ebean:init</code>
-</p>
+
 <h5>The ebean enhancement tile brings plugin configuration for:</h5>
 <ul>
     <li>Entity bean and @Transactional enhancement for main and test</li>
     <li>Query bean enhancement for main and test</li>
-    <li>ebean-codegen plugin, helper to generate finders etc</li>
-
 </ul>
 <p>
     Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.
@@ -176,8 +157,7 @@
 <h3>Maven enhancement plugin</h3>
 <p>
     If you do not want to use maven tiles you can specify the maven enhancement
-    plugin in 'normal' fashion. Note the unlike the tile this does not bring in the
-    <a href="/docs/query/typesafe#enhancement">query bean enhancement</a>.
+    plugin in 'normal' fashion.
 </p>
 
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
@@ -189,9 +169,6 @@
     <span class="nt">&lt;execution&gt;</span>
       <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
       <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
       <span class="nt">&lt;goals&gt;</span>
         <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
       <span class="nt">&lt;/goals&gt;</span>
@@ -201,9 +178,6 @@
     <span class="nt">&lt;execution&gt;</span>
       <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
       <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
       <span class="nt">&lt;goals&gt;</span>
         <span class="nt">&lt;goal&gt;</span>testEnhance<span class="nt">&lt;/goal&gt;</span>
       <span class="nt">&lt;/goals&gt;</span>
@@ -215,20 +189,6 @@
 </div>
 
 
-
-<h3>Maven code generation plugin</h3>
-<p>
-    This is the plugin that runs <code>mvn ebean:init</code>. It generates <code>Finders</code>,
-    adds <code>ebean.mf</code> and sets up testing for a project.
-</p>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean.tools<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>codegen-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>version<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
-</div>
 <div class="next pull-right">
     <a href="/docs/logging" class="btn btn-info">Next: Logging</a>
 </div>
