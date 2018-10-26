@@ -87,29 +87,70 @@
 
       
 
-<h3>findIterate</h3>
+<h3>findIterate (Execute a query iterating over the results)</h3>
 
 <p>
-  Execute the query iterating over the results. This is good for processing large results where
-  we want to avoid holding all the beans/results in memory but instead iterator through them.
+Execute the query iterating over the results. This is good for processing large results where we want to avoid holding all the beans/results in memory but instead iterator through them.
 </p>
+ <p>
+ Note that <code>findIterate</code> (and <a href='findEach'>findEach</a> and <a href='findEachWhile'>findEachWhile</a>) uses a "per graph"
+ persistence context scope and adjusts <code>jdbc</code> fetch buffer size for large
+ queries. As such it is better to use <a href='findList'>findList</a> for small queries.
+ </p>
+ <p>
+ Remember that with <a href='http://ebean-orm.github.io/apidoc/11/io/ebean/QueryIterator.html'>QueryIterator</a> you must call <code>close()</code>
+ when you have finished iterating the results (typically in a finally block).
+ </p>
+ <p>
+ <a href='findEach'>findEach()</a> and <a href='findEachWhile'>findEachWhile()</a> are preferred to <code>findIterate</code> as they ensure
+ the <code>jdbc</code> statement and <code>resultSet</code> are closed at the end of the iteration.
+ </p>
+ <p>
+ This query will execute against the <code>EbeanServer</code> that was used to create it.
+ </p>
 
-<h4>close</h4>
-<p>
-  Note that we must ensure the iterator is <code>closed</code> as it holds JDBC resources.
-</p>
-<p>
-  We should use <code>try with resources</code> or a <code>try finally</code> block to make sure
-  that the QueryIterator is closed regardless of exceptions thrown during processing.
-</p>
-<p>
-  Note that <a href="findEach">findEach</a> and <a href="findEachWhile">findEachWhile</a> ensure
-  all resoucres are closed regardless and for this reason they are recommended over <code>findIterate</code>.
-</p>
-<p>
-  There are some use cases where findEach and findEachWhile don't naturally fit and that is when we
-  would look to use findIterate.
-</p>
+<h3>Closing Resources</h3>
+
+<b>As stated before, we must ensure the iterator is closed</b> as it holds <code>JDBC</code> resources.
+
+We should use <code>try-with-resources</code> or a <code>try-finally</code> block to make sure that the <a href='http://ebean-orm.github.io/apidoc/11/io/ebean/QueryIterator.html'>QueryIterator</a> is closed regardless of exceptions thrown during processing.
+
+Note that <a href='findEach'>findEach</a> and <a href='findEachWhile'>findEachWhile</a> ensure all resources are closed regardless and for this reason they are recommended over <code>findIterate</code>.
+
+There are some use cases where <a href='findEach'>findEach</a> and <a href='findEachWhile'>findEachWhile</a> don't naturally fit and that is when we would look to use <code>findIterate</code>.
+
+<h3> Example Code </h3>
+
+Example with <code>try-finally</code>
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">);</span>
+
+<span class="n">QueryIterator</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findIterate</span><span class="o">();</span>
+<span class="k">try</span> <span class="o">{</span>
+  <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+    <span class="c1">// do something with customer ...</span>
+  <span class="o">}</span>
+<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+  <span class="c1">// close the underlying resources</span>
+  <span class="n">it</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+Example with <code>try-with-resources</code>
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">QueryIterator</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findIterate</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+        <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+        <span class="n">count</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+      <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
 
 
 
