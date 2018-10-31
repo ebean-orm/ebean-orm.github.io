@@ -87,8 +87,31 @@
 
       
 
-<h2>findMap</h2>
+<h2>findMap (Execute a query returning the result as a map of the objects)</h2>
 
+  Execute the query returning a map of the objects.
+ <p>
+ This query will execute against the EbeanServer that was used to create it.
+ </p>
+ <p>
+ You can use <code>setMapKey()</code> to specify the property to be used as keys
+ on the map. If one is not specified then the <code>id</code> property is used.
+ The name of the properties is the name they have on the Model, not the name of the database column.
+ </p>
+ 
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Assuming a list of Products exists</span>
+<span class="n">with</span> <span class="nf">Product</span><span class="o">(</span><span class="n">name</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">P1</span><span class="err">&#39;</span><span class="o">,</span> <span class="n">sku</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">I1</span><span class="err">&#39;</span><span class="o">),</span> <span class="n">Product</span><span class="o">(</span><span class="n">name</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">P2</span><span class="err">&#39;</span><span class="o">,</span> <span class="n">sku</span><span class="o">:</span> <span class="err">&#39;</span><span class="n">I2</span><span class="err">&#39;</span><span class="o">)</span>
+<span class="n">the</span> <span class="n">following</span> <span class="n">code</span><span class="o">:</span>
+
+<span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Product</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span>
+<span class="n">beanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">setMapKey</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">findMap</span><span class="o">();</span>
+
+<span class="n">map</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="err">&#39;</span><span class="n">I1</span><span class="err">&#39;</span><span class="o">).</span><span class="na">getName</span><span class="o">()</span> <span class="o">&lt;--</span> <span class="n">This</span> <span class="n">returns</span> <span class="n">P1</span>
+</pre></div>
+</div>
+  
 
 
     </div>
