@@ -87,7 +87,26 @@
 
       
 
-<h2>findSingleAttribute</h2>
+<h2>findSingleAttribute (retrieve the value of a single column)</h2>
+
+If you want to retrieve the value from a single property of a model, you can use the <code>findSingleAttribute</code> method.
+You need to use the <code>select()</code> method to select which column you want to retrieve the value
+
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">name</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">idEq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttribute</span><span class="o">();</span>
+</pre></div>
+</div>
+
+This translates to an <code>SQL</code> query that only has the single property in the select clause, like the following:
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">from</span> <span class="n">customers</span> <span class="n">t0</span> <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+
+If you use more than one value in the <code>select</code> clause (like <code>select("name,email")</code>, only the first will be returned.
 
 
 
