@@ -117,6 +117,18 @@
     </td>
   </tr>
   <tr>
+    <td>ddl.initSql</td>
+    <td>
+      Specify a SQL script to run prior to running the create-all ddl.
+    </td>
+  </tr>
+  <tr>
+    <td>ddl.seedSql</td>
+    <td>
+      Specify a SQL script to run after to running the create-all ddl. Typically this inserts seed data into the test database.
+    </td>
+  </tr>
+  <tr>
     <td>ebean.migraton.run</td>
     <td>Set to true or false to run the migrations when the EbeanServer starts</td>
   </tr>
@@ -126,6 +138,8 @@
 <h3>Example application-test.properties</h3>
 <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>
 <span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ebean.db.ddl.initSql</span><span class="o">=</span><span class="s">initialise-test-db.sql</span>
+<span class="na">ebean.db.ddl.seedSql</span><span class="o">=</span><span class="s">seed-test-db.sql</span>
 
 <span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>
 <span class="na">datasource.db.password</span><span class="o">=</span>

@@ -87,8 +87,38 @@
 
       
 
-<h2>findSingleAttributeList</h2>
+<h2>findSingleAttributeList (retrieve the value of a single column for all instances of a model that match the query)</h2>
 
+ <p>
+ Execute the query returning a list of values for a single property.
+If you want to retrieve the value from a single property of a specific model, you can use the <code>findSingleAttributeList</code> method.
+You need to use the <code>select()</code> method to select which column you want to retrieve the value
+
+</p>
+
+ <h3>Example 1:</h3>
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+</pre></div>
+</div>
+ <h3>Example 2:</h3>
+
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span>
+  <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setDistinct</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+ If you use more than one value in the <code>select</code> clause (like <code>select("name,email")</code>, only the first will be returned.
+</p>
 
 
     </div>

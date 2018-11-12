@@ -87,9 +87,9 @@
 
       
 
-<h2>findSingleAttribute (retrieve the value of a single column)</h2>
+<h2>findSingleAttribute (retrieve the value of a single column for a single model)</h2>
 
-If you want to retrieve the value from a single property of a model, you can use the <code>findSingleAttribute</code> method.
+If you want to retrieve the value from a single property of a specific model, you can use the <code>findSingleAttribute</code> method.
 You need to use the <code>select()</code> method to select which column you want to retrieve the value
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">name</span> <span class="o">=</span>
@@ -107,6 +107,9 @@ This translates to an <code>SQL</code> query that only has the single property i
 </div>
 
 If you use more than one value in the <code>select</code> clause (like <code>select("name,email")</code>, only the first will be returned.
+
+<h4>Inner Workings</h4>
+Note that this is a convenience method that just calls <a href='findSingleAttributeList'>findSingleAttributeList</a> and returns the first element
 
 
 

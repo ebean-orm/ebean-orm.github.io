@@ -133,6 +133,22 @@
 </pre></div>
 </div>
 
+  <h2>Initial DDL</h2>
+  <p>
+    We can specify DDL to execute prior to running the `create-all` DDL.
+  </p>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.ddl.initSql</span><span class="o">=</span><span class="s">testInitialDdl.sql</span>
+</pre></div>
+</div>
+
+  <h2>Seed DDL</h2>
+  <p>
+    We can specify DDL to execute after running the `create-all` DDL which we typically use to seed the database.
+  </p>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.ddl.seedSql</span><span class="o">=</span><span class="s">testSeedData.sql</span>
+</pre></div>
+</div>
+
   <h2>DB Migration</h2>
   <p>
     <a href="dbmigration">DB Migration</a> is different in that <code>DIFF</code> DDL scripts are generated for the
