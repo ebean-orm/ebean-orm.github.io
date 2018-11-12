@@ -74,7 +74,7 @@
         <div class="page-inline-search" style="margin-bottom:8px;">
           <div class="input-group">
             <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-            <input type="hidden" name="as_sitesearch" value="ebean-orm.github.io">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
             <div class="input-group-btn">
               <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
             </div>
@@ -98,7 +98,7 @@ Execute the query iterating over the results. This is good for processing large 
  queries. As such it is better to use <a href='findList'>findList</a> for small queries.
  </p>
  <p>
- Remember that with <a href='http://ebean-orm.github.io/apidoc/current/io/ebean/QueryIterator.html'>QueryIterator</a> you must call <code>close()</code>
+ Remember that with <a href='/apidoc/current/io/ebean/QueryIterator.html'>QueryIterator</a> you must call <code>close()</code>
  when you have finished iterating the results (typically in a finally block).
  </p>
  <p>
@@ -113,7 +113,7 @@ Execute the query iterating over the results. This is good for processing large 
 
 <b>As stated before, we must ensure the iterator is closed</b> as it holds <code>JDBC</code> resources.
 
-We should use <code>try-with-resources</code> or a <code>try-finally</code> block to make sure that the <a href='http://ebean-orm.github.io/apidoc/11/io/ebean/QueryIterator.html'>QueryIterator</a> is closed regardless of exceptions thrown during processing.
+We should use <code>try-with-resources</code> or a <code>try-finally</code> block to make sure that the <a href='/apidoc/11/io/ebean/QueryIterator.html'>QueryIterator</a> is closed regardless of exceptions thrown during processing.
 
 Note that <a href='findEach'>findEach</a> and <a href='findEachWhile'>findEachWhile</a> ensure all resources are closed regardless and for this reason they are recommended over <code>findIterate</code>.
 
