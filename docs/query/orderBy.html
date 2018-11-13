@@ -87,7 +87,39 @@
 
       
 
-<h2>orderBy</h2>
+<h2>orderBy (Control sort order)</h2>
+<p>
+  Control the <code>order</code>code> of your <code>SQL</code> query. There are several methods available:
+</p>
+<ul>
+  <li>orderBy(String clause)</li>
+  <li>order(String clause)</li>
+  <li>orderBy()</li>
+  <li>order()</li>
+</ul>
+
+<p>
+  <code>orderBy(String clause)</code> and <code>order(String clause)</code> are equivalent to each other and both receive the string of comma separated
+  properties and sort direction (much like SQL code), such as <code>name asc, status desc</code>
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;name asc,status desc&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+</pre></div>
+</div>
+
+<p>
+  <code>orderBy()</code> and <code>order()</code> are also equivalent and allow you to use a fluent interface to adding sort properties. See the example:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="o">.</span><span class="na">order</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+</pre></div>
+</div>
 
 
 
