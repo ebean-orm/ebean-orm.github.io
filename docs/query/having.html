@@ -87,7 +87,36 @@
 
       
 
-<h2>having</h2>
+<h2>having (add expressions to the "having" clause)</h2>
+
+  <div class="alert alert-info" role="alert">
+    <strong>Warning:</strong> Currently only beans based on <code>Raw SQL (.setRawSql)</code> will use the having clause.
+  </div>
+
+  <p>
+  Note that this returns the ExpressionList (so you can add multiple
+  expressions to the query in a fluent API way).
+  </p>
+
+  Example code:
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span>
+  <span class="s">&quot;select order_id, count(*) as totalItems, sum(order_qty*unit_price) as totalAmount \n&quot;</span> <span class="o">+</span>
+    <span class="s">&quot;from o_order_detail \n&quot;</span> <span class="o">+</span>
+    <span class="s">&quot;group by order_id&quot;</span><span class="o">;</span>
+
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">).</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">).</span><span class="na">create</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">lt</span><span class="o">(</span><span class="s">&quot;totalItems&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">50</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
 
 
