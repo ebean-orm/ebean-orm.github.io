@@ -87,7 +87,40 @@
 
       
 
-<h2>findFutureIds</h2>
+<h2>findFutureIds (find Ids of a query in a background thread)</h2>
+
+<p>
+  Similar to <a href='findIds'>findIds</a> you can find a list of Ids in a background thread using <code>findFutureIds</code>.
+</p>
+<p>
+  This returns a <a href='https://docs.oracle.com/javase/8/docs/api/index.html?java/util/concurrent/Future.html'>Future </a> object which can be used to cancel, check the
+  execution status (isDone etc) and get the value (with or without a
+  timeout).
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">FutureIds</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">futureIds</span> <span class="o">=</span> <span class="n">futureList</span> <span class="o">=</span>
+  <span class="n">Order</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findFutureIds</span><span class="o">();</span>
+</pre></div>
+</div>
+
+And to get the actual computed value
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Waits (blocks) for the calculation to be finished and returns the value</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">ids</span> <span class="o">=</span> <span class="n">futureIds</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+<span class="c1">// Waits for the calculation to be finished and returns the value</span>
+<span class="c1">// if it happens under 10 seconds, otherwise throw an exception</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">ids</span> <span class="o">=</span> <span class="n">futureIds</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">futureIds</span><span class="o">.</span><span class="na">isDone</span><span class="o">())</span> <span class="o">{</span>
+  <span class="c1">// Here we can fetch the value (assuming that everything went ok)</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+
 
 
 
