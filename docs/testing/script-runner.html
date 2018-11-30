@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Introduction</title>
+  <title>Script Runner</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Docker</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Script Runner</h1>
   </div>
 </div>
 
@@ -87,12 +87,40 @@
 
       
 
-<h2>Docker</h2>
+  <h2 id="scriptRunner">Script Runner (Run DDL/SQL Scripts)</h2>
 
-<div class="next pull-right">
-  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+  <p>Runs DDL and SQL scripts.
+   Typically these are scripts used for testing such as seed SQL scripts or truncate SQL scripts.
+   <p/>
+
+  <p>Scripts are executed in their own transaction and committed on successful completion.</p>
+
+ <h4>Example of simple use</h4>
+
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+<span class="n">server</span><span class="o">.</span><span class="na">script</span><span class="o">().</span><span class="na">run</span><span class="o">(</span><span class="s">&quot;/scripts/test-script.sql&quot;</span><span class="o">);</span>
+</pre></div>
 </div>
 
+ <h4>Example using place holders in the script</h4>
+
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">placeholders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">();</span>
+<span class="n">placeholders</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;tableName&quot;</span><span class="o">,</span> <span class="s">&quot;e_basic&quot;</span><span class="o">);</span>
+
+<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+<span class="n">server</span><span class="o">.</span><span class="na">script</span><span class="o">().</span><span class="na">run</span><span class="o">(</span><span class="s">&quot;/scripts/test-script.sql&quot;</span><span class="o">,</span> <span class="n">placeholders</span><span class="o">);</span>
+</pre></div>
+</div>
+
+ <p>In your SQL script, the way to reference the placeholder is:</p>
+
+<code>delete from ${tableName}</code><br />
+<code>select count(*) from ${tableName}</code> <br/><br/>
+
+<div class='alert alert-info'>
+  Notice that, the path to the script should start with "/". Ebean will do
+  a this.getClass().getResource(PATH_TO_RESOURCE), so the resource should be available in your class path
+</div>
 
 
     </div>
@@ -119,7 +147,7 @@
 <li >
   <a href="/docs/testing/mocki">Mocki Ebean</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/script-runner">Script Runner</a>
 </li>
         </ul>
