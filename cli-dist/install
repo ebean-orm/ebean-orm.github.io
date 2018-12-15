@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-installHost="https://ebean-orm.github.io";
+installHost="https://ebean.io";
 installVersion="$(curl --insecure --silent "${installHost}/cli-dist/version.txt?_=$(date +%s)")";
 installJar="ebean-init-${installVersion}.jar";
 installUrl="${installHost}/cli-dist/${installJar}";
