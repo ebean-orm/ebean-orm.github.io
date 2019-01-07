@@ -231,7 +231,7 @@
 
   <h4>Step 5: Configure logging</h4>
   <p>
-    The default implementation of ChangeLogListener logs events to <code>org.avaje.ebean.ChangeLog</code>.
+    The default implementation of ChangeLogListener logs events to <code>io.ebean.ChangeLog</code>.
     Typically you would look to configure logging such that these logs go to a separate log.
   </p>
 
@@ -252,7 +252,7 @@
   <span class="nt">&lt;/encoder&gt;</span>
 <span class="nt">&lt;/appender&gt;</span>
 
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ChangeLog&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ChangeLog&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;CHANGE_LOG&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/logger&gt;</span>
 </pre></div>

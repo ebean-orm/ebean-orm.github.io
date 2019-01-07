@@ -183,8 +183,8 @@
 
   <h4>Step 4: Configure logging</h4>
   <p>
-    The default implementation of ReadAuditLogger logs query plan entries to <code>org.avaje.ebean.ReadAuditQuery</code>
-    and read events to <code>org.avaje.ebean.ReadAudit</code>.  The query plans contain the full SQL and having these
+    The default implementation of ReadAuditLogger logs query plan entries to <code>io.ebean.ReadAuditQuery</code>
+    and read events to <code>io.ebean.ReadAudit</code>.  The query plans contain the full SQL and having these
     logged separately means that the read events don't need to include the full SQL executed and instead the bean type
     and query key can be used to reference/lookup the associated SQL. This reduces the bulk/size of the read event logs.
   </p>
@@ -219,11 +219,11 @@
 
 
 
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ReadAuditQuery&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ReadAuditQuery&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;READAUDIT_QUERY_LOG&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/logger&gt;</span>
 
-<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;org.avaje.ebean.ReadAudit&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ReadAudit&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span> <span class="na">additivity=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">&quot;READAUDIT_LOG&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/logger&gt;</span>
 </pre></div>

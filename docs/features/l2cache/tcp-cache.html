@@ -181,18 +181,18 @@
 
   <h2 id="logging">Logging</h2>
   <p>
-    At <code>INFO</code> level logging on <code>org.avaje.ebean.Cluster</code> messages are output
+    At <code>INFO</code> level logging on <code>io.ebean.Cluster</code> messages are output
     when clustering starts, stops and members leave or join.
   </p>
   <h5>Startup configuration</h5>
-  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  org.avaje.ebean.Cluster - Clustering using local[127.0.0.1:9943] members[[127.0.0.1:9942, 127.0.0.1:9943]]
+  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  io.ebean.Cluster - Clustering using local[127.0.0.1:9943] members[[127.0.0.1:9942, 127.0.0.1:9943]]
 </pre></div>
 </div>
-  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  org.avaje.ebean.Cluster - Register as online with member [localhost:9942]
+  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  io.ebean.Cluster - Register as online with member [localhost:9942]
 </pre></div>
 </div>
   <h5>Member joining/leaving</h5>
-  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  org.avaje.ebean.Cluster - Cluster member [localhost:9943] online[true]
+  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  io.ebean.Cluster - Cluster member [localhost:9943] online[true]
 </pre></div>
 </div>
 
@@ -200,11 +200,11 @@
     At <code>DEBUG</code> level messages are logged for sending and receiving events.
   </p>
   <h5>Sent message</h5>
-  <div class="syntax text"><div class="highlight"><pre><span></span>DEBUG org.avaje.ebean.Cluster - sending: [org.example.domain.Customer updateIds:[4]]
+  <div class="syntax text"><div class="highlight"><pre><span></span>DEBUG io.ebean.Cluster - sending: [org.example.domain.Customer updateIds:[4]]
 </pre></div>
 </div>
   <h5>Received message</h5>
-  <div class="syntax text"><div class="highlight"><pre><span></span>DEBUG org.avaje.ebean.Cluster - processing [org.example.domain.Customer updateIds:[4]]
+  <div class="syntax text"><div class="highlight"><pre><span></span>DEBUG io.ebean.Cluster - processing [org.example.domain.Customer updateIds:[4]]
 </pre></div>
 </div>
 
