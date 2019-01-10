@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Documentation</title>
+  <title>Query beans - Ebean ORM</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1>Documentation</h1>
+    <h1><a href="/docs/">Documentation</a> / Query beans</h1>
   </div>
 </div>
 
@@ -87,116 +87,125 @@
 
       
 
-<div class="container doc-index bs-docs-container">
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/getting-started/">Getting started</a></h3>
-      <h3><a href="/docs/trouble-shooting">Trouble shooting</a></h3>
-      <h3><a href="/docs/logging">Logging</a></h3>
-    </div>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/ddl">DDL generation</a></h3>
-      <h3><a href="/docs/ddl">DB Migration</a></h3>
-    </div>
+<div class="container">
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/testing">Testing</a></h3>
-      <h3><a href="/docs/configuration">Configuration</a></h3>
-    </div>
+  <h2>Introduction</h2>
 
-  </div>
+  <p>
+    Query beans are optional. They provide an alternative way to write queries.
+  </p>
 
-  <p>&nbsp;</p>
+  <p>
+    Query beans provide us with the ability to write queries in a type safe manor.
+    Query beans are generated using a Java annotation processor - <code>APT</code> or
+    Kotlin annotation processor - <code>KAPT</code>.
+  </p>
+  <p>
+    When the entity bean model changes
+    the query beans are regenerated and as developers we get compile time checking on
+    our application queries - we get a compile time error if our queries are no longer
+    valid for the model.
+  </p>
 
-  <div class="row">
+  <h2>APT / KAPT</h2>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/transactions">Transactions</a></h3>
-      <h3><a href="/docs/mapping">Mapping</a></h3>
-      <h3><a href="/docs/kotlin">Kotlin</a></h3>
-    </div>
+  <p>
+    To generate <code>Java</code> query beans we use the <code>io.ebean : querybean-generator</code>
+    java annotation processor and to generate <code>Kotlin</code> query beans we use
+    <code>io.ebean : kotlin-querybean-generator</code>.
+  </p>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/query">Query</a></h3>
-      <h3><a href="/docs/query-beans">Query Beans</a></h3>
-    </div>
+  <h2>Enhancement</h2>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/persist">Persisting</a></h3>
-      <h3><a href="/docs/features/l2cache">L2 Cache</a></h3>
-    </div>
+  <p>
+    Query beans require enhancement to work. In the <code>ebean.mf</code> manifest file
+    we need to specify via <code>querybean-packages</code> the packages that should be enhanced
+    for query beans.
+  </p>
 
-  </div>
+  <p>
+    Note that for Java we additionally need to enhance the code that calls the query ebeans.
+    For Kotlin we only need to enhance the query beans themselves.
+  </p>
 
-  <p>&nbsp;</p>
-
-  <p>&nbsp;</p>
-
-  <h4>Features</h4>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-      <h3><a href="/docs/features/history">History</a></h3>
-      <h3><a href="/docs/features/eventlistening">Event listening</a></h3>
-      <h3><a href="/docs/features/softdelete">Soft delete</a></h3>
-      <h3><a href="/docs/features/draftable">Draftable</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
-      <h3><a href="/docs/features/json">JSON</a></h3>
-      <h3><a href="/docs/features/who">Who auditing</a></h3>
-      <h3><a href="/docs/features/changelog">Change log</a></h3>
-      <h3><a href="/docs/features/readauditing">Read auditing</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/tuning">Tuning</a></h3>
-      <h3><a href="/docs/monitoring">Monitoring</a></h3>
-      <h3><a href="/docs/tooling/">Tooling</a></h3>
-      <h3><a href="/docs/upgrading">Upgrading</a></h3>
-    </div>
-
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Architecture</h2>
-      <h3><a href="/docs/architecture/compare-jpa">JPA comparison</a></h3>
-      <h3><a href="/docs/architecture/compare-hibernate">Hibernate comparison</a></h3>
-      <h3><a href="/docs/architecture/persistence-context">Persistence context</a></h3>
-      <h3><a href="/docs/architecture/load-context">Load context</a></h3>
-
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Funding</h2>
-      <h3><a href="/funding">Funding &amp; Sponsorship</a></h3>
-    </div>
-  </div>
+  <h4>Example</h4>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
+<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
+<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">org.example</span>
+</pre></div>
 </div>
+
+  <h2>Steps - Java</h2>
+  <h4>Specify the packages to enhance</h4>
+  <p>
+    For java the <code>querybean-packages</code> in src/main/resources/ebean.mf needs to
+    include BOTH the query beans and the code that calls the query beans.
+  </p>
+
+  <h4>Maven</h4>
+  <p>
+    Add dependency for <code>ebean-querybean</code>
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-querybean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.32.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+  <p>
+    Add provided scope dependency for <code>querybean-generator</code>
+  </p>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- java annotation processor to generate query beans --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.32.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+  <h4>Gradle</h4>
+  <p>
+    Add dependency for <code>ebean-querybean</code>
+  </p>
+
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-querybean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.32.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+  <p>
+    Add provided scope dependency for <code>querybean-generator</code>
+  </p>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- java annotation processor to generate query beans --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.32.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+  <h2>Steps - Kotlin</h2>
+
+
+</div>
+
+
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<h3><a href="/docs/examples">Examples</a></h3>
-<ul>
-  <li><a href="/docs/examples#java-maven">Maven</a></li>
-  <li><a href="/docs/examples#java-gradle">Gradle</a></li>
-  <li><a href="/docs/examples#java">Java</a></li>
-  <li><a href="/docs/examples#kotlin">Kotlin</a></li>
-  <li><a href="/docs/examples#elasticSearch">ElasticSearch</a></li>
-  <li><a href="/docs/examples#history">History</a></li>
-  <li><a href="/docs/examples#postgis">PostGIS</a></li>
-  <li><a href="/docs/examples#multi-tenancy">Multi-tenancy</a></li>
-  <li><a href="/docs/examples#draftable">Draftable</a></li>
-</ul>
+          &nbsp;
         </ul>
       </nav>
     </div>
