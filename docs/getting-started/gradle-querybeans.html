@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Getting started | Ebean</title>
+  <title>Maven query bean generation | Getting started | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/java-first-entity">Java</a> / Model</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / Gradle Query beans</h1>
   </div>
 </div>
 
@@ -91,63 +91,74 @@
 </div>
 
 
-<h2>Model</h2>
+<h2>Query bean generation with Gradle</h2>
 <p>
-  We can have our entity beans extend <code>io.ebean.Model</code>. They then have
-  <code>save()</code> and <code>delete()</code> methods.
+  We can optionally add a Java annotation processor (APT) to generate query beans.
+  This allows us to write type safe queries like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  Skip this if you don't want to use query beans.
 </p>
 
-<h4>BaseDomain extends Model ...</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Model</span><span class="o">;</span>
-<span class="o">...</span>
 
-<span class="nd">@MappedSuperclass</span>
-<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
-
+<h3>Add ebean-querybean dependency</h3>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
   <span class="o">...</span>
+  <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.32.1&#39;</span>
 
 <span class="o">}</span>
 </pre></div>
 </div>
+
+
+<h3>build.gradle</h3>
 <p>
-  Now we can just <code>save()</code> and <code>delete()</code> them:
+  Add the idea plugin if required.
 </p>
-
-<h2>Model.save()</h2>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Jack&quot;</span><span class="o">);</span>
-
-<span class="c1">// just save the bean</span>
-<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
-
-
-<span class="c1">// and delete it ...</span>
-<span class="n">customer</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;idea&#39;</span>
 </pre></div>
 </div>
 <p>
-  Note that <code>Model.save()</code> and <code>Model.delete()</code> use the <code>default server</code>.
-  We obtain the default server via <code>Ebean.getDefaultServer()</code>.
+  Add the configurations apt section if required.
 </p>
-
-
-<h2>Model vs Repository</h2>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">configurations</span> <span class="o">{</span>
+  <span class="n">apt</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 <p>
-  We don't have to use Model and the common alternative is to use the <code>repository</code> pattern
-  where we create a Repository for each entity type - e.g. <code>CustomerRepository</code> for the
-  Customer entity bean and <code>OrderRepository</code> for the Order entity bean and so forth.
+  Add an idea module section to tell IntelliJ Idea about the generated query beans.
 </p>
-<div class="alert alert-info">
-  The recommended approach is to use Model and Finder rather than the Repository pattern.
-  For more details goto ... TODO
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">idea</span> <span class="o">{</span>
+  <span class="n">module</span> <span class="o">{</span>
+    <span class="n">sourceDirs</span> <span class="o">+=</span> <span class="n">file</span><span class="o">(</span><span class="s2">&quot;$projectDir/generated&quot;</span><span class="o">)</span>
+    <span class="n">generatedSourceDirs</span> <span class="o">+=</span> <span class="n">file</span><span class="o">(</span><span class="s2">&quot;$projectDir/generated&quot;</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  Add querybeans = true to the ebean section
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">ebean</span> <span class="o">{</span>
+  <span class="n">debugLevel</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">queryBeans</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="o">}</span>
+</pre></div>
 </div>
 
 
 <div class="next pull-right">
-  <a href="/docs/getting-started/java-finder" class="btn btn-info">Next: Finder</a>
+  <a href="/docs/getting-started/cli-tool" class="btn btn-info">Next: CLI Tool</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/java-model.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -172,7 +183,7 @@
 <li >
   <a href="/docs/getting-started/gradle">Gradle</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/gradle-querybeans">Gradle Query beans</a>
 </li>
 <li >
@@ -189,7 +200,7 @@
 <li >
   <a href="/docs/getting-started/java-mapped-superclass">MappedSuperclass</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/getting-started/java-model">Model</a>
 </li>
 <li >
