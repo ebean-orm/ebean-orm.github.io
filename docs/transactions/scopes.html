@@ -89,8 +89,75 @@
 
 <h2>Scopes</h2>
 
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>REQUIRED</td>
+    <td>Uses an existing transaction and if none exists will starts a new Transaction. This is the default.</td>
+  </tr>
+  <tr>
+    <td>MANDATORY</td>
+    <td>A transaction MUST already have been started. Throws TransactionRequiredException.</td>
+  </tr>
+  <tr>
+    <td>SUPPORTS</td>
+    <td>Uses the existing transaction if one exists, otherwise the method does not run with a transaction. Used this with caution.</td>
+  </tr>
+  <tr>
+    <td>REQUIRES_NEW</td>
+    <td>Always start a new transaction. Suspend an existing once if required.</td>
+  </tr>
+  <tr>
+    <td>NOT_SUPPORTED</td>
+    <td>Suspends an existing transaction if required. Method runs without a transaction.</td>
+  </tr>
+  <tr>
+    <td>NEVER</td>
+    <td>If there is an existing transaction throws an Exception. Method runs without a transaction.</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<h2>REQUIRED is default</h2>
+<p>
+  The default transaction scope when not specified is <code>REQUIRED</code>. This is by far the most
+  common transaction scope used in most applications.
+</p>
+
+<p>&nbsp;</p>
+
+<h3>Example with @Transactional</h3>
+<p>
+  We can specify other transaction scopes on methods annotated with <code>@Transactional</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">TxType</span><span class="o">.</span><span class="na">REQUIRES_NEW</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInner</span><span class="o">()</span> <span class="o">{</span>
+  <span class="c1">// execute using a new transaction ...</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+
+<h2>Example with beginTransaction</h2>
+<p>
+  We can specify other transaction scopes via <code>beginTransaction(TxScope)</code>.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">(</span><span class="n">TxScope</span><span class="o">.</span><span class="na">requiresNew</span><span class="o">()))</span> <span class="o">{</span>
+  <span class="c1">// using a new transaction ...</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
 <div class="next pull-right">
-  <a href="/docs/transactions/savepoints" class="btn btn-info">Next: SavePoints</a>
+  <a href="/docs/transactions/savepoints" class="btn btn-info">Next: Savepoint</a>
 </div>
 
 
@@ -116,7 +183,10 @@
   <a href="/docs/transactions/scopes">Scopes</a>
 </li>
 <li >
-  <a href="/docs/transactions/savepoints">SavePoints</a>
+  <a href="/docs/transactions/savepoints">Savepoint</a>
+</li>
+<li >
+  <a href="/docs/transactions/savepoints-explicit">Savepoint - Explicit</a>
 </li>
 <li >
   <a href="/docs/transactions/options">Options</a>

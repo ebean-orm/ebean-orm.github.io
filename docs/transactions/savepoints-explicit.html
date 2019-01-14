@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Implicit Transactions | Ebean</title>
+  <title>Explicit Savepoint | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/transactions">Transactions</a> / Implicit</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/transactions">Transactions</a> / Explicit Savepoint</h1>
   </div>
 </div>
 
@@ -87,28 +87,43 @@
 
       
 
-<h2>Implicit transactions</h2>
+<h2>Explicit Savepoint</h2>
+
 <p>
-  When no transactions are specified explicitly Ebean will create a transaction to perform the action.
-</p>
-<h4>Query - read only transaction</h4>
-<p>
-  For queries Ebean will look to use a read only transaction. If a <code>Read Only DataSource</code> has
-  be configured Ebean will look to use that by default.
+  As an alternative to using transaction.setNestedUseSavepoint() we can instead
+  explicitly create and use savepoints by obtaining the <code>Connection</code> from the transaction.
 </p>
 
-<h4>Save, Insert, Update</h4>
 <p>
-  For all persist requests like save, insert, update, delete Ebean will create a transaction and perform
-  a <code>COMMIT</code> at the end of the operation.
+For example:
 </p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">newCustomer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
+<span class="n">newCustomer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;John&quot;</span><span class="o">);</span>
+<span class="n">newCustomer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+
+  <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+  <span class="c1">// Create a Save Point</span>
+  <span class="n">Savepoint</span> <span class="n">savepoint</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">setSavepoint</span><span class="o">();</span>
+
+  <span class="n">newCustomer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Doe&quot;</span><span class="o">);</span>
+  <span class="n">newCustomer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+  <span class="c1">// Rollback to a specific save point</span>
+  <span class="n">connection</span><span class="o">.</span><span class="na">rollback</span><span class="o">(</span><span class="n">savepoint</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="n">Customer</span> <span class="n">found</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">newCustomer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+<span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">found</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span> <span class="c1">// Prints &quot;John&quot;</span>
+</pre></div>
+</div>
 
 <div class="next pull-right">
-  <a href="/docs/transactions/programmatic" class="btn btn-info">Next: Programmatic transactions</a>
+  <a href="/docs/transactions/options" class="btn btn-info">Next: Transaction Options</a>
 </div>
-<p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/transactions/implicit.html"><i class="fab fa-github"></i> Edit Page</a>
-</p>
 
 
 
@@ -120,7 +135,7 @@
 <li >
   <a href="/docs/transactions">Transactions</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/transactions/implicit">Implicit</a>
 </li>
 <li >
@@ -135,7 +150,7 @@
 <li >
   <a href="/docs/transactions/savepoints">Savepoint</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/transactions/savepoints-explicit">Savepoint - Explicit</a>
 </li>
 <li >

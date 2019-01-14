@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Savepoints | Ebean</title>
+  <title>Savepoint | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/transactions">Transactions</a> / SavePoint</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/transactions">Transactions</a> / Savepoint</h1>
   </div>
 </div>
 
@@ -87,44 +87,60 @@
 
       
 
-<h2>SavePoints (inside a transaction)</h2>
+<h2>Savepoint</h2>
 
 <p>
-Ebean supports using <code>SavePoints</code> which are a feature of most Relational Databases
-in which you can create a "Save Point" inside a transaction to which you can rollback to in case of an error (or some other logic you want)
-and are exposed via the <code>JDBC</code> driver.
+  Ebean supports using <code>Savepoints</code> which are a feature of most Relational Databases
+  in which you can create a "Save point" inside a transaction to which you can rollback to in
+  case of an error or some other business logic.
 </p>
 
 <p>
-If you have a batch job that needs to perform certain operations, but can fail at some point, but you don't want to loose all the work, <code>SavePoints</code> might be a tool for that. You can check more information on <a href='https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html#set_roll_back_savepoints'>Oracle's JDBC tutorial</a>
+  If you have part of a task that performs some operations which can fail/rollback, but we don't
+  want to loose all the work, <code>Savepoint</code> provides a mechanism to do this.
+  You can check more information on <a href='https://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html#set_roll_back_savepoints'>Oracle's JDBC tutorial</a>
 </p>
 
-Example of using a <code>SavePoint</code>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">newCustomer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">();</span>
-<span class="n">newCustomer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;John&quot;</span><span class="o">);</span>
-<span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">newCustomer</span><span class="o">);</span>
+<h3>Transaction.setNestedUseSavepoint()</h3>
+<p>
 
-<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+  For a transaction we can use <code>setNestedUseSavepoint()</code> to enable it to use
+  <code>Savepoint</code> for nested transactions. This means that these nested transactions
+  can be rolled back but leaving the outer transaction to continue and potentially commit.
+</p>
 
-  <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
-  <span class="c1">// Create a Save Point</span>
-  <span class="n">Savepoint</span> <span class="n">savepoint</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">setSavepoint</span><span class="o">();</span>
+<h5>Example</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// start &#39;outer&#39; transaction</span>
+<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">outerTxn</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
-  <span class="n">newCustomer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Doe&quot;</span><span class="o">);</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">newCustomer</span><span class="o">);</span>
+  <span class="n">outerTxn</span><span class="o">.</span><span class="na">setNestedUseSavepoint</span><span class="o">();</span>
 
-  <span class="c1">// Rollback to a specific save point</span>
-  <span class="n">connection</span><span class="o">.</span><span class="na">rollback</span><span class="o">(</span><span class="n">savepoint</span><span class="o">);</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+  <span class="c1">// do stuff with the &#39;outer&#39; transaction</span>
+  <span class="n">bean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+  <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">nestedTransaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+    <span class="c1">// nested transaction is a savepoint ...</span>
+
+    <span class="c1">// do some piece of work which we might want to either commit or rollback ...</span>
+    <span class="n">otherBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+    <span class="k">if</span> <span class="o">(...)</span> <span class="o">{</span>
+      <span class="n">nestedTransaction</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span>
+
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="n">nestedTransaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="c1">// continue using &#39;outer&#39; transaction ...</span>
+
+  <span class="n">outerTxn</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
 <span class="o">}</span>
-
-<span class="n">Customer</span> <span class="n">found</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">newCustomer</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
-<span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">found</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span> <span class="c1">// Prints &quot;John&quot;</span>
 </pre></div>
 </div>
 
 <div class="next pull-right">
-  <a href="/docs/transactions/options" class="btn btn-info">Next: Transaction Options</a>
+  <a href="/docs/transactions/savepoints-explicit" class="btn btn-info">Next: Explicit Savepoint</a>
 </div>
 
 
@@ -150,7 +166,10 @@ Example of using a <code>SavePoint</code>
   <a href="/docs/transactions/scopes">Scopes</a>
 </li>
 <li class="active">
-  <a href="/docs/transactions/savepoints">SavePoints</a>
+  <a href="/docs/transactions/savepoints">Savepoint</a>
+</li>
+<li >
+  <a href="/docs/transactions/savepoints-explicit">Savepoint - Explicit</a>
 </li>
 <li >
   <a href="/docs/transactions/options">Options</a>
