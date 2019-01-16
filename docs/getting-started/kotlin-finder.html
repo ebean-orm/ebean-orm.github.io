@@ -139,12 +139,12 @@
   With the CustomerFinder linked as a field to Customer we can then easily use it.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find by id</span>
-<span class="n">val</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
 
 <span class="c1">// reference</span>
-<span class="n">val</span> <span class="n">customerReference</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
+<span class="k">val</span> <span class="n">customerReference</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">1L</span><span class="o">)</span>
 
-<span class="n">val</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
+<span class="k">val</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">query</span><span class="o">()</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
   <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
@@ -153,7 +153,7 @@
 <span class="c1">// into the CustomerFinder so instead we should create a &quot;byName&quot; method</span>
 <span class="c1">// on CustomerFinder and end up with:</span>
 
-<span class="n">val</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hello&quot;</span><span class="o">);</span>
+<span class="k">val</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hello&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
 

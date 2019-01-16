@@ -256,7 +256,7 @@
 </pre></div>
 </div>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// kotlin</span>
-<span class="n">var</span> <span class="n">names</span><span class="o">:</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="o">=</span>
+<span class="k">var</span> <span class="n">names</span><span class="o">:</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="o">=</span>
   <span class="n">QContact</span><span class="o">()</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;concat(lastName,&#39; &#39;,firstName)&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span>
@@ -278,7 +278,7 @@
 </div>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// kotlin</span>
-<span class="n">var</span> <span class="n">maxWhen</span><span class="o">:</span> <span class="n">Timestamp</span> <span class="o">=</span>
+<span class="k">var</span> <span class="n">maxWhen</span><span class="o">:</span> <span class="n">Timestamp</span> <span class="o">=</span>
   <span class="n">QContact</span><span class="o">()</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;max(whenModified)&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findSingleAttribute</span><span class="o">()</span>

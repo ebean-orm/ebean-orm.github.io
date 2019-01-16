@@ -112,16 +112,16 @@
 <span class="n">open</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="o">{</span>
 
   <span class="nd">@Id</span>
-  <span class="n">var</span> <span class="n">id</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">var</span> <span class="n">id</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
 
   <span class="nd">@Version</span>
-  <span class="n">var</span> <span class="n">version</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">var</span> <span class="n">version</span><span class="o">:</span> <span class="n">Long</span> <span class="o">=</span> <span class="mi">0</span>
 
   <span class="nd">@WhenModified</span>
-  <span class="n">lateinit</span> <span class="n">var</span> <span class="n">whenModified</span><span class="o">:</span> <span class="n">Instant</span>
+  <span class="n">lateinit</span> <span class="k">var</span> <span class="n">whenModified</span><span class="o">:</span> <span class="n">Instant</span>
 
   <span class="nd">@WhenCreated</span>
-  <span class="n">lateinit</span> <span class="n">var</span> <span class="n">whenCreated</span><span class="o">:</span> <span class="n">Instant</span>
+  <span class="n">lateinit</span> <span class="k">var</span> <span class="n">whenCreated</span><span class="o">:</span> <span class="n">Instant</span>
 
 <span class="o">}</span>
 </pre></div>
@@ -142,7 +142,7 @@
 <span class="nd">@Entity</span>
 <span class="kd">class</span> <span class="nf">Customer</span><span class="o">(</span>
 
-  <span class="n">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span>
+  <span class="k">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span>
 
 <span class="o">)</span> <span class="o">:</span> <span class="n">BaseDomain</span><span class="o">()</span>
 </pre></div>
@@ -158,10 +158,10 @@
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">class</span> <span class="nf">Order</span><span class="o">(</span>
 
-  <span class="n">var</span> <span class="n">orderDate</span><span class="o">:</span> <span class="n">LocalDate</span><span class="o">,</span>
+  <span class="k">var</span> <span class="n">orderDate</span><span class="o">:</span> <span class="n">LocalDate</span><span class="o">,</span>
 
   <span class="nd">@ManyToOne</span>
-  <span class="n">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span>
+  <span class="k">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span>
 
 <span class="o">):</span> <span class="n">BaseDomain</span><span class="o">()</span>
 </pre></div>
