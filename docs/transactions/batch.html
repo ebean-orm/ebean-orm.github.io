@@ -298,7 +298,7 @@
 
 <h2 id="serverConfig" class="art">Configuration via ServerConfig</h2>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use JDBC globally by default</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use JDBC batch by default</span>
 <span class="n">serverConfig</span><span class="o">.</span><span class="na">setPersistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
 </pre></div>
 </div>
@@ -331,6 +331,9 @@
 <div class="next pull-right">
   <a href="/docs/transactions/scopes" class="btn btn-info">Next: Scopes</a>
 </div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/transactions/batch.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
 
@@ -348,6 +351,7 @@
     <li><a href="#batchsize">Batch size</a></li>
     <li><a href="#flush">Flush</a></li>
     <li><a href="#getGeneratedKeys">GetGeneratedKeys</a></li>
+    <li><a href="#serverConfig">ServerConfig</a></li>
   </ul>
 </li>
 <li >
@@ -358,9 +362,6 @@
 </li>
 <li >
   <a href="/docs/transactions/savepoints-explicit">Savepoint - Explicit</a>
-</li>
-<li >
-  <a href="/docs/transactions/options">Options</a>
 </li>
 <li >
   <a href="/docs/transactions/spring">Spring</a>
