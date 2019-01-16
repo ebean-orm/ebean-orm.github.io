@@ -87,7 +87,216 @@
 
       
 
-<h2>where</h2>
+
+<h2 id="where">Where</h2>
+<p>
+  Query bean properties provide a nice type safe way to add expressions to the <code>where</code> clause.
+  We get compile time validation of the query paths, expressions and bind value types.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using query bean</span>
+<span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span> <span class="c1">// type safe expression with IDE auto-completion</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  The same query can be written without using query beans as:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
+<span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  The queries above produces the sql:
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+<p>
+  With the above the <code>name</code> property is of type String/varchar and so only valid String expressions
+  such as <em>like, startsWith, contains</em> etc are allowed and the bind value for the expression must be a String.
+</p>
+<p>
+  Developers get IDE assistance/auto-completion when creating queries using query beans as the properties and
+  expressions available based on their types are suggested by the IDE with auto-complete.
+</p>
+<p>
+  Additionally with query beans, if the property is renamed (e.g. "name" became "fullName") or if the property
+  changed it's type then the query would no longer compile.
+</p>
+
+
+<h4>Paths</h4>
+<p>
+  With properties that are associated to beans (OneToOne, OneToMany, ManyToOne, ManyToMany)
+  we can 'navigate' these paths adding valid expressions.
+</p>
+
+<h5>e.g. path "billingAddress.city" for Customer</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using query beans</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;billingAddress.city&quot;</span><span class="o">,</span> <span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  Ebean will automatically add appropriate SQL JOINS to support the expressions in the query.
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">address</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span>
+<span class="k">where</span> <span class="n">t1</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+<p>
+  These property paths can be any depth. In the example below the path takes us from the
+  Order bean to the Customer bean to the Address bean via <em>customer.billingAddress</em>.
+</p>
+<h5>e.g. path "customer.billingAddress.city" for Order</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<h2 class="art">AND</h2>
+<p>
+  By default multiple expressions are added via <code>AND</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">whenCreated</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="n">lastWeek</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="o">?</span> <span class="k">and</span> <span class="n">t0</span><span class="p">.</span><span class="n">when_created</span> <span class="o">&gt;</span> <span class="o">?</span>
+</pre></div>
+</div>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;whenCreated&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h5>e.g. multiple paths for Order</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="n">lastWeek</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  With the above query we have the additional paths of <em>customer</em> and <em>customer.billingAddress</em>.
+  Ebean will determine the joins that are needed to support the expressions.
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_id</span>
+<span class="k">join</span> <span class="n">address</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">billing_address_id</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span> <span class="o">&gt;=</span> <span class="o">?</span> <span class="k">and</span> <span class="n">t1</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="o">?</span> <span class="k">and</span> <span class="n">t2</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+
+
+<h2 class="art">OR</h2>
+<p>
+  When we want to add multiple expressions via <em>OR</em> we use <code>or()</code> and <code>endOr()</code>
+  and all the expressions between them are joined by <em>OR</em>.
+</p>
+<p>
+  For example: (name is null OR name = 'Rob')
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span>
+  <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">or</span><span class="o">()</span>
+       <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">isNull</span><span class="o">()</span>
+       <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+     <span class="o">.</span><span class="na">endOr</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">findOne</span><span class="o">()</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">is</span> <span class="k">null</span> <span class="k">or</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span> <span class="p">)</span>
+</pre></div>
+</div>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">or</span><span class="o">()</span>
+       <span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+     <span class="o">.</span><span class="na">endOr</span><span class="o">()</span>
+     <span class="o">.</span><span class="na">findOne</span><span class="o">()</span>
+</pre></div>
+</div>
+
+<h2 class="art">Raw expressions</h2>
+<p>
+  Sometimes we want to add raw expressions to the where clause.
+  We use <code>raw()</code> to include arbitrary SQL, functions and stored procedures
+  into the query <em>where clause</em>.
+</p>
+
+<h5>e.g. simple raw expression</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;orderDate &gt; shipDate &quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+</pre></div>
+</div>
+
+<h5>e.g. use sql function</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;add_days(orderDate, 10) &lt; ?&quot;</span><span class="o">,</span> <span class="n">someDate</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<h5>e.g. sql subquery</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;t0.customer_id in (select customer_id from customer_group where group_id = any(?::uuid[]))&quot;</span><span class="o">,</span> <span class="n">groupIds</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+</pre></div>
+</div>
+
+<div class="next pull-right">
+  <a href="/docs/query/select" class="btn btn-info">Next: Select</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query-beans/where.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
 
@@ -97,22 +306,25 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/query/select">select</a>
-</li>
-<li >
-  <a href="/docs/query/fetch">fetch</a>
+  <a href="/docs/query/query-beans">Query beans</a>
 </li>
 <li class="active">
-  <a href="/docs/query/where">where</a>
+  <a href="/docs/query/where">Where</a>
 </li>
 <li >
-  <a href="/docs/query/orderBy">orderBy</a>
+  <a href="/docs/query/select">Select</a>
 </li>
 <li >
-  <a href="/docs/query/having">having</a>
+  <a href="/docs/query/fetch">Fetch</a>
 </li>
 <li >
-  <a href="/docs/query/filterMany">filterMany</a>
+  <a href="/docs/query/orderBy">OrderBy</a>
+</li>
+<li >
+  <a href="/docs/query/having">Having</a>
+</li>
+<li >
+  <a href="/docs/query/filterMany">FilterMany</a>
 </li>
         </ul>
       </nav>

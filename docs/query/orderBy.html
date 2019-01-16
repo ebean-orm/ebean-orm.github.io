@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / orderBy</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / OrderBy</h1>
   </div>
 </div>
 
@@ -87,16 +87,67 @@
 
       
 
-<h2>orderBy (Control sort order)</h2>
+
+<h2 id="orderby">OrderBy</h2>
 <p>
-  Control the <code>order</code> of your <code>SQL</code> query. There are several methods available:
+  Query bean properties have <code>asc()</code> and <code>desc()</code> methods such that they
+  are added to the orderBy clause.
 </p>
-<ul>
-  <li>orderBy(String clause)</li>
-  <li>order(String clause)</li>
-  <li>orderBy()</li>
-  <li>order()</li>
-</ul>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span> <span class="c1">// order by t0.name desc</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  Produces the SQL below:
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">desc</span>
+</pre></div>
+</div>
+<p>
+  We can add multiple properties to the orderBy clause.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h4>Standard orderBy</h4>
+<p>
+  For standard queries we use <code>orderBy().desc()</code> or <code>orderBy().asc()</code>
+  which also can be chained. The same query as above is written without query beans as:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">in</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">),</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="orderByExpression" class="art">OrderBy expression</h2>
+<p>
+  We can specify an order by expression which can include sql formula via <code>orderBy(string)</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">rob</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">ACTIVE</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">(</span><span class="s">&quot;coalesce(activeDate, now()) desc, name, id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
 <p>
   <code>orderBy(String clause)</code> and <code>order(String clause)</code> are equivalent to each other and both receive the string of comma separated
@@ -121,6 +172,13 @@
 </pre></div>
 </div>
 
+<div class="next pull-right">
+  <a href="/docs/query/having" class="btn btn-info">Next: Having</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/orderBy.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
+
 
 
     </div>
@@ -129,22 +187,25 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/query/select">select</a>
+  <a href="/docs/query/query-beans">Query beans</a>
 </li>
 <li >
-  <a href="/docs/query/fetch">fetch</a>
+  <a href="/docs/query/where">Where</a>
 </li>
 <li >
-  <a href="/docs/query/where">where</a>
+  <a href="/docs/query/select">Select</a>
+</li>
+<li >
+  <a href="/docs/query/fetch">Fetch</a>
 </li>
 <li class="active">
-  <a href="/docs/query/orderBy">orderBy</a>
+  <a href="/docs/query/orderBy">OrderBy</a>
 </li>
 <li >
-  <a href="/docs/query/having">having</a>
+  <a href="/docs/query/having">Having</a>
 </li>
 <li >
-  <a href="/docs/query/filterMany">filterMany</a>
+  <a href="/docs/query/filterMany">FilterMany</a>
 </li>
         </ul>
       </nav>
