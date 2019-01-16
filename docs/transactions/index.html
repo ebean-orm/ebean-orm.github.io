@@ -115,7 +115,7 @@
 </pre></div>
 </div>
 
-<h2 id="implicit">Implicit transactions</h2>
+<h2 id="implicit" class="art">Implicit transactions</h2>
 <p>
   When no transactions are specified explicitly Ebean will create a transaction to perform the action.
 </p>
@@ -131,7 +131,7 @@
   a <code>COMMIT</code> at the end of the operation.
 </p>
 
-<h2 id="programmatic">Programmatic</h2>
+<h2 id="programmatic" class="art">Programmatic</h2>
 <p>
   We programmatically create transactions using <code>ebeanServer.beginTransaction()</code>.
   When we do so we generally should use <code>try with resources</code> to ensure that the
@@ -150,7 +150,25 @@
 </pre></div>
 </div>
 
-<h2 id="atTransactional">@Transactional</h2>
+<h2 id="kotlinUse" class="art">Kotlin transaction.use { }</h2>
+<p>
+  Kotlin <code>use</code> is used similarly to <em>try with resources</em> to ensure the transaction
+  is closed.
+</p>
+<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="n">Country</span><span class="p">.</span><span class="n">db</span><span class="p">().</span><span class="n">beginTransaction</span><span class="p">().</span><span class="n">use</span> <span class="p">{</span> <span class="n">transaction</span> <span class="p">-&gt;</span>
+
+  <span class="n">transaction</span><span class="p">.</span><span class="n">isBatchMode</span> <span class="p">=</span> <span class="k">true</span>
+
+  <span class="n">Country</span><span class="p">(</span><span class="s">&quot;FJ&quot;</span><span class="p">,</span> <span class="s">&quot;Fiji&quot;</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+  <span class="n">Country</span><span class="p">(</span><span class="s">&quot;TO&quot;</span><span class="p">,</span> <span class="s">&quot;Tonga&quot;</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+  <span class="n">Country</span><span class="p">(</span><span class="s">&quot;WS&quot;</span><span class="p">,</span> <span class="s">&quot;Samoa&quot;</span><span class="p">).</span><span class="n">save</span><span class="p">()</span>
+
+  <span class="n">transaction</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+
+<h2 id="atTransactional" class="art">@Transactional</h2>
 <p>
   We can put <code>@Transactional</code> annotation on methods (including private methods) and Ebean
   enhancement will add transaction demarcation to those methods.
