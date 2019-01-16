@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Query beans</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / FetchGroup</h1>
   </div>
 </div>
 
@@ -88,70 +88,63 @@
       
 
 
-  <h2 id="querybeans">Query beans</h2>
-  <p>
-    Query beans are optional but they provide a nice way to write queries that
-    is type safe but also easier to learn and use as the IDE helps us to
-    write query expressions with auto-completion on properties and expressions.
-  </p>
+<h2>FetchGroup</h2>
+<p>
+  As an alternative to <em>select</em> and <em>fetch</em> we can use <em>FetchGroup</em> to specify what part of
+  the object graph to fetch.
+</p>
+<p>
+  We can use <em>FetchGroup</em> with both query beans and standard queries.
+</p>
+<p>
+  FetchGroups provide a clean way to separate the definition of "what part of the object graph to load" (query tuning)
+  from the definition of the query predicates (query business logic).
+</p>
+<p>
+  A FetchGroup is immutable, most often declared as a <code>static final</code> and can be combined to make other
+  FetchGroups.
+</p>
 
-  <p>
-    Query beans are generated using a Java annotation processor - <code>APT</code> or
-    Kotlin annotation processor - <code>KAPT</code>.
-  </p>
-  <p>
-    When the entity bean model changes
-    the query beans are regenerated and as developers we get compile time checking on
-    our application queries - we get a compile time error if our queries are no longer
-    valid for the model.
-  </p>
+<h4>e.g. Just top level select properties</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// reusable immutable constant (static final is good)</span>
+<span class="kd">static</span> <span class="kd">final</span> <span class="n">FetchGroup</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">fetch</span> <span class="o">=</span>
+    <span class="n">FetchGroup</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">);</span> <span class="c1">// root level properties</span>
 
-  <h2 id="apt">APT / KAPT</h2>
+<span class="o">...</span>
 
-  <p>
-    To generate <code>Java</code> query beans we use the <em>io.ebean : querybean-generator</em>
-    java annotation processor and to generate <code>Kotlin</code> query beans we use
-    <em>io.ebean : kotlin-querybean-generator</em>.
-  </p>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">fetch</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>&nbsp;</p>
 
-  <h2 id="enhancement">Enhancement</h2>
+<h4>e.g. select and fetch properties</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// reusable immutable constant (static final is good)</span>
+<span class="kd">static</span> <span class="kd">final</span> <span class="n">FetchGroup</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">fetch</span> <span class="o">=</span>
+   <span class="n">FetchGroup</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, status&quot;</span><span class="o">)</span>       <span class="c1">// root level properties</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>   <span class="c1">// associated bean properties</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
-  <p>
-    Query beans require enhancement to work. In the <code>ebean.mf</code> manifest file
-    we need to specify via <code>querybean-packages</code> the packages that should be enhanced
-    for query beans.
-  </p>
+<span class="o">...</span>
 
-  <p>
-    Note that for Java we additionally need to enhance the code that calls the query ebeans.
-    For Kotlin we only need to enhance the query beans themselves.
-  </p>
-
-  <h4>Example</h4>
-  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
-<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
-<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">org.example</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">fetch</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
-  <h2 id="maven">Generating with Maven</h2>
-  <p>
-    Refer to <a href="/docs/getting-started/maven-querybeans">docs / getting-started / maven query beans</a>
-    for details of how to generate query beans using maven.
-  </p>
-
-  <h2 id="gradle">Generating with Gradle</h2>
-  <p>
-    Refer to <a href="/docs/getting-started/gradle-querybeans">docs / getting-started / gradle query beans</a>
-    for details of how to generate query beans using gradle.
-  </p>
-
 
 <div class="next pull-right">
-  <a href="/docs/query/where" class="btn btn-info">Next: Where</a>
+  <a href="/docs/query/having" class="btn btn-info">Next: Having</a>
 </div>
   <p class="edit-page">
-    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/query-beans.html"><i class="fab fa-github"></i> Edit Page</a>
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/fetchgroup.html"><i class="fab fa-github"></i> Edit Page</a>
   </p>
 
 
@@ -161,7 +154,7 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li class="active">
+<li >
   <a href="/docs/query/query-beans">Query beans</a>
 </li>
 <li >
@@ -176,7 +169,7 @@
 <li >
   <a href="/docs/query/fetch">Fetch</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/query/fetchgroup">FetchGroup</a>
 </li>
 <li >
