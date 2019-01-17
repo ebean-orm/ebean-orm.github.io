@@ -88,7 +88,7 @@
       
 
 
-<h2>Select</h2>
+<h2 id="select">Select</h2>
 <p>
   <code>select</code> allows us to control the properties that are fetched. We can specify only selected
   properties to fetch.
@@ -147,35 +147,7 @@
 </pre></div>
 </div>
 
-
-<h2 class="art">Standard query select and fetch</h2>
-<p>
-  The standard query select and fetch take strings so are not type safe per say.
-</p>
-<p>
-  The following examples produce the same query as above but specify the <em>select</em>
-  and <em>fetch</em> via strings in a non type safe way.
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="c1">// only fetch some properties of customer (partial objects)</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="c1">// fetch some properties of customer</span>
-  <span class="c1">// and the associated contacts</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>
-
-  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-<h4>Formula</h4>
+<h2 id="formula" class="art">Formula</h2>
 <p>
   We need to use this string select clause when we want to specify a formula.
 </p>
@@ -197,7 +169,6 @@
 </div>
 
 
-
 <h5>Example - Postgis ST_Distance formula</h5>
 <p>
   With this example we explicitly cast to a Java BigDecimal type using
@@ -214,9 +185,35 @@
 </pre></div>
 </div>
 
-<h4>Aggregation</h4>
+
+<h2 id="asDto" class="art">As Dto</h2>
 <p>
-  Similarly when we want to use an aggregation query we use this string select clause.
+  When we use a select formula we sometimes want to return the result into a plain <code>DTO bean</code>
+  rather than an entity bean. We do this using <code>.asDto(Class<|D>)</code> to turn the ORM query
+  into a DtoQuery.
+</p>
+<p>
+  For more details refer to <a href="/docs/query/dto">DTO queries</a>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// ContactDto is a plain bean with email and fullName properties</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">ContactDto</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;email, concat(lastName, &#39;, &#39;, firstName) as fullName&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+       <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">asDto</span><span class="o">(</span><span class="n">ContactDto</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<h2 id="aggregation" class="art">Aggregation</h2>
+<p>
+  Similar to formula queries we can use the standard aggregations of
+  <code>SUM, MAX, MIN, AVG and COUNT</code> in the select clause.
 </p>
 <h5>Single aggregation queries</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// java</span>
@@ -241,7 +238,7 @@
 
 <h5>Group by aggregation queries</h5>
 <p>
-  Similarly for a multiple column aggregation query we use the string select clause.
+  When  multiple column aggregation query we use the string select clause.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">MachineStats</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QMachineStats</span><span class="o">()</span>
@@ -288,6 +285,12 @@
 </li>
 <li class="active">
   <a href="/docs/query/select">Select</a>
+  <ul class="nav">
+    <li><a href="/docs/query/select#select">select</a></li>
+    <li><a href="/docs/query/select#formula">formula</a></li>
+    <li><a href="/docs/query/select#asDto">asDto</a></li>
+    <li><a href="/docs/query/select#aggregation">aggregation</a></li>
+  </ul>
 </li>
 <li >
   <a href="/docs/query/fetch">Fetch</a>
