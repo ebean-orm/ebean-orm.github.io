@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / findNative</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Native SQL ( findNative )</h1>
   </div>
 </div>
 
@@ -87,12 +87,17 @@
 
       
 
-<h3>findNative</h3>
+<h2>Native SQL ( findNative )</h2>
 <p>
   With <code>findNative</code> we supply the SQL.  The SQL can contain positioned parameters with <code>?</code>
   used for bind parameters or we can use named parameters like <code>:foo</code>
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">)</span>
+<p>
+  With <em>findNative</em> the columns are automatically mapped to bean properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">;</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
@@ -100,7 +105,9 @@
 <p>
   An example using named parameters.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name like :name order by name desc&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
@@ -113,12 +120,14 @@
 <p>
   We can use <code>select *</code> if we desire all the columns.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select * from customer where name like :name order by name desc&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select * from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-<h3>Internal workings</h3>
+<h5>Internal workings</h5>
 <p>
   The way this works is that when a query is first run the JDBC meta data is read for the
   columns in the resultSet and then these columns are automatically mapped to bean properties.
@@ -128,26 +137,36 @@
   beans is cached so we only need to read the JDBC resultSet meta data once per query.
 </p>
 
-<h3>Oracle limitation</h3>
+<h3>Limitations</h3>
+
 <p>
-  There is a limitation with the Oracle JDBC driver in that the meta data currently does not include
-  the table that a column relates to. This means that with Oracle we can only map a single table
-  and not multiple tables (and would have to use <a href="/docs/query/rawSql">RawSql</a> instead).
+  The limitation with using findNative (excluding Oracle) is that it can only map multiple tables when the path
+  for a given table is <em>unique</em>.
+</p>
+<p>
+  For example, lets say we have Customer that maps both a billingAddress and shippingAddress
+  to the Address. When ebean tries to map a column for the address table it does not know
+  which path (billingAddress or shippingAddress) the column maps to.
+</p>
+<p>
+  When we hit this limitation we need to use <a href="/docs/query/rawSql">RawSql</a> instead
+  where we can map the columns more explicitly to bean paths/properties.
 </p>
 
-<h3>Multiple tables</h3>
+<h4>Multiple tables</h4>
 <p>
-  Excluding Oracle our SQL can select from multiple tables and these can automatically be mapped.
+  Excluding Oracle (see oracle limitation below) our SQL can select from multiple tables and these
+  can automatically be mapped.
 </p>
 <p>
   For example, we can fetch and populate 2 related beans like Customer and Contact.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Contacts + Customer</span>
 <span class="n">String</span> <span class="n">sql</span>
-  <span class="o">=</span> <span class="s">&quot;select ct.id, ct.first_name, ct.last_name, cu.id, cu.name &quot;</span> <span class="o">+</span>
-  <span class="s">&quot; from contact ct &quot;</span> <span class="o">+</span>
-  <span class="s">&quot; join customer cu on cu.id = ct.customer_id &quot;</span> <span class="o">+</span>
-  <span class="s">&quot; order by ct.first_name desc&quot;</span><span class="o">;</span>
+  <span class="o">=</span> <span class="s">&quot;select con.id, con.first_name, con.last_name, cust.id, cust.name &quot;</span> <span class="o">+</span>
+   <span class="s">&quot; from contact con &quot;</span> <span class="o">+</span>
+   <span class="s">&quot; join customer cust on cust.id = con.customer_id &quot;</span> <span class="o">+</span>
+   <span class="s">&quot; order by con.first_name desc&quot;</span><span class="o">;</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
 
@@ -155,17 +174,33 @@
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-<h5>Limitation</h5>
+
+<h5>Oracle limitation</h5>
 <p>
-  The limitation with using findNative (excluding Oracle) is that it can only map multiple tables when the path
-  for a given table is unique. For example, lets say we have Customer that maps both a billingAddress and shippingAddress
-  to the Address. When ebean tries to map a column for the address table it does not know which path (billingAddress or
-  shippingAddress) the column maps to.
+  There is a limitation with the Oracle JDBC driver in that the meta data currently does not include
+  the table that a column relates to. This means that with Oracle we can only map a single table
+  and not multiple tables (and would have to use <a href="/docs/query/rawSql">RawSql</a> instead).
+</p>
+
+
+<h3 id="rawSql">RawSql</h3>
+<p>
+  Using findNative is preferred over <em>RawSql</em> as the way to execute <code>SQL</code> queries with
+  <code>entity beans</code> because it is nice and simple as the columns are mapped to properties
+  automatically for us.
 </p>
 <p>
-  When we hit this limitation we need to use <a href="/docs/query/rawSql">RawSql</a> instead where we can map more
-  explicitly.
+  However, findNative has some limitations when we want the select clause to include columns from
+  multiple tables (limitations described above).  When we hit those limitations we then need to
+  use <a href="/docs/query/rawSql">RawSql</a> with more explicit mapping of columns to properties.
 </p>
+
+<div class="next pull-right">
+  <a href="/docs/query/rawSql" class="btn btn-info">Next: RawSql</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/findNative.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
 
