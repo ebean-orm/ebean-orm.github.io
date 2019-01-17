@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Query - Ebean ORM</title>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Support</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / DtoQuery</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+
+
+<h2 id="dto">DtoQuery</h2>
+<p>
+  DtoQuery is where we use SQL and map it into plain beans. These plain beans are just
+  ordinary beans with public constructor(s) and public getters/setters.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">CustomerDto</span> <span class="o">{</span>
+
+  <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="o">...</span> <span class="c1">// getters &amp; setters</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using positioned parameters</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
+  <span class="n">server</span><span class="o">().</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using named parameters</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
+  <span class="n">server</span><span class="o">().</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = :name&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="mapping" class="art">Mapping</h2>
+<p>
+  When mapping the SQL resultSet to the DTO beans the following is used.
+</p>
+<ul>
+  <li>
+    Firstly we look for a constructor with the same number of arguments as columns in the resultSet.
+    If we have such a constructor we use it for mapping (assuming the correct types).
+  </li>
+  <li>
+    Secondly see if there are more columns in the resultSet than our largest constructor.
+    If so we the largest constructor to read the first columns and then look to use setter methods
+    to map the renaming columns.
+  </li>
+  <li>
+    Finally we use the default constructor and setter methods.
+  </li>
+</ul>
+
+<p>
+  Note that we perform the mapping using MethodHandles rather than reflection.
+  That does mean it expects the Constructor and Setter methods to have public access.
+</p>
+
+<h2 id="maxRows" class="art">firstRow / maxRows</h2>
+<p>
+  We can apply firstRows/maxRows to the sql query.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">robs</span> <span class="o">=</span> <span class="n">server</span><span class="o">().</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  The appropriate sql will be added to apply firstRows/maxRows for the database platform.
+</p>
+
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">name</span> <span class="k">from</span> <span class="n">o_customer</span> <span class="k">where</span> <span class="n">name</span> <span class="k">like</span> <span class="o">?</span>
+<span class="k">limit</span> <span class="mi">10</span>
+</pre></div>
+</div>
+
+<h2 id="relaxedMode" class="art">RelaxedMode</h2>
+<p>
+  By default when performing the mapping, if we are not able to map a column to a property
+  (setter method) then an exception is thrown.
+<p>
+  <p>
+  Instead we can set relaxed mode on the query via <code>query.setRelaxedMode()</code> and that
+  means it will effectively ignore/skip any column that it can't map.
+</p>
+<p>
+  This is expected to be useful when there is potentially a large existing query and there
+  is a desire to only map some of the columns into bean properties.
+</p>
+
+<h2 id="findEach" class="art">findEach</h2>
+<p>
+  We use <em>findEach</em> when processing a large query where we do not wish to hold
+  all the beans in a list but instead process them one at a time.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from o_customer where id &gt; :id order by id desc&quot;</span><span class="o">;</span>
+
+<span class="n">ebeanServer</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findEach</span><span class="o">(</span><span class="n">customer</span> <span class="o">-&gt;</span> <span class="o">{</span>
+
+    <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;got &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="o">...</span>
+
+  <span class="o">});</span>
+</pre></div>
+</div>
+
+
+<div class="next pull-right">
+  <a href="/docs/query/" class="btn btn-info">Next: Queries</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/dto.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
+
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li class="active">
+  <a href="/docs/query/dtoquery">DtoQuery</a>
+  <ul class="nav">
+    <li><a href="/docs/query/dtoquery#mapping">Mapping</a></li>
+    <li><a href="/docs/query/dtoquery#maxRows">firstRow / maxRows</a></li>
+    <li><a href="/docs/query/dtoquery#relaxedMode">RelaxedMode</a></li>
+    <li><a href="/docs/query/dtoquery#findEach">findEach</a></li>
+  </ul>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>

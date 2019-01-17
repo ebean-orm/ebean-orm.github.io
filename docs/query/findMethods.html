@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / Query</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Find methods</h1>
   </div>
 </div>
 
@@ -88,98 +88,58 @@
       
 
 
-<div class="container">
+<h2>Find methods</h2>
 
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/query-beans">Query beans</a></h4>
-      <h4><a href="/docs/query/where">Where</a></h4>
-      <h4><a href="/docs/query/orderBy">OrderBy</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/select">Select</a></h4>
-      <h4><a href="/docs/query/fetch">Fetch</a></h4>
-      <h4><a href="/docs/query/having">Having</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/filterMany">FilterMany</a></h4>
-      <h4><a href="/docs/query/aggregation">Aggregation</a></h4>
-      <h4><a href="/docs/query/rawSql">RawSql</a></h4>
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/update">Update query</a></h4>
-      <h4><a href="/docs/query/dtoquery">DtoQuery</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/update">Delete query</a></h4>
-      <h4><a href="/docs/query/sqlquery">SqlQuery</a></h4>
-
-    </div>
-
-    <div class="col-md-3">
-
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <h4>Find methods:</h4>
-  <h5><a href="/docs/query/findOne">findOne</a>
-    , <a href="/docs/query/findList">list</a>
-    , <a href="/docs/query/findCount">count</a>
-    , <a href="/docs/query/findMap">map</a>
-    , <a href="/docs/query/findEach">each</a>
-    , <a href="/docs/query/findNative">native</a>
-    , <a href="/docs/query/findPagedList">pagedList</a>
-    , <a href="/docs/query/findIds">ids</a>
-    , <a href="/docs/query/findSingleAttribute">singleAttribute</a>
-    , <a href="/docs/query/findVersions">versions</a>
-    ,
-    ... <a href="/docs/query/findMethods">all options</a>
-
-  </h5>
-
-  <h4>Query options</h4>
-  <h5><a href="/docs/query/option#distinct">distinct</a>
-    , <a href="/docs/query/option#forUpdate">forUpdate</a>
-    , <a href="/docs/query/option#disableLazyLoading">disableLazyLoading</a>
-    , <a href="/docs/query/option#includeSoftDeletes">includeSoftDeletes</a>
-    ,
-    ... <a href="/docs/query/option">all options</a>
-
-  </h5>
-
-  <p>&nbsp;</p>
-
-  <h3>Background</h3>
-
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/overview">Overview</a></h4>
-      <h4><a href="/docs/query/background/nplus1">N plus 1</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/partialobjects">Partial Objects</a></h4>
-      <h4><a href="/docs/query/background/autotune">Automatic query tuning</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/typesafe">Query beans</a></h4>
-    </div>
+<div class="row">
+  <div class="col-md-3">
+    <h5><a href="/docs/query/exists">exists</a></h5>
   </div>
 
 </div>
+
+<div class="row">
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findOne">findOne</a></h5>
+    <h5><a href="/docs/query/findList">findList</a></h5>
+    <h5><a href="/docs/query/findCount">findCount</a></h5>
+  </div>
+
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findNative">findNative</a></h5>
+    <h5><a href="/docs/query/findPagedList">findPagedList</a></h5>
+    <h5><a href="/docs/query/findMap">findMap</a></h5>
+  </div>
+
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findEach">findEach</a></h5>
+    <h5><a href="/docs/query/findEachWhile">findEachWhile</a></h5>
+    <h5><a href="/docs/query/findIterate">findIterate</a></h5>
+  </div>
+</div>
+
+<p>&nbsp;</p>
+
+<div class="row">
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findIds">findIds</a></h5>
+    <h5><a href="/docs/query/findSingleAttribute">findSingleAttribute</a></h5>
+    <h5><a href="/docs/query/findSingleAttributeList">findSingleAttributeList</a></h5>
+  </div>
+
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findFutureCount">findFutureCount</a></h5>
+    <h5><a href="/docs/query/findFutureList">findFutureList</a></h5>
+    <h5><a href="/docs/query/findFutureIds">findFutureIds</a></h5>
+  </div>
+
+  <div class="col-md-3">
+    <h5><a href="/docs/query/findVersions">findVersions</a></h5>
+    <h5><a href="/docs/query/findVersionsBetween">findVersionsBetween</a></h5>
+  </div>
+
+</div>
+
+<p>&nbsp;</p>
 
 
 
@@ -188,7 +148,68 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          &nbsp;
+<li >
+  <a href="/docs/query/exists">exists</a>
+</li>
+
+<li >
+  <a href="/docs/query/findOne">findOne</a>
+</li>
+<li >
+  <a href="/docs/query/findList">findList</a>
+</li>
+<li >
+  <a href="/docs/query/findCount">findCount</a>
+</li>
+<li >
+  <a href="/docs/query/findNative">findNative</a>
+</li>
+<li >
+  <a href="/docs/query/findPagedList">findPagedList</a>
+</li>
+<li >
+  <a href="/docs/query/findMap">findMap</a>
+</li>
+<li >
+  <a href="/docs/query/findSet">findSet</a>
+</li>
+<li >
+  <a href="/docs/query/findEach">findEach</a>
+</li>
+<li >
+  <a href="/docs/query/findEachWhile">findEachWhile</a>
+</li>
+<li >
+  <a href="/docs/query/findIterate">findIterate</a>
+</li>
+
+<li >
+  <a href="/docs/query/findIds">findIds</a>
+</li>
+<li >
+  <a href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+</li>
+<li >
+  <a href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
+</li>
+
+<li >
+  <a href="/docs/query/findFutureCount">findFutureCount</a>
+</li>
+<li >
+  <a href="/docs/query/findFutureList">findFutureList</a>
+</li>
+<li >
+  <a href="/docs/query/findFutureIds">findFutureIds</a>
+</li>
+
+<li >
+  <a href="/docs/query/findVersions">findVersions</a>
+</li>
+<li >
+  <a href="/docs/query/findVersionsBetween">findVersionsBetween</a>
+</li>
+
         </ul>
       </nav>
     </div>

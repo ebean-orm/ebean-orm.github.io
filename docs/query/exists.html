@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / Query</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Exists</h1>
   </div>
 </div>
 
@@ -88,98 +88,25 @@
       
 
 
-<div class="container">
-
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/query-beans">Query beans</a></h4>
-      <h4><a href="/docs/query/where">Where</a></h4>
-      <h4><a href="/docs/query/orderBy">OrderBy</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/select">Select</a></h4>
-      <h4><a href="/docs/query/fetch">Fetch</a></h4>
-      <h4><a href="/docs/query/having">Having</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/filterMany">FilterMany</a></h4>
-      <h4><a href="/docs/query/aggregation">Aggregation</a></h4>
-      <h4><a href="/docs/query/rawSql">RawSql</a></h4>
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/update">Update query</a></h4>
-      <h4><a href="/docs/query/dtoquery">DtoQuery</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/update">Delete query</a></h4>
-      <h4><a href="/docs/query/sqlquery">SqlQuery</a></h4>
-
-    </div>
-
-    <div class="col-md-3">
-
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <h4>Find methods:</h4>
-  <h5><a href="/docs/query/findOne">findOne</a>
-    , <a href="/docs/query/findList">list</a>
-    , <a href="/docs/query/findCount">count</a>
-    , <a href="/docs/query/findMap">map</a>
-    , <a href="/docs/query/findEach">each</a>
-    , <a href="/docs/query/findNative">native</a>
-    , <a href="/docs/query/findPagedList">pagedList</a>
-    , <a href="/docs/query/findIds">ids</a>
-    , <a href="/docs/query/findSingleAttribute">singleAttribute</a>
-    , <a href="/docs/query/findVersions">versions</a>
-    ,
-    ... <a href="/docs/query/findMethods">all options</a>
-
-  </h5>
-
-  <h4>Query options</h4>
-  <h5><a href="/docs/query/option#distinct">distinct</a>
-    , <a href="/docs/query/option#forUpdate">forUpdate</a>
-    , <a href="/docs/query/option#disableLazyLoading">disableLazyLoading</a>
-    , <a href="/docs/query/option#includeSoftDeletes">includeSoftDeletes</a>
-    ,
-    ... <a href="/docs/query/option">all options</a>
-
-  </h5>
-
-  <p>&nbsp;</p>
-
-  <h3>Background</h3>
-
-  <div class="row">
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/overview">Overview</a></h4>
-      <h4><a href="/docs/query/background/nplus1">N plus 1</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/partialobjects">Partial Objects</a></h4>
-      <h4><a href="/docs/query/background/autotune">Automatic query tuning</a></h4>
-    </div>
-
-    <div class="col-md-3">
-      <h4><a href="/docs/query/background/typesafe">Query beans</a></h4>
-    </div>
-  </div>
-
+<h2>Exists</h2>
+<p>
+  The <em>exists</em> query is a convenience that sets the query to only
+  select the Id property, use a maxRows = 1 and tests if the query returns
+  a row.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">boolean</span> <span class="n">userExists</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+       <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.com&quot;</span><span class="o">)</span>
+       <span class="o">.</span><span class="na">exists</span><span class="o">();</span>
+</pre></div>
 </div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">from</span> <span class="n">contact</span> <span class="n">t0</span> <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">email</span> <span class="o">=</span> <span class="o">?</span>  <span class="k">limit</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>
+  We could instead write this query using findIds() and maxRows() but it is a
+  common enough pattern to perform checks like this that we have this exists query.
+</p>
 
 
 
@@ -188,7 +115,68 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-          &nbsp;
+<li class="active">
+  <a href="/docs/query/exists">exists</a>
+</li>
+
+<li >
+  <a href="/docs/query/findOne">findOne</a>
+</li>
+<li >
+  <a href="/docs/query/findList">findList</a>
+</li>
+<li >
+  <a href="/docs/query/findCount">findCount</a>
+</li>
+<li >
+  <a href="/docs/query/findNative">findNative</a>
+</li>
+<li >
+  <a href="/docs/query/findPagedList">findPagedList</a>
+</li>
+<li >
+  <a href="/docs/query/findMap">findMap</a>
+</li>
+<li >
+  <a href="/docs/query/findSet">findSet</a>
+</li>
+<li >
+  <a href="/docs/query/findEach">findEach</a>
+</li>
+<li >
+  <a href="/docs/query/findEachWhile">findEachWhile</a>
+</li>
+<li >
+  <a href="/docs/query/findIterate">findIterate</a>
+</li>
+
+<li >
+  <a href="/docs/query/findIds">findIds</a>
+</li>
+<li >
+  <a href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+</li>
+<li >
+  <a href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
+</li>
+
+<li >
+  <a href="/docs/query/findFutureCount">findFutureCount</a>
+</li>
+<li >
+  <a href="/docs/query/findFutureList">findFutureList</a>
+</li>
+<li >
+  <a href="/docs/query/findFutureIds">findFutureIds</a>
+</li>
+
+<li >
+  <a href="/docs/query/findVersions">findVersions</a>
+</li>
+<li >
+  <a href="/docs/query/findVersionsBetween">findVersionsBetween</a>
+</li>
+
         </ul>
       </nav>
     </div>
