@@ -88,6 +88,220 @@
       
 
 
+<h2 id="alias">Alias</h2>
+<p>
+  Sets the table alias to use on the base table.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">alias</span><span class="o">(</span><span class="s">&quot;cust&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">cust</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">cust</span><span class="p">.</span><span class="n">inactive</span><span class="p">,</span> <span class="n">cust</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cust</span><span class="p">.</span><span class="n">registered</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">cust</span>
+<span class="k">where</span> <span class="k">lower</span><span class="p">(</span><span class="n">cust</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span> <span class="p">;</span> <span class="c1">--bind(rob%)</span>
+</pre></div>
+</div>
+<p>
+  The typically use of alias is when used as a subquery.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">subQuery</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">alias</span><span class="o">(</span><span class="s">&quot;sub&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">).</span><span class="na">where</span><span class="o">().</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;sub.customer_id = main.id&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">query</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">alias</span><span class="o">(</span><span class="s">&quot;main&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">query</span><span class="o">().</span><span class="na">where</span><span class="o">().</span><span class="na">exists</span><span class="o">(</span><span class="n">subQuery</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">main</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">main</span><span class="p">.</span><span class="n">inactive</span><span class="p">,</span> <span class="n">main</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">main</span><span class="p">.</span><span class="n">registered</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">main</span>
+<span class="k">where</span>  <span class="k">exists</span> <span class="p">(</span><span class="k">select</span> <span class="n">sub</span><span class="p">.</span><span class="n">id</span> <span class="k">from</span> <span class="n">orders</span> <span class="n">sub</span> <span class="k">where</span> <span class="n">sub</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">main</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+<h2 id="asDraft" class="art">asDraft</h2>
+<p>
+  Used to fetch a <a href="/docs/features/draftable"><code>@Draftable</code></a> entities from their <em>draft</em> table(s)
+  rather than the <em>published</em> tables.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Document</span> <span class="n">documentDraft</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QDocument</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">asDraft</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="asOf">As of timestamp</h2>
+<p>
+  For entities with <a href="/docs/features/history">@History</a> fetch the entities <code>AS OF</code> the
+  given timestamp.
+</p>
+Timestamp past = ...;
+
+List<|Customer> customers
+  = new QCustomer()
+  .asOf(past)
+  .findList();
+
+
+<h2 id="autotune" class="art">Autotune</h2>
+<p>
+  Turn on or off automatic query tuning.
+</p>
+List<|Customer> customers
+    = new QCustomer()
+    .setAutoTune(true)              // automatically tune the query
+    .status.equalTo(Status.NEW)
+    .findList();
+
+
+<h2 id="bufferFetchSizeHint" class="art">bufferFetchSizeHint</h2>
+<p>
+  A hint which for JDBC translates to the Statement.fetchSize().
+</p>
+<p>
+  Gives the JDBC driver a hint as to the number of rows that should be
+  fetched from the database when more rows are needed for ResultSet.
+</p>
+
+
+<h2 id="disableLazyLoading" class="art">disableLazyLoading</h2>
+<p>
+  Disables any lazy loading that would otherwise occur. Instead unloaded properties would return null.
+</p>
+
+
+<h2 id="disableReadAuditing" class="art">disableReadAuditing</h2>
+<p>
+  Disable read auditing for this query. Refer to <a href="/docs/features/readauditing">Read Auditing</a>.
+</p>
+<p>
+  This is intended to be used when the query is not a user initiated query and instead
+  part of the internal processing in an application to load a cache or document store etc.
+  In these cases we don't want the query to be part of read auditing.
+</p>
+
+<h2 id="distinct" class="art">distinct</h2>
+<p>
+  Make the query use <code>sql distinct</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">lastNames</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">setDistinct</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;lastName&quot;</span><span class="o">)</span>
+   <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">isNull</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">count</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">setDistinct</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;anniversary&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findCount</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="k">count</span><span class="p">(</span><span class="k">distinct</span> <span class="n">t0</span><span class="p">.</span><span class="n">anniversary</span><span class="p">)</span> <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span> <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// partially loaded beans without Id properties</span>
+<span class="c1">// ... not persistable, no lazy loading etc</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+      <span class="o">.</span><span class="na">setDistinct</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;lastName, dateOfBirth&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<h2 id="forUpdate" class="art">forUpdate</h2>
+<p>
+  Execute the query with <code>FOR UPDATE</code> that will hold a lock on the rows fetched.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">forUpdate</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.com&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+
+  <span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;a better name&quot;</span><span class="o">);</span>
+  <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+  <span class="n">txn</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="includeSoftDeletes" class="art">includeSoftDeletes</h2>
+<p>
+  Set to true to include soft deleted rows.  Refer to <a href="/docs/features/softdelete">Soft Delete</a>.
+</p>
+
+
+<h2 id="lazyLoadBatchSize" class="art">lazyLoadBatchSize</h2>
+<p>
+  Set this to tune the lazy loading batch size which by default is set to <code>10</code>.
+</p>
+
+<h2 id="persistenceContextScope" class="art">persistenceContextScope</h2>
+<p>
+  Generally queries run with <code>transaction scoped persistence context</code>.  With this we can set
+  to <code>QUERY</code> the object graph built will be fresh data from the database ignoring any existing
+  bean that is in the [transaction] persistence context.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+
+  <span class="c1">// when customer is loaded it then is referenced in the</span>
+  <span class="c1">// transaction scoped persistence context (aka L1 cache)</span>
+  <span class="n">Customer</span> <span class="n">loaded</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+
+
+  <span class="c1">// fetch this same customer but we want to ignore the L1 cache</span>
+  <span class="c1">// such that we get a &quot;fresh&quot; version of its data</span>
+
+  <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">setUseCache</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>                        <span class="c1">// ignore L2 cache</span>
+      <span class="o">.</span><span class="na">setPersistenceContextScope</span><span class="o">(</span><span class="n">QUERY</span><span class="o">)</span>         <span class="c1">// ignore L1 cache</span>
+      <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+
+  <span class="o">...</span>
+
+  <span class="n">txn</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="readOnly" class="art">readOnly</h2>
+<p>
+  Query returns beans that are deemed to be <code>READ ONLY</code> and calling setter methods will
+  throw an exception.
+</p>
+
+<div class="next pull-right">
+  <a href="/docs/query/" class="btn btn-info">Next: Queries</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/option.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
 
@@ -96,12 +310,6 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/query/option#forUpdate">forUpdate</a>
-</li>
-<li >
-  <a href="/docs/query/option#distinct">distinct</a>
-</li>
 <li >
   <a href="/docs/query/option#alias">alias</a>
 </li>
@@ -114,17 +322,9 @@
 <li >
   <a href="/docs/query/option#autotune">autotune</a>
 </li>
+
 <li >
-  <a href="/docs/query/option#includeSoftDeletes">includeSoftDeletes</a>
-</li>
-<li >
-  <a href="/docs/query/option#persistenceContextScope">persistenceContextScope</a>
-</li>
-<li >
-  <a href="/docs/query/option#readOnly">readOnly</a>
-</li>
-<li >
-  <a href="/docs/query/option#disableLazyLoading">disableLazyLoading</a>
+  <a href="/docs/query/option#bufferFetchSizeHint">bufferFetchSizeHint</a>
 </li>
 
 <li >
@@ -134,11 +334,27 @@
   <a href="/docs/query/option#disableReadAuditing">disableReadAuditing</a>
 </li>
 <li >
-  <a href="/docs/query/option#lazyLoadBatchSize">lazyLoadBatchSize</a>
+  <a href="/docs/query/option#distinct">distinct</a>
+</li>
+
+<li >
+  <a href="/docs/query/option#forUpdate">forUpdate</a>
+</li>
+
+<li >
+  <a href="/docs/query/option#includeSoftDeletes">includeSoftDeletes</a>
 </li>
 <li >
-  <a href="/docs/query/option#bufferFetchSizeHint">bufferFetchSizeHint</a>
+  <a href="/docs/query/option#lazyLoadBatchSize">lazyLoadBatchSize</a>
 </li>
+
+<li >
+  <a href="/docs/query/option#persistenceContextScope">persistenceContextScope</a>
+</li>
+<li >
+  <a href="/docs/query/option#readOnly">readOnly</a>
+</li>
+
         </ul>
       </nav>
     </div>
