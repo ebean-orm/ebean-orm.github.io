@@ -106,7 +106,7 @@
 </p>
 
 <h4>e.g. Just top level select properties</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// reusable immutable constant (static final is good)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// immutable and threadsafe</span>
 <span class="kd">static</span> <span class="kd">final</span> <span class="n">FetchGroup</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">fetch</span> <span class="o">=</span>
     <span class="n">FetchGroup</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">);</span> <span class="c1">// root level properties</span>
 
@@ -122,7 +122,7 @@
 <p>&nbsp;</p>
 
 <h4>e.g. select and fetch properties</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// reusable immutable constant (static final is good)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// immutable and threadsafe</span>
 <span class="kd">static</span> <span class="kd">final</span> <span class="n">FetchGroup</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">fetch</span> <span class="o">=</span>
    <span class="n">FetchGroup</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, status&quot;</span><span class="o">)</span>       <span class="c1">// root level properties</span>

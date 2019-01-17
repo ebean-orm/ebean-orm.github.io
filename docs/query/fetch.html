@@ -92,12 +92,186 @@
   With fetch we specify the properties that should be fetched on associated beans. Beans that
   are related by <em>OneToOne, OneToMany, ManyToOne and ManyToMany</em>.
 </p>
-
-<p>&nbsp;</p>
-<h4>Query bean example</h4>
 <p>
-  When using query beans we use <code>alias</code> beans to provide properties for both <em>select</em>
-  and <em>fetch</em>.
+  <em>Fetch</em> means we want the query to eagerly load that path and that we <em>prefer</em>
+  for that to happen as a <em>SQL JOIN</em>.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">)</span>    <span class="c1">// root level properties</span>
+  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>              <span class="c1">// contacts is a OneToMany path</span>
+
+  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  The resulting sql is:
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="k">version</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">when_created</span><span class="p">,</span>    <span class="c1">-- customer columns</span>
+       <span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">email</span>                                 <span class="c1">-- contact columns</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">left</span> <span class="k">join</span> <span class="n">contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+<span class="k">where</span> <span class="k">lower</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span> <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+</pre></div>
+</div>
+<p>
+  The <em>contacts</em> path is a <em>OneToMany</em> so we get a <em>left join</em> to the
+  contact table. We only fetch the id and email properties for the contacts.
+</p>
+
+
+<h2 id="tuning" class="art">Select + Fetch = query tuning</h2>
+<p>
+  Using <em>select</em> and <em>fetch</em> we are effectively tuning the query
+  controlling what part of the object graph is loaded.
+</p>
+<p>
+  Generally we prefer a query to only load what it needs to from the database. This gives us
+  the ability to reduce the cost of the query, the amount of data fetched and pulled over
+  the network as well as the opportunity to use covering indexes etc.
+</p>
+
+<h4>select -> "<em>graph root</em> level properties"</h4>
+<p>
+  The <em>select</em> defines what to fetch at the <em>root level of the object graph</em>.
+</p>
+
+<h4>fetch -> "<em>graph leaf</em> properties"</h4>
+<p>
+  The <em>fetch</em> defines what to fetch for the <em>leaves of the object graph</em>. This
+  translates to <em>what to fetch on the OneToOne, OneToMany, ManyToOne and ManyToMany paths</em>
+  of the object graph.
+</p>
+<p>
+  Note that <a href="fetchgroup">FetchGroup</a> provides an alternative to <em>select + fetch</em>.
+</p>
+
+
+<h2 id="rules" class="art">ORM query to SQL query rules</h2>
+<p>
+  Ebean enforces 2 rules when it converts an ORM query into SQL queries. These rules have the effect of
+  limiting the number of sql joins that it will allow when translating an ORM query into SQL queries.
+  These 2 rules are:
+</p>
+<ul>
+  <li>Ebean will not generate a SQL cartesian product</li>
+  <li>Ebean will honor maxRows in SQL</li>
+</ul>
+
+<h3>Rule 1: No SQL Cartesian product</h3>
+<p>
+  This rule has the implication that Ebean will allow at most 1 join to a <code>OneToMany</code> path
+  or a <code>ManyToMany</code> path. If the ORM query has more than 1 of those paths then the ORM query will
+  be translated and executed as multiple SQL queries.
+</p>
+<p>
+  We avoid sql cartesian product because it has a high risk of producing a very very bad sql query.
+</p>
+
+<h3>Rule 2: Always honor maxRows in SQL</h3>
+<p>
+  This rule has the implication that Ebean can not include any joins to a <code>OneToMany</code> path
+  or a <code>ManyToMany</code> path if there is a <code>maxRows</code>. This is because SQL max rows
+  works on rows so we can't include SQL joins to paths that have a cardinality of more than 1.
+</p>
+<p>
+  Honoring maxRows is SQL is important because the database can typically give us a much better
+  query plan and more efficient sql queries.
+</p>
+
+
+
+<h2 id="fetchQuery" class="art">FetchQuery</h2>
+<p>
+  When we specify <em>fetchQuery</em> we are telling Ebean that we want this path fetched eagerly but that
+  we want that to be done using a separate sql query (known as a "secondary query" or "query join").
+</p>
+<p>
+  We choose to do this on specific paths because we know the relative costs of sql joins vs query joins
+  based on cardinality and the relative width of the results etc.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na">fetchQuery</span><span class="o">()</span>                <span class="c1">// fetch customer (and children) using a &quot;secondary query&quot;</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na">fetch</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">shippingAddress</span><span class="o">.</span><span class="na">fetch</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  With the above query we use <code>fetchQuery</code> to explicitly fetch the customers with their billing and
+  shipping addresses using a second separate sql query.
+</p>
+<h5>Primary query</h5>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- &quot;primary&quot; query fetches the orders only</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+</pre></div>
+</div>
+
+<h5>Secondary query (aka "query join")</h5>
+
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- &quot;secondary&quot; query fetches customers with</span>
+<span class="c1">-- their billing and shipping addresses</span>
+
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">inactive</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="p">...,</span>                         <span class="c1">-- customer</span>
+       <span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">line1</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">line2</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">city</span><span class="p">,</span> <span class="p">...,</span>                  <span class="c1">-- customers billing address</span>
+       <span class="n">t2</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">line1</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">line2</span><span class="p">,</span> <span class="n">t2</span><span class="p">.</span><span class="n">city</span><span class="p">,</span> <span class="p">...</span>                   <span class="c1">-- customers shipping address</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">address</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span>
+<span class="k">join</span> <span class="n">address</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">shipping_address_id</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="p">...</span> <span class="p">)</span>                                      <span class="c1">-- customer ids</span>
+</pre></div>
+</div>
+
+
+<h2 id="fetchLazy" class="art">FetchLazy</h2>
+<p>
+  With <em>fetchLazy</em> we don't want to eagerly fetch this path BUT if it is lazy loaded we are optimising
+  what the lazy loading query will fetch.
+</p>
+
+<h5>e.g. lazy loading Customer only fetch the name.</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">fetchLazy</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+<span class="o">...</span>
+
+<span class="c1">// invoke lazy loading will only fetch customer name</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h5>e.g. lazy loading Customer additionally fetch the billingAddress and shippingAddress.</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">QCustomer</span> <span class="n">cust</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">fetchLazy</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.billingAddress&quot;</span><span class="o">)</span>  <span class="c1">// fetched with lazy load of customer</span>
+    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span> <span class="c1">// fetched with lazy load of customer</span>
+
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+
+<span class="o">...</span>
+
+<span class="c1">// invoke lazy loading will fetch customer name + billingAddress + shippingAddress</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+
+<h2 id="querybean" class="art">Alias Query beans</h2>
+<p>
+  When using query beans we use <code>alias</code> beans to provide properties for both
+  the <em>select</em> and <em>fetch</em>.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// &quot;alias&quot; beans for customer and contact which</span>
@@ -108,123 +282,23 @@
 <span class="c1">// using query beans</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cust</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cust</span><span class="o">.</span><span class="na">version</span><span class="o">,</span> <span class="n">cust</span><span class="o">.</span><span class="na">whenCreated</span><span class="o">)</span>   <span class="c1">// type safe select</span>
-  <span class="c1">// eagerly fetch contacts (only the email property)  // type safe fetch</span>
-  <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">email</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">cust</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">cust</span><span class="o">.</span><span class="na">version</span><span class="o">,</span> <span class="n">cust</span><span class="o">.</span><span class="na">whenCreated</span><span class="o">)</span>    <span class="c1">// customer properties only</span>
+  <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">con</span><span class="o">.</span><span class="na">email</span><span class="o">)</span>                            <span class="c1">// contact properties only</span>
 
   <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
-<p>
-  The resulting sql for the above query is:
-</p>
-<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="k">version</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">when_created</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">email</span>
-<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
-<span class="k">left</span> <span class="k">join</span> <span class="n">contact</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
-<span class="k">where</span> <span class="k">lower</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span> <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">;</span> <span class="c1">--bind(rob%)</span>
-</pre></div>
-</div>
-<p>
-  The <em>contacts</em> path is a <em>@OneToMany</em> so we get a <em>left join</em> to the
-  contact table. We only fetch the contact id and email properties.
-</p>
 
 <p>&nbsp;</p>
-<h4>Kotlin "alias" beans</h4>
+<h3>Kotlin alias query beans</h3>
 <p>
   For Kotlin the <em>alias</em> beans are a companion object of the query bean
   and accessed via <code>_alias</code>. Otherwise the queries are the same in Kotlin.
 </p>
 <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">cust</span> <span class="p">=</span> <span class="n">QCustomer</span><span class="p">.</span><span class="n">_alias</span>
 <span class="k">val</span> <span class="py">con</span> <span class="p">=</span> <span class="n">QContact</span><span class="p">.</span><span class="n">_alias</span>
-</pre></div>
-</div>
-
-<h4>Standard query example</h4>
-<p>
-  The above query written as a standard query is:
-</p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name, version, whenCreated&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>
-
-  <span class="o">.</span><span class="na">where</span><span class="o">()</span>
-  <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-<h2 id="fetch">fetch()</h2>
-<p>
-  When we specify to <code>fetch</code> a given path that is telling Ebean that we want to eagerly load
-  that path and that we <em>PREFER</em> for that to happen as a <em>SQL JOIN</em>.
-</p>
-<p>
-  Ebean enforces rules that limit the number of sql joins that it will allow when translating ORM query into
-  SQL queries. Those rules are:
-</p>
-<ul>
-  <li>Ebean will not generate a SQL cartesian product</li>
-  <li>Ebean will honor maxRows in SQL</li>
-</ul>
-
-<h3>SQL Cartesian product</h3>
-<p>
-  This rule has the implication that Ebean will allow at most 1 join to a <code>OneToMany</code> path
-  or a <code>ManyToMany</code> path. If the ORM query has more than 1 of those paths then the ORM query will
-  be translated and executed as multiple SQL queries.
-</p>
-<p>
-  We avoid sql cartesian product because it has a high risk of producing a very very bad sql query.
-</p>
-
-<h3>Honor maxRows in SQL</h3>
-<p>
-  This rule has the implication that Ebean can not include any joins to a <code>OneToMany</code> path
-  or a <code>ManyToMany</code> path if there is a <code>maxRows</code>. This is because SQL max rows
-  works on rows so we can't include SQL joins to paths that have a cardinality of more than 1.
-</p>
-<p>
-  Honoring maxRows is SQL is important because the database can typically give us a way better query plan and
-  more efficient sql queries.
-</p>
-
-<h2 id="fetchQuery" class="art">fetchQuery()</h2>
-<p>
-  When we specify <em>fetchQuery</em> we are telling Ebean that we want this path fetched eagerly but that
-  we want that to be done using a separate sql query (known as a "secondary query" or "query join").
-</p>
-<p>
-  We choose to do this on specific paths because we know the relative costs of joins vs query joins etc.
-</p>
-
-<h2 id="fetchLazy">fetchLazy()</h2>
-<p>
-  With <em>fetchLazy</em> we are telling Ebean that we don't want to eagerly
-  fetch this path BUT if it is lazy loaded we are optimising what the lazy loading query will fetch.
-
-</p>
-<h5>e.g. when lazy loading Customer only fetch the name.</h5>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">fetchLazy</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
-
-<h5>e.g. when lazy loading Customer additionally fetch the billingAddress and shippingAddress.</h5>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">fetchLazy</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.billingAddress&quot;</span><span class="o">)</span>  <span class="c1">// fetched with lazy load of customer</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer.shippingAddress&quot;</span><span class="o">)</span> <span class="c1">// fetched with lazy load of customer</span>
-
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
