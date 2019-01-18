@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Delete</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Delete query</h1>
   </div>
 </div>
 
@@ -87,7 +87,86 @@
 
       
 
-<h2>Delete</h2>
+<h2>Delete query</h2>
+<p>
+  Execute a query deleting rows.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.com&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">delete</span> <span class="k">from</span> <span class="n">contact</span> <span class="k">where</span> <span class="n">email</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+<h5>Example 2</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">delete</span> <span class="k">from</span> <span class="n">contact</span> <span class="k">where</span> <span class="n">email</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span>  <span class="k">and</span> <span class="n">first_name</span> <span class="o">=</span> <span class="o">?</span>
+</pre></div>
+</div>
+
+<h5>Example 3</h5>
+<p>
+  When a where expression is on a associated bean path like <em>OneToMany</em> then the sql delete
+  uses a subquery.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">&quot;foo.com&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">delete</span> <span class="k">from</span> <span class="n">customer</span> <span class="k">where</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="k">distinct</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+  <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+  <span class="k">join</span> <span class="n">contact</span> <span class="n">u1</span> <span class="k">on</span> <span class="n">u1</span><span class="p">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span>
+  <span class="k">where</span> <span class="n">u1</span><span class="p">.</span><span class="n">email</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+
+<h4>Cascading delete</h4>
+<p>
+  If the bean type that we are deleting has cascading delete defined by for example
+  <code>@ManyToOne(cascade=CascadeType.ALL)</code> then the cascade will be honored.
+</p>
+<h5>Example</h5>
+<p>
+  In the following example Customer cascades save and delete to billingAddress.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// setup - a customer with a billing address</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Bad Example&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setBillingAddress</span><span class="o">(</span><span class="k">new</span> <span class="n">Address</span><span class="o">(</span><span class="s">&quot;My Street&quot;</span><span class="o">,</span> <span class="s">&quot;Hopeful City&quot;</span><span class="o">));</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+
+
+<span class="c1">// deleting customer needs to cascade delete the billingAddress</span>
+<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+<span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Bad&quot;</span><span class="o">)</span>
+<span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  The above ends up executing 4 statements in a transaction.
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- first select the ids of customers that will be deleted</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span> <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;&#39;</span> <span class="p">;</span> <span class="c1">--bind(Bad%)</span>
+
+<span class="c1">-- select the foreign keys that will be cascade deleted</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">shipping_address_id</span> <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span> <span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span> <span class="p">)</span>
+
+<span class="c1">-- delete the customers</span>
+<span class="k">delete</span> <span class="k">from</span> <span class="n">customer</span> <span class="k">where</span> <span class="n">id</span><span class="o">=?</span><span class="p">;</span>
+
+<span class="c1">-- [cascade] delete the related billing addresses</span>
+<span class="k">delete</span> <span class="k">from</span> <span class="n">address</span> <span class="k">where</span> <span class="n">id</span><span class="o">=?</span><span class="p">;</span>
+</pre></div>
+</div>
+
 
 
 
@@ -97,67 +176,52 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/query/exists">exists</a>
+  <a href="/docs/query/query-beans">Query beans</a>
+</li>
+<li >
+  <a href="/docs/query/where">Where</a>
+</li>
+<li >
+  <a href="/docs/query/orderBy">OrderBy</a>
+</li>
+<li >
+  <a href="/docs/query/select">Select</a>
+</li>
+<li >
+  <a href="/docs/query/fetch">Fetch</a>
+</li>
+<li >
+  <a href="/docs/query/fetchgroup">FetchGroup</a>
+</li>
+<li >
+  <a href="/docs/query/having">Having</a>
+</li>
+<li >
+  <a href="/docs/query/filterMany">FilterMany</a>
 </li>
 
 <li >
-  <a href="/docs/query/findOne">findOne</a>
+  <a href="/docs/query/aggregation">Aggregation</a>
 </li>
 <li >
-  <a href="/docs/query/findList">findList</a>
+  <a href="/docs/query/findNative">Native Sql</a>
 </li>
 <li >
-  <a href="/docs/query/findCount">findCount</a>
-</li>
-<li >
-  <a href="/docs/query/findNative">findNative</a>
-</li>
-<li >
-  <a href="/docs/query/findPagedList">findPagedList</a>
-</li>
-<li >
-  <a href="/docs/query/findMap">findMap</a>
-</li>
-<li >
-  <a href="/docs/query/findSet">findSet</a>
-</li>
-<li >
-  <a href="/docs/query/findEach">findEach</a>
-</li>
-<li >
-  <a href="/docs/query/findEachWhile">findEachWhile</a>
-</li>
-<li >
-  <a href="/docs/query/findIterate">findIterate</a>
+  <a href="/docs/query/rawSql">RawSql</a>
 </li>
 
 <li >
-  <a href="/docs/query/findIds">findIds</a>
+  <a href="/docs/query/update">Update query</a>
+</li>
+<li class="active">
+  <a href="/docs/query/delete">Delete query</a>
 </li>
 <li >
-  <a href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+  <a href="/docs/query/delete">DtoQuery</a>
 </li>
 <li >
-  <a href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
+  <a href="/docs/query/delete">SqlQuery</a>
 </li>
-
-<li >
-  <a href="/docs/query/findFutureCount">findFutureCount</a>
-</li>
-<li >
-  <a href="/docs/query/findFutureList">findFutureList</a>
-</li>
-<li >
-  <a href="/docs/query/findFutureIds">findFutureIds</a>
-</li>
-
-<li >
-  <a href="/docs/query/findVersions">findVersions</a>
-</li>
-<li >
-  <a href="/docs/query/findVersionsBetween">findVersionsBetween</a>
-</li>
-
         </ul>
       </nav>
     </div>
