@@ -87,7 +87,70 @@
 
       
 
+
 <h2>Update query</h2>
+<p>
+  <em>UpdateQuery</em> allows us to perform a <em>bulk sql update</em> by creating a query
+  via <em>query beans</em> or just as a standard ORM query.
+</p>
+
+<h3 class="art">asUpdate</h3>
+<p>
+  Use <em>asUpdate()</em> to convert a query into an <code>UpdateQuery</code> after which
+  point we can set update parameters via <code>set()</code> and <code>setRaw()</code>.
+</p>
+
+<h5>Example 1</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">asUpdate</span><span class="o">()</span>                      <span class="c1">// convert to UpdateQuery</span>
+    <span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;registered&quot;</span><span class="o">,</span> <span class="n">now</span><span class="o">)</span>        <span class="c1">// update set ...</span>
+    <span class="o">.</span><span class="na">update</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">update</span> <span class="n">customer</span> <span class="k">set</span> <span class="n">registered</span><span class="o">=?</span> <span class="k">where</span> <span class="n">name</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+
+<h5>Example 2</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">country</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">nz</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">asUpdate</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="s">&quot;registered&quot;</span><span class="o">,</span> <span class="n">now</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setRaw</span><span class="o">(</span><span class="s">&quot;name = concat(?, name, &#39;+&#39;, ?)&quot;</span><span class="o">,</span> <span class="s">&quot;before&quot;</span><span class="o">,</span> <span class="s">&quot;after&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">update</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">update</span> <span class="n">customer</span> <span class="k">set</span> <span class="n">registered</span><span class="o">=?</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>
+<span class="k">where</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+  <span class="k">left</span> <span class="k">join</span> <span class="n">address</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">billing_address_id</span>
+  <span class="k">where</span> <span class="n">t1</span><span class="p">.</span><span class="n">country_code</span> <span class="o">=</span> <span class="o">?</span>  <span class="k">and</span> <span class="n">t1</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="o">?</span>  <span class="k">and</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">like</span> <span class="o">?</span> <span class="k">escape</span><span class="s1">&#39;|&#39;</span>
+<span class="p">);</span>
+<span class="c1">--bind(2019-01-18 17:12:01.348,before,after,NZ,Auckland,Rob%) rows:0</span>
+</pre></div>
+</div>
+
+<h3 class="art">Compare SqlUpdate</h3>
+<p>
+  If we want to use <em>SQL</em> directly we can instead use <a href="/docs/query/sqlupdate">SqlUpdate</a>.
+</p>
+
+
+<p class="pull-right">
+  Related:
+  <a class="btn btn-info" href="/docs/query/delete">Delete query</a>
+  <a class="btn btn-info" href="/docs/query/sqlupdate">SqlUpdate</a>
+</p>
+
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/update.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
 
@@ -138,10 +201,16 @@
   <a href="/docs/query/delete">Delete query</a>
 </li>
 <li >
-  <a href="/docs/query/delete">DtoQuery</a>
+  <a href="/docs/query/dtoquery">DtoQuery</a>
 </li>
 <li >
-  <a href="/docs/query/delete">SqlQuery</a>
+  <a href="/docs/query/sqlquery">SqlQuery</a>
+</li>
+<li >
+  <a href="/docs/query/sqlupdate">SqlUpdate</a>
+</li>
+<li >
+  <a href="/docs/query/callablesql">CallableSql</a>
 </li>
         </ul>
       </nav>
