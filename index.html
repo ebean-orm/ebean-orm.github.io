@@ -123,42 +123,62 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-3 feature">
-        <h3>Beyond JPA</h3>
-        <p>
-          Ebean supports features beyond JPA such as:
-        </p>
-      </div>
-      <div class="col-md-3 feature mtl">
-        <h5><a href="/docs/features/elasticsearch">Elastic Search</a></h5>
-        <h5><a href="/docs/features/json-in-db">JSON in Database</a></h5>
-        <h5><a href="/docs/features/softdelete">Soft Delete</a></h5>
-        <h5><a href="/docs/features/draftable">Draftable</a></h5>
-        <h5><a href="/docs/features/multi-tenant">Multi-tenancy</a></h5>
-      </div>
-      <div class="col-md-3 feature mtl">
-        <h5><a href="/docs/features/history">SQL 2011 History</a></h5>
-        <h5><a href="/docs/features/encryption">Encryption</a></h5>
-        <h5><a href="/docs/features/who">Who Created / Modified</a></h5>
-        <h5><a href="/docs/features/changelog">Change log</a></h5>
-        <h5><a href="/docs/features/readauditing">Read auditing</a></h5>
-      </div>
-    </div>
+
 
     <div class="row">
       <div class="col-md-3 feature">
         <h3>Simple to use</h3>
         <p>
-          Ebean provides a simpler programming model that developers can
+          Ebean provides a simple programming model that developers can
           understand and master quickly.
         </p>
       </div>
       <div class="col-md-6 feature mtl">
+        <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// insert ...</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Joe&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 
+<span class="o">...</span>
+
+<span class="c1">// find and update ...</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Montana&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
       </div>
 
     </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <h3>Queries</h3>
+        <p>
+          We can use Query beans to build queries in a type safe manner.
+        </p>
+      </div>
+
+      <div class="col-md-6 mtl">
+
+        <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span>
+  <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+        <p>
+          more <a href="/docs/query/">details on queries</a>
+        </p>
+      </div>
+
+    </div>
+
+
 
   </div>
 </div>
@@ -201,41 +221,33 @@
       </div>
     </div>
 
+    <p>&nbsp;</p><p>&nbsp;</p>
+
   </div>
 
 </div>
 
 <div class="erkbg">
   <div class="container">
-    <h2 class="erk">Type safe queries</h2>
+    <h2 class="erk">Features</h2>
 
     <div class="row">
-      <div class="col-md-3">
-        <h3><a href="/docs/query/query-beans">Query beans</a></h3>
-        <p>
-          Use Query beans to build queries in a type safe manner.
-        </p>
+      <div class="col-md-3 feature">
       </div>
-
-      <div class="col-md-6 mtl">
-
-        <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">LocalDate</span> <span class="n">lastWeek</span> <span class="o">=</span> <span class="o">...;</span>
-
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span>
-  <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">registered</span><span class="o">.</span><span class="na">before</span><span class="o">(</span><span class="n">lastWeek</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
-      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
-      <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">desc</span><span class="o">()</span>
-    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-</pre></div>
-</div>
+      <div class="col-md-3 feature mtl">
+        <h5><a href="/docs/features/elasticsearch">Elastic Search</a></h5>
+        <h5><a href="/docs/features/json-in-db">JSON in Database</a></h5>
+        <h5><a href="/docs/features/softdelete">Soft Delete</a></h5>
+        <h5><a href="/docs/features/draftable">Draftable</a></h5>
+        <h5><a href="/docs/features/multi-tenant">Multi-tenancy</a></h5>
       </div>
-
+      <div class="col-md-3 feature mtl">
+        <h5><a href="/docs/features/history">SQL 2011 History</a></h5>
+        <h5><a href="/docs/features/encryption">Encryption</a></h5>
+        <h5><a href="/docs/features/who">Who Created / Modified</a></h5>
+        <h5><a href="/docs/features/changelog">Change log</a></h5>
+        <h5><a href="/docs/features/readauditing">Read auditing</a></h5>
+      </div>
     </div>
   </div>
 </div>
