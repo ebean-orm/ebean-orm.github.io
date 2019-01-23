@@ -88,6 +88,61 @@
       
 
 <h2>Aggregation</h2>
+<p>
+  SQL has the aggregation functions of <code>SUM</code>, <code>MIN</code>, <code>MAX</code>, <code>COUNT</code>
+  and <code>AVG</code>.
+</p>
+<p>
+  We can use these functions in Ebean as <em>dynamic formula</em> or as properties
+  via <em>@Aggregation</em> and <em>@Sum</em>.
+</p>
+
+<p>&nbsp;</p>
+<h4>Dynamic formula</h4>
+
+<h5>Single attribute</h5>
+<p>
+
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">LocalDate</span> <span class="n">maxDate</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;max(orderDate)&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttribute</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">where</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span> <span class="p">;</span> <span class="c1">--bind(Rob)</span>
+</pre></div>
+</div>
+<p>
+  With aggregation queries that select only a single attribute the returned type
+  matches the property type. In the above case the orderDate is a <code>LocalDate</code>
+  and so that is the type returned.
+</p>
+
+<p>&nbsp;</p>
+<h4>Multiple attributes</h4>
+<p>
+  When we specify non-aggregate properties (<em>status</em> in the example below) then
+  a <code>GROUP BY</code> clause is generated that includes all the non-aggregate properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, max(orderDate)&quot;</span><span class="o">)</span>     <span class="c1">// status is non-aggregate</span>
+  <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">where</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span>  <span class="c1">-- group by non-aggregate properties</span>
+</pre></div>
+</div>
 
 
 
@@ -116,14 +171,14 @@
   <a href="/docs/query/fetchgroup">FetchGroup</a>
 </li>
 <li >
-  <a href="/docs/query/having">Having</a>
-</li>
-<li >
   <a href="/docs/query/filterMany">FilterMany</a>
 </li>
 
 <li class="active">
   <a href="/docs/query/aggregation">Aggregation</a>
+</li>
+<li >
+  <a href="/docs/query/having">Having</a>
 </li>
 <li >
   <a href="/docs/query/findNative">Native Sql</a>
