@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Query - Ebean ORM</title>
+  <title>findEachWhile | Query | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -88,7 +88,7 @@
       
 
 <h2>findEachWhile (process large queries, one bean at a time with the ability to stop early)</h2>
-  
+
 <p>
 Execute the query using callbacks to a visitor to process the resulting
 beans one at a time, and allow breaking out of loop (by returning <code>false</code>)
@@ -116,7 +116,7 @@ beans one at a time, and allow breaking out of loop (by returning <code>false</c
      <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
    <span class="o">});</span>
 </pre></div>
-</div> 
+</div>
 
 
 

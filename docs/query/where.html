@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Query - Ebean ORM</title>
+  <title>Query Where | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / where</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Where</h1>
   </div>
 </div>
 
@@ -177,7 +177,7 @@
 </div>
 
 
-<h2 class="art">AND</h2>
+<h2 id="and" class="art">AND</h2>
 <p>
   By default multiple expressions are added via <code>AND</code>.
 </p>
@@ -225,7 +225,7 @@
 </div>
 
 
-<h2 class="art">OR</h2>
+<h2 id="or" class="art">OR</h2>
 <p>
   When we want to add multiple expressions via <em>OR</em> we use <code>or()</code> and <code>endOr()</code>
   and all the expressions between them are joined by <em>OR</em>.
@@ -270,7 +270,7 @@
 </div>
 
 
-<h2 class="art">Raw expressions</h2>
+<h2 id="raw" class="art">Raw expressions</h2>
 <p>
   Sometimes we want to add raw expressions to the where clause.
   We use <code>raw()</code> to include arbitrary SQL, functions and stored procedures
@@ -319,8 +319,8 @@
 </p>
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">ship_date</span><span class="p">,</span> <span class="p">...</span>
 <span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
-<span class="k">left</span> <span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
-<span class="k">left</span> <span class="k">join</span> <span class="n">address</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">billing_address_id</span>
+<span class="k">left</span> <span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>            <span class="c1">-- supports customer.name</span>
+<span class="k">left</span> <span class="k">join</span> <span class="n">address</span> <span class="n">t2</span> <span class="k">on</span> <span class="n">t2</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t1</span><span class="p">.</span><span class="n">billing_address_id</span>      <span class="c1">-- supports customer.billingAddress.city</span>
 <span class="k">where</span> <span class="p">(</span><span class="n">t1</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span> <span class="k">or</span> <span class="n">t2</span><span class="p">.</span><span class="n">city</span> <span class="o">=</span> <span class="o">?</span><span class="p">);</span> <span class="c1">--bind(Rob,Auckland)</span>
 </pre></div>
 </div>
@@ -345,6 +345,23 @@
 </pre></div>
 </div>
 
+
+<p>&nbsp;</p>
+<h4>Ode to Raw expressions</h4>
+<p>
+  If developer life was simple we would not need raw expressions. Many real world projects often have
+  a few queries where our nice ORM query gets us 90% there but there is that predicate needed that is
+  best expressed in SQL or uses a database specify function or feature.
+</p>
+<p>
+  <em>Raw expressions</em> is this nice little feature that allows us to put that arbitrary SQL
+  expression into the where clause.  We could instead go to findNative etc and provide all the SQL
+  for the query but that is a bigger jump and raw expressions gives us that flexibility.
+</p>
+<p>
+  I'm not sure if I'm allowed a <em>favourite feature</em> but if I was I'd vote for raw expressions.
+</p>
+
 <div class="next pull-right">
   <a href="/docs/query/orderBy" class="btn btn-info">Next: OrderBy</a>
 </div>
@@ -364,6 +381,11 @@
 </li>
 <li class="active">
   <a href="/docs/query/where">Where</a>
+  <ul class="nav">
+    <li><a href="#and">AND</a></li>
+    <li><a href="#or">OR</a></li>
+    <li><a href="#raw">Raw expressions</a></li>
+  </ul>
 </li>
 <li >
   <a href="/docs/query/orderBy">OrderBy</a>
