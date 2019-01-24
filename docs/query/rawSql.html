@@ -125,8 +125,7 @@
 <span class="o">+</span> <span class="s">&quot; join order_detail d on d.order_id = o.id &quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
 
-<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
-<span class="n">RawSqlBuilder</span>
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
   <span class="c1">// let ebean parse the SQL so that it can</span>
   <span class="c1">// add expressions to the WHERE and HAVING</span>
   <span class="c1">// clauses</span>
@@ -162,8 +161,7 @@
 <span class="o">+</span> <span class="s">&quot; from order_detail d&quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
 
-<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
-<span class="n">RawSqlBuilder</span>
+<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
   <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">create</span><span class="o">();</span>
@@ -291,6 +289,13 @@
     <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 </pre></div>
 </div>
+
+<div class="next pull-right">
+  <a href="/docs/query/update" class="btn btn-info">Next: Update query</a>
+</div>
+  <p class="edit-page">
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/rawSql.html"><i class="fab fa-github"></i> Edit Page</a>
+  </p>
 
 
     </div>
