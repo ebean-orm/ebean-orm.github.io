@@ -87,18 +87,87 @@
 
       
 
-<h2>having (add expressions to the "having" clause)</h2>
 
-  <div class="alert alert-info" role="alert">
-    <strong>Warning:</strong> Currently only beans based on <code>Raw SQL (.setRawSql)</code> will use the having clause.
-  </div>
+<h2>Having</h2>
+<p>
+  We can add expressions to the <em>having clause</em> when we use Dynamic formula, @Aggregation properties
+  or RawSql.
+</p>
 
-  <p>
-  Note that this returns the ExpressionList (so you can add multiple
-  expressions to the query in a fluent API way).
-  </p>
+<p>&nbsp;</p>
+<h3 id="dynamicFormula">Dynamic formula</h3>
+<p>
+  See <a href="/docs/query/aggregation#dynamic">here </a> for more details on dynamic aggregation formula
+  (sum, min, max, count, avg).
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// e.g. sum(hours)</span>
 
-  Example code:
+<span class="n">List</span><span class="o">&lt;</span><span class="n">DMachineStats</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QDMachineStats</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;date, sum(totalKms), sum(hours)&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">havingClause</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;sum(hours)&quot;</span><span class="o">,</span> <span class="mi">2</span><span class="o">)</span>                         <span class="c1">// (1) having clause</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="nb">date</span><span class="p">,</span> <span class="k">sum</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">total_kms</span><span class="p">),</span> <span class="k">sum</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">hours</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">d_machine_stats</span> <span class="n">t0</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="nb">date</span>
+<span class="k">having</span> <span class="k">sum</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">hours</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">?</span>                        <span class="c1">-- (1) having clause</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+<h3 id="atAggregation">@Aggration</h3>
+<p>
+  With <em>@Aggration</em> and <em>@Sum</em> properties these are properties on the query bean
+  so we just use them as normal but after <code>having()</code>.
+</p>
+<h5>Example:</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+
+  <span class="o">...</span>
+
+  <span class="n">LocalDate</span> <span class="n">orderDate</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;max(orderDate)&quot;</span><span class="o">)</span>     <span class="c1">// aggregation property</span>
+  <span class="n">LocalDate</span> <span class="n">maxOrderDate</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;count(*)&quot;</span><span class="o">)</span>           <span class="c1">// aggregation property</span>
+  <span class="n">Long</span> <span class="n">totalCount</span><span class="o">;</span>
+</pre></div>
+</div>
+<p>
+  So we can use <em>maxOrderDate</em> and <em>totalCount</em> properties like other query bean properties.
+  Add predicates on these aggregation properties to the having clause like:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">status</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">maxOrderDate</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">totalCount</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">notEqualTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>             <span class="c1">// (1) where clause - non aggregate properties</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">totalCount</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>                            <span class="c1">// (2) having clause - aggregate properties</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">),</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="o">?</span>                                    <span class="o">//</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span>
+<span class="k">having</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">?</span>                                     <span class="o">//</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+<h3 id="rawSql">RawSql</h3>
+<p>
+  With parsed RawSql we can also add expressions to the having clause.
+</p>
+
+<h5>Example</h5>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span>
   <span class="s">&quot;select order_id, count(*) as totalItems, sum(order_qty*unit_price) as totalAmount \n&quot;</span> <span class="o">+</span>
@@ -111,7 +180,7 @@
   <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
     <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">having</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">()</span>                                           <span class="c1">// having clause</span>
     <span class="o">.</span><span class="na">lt</span><span class="o">(</span><span class="s">&quot;totalItems&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
     <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">50</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
