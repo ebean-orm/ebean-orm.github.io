@@ -98,7 +98,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h4>Dynamic formula</h4>
+<h3 id="dynamicformula">Dynamic formula</h3>
 
 <h5>Single attribute</h5>
 <p>
@@ -124,7 +124,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h4>Multiple attributes</h4>
+<h3 id="multiple">Multiple attributes</h3>
 <p>
   When we specify non-aggregate properties (<em>status</em> in the example below) then
   a <code>GROUP BY</code> clause is generated that includes all the non-aggregate properties.
@@ -143,8 +143,240 @@
 <span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span>  <span class="c1">-- group by non-aggregate properties</span>
 </pre></div>
 </div>
+<p>
+  The beans returned by aggregation queries are <em>partially populated</em>.  They don't contain
+  the <em>@Id</em> property and thus do not support lazy loading or persisting.
+</p>
+<p>
+  The order beans in the example above will only have their <em>status</em> and <em>orderDate</em>
+  properties loaded.
+</p>
+
+<p>&nbsp;</p>
+<h3 id="fetch">Fetch</h3>
+<p>
+  Aggregation queries can include <code>fetch</code> or <code>fetchQuery</code> to load related beans.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span>
+  <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, max(orderDate)&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>                                <span class="c1">// (1) fetch</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">notEqualTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">),</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span>     <span class="c1">-- (1) has customer id and name</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">join</span> <span class="n">customer</span> <span class="n">t1</span> <span class="k">on</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="o">?</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t1</span><span class="p">.</span><span class="n">name</span>                       <span class="c1">-- (1) has customer id and name</span>
+</pre></div>
+</div>
+<p>
+  When we use <code>fetchQuery</code> the ORM query is executed as 2 sql queries.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span>
+  <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;status, max(orderDate)&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na">fetchQuery</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>                           <span class="c1">// (2) fetchQuery ...</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">notEqualTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- Primary query</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">),</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>     <span class="c1">-- (2) has customer id only</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="o">?</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- Secondary query</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span>                                    <span class="c1">-- (2) customer id and name</span>
+<span class="k">from</span> <span class="n">customer</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>
+  Using <em>fetchQuery()</em> can be good when there are many properties on customer that
+  we want to load (as these all go into the secondary sql query rather than the primary
+  query and therefore are not part of the <em>GROUP BY</em>.
+</p>
+
+<p>&nbsp;</p>
+<h3 id="atAggregation">@Aggregation</h3>
+<p>
+  We can model aggregations with properties annotated with <code>@Aggregation</code>.
+  This is an alternative to using dynamic formula.
+</p>
+<p>
+  Properties with <em>@Aggregation</em> must be explicitly included in a query (they are considered Transient).
+</p>
+<h5>Example:</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+
+  <span class="o">...</span>
+
+  <span class="n">LocalDate</span> <span class="n">orderDate</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;max(orderDate)&quot;</span><span class="o">)</span>     <span class="c1">// add aggregation property</span>
+  <span class="n">LocalDate</span> <span class="n">maxOrderDate</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;count(*)&quot;</span><span class="o">)</span>           <span class="c1">// add aggregation property</span>
+  <span class="n">Long</span> <span class="n">totalCount</span><span class="o">;</span>
+</pre></div>
+</div>
+<p>
+  Having added the <em>maxOrderDate</em> and <em>totalCount</em> properties we can use
+  them in <code>select</code> and <code>having</code> clauses in our queries.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">QOrder</span> <span class="n">o</span> <span class="o">=</span> <span class="n">QOrder</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">status</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">maxOrderDate</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">totalCount</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">),</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span>
+</pre></div>
+</div>
+<h4>Having</h4>
+<p>
+  Predicates on aggregation properties should be added to the <code>Having</code> clause.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">o</span><span class="o">.</span><span class="na">status</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">maxOrderDate</span><span class="o">,</span> <span class="n">o</span><span class="o">.</span><span class="na">totalCount</span><span class="o">)</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">notEqualTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">COMPLETE</span><span class="o">)</span>             <span class="c1">// (1) where clause - non aggregate properties</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">totalCount</span><span class="o">.</span><span class="na">greaterThan</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>                            <span class="c1">// (2) having clause - aggregate properties</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">order_date</span><span class="p">),</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span> <span class="o">&lt;&gt;</span> <span class="o">?</span>                                    <span class="o">//</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">status</span>
+<span class="k">having</span> <span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">?</span>                                     <span class="o">//</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
 
 
+<p>&nbsp;</p>
+<h3 id="beans">Aggregation beans</h3>
+<p>
+  If we only want 1 or 2 aggregation properties we feel ok adding these to the existing entity beans.
+  However, if instead we have many properties we want to aggregate this approach is <em>messing with
+  our model and it starts to look ugly.</em>
+</p>
+<p>
+  We can create <em>aggregation beans</em> to model the properties - model the sum/group by/aggregation
+  view.
+</p>
+<ul>
+  <li>Use @View with the table we want to aggregate on</li>
+  <li>Does not extend Model as we don't save() or delete() these</li>
+  <li>Does not have @Id or @Version properties</li>
+  <li>Has properties we want to Aggregate on (sum, max etc)</li>
+  <li>Has properties we want to group by on (date, status, ManyToOne)</li>
+</ul>
+
+<h4>Example</h4>
+<p>
+  Say we have an entity bean called <em>MachineUse</em> with:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MachineUse</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="kd">private</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">DMachine</span> <span class="n">machine</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kt">long</span> <span class="n">distanceKms</span><span class="o">;</span>     <span class="c1">// we want to sum() this ...</span>
+
+  <span class="kd">private</span> <span class="kt">long</span> <span class="n">timeSecs</span><span class="o">;</span>        <span class="c1">// we want to sum() this ...</span>
+
+  <span class="kd">private</span> <span class="n">BigDecimal</span> <span class="n">fuel</span><span class="o">;</span>      <span class="c1">// we want to sum() this ...</span>
+
+  <span class="nd">@Version</span>
+  <span class="kd">private</span> <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<p>
+  We can create the aggregate bean for this as:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@View</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">,</span> <span class="n">dependentTables</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MachineUseAggregate</span> <span class="o">{</span>
+
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">DMachine</span> <span class="n">machine</span><span class="o">;</span>              <span class="c1">// group by, fetch, fetchQuery on ...</span>
+
+  <span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">;</span>                <span class="c1">// group by on ...</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(distanceKms)&quot;</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Long</span> <span class="n">distanceKms</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(timeSecs)&quot;</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Long</span> <span class="n">timeSecs</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(fuel)&quot;</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">BigDecimal</span> <span class="n">fuel</span><span class="o">;</span>
+
+  <span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;count(*)&quot;</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Long</span> <span class="n">count</span><span class="o">;</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+
+
+
+<p>&nbsp;</p>
+<h3 id="atSum">@Sum</h3>
+<p>
+  When we create <em>aggregation beans</em> we very often see the pattern where we sum a property like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(&lt;property name&gt;)&quot;</span><span class="o">)</span>
+<span class="n">Type</span> <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">&gt;;</span>
+</pre></div>
+</div>
+<p>&nbsp;</p>
+<p>
+  For example, we see beans like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(distanceKms)&quot;</span><span class="o">)</span>
+<span class="n">BigDecimal</span> <span class="n">distanceKms</span><span class="o">;</span>
+
+<span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(useSeconds)&quot;</span><span class="o">)</span>
+<span class="n">Long</span> <span class="n">useSeconds</span><span class="o">;</span>
+
+<span class="nd">@Aggregation</span><span class="o">(</span><span class="s">&quot;sum(cost)&quot;</span><span class="o">)</span>
+<span class="n">BigDecimal</span> <span class="n">cost</span><span class="o">;</span>
+</pre></div>
+</div>
+<p>&nbsp;</p>
+<p>
+  <code>@Sum</code> is syntatic sugar for this pattern and the above becomes:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Sum</span>
+<span class="n">BigDecimal</span> <span class="n">distanceKms</span><span class="o">;</span>
+
+<span class="nd">@Sum</span>
+<span class="n">Long</span> <span class="n">useSeconds</span><span class="o">;</span>
+
+<span class="nd">@Sum</span>
+<span class="n">BigDecimal</span> <span class="n">cost</span><span class="o">;</span>
+</pre></div>
+</div>
 
 
     </div>
@@ -176,6 +408,14 @@
 
 <li class="active">
   <a href="/docs/query/aggregation">Aggregation</a>
+  <ul class="nav">
+    <li><a href="#dynamicformula">Dynamic formula</a></li>
+    <li><a href="#multiple">Multiple attributes</a></li>
+    <li><a href="#fetch">Fetch</a></li>
+    <li><a href="#atAggregation">@Aggregation</a></li>
+    <li><a href="#beans">Aggregation beans</a></li>
+    <li><a href="#atSum">@Sum</a></li>
+  </ul>
 </li>
 <li >
   <a href="/docs/query/having">Having</a>
