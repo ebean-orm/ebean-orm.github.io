@@ -98,7 +98,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h3 id="dynamicformula">Dynamic formula</h3>
+<h2 id="dynamicformula">Dynamic formula</h2>
 
 <h5>Single attribute</h5>
 <p>
@@ -124,7 +124,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h3 id="multiple">Multiple attributes</h3>
+<h2 id="multiple">Multiple attributes</h2>
 <p>
   When we specify non-aggregate properties (<em>status</em> in the example below) then
   a <code>GROUP BY</code> clause is generated that includes all the non-aggregate properties.
@@ -153,7 +153,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h3 id="fetch">Fetch</h3>
+<h2 id="fetch">Fetch</h2>
 <p>
   Aggregation queries can include <code>fetch</code> or <code>fetchQuery</code> to load related beans.
 </p>
@@ -204,7 +204,7 @@
 </p>
 
 <p>&nbsp;</p>
-<h3 id="atAggregation">@Aggregation</h3>
+<h2 id="atAggregation">@Aggregation</h2>
 <p>
   We can model aggregations with properties annotated with <code>@Aggregation</code>.
   This is an alternative to using dynamic formula.
@@ -266,7 +266,7 @@
 
 
 <p>&nbsp;</p>
-<h3 id="beans">Aggregation beans</h3>
+<h2 id="beans">Aggregation beans</h2>
 <p>
   If we only want 1 or 2 aggregation properties we feel ok adding these to the existing entity beans.
   However, if instead we have many properties we want to aggregate this approach is <em>messing with
@@ -340,7 +340,7 @@
 
 
 <p>&nbsp;</p>
-<h3 id="atSum">@Sum</h3>
+<h2 id="atSum">@Sum</h2>
 <p>
   When we create <em>aggregation beans</em> we very often see the pattern where we sum a property like:
 </p>
