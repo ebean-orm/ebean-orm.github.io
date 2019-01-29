@@ -89,9 +89,34 @@
 
 
 <h2>CallableSql</h2>
+<p>
+  With <em>CallableSql</em> we can call stored procedures with IN / OUT parameters.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">CallableSql</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">createCallableSql</span><span class="o">(</span><span class="s">&quot;{call my_stored_procedure(?,?)}&quot;</span><span class="o">);</span>
+<span class="n">cs</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">42</span><span class="o">);</span>
+<span class="n">cs</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">&quot;baz&quot;</span><span class="o">);</span>
+<span class="n">server</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">cs</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h2 id="l2cache" class="art">L2 cache</h2>
+<p>
+  If we are using L2 caching and the stored procedure modifies data we should
+  inform ebean what tables were modified by insert, update or delete and it
+  can then invalidate appropriate parts of the L2 cache.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">CallableSql</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">createCallableSql</span><span class="o">(</span><span class="s">&quot;{call my_stored_procedure(?,?)}&quot;</span><span class="o">);</span>
+<span class="o">...</span>
+<span class="c1">// Using L2 cache - updating rows on customer table</span>
+<span class="n">cs</span><span class="o">.</span><span class="na">addModification</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+<span class="n">server</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">cs</span><span class="o">);</span>
+</pre></div>
+</div>
 
   <p class="edit-page">
-    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/sqlupdate.html"><i class="fab fa-github"></i> Edit Page</a>
+    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/callablesql.html"><i class="fab fa-github"></i> Edit Page</a>
   </p>
 
 
