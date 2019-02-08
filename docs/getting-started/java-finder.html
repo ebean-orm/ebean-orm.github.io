@@ -148,7 +148,7 @@
 <span class="c1">// reference bean</span>
 <span class="n">Customer</span> <span class="n">refBean</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42L</span><span class="o">);</span>
 
-<span class="n">List</span><span class="o">|</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
   <span class="n">Customer</span><span class="o">.</span><span class="na">find</span>
     <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
