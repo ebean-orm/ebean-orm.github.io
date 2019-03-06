@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Documentation</title>
+  <title>Introduction</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1>Documentation</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/introduction">Introduction</a> / DatabaseConfig</h1>
   </div>
 </div>
 
@@ -87,116 +87,58 @@
 
       
 
-<div class="container doc-index bs-docs-container">
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/getting-started/">Getting started</a></h3>
-      <h3><a href="/docs/trouble-shooting">Trouble shooting</a></h3>
-      <h3><a href="/docs/logging">Logging</a></h3>
-    </div>
+<h2>DatabaseConfig</h2>
+<p>
+  <code>io.ebean.DatabaseConfig</code> has all the configuration available to then create a
+   a Database instance.
+</p>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/introduction">Introduction</a></h3>
-      <h3><a href="/docs/query">Query</a></h3>
-      <h3><a href="/docs/persist">Persisting</a></h3>
-    </div>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/transactions">Transactions</a></h3>
-      <h3><a href="/docs/mapping">Mapping</a></h3>
-    </div>
+<span class="c1">// set configuration options</span>
+<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
+<span class="o">...</span>
+<span class="c1">// and/or load configuration properties file</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
 
-  </div>
-
-  <p>&nbsp;</p>
-
-  <div class="row">
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/ddl">DDL generation</a></h3>
-      <h3><a href="/docs/ddl">DB Migration</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/testing">Testing</a></h3>
-      <h3><a href="/docs/configuration">Configuration</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/l2cache">L2 Cache</a></h3>
-      <h3><a href="/docs/kotlin">Kotlin</a></h3>
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <p>&nbsp;</p>
-
-  <h4>Features</h4>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-      <h3><a href="/docs/features/history">History</a></h3>
-      <h3><a href="/docs/features/eventlistening">Event listening</a></h3>
-      <h3><a href="/docs/features/softdelete">Soft delete</a></h3>
-      <h3><a href="/docs/features/draftable">Draftable</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
-      <h3><a href="/docs/features/json">JSON</a></h3>
-      <h3><a href="/docs/features/who">Who auditing</a></h3>
-      <h3><a href="/docs/features/changelog">Change log</a></h3>
-      <h3><a href="/docs/features/readauditing">Read auditing</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/tuning">Tuning</a></h3>
-      <h3><a href="/docs/monitoring">Monitoring</a></h3>
-      <h3><a href="/docs/tooling/">Tooling</a></h3>
-      <h3><a href="/docs/upgrading">Upgrading</a></h3>
-    </div>
-
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Architecture</h2>
-      <h3><a href="/docs/architecture/compare-jpa">JPA comparison</a></h3>
-      <h3><a href="/docs/architecture/compare-hibernate">Hibernate comparison</a></h3>
-      <h3><a href="/docs/architecture/persistence-context">Persistence context</a></h3>
-      <h3><a href="/docs/architecture/load-context">Load context</a></h3>
-
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Funding</h2>
-      <h3><a href="/funding">Funding &amp; Sponsorship</a></h3>
-    </div>
-  </div>
+<span class="c1">// create the Database instance</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+</pre></div>
 </div>
+
+<div class="next pull-right">
+  <a href="databasefactory" class="btn btn-info">Next: DatabaseFactory</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/introduction/databaseconfig.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<h3><a href="/docs/examples">Examples</a></h3>
-<ul>
-  <li><a href="/docs/examples#java-maven">Maven</a></li>
-  <li><a href="/docs/examples#java-gradle">Gradle</a></li>
-  <li><a href="/docs/examples#java">Java</a></li>
-  <li><a href="/docs/examples#kotlin">Kotlin</a></li>
-  <li><a href="/docs/examples#elasticSearch">ElasticSearch</a></li>
-  <li><a href="/docs/examples#history">History</a></li>
-  <li><a href="/docs/examples#postgis">PostGIS</a></li>
-  <li><a href="/docs/examples#multi-tenancy">Multi-tenancy</a></li>
-  <li><a href="/docs/examples#draftable">Draftable</a></li>
-</ul>
+
+<li >
+  <a href="/docs/introduction">Database</a>
+</li>
+<li >
+  <a href="/docs/introduction/model">Model</a>
+</li>
+<li >
+  <a href="/docs/introduction/finder">Finder</a>
+</li>
+<li >
+  <a href="/docs/introduction/databaseconfig">DatabaseConfig</a>
+</li>
+<li >
+  <a href="/docs/introduction/databasefactory">DatabaseFactory</a>
+</li>
+<li >
+  <a href="/docs/introduction/manifest">ebean.mf</a>
+</li>
         </ul>
       </nav>
     </div>

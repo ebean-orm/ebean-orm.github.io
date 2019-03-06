@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -43,7 +43,7 @@
         <div class="mobile-nav">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -86,43 +86,149 @@
       </form>
 
       
-<h3><a href="why">Why Ebean exists</a></h3>
+
+<h2 id="database">Database</h2>
 <p>
-  Look at why does Ebean exists, how does it compare to JPA and Hibernate.
+  The <a target="_blank" href="/apidoc/11/io/ebean/Database.html">Database API</a> provides almost all of the functionality including
+  <code>queries</code>, <code>saving</code>, <code>deleting</code> and <code>transactions</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
+<span class="n">Customer</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
+<span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+
+<span class="c1">// fetch ...</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+
+<span class="c1">// transactions ...</span>
+<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+
+  <span class="c1">// fetch and persist beans etc ...</span>
+
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<h4>javax.sql.DataSource</h4>
+<p>
+  A Database instance has an JDBC DataSource associating it one to one to an actual database.
+</p>
+<p>
+  Note that a Database can have a second read only DataSource that can be used for
+  performance reasons (for read only queries) and potentially connect to database read replicas.
 </p>
 
-<h3><a href="ebeanserver">EbeanServer</a></h3>
+<h4>Default database</h4>
 <p>
-  Introduction to EbeanServer and the concept of the <b>default server</b>.
+  One database can be specified as the <code>default database</code>. The default Database
+  instance is registered with <code>DB</code> and then can be obtained via <code>DB.getDefault()</code>.
 </p>
 
-<h3><a href="ebeanserver#ebean">Ebean</a></h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the &quot;default&quot; database</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h4>Named database</h4>
 <p>
-  Ebean as a <b>registry</b> of all the EbeanServer instances, convenience methods for the <b>default server</b>.
+  Each Database instance has a name and can be registered with <code>DB</code> and then obtained by
+  it's name via <code>DB.byName()</code>
 </p>
 
-<h3><a href="serverconfig">ServerConfig</a></h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain a database by it&#39;s name</span>
+<span class="n">Database</span> <span class="n">hrDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+
+<h2 id="db" class="tg">DB (io.ebean.DB)</h2>
+<ul>
+  <li>DB holds a <b>registry</b> of database instances (keyed by name)</li>
+  <li>DB holds one Database instance known as the <b>default database</b></li>
+  <li>DB has <b>convenience</b> methods to operate on the default database</li>
+</ul>
+<p>&nbsp;</p>
+
+<h4>Obtain default or named database instance</h4>
 <p>
-  Configuration used when creating EbeanServer instances.
+  When an Database instance is created it can be registered with DB. We can then
+  use <code>DB</code> to obtain those Database instances by name and we can obtain
+  the default database via <code>DB.getDefault()</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the &quot;default&quot; database</span>
+<span class="n">Database</span> <span class="n">server</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+
+<span class="c1">// obtain the HR database by name</span>
+<span class="n">Database</span> <span class="n">hrDB</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h4>DB convenience methods</h4>
+<p>
+  DB has convenience methods that effectively proxy through to the default database.
+  This is useful and convenient as many applications only use a single database.
 </p>
 
-<h3><a href="serverconfig">EbeanServerFactory</a></h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1">// save using the &#39;default&#39; database</span>
+<span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+
+<span class="c1">// which is the same as</span>
+<span class="n">Database</span> <span class="n">defaultDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()</span>
+<span class="n">defaultDatabase</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h4>DB is optional</h4>
 <p>
-  Factory that takes a ServerConfig to create an EbeanServer instance.
+  Note that you don't have to use the DB singleton in your application at all - it's use is
+  completely optional. Instead we can create the Database instance(s) and <code>inject</code>
+  them where needed. We typically do this using <code>Spring</code> or <code>Guice</code>
+  or a similar DI framework.
+</p>
+<p>
+  When we do this (inject Database and don't use the DB singleton) we will likely have the application
+  code following a <a href="/docs/codestyle">DI / Repository pattern</a> convention.
 </p>
 
-<h3><a href="manifest">ebean.mf</a></h3>
+<p>&nbsp;</p>
+<h2 id="ebeanserver">EbeanServer</h2>
 <p>
-  Manifest file controls the <b>enhancement</b> for Ebean. What packages are enhanced for
-  a project and what enhancement features are turned on.
+  Database and EbeanServer are the same thing.
 </p>
+<p>
+  <code>io.ebean.EbeanServer</code> is the older original name for <code>io.ebean.Database</code>.
+  They can be used interchangably. In time EbeanServer will be deprecated and code should migrate
+  to io.ebean.EbeanServer.
+</p>
+
+
+<p>&nbsp;</p>
+<h2 id="ebean">Ebean</h2>
+<p>
+  DB and Ebean are the same thing.
+</p>
+<p>
+  <code>io.ebean.Ebean</code> is the older original name for <code>io.ebean.DB</code>.
+  They can be used interchangably. In time use of Ebean will be deprecated and code should migrate
+  to io.ebean.DB.
+</p>
+
+
 
 <div class="next pull-right">
-  <a href="/docs/tooling/" class="btn btn-info">Next: Tooling</a>
+  <a href="model" class="btn btn-info">Next: Model</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/tooling"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/introduction/index.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
+
+
 
     </div>
 
@@ -130,14 +236,26 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 
-<li >
-  <a href="/docs/introduction/why">Why Ebean</a>
+<li class="active">
+  <a href="/docs/introduction">Database</a>
+<ul class="nav">
+  <li><a href="#database">Database</a></li>
+  <li><a href="#db">DB</a></li>
+  <li><a href="#ebeanserver">EbeanServer</a></li>
+  <li><a href="#ebean">Ebean</a></li>
+</ul>
 </li>
 <li >
-  <a href="/docs/introduction/ebeanserver">EbeanServer</a>
+  <a href="/docs/introduction/model">Model</a>
 </li>
 <li >
-  <a href="/docs/introduction/serverconfig">ServerConfig</a>
+  <a href="/docs/introduction/finder">Finder</a>
+</li>
+<li >
+  <a href="/docs/introduction/databaseconfig">DatabaseConfig</a>
+</li>
+<li >
+  <a href="/docs/introduction/databasefactory">DatabaseFactory</a>
 </li>
 <li >
   <a href="/docs/introduction/manifest">ebean.mf</a>

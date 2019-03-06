@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Documentation</title>
+  <title>Introduction</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1>Documentation</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/introduction">Introduction</a> / Model</h1>
   </div>
 </div>
 
@@ -87,116 +87,120 @@
 
       
 
-<div class="container doc-index bs-docs-container">
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/getting-started/">Getting started</a></h3>
-      <h3><a href="/docs/trouble-shooting">Trouble shooting</a></h3>
-      <h3><a href="/docs/logging">Logging</a></h3>
-    </div>
+<h2>Model</h2>
+<p>
+  <code>io.ebean.Model</code> is a base class that is extended by entity beans
+  or MappedSuperclass beans to provide convenience methods for saving and deleting beans.
+</p>
+<p>
+  That is, the entity beans themselves then have methods such as <code>save()</code> and
+  <code>delete()</code> for persisting.
+</p>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/introduction">Introduction</a></h3>
-      <h3><a href="/docs/query">Query</a></h3>
-      <h3><a href="/docs/persist">Persisting</a></h3>
-    </div>
+<h4>Entity extending Model</h4>
 
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/transactions">Transactions</a></h3>
-      <h3><a href="/docs/mapping">Mapping</a></h3>
-    </div>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
 
-  </div>
+  <span class="nd">@Id</span>
+  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
 
-  <p>&nbsp;</p>
+  <span class="nd">@Version</span>
+  <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
 
-  <div class="row">
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/ddl">DDL generation</a></h3>
-      <h3><a href="/docs/ddl">DB Migration</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/testing">Testing</a></h3>
-      <h3><a href="/docs/configuration">Configuration</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/l2cache">L2 Cache</a></h3>
-      <h3><a href="/docs/kotlin">Kotlin</a></h3>
-    </div>
-
-  </div>
-
-  <p>&nbsp;</p>
-
-  <p>&nbsp;</p>
-
-  <h4>Features</h4>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/elasticsearch">ElasticSearch</a></h3>
-      <h3><a href="/docs/features/history">History</a></h3>
-      <h3><a href="/docs/features/eventlistening">Event listening</a></h3>
-      <h3><a href="/docs/features/softdelete">Soft delete</a></h3>
-      <h3><a href="/docs/features/draftable">Draftable</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/features/json-in-db">JSON in DB</a></h3>
-      <h3><a href="/docs/features/json">JSON</a></h3>
-      <h3><a href="/docs/features/who">Who auditing</a></h3>
-      <h3><a href="/docs/features/changelog">Change log</a></h3>
-      <h3><a href="/docs/features/readauditing">Read auditing</a></h3>
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h3><a href="/docs/tuning">Tuning</a></h3>
-      <h3><a href="/docs/monitoring">Monitoring</a></h3>
-      <h3><a href="/docs/tooling/">Tooling</a></h3>
-      <h3><a href="/docs/upgrading">Upgrading</a></h3>
-    </div>
-
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Architecture</h2>
-      <h3><a href="/docs/architecture/compare-jpa">JPA comparison</a></h3>
-      <h3><a href="/docs/architecture/compare-hibernate">Hibernate comparison</a></h3>
-      <h3><a href="/docs/architecture/persistence-context">Persistence context</a></h3>
-      <h3><a href="/docs/architecture/load-context">Load context</a></h3>
-
-    </div>
-
-    <div class="col-md-3 docs-index" role="main">
-      <h2>Funding</h2>
-      <h3><a href="/funding">Funding &amp; Sponsorship</a></h3>
-    </div>
-  </div>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
 </div>
+<p>
+  With Customer entity bean extending model we can <code>save()</code> or <code>delete()</code>it.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Joe&quot;</span><span class="o">,</span> <span class="s">&quot;Montana&quot;</span><span class="o">);</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h4>Typical MappedSuperclass</h4>
+<p>
+  Most often entity beans do not directly extend Model but instead we have a common
+  MappedSuperclass that has commmon properties that our entity beans share.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="nd">@Version</span>
+  <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
+
+  <span class="nd">@WhenCreated</span><span class="o">;</span>
+  <span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+  <span class="nd">@WhenModified</span><span class="o">;</span>
+  <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
+
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  Our entity beans then extend BaseDomain inheriting the common properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseDomain</span> <span class="o">{</span>
+
+  <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+
+  <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h4>Default database</h4>
+<p>
+  When we call the save() and delete() methods on Model it is obtaining the default database
+  and using that to save or delete the entity bean.
+</p>
+
+<div class="next pull-right">
+  <a href="finder" class="btn btn-info">Next: Finder</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/introduction/model.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
 
     </div>
 
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<h3><a href="/docs/examples">Examples</a></h3>
-<ul>
-  <li><a href="/docs/examples#java-maven">Maven</a></li>
-  <li><a href="/docs/examples#java-gradle">Gradle</a></li>
-  <li><a href="/docs/examples#java">Java</a></li>
-  <li><a href="/docs/examples#kotlin">Kotlin</a></li>
-  <li><a href="/docs/examples#elasticSearch">ElasticSearch</a></li>
-  <li><a href="/docs/examples#history">History</a></li>
-  <li><a href="/docs/examples#postgis">PostGIS</a></li>
-  <li><a href="/docs/examples#multi-tenancy">Multi-tenancy</a></li>
-  <li><a href="/docs/examples#draftable">Draftable</a></li>
-</ul>
+
+<li >
+  <a href="/docs/introduction">Database</a>
+</li>
+<li class="active">
+  <a href="/docs/introduction/model">Model</a>
+</li>
+<li >
+  <a href="/docs/introduction/finder">Finder</a>
+</li>
+<li >
+  <a href="/docs/introduction/databaseconfig">DatabaseConfig</a>
+</li>
+<li >
+  <a href="/docs/introduction/databasefactory">DatabaseFactory</a>
+</li>
+<li >
+  <a href="/docs/introduction/manifest">ebean.mf</a>
+</li>
         </ul>
       </nav>
     </div>
