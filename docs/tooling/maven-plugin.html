@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Maven | Tooling | Ebean</title>
+  <title>Maven plugin | Tooling | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling">Tooling</a> / Maven</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling">Tooling</a> / Maven plugin</h1>
   </div>
 </div>
 
@@ -88,90 +88,54 @@
       
 
 
-<h2>Maven enhancement</h2>
+
+<h3>Maven enhancement plugin</h3>
 <p>
-  Build time enhancement using the maven plugin.
+  If you do not want to use maven tiles you can specify the maven enhancement
+  plugin in 'normal' fashion.
 </p>
 
-<div class="row">
-    <div class="col-md-6">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/q-SB_X_X-GU">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Maven enhancement</h4>
-  Enhancement of entity and query beans using the maven
-        enhancement tile
-  </div>
-</div>
-    </div>
-</div>
-
-<p>&nbsp;</p><p>&nbsp;</p>
-
-
-
-<h4>Check installed maven version</h4>
-
-<div class="syntax sh"><div class="highlight"><pre><span></span>mvn -version
-</pre></div>
-</div>
-
-<p>
-  If your installed maven version is older than <code>3.5.3</code> then it might not support
-  maven tiles. If that is the case upgrade maven or use the
-  <a href="/docs/getting-started/maven-plugin">maven plugin</a> directly rather than the tile.
-</p>
-
-<p>&nbsp;</p>
-
-<h2>Add maven tile</h2>
-<p>
-  Add the maven tile into the <code>build / plugins</code> section of the pom.xml.
-</p>
-<p>
-  This performs enhancement of the entity beans, @Transactional methods and query beans at build time.
-</p>
-
-<!-- hardcoded-version enhancement -->
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.12<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;tiles&gt;</span>
-      <span class="c">&lt;!-- other tiles ... --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:7.4<span class="nt">&lt;/tile&gt;</span>
-    <span class="nt">&lt;/tiles&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;executions&gt;</span>
+    <span class="c">&lt;!-- enhance main classes --&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+
+      <span class="c">&lt;!-- enhance test classes --&gt;</span>
+    <span class="nt">&lt;execution&gt;</span>
+      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
+      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+      <span class="nt">&lt;goals&gt;</span>
+        <span class="nt">&lt;goal&gt;</span>testEnhance<span class="nt">&lt;/goal&gt;</span>
+      <span class="nt">&lt;/goals&gt;</span>
+    <span class="nt">&lt;/execution&gt;</span>
+
+  <span class="nt">&lt;/executions&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
 </pre></div>
 </div>
 
 
-<h5>Maven enhancement tile</h5>
-<p>
-  The maven tile above will enhance the code at build time for both <code>src/main</code>
-  and <code>src/test</code>. This is simpler than defining the plugin in the traditional (non-tile)
-  fashion and is the preferred approach.
-</p>
-<p>
-  If you want to specify the maven enhancement plugin in 'normal' non-tile fashion see
-  <a href="maven-plugin">maven plugin</a>.
-</p>
-
 
 <div class="next pull-right">
-  <a href="maven-querybeans" class="btn btn-info">Next: Maven Query beans</a>
+  <a href="gradle" class="btn btn-info">Next: Gradle</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/tooling/maven.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/tooling/maven-plugin.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -194,7 +158,7 @@
 <li >
   <a href="/docs/tooling/eclipse">Eclipse IDE</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/tooling/maven">Maven</a>
 </li>
 <li >

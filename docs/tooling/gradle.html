@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Introduction</title>
+  <title>Gradle | Tooling | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -43,7 +43,7 @@
         <div class="mobile-nav">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling/">Tooling</a> / Gradle</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling">Tooling</a> / Gradle</h1>
   </div>
 </div>
 
@@ -87,11 +87,13 @@
 
       
 
-<h2>Ebean plugin</h2>
 
-<h4>1) buildscript dependency</h4>
+<h2>Gradle plugin</h2>
+
+
+<h4>Buildscript dependency</h4>
 <p>
-    Add the <code>ebean-gradle-plugin</code> dependency to the <code>buildscript</code> section.
+  Add the <code>ebean-gradle-plugin</code> dependency to the <code>buildscript</code> section.
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">buildscript</span> <span class="o">{</span>
   <span class="n">repositories</span> <span class="o">{</span>
@@ -105,18 +107,18 @@
 </div>
 
 
-<h4>2) apply</h4>
+<h4>Apply plugin</h4>
 <p>
-    Add <code>'io.ebean'</code> to the apply plugin section like:
+  Add <code>'io.ebean'</code> to the apply plugin section like:
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;io.ebean&#39;</span>
 </pre></div>
 </div>
 
-<h4>3) ebean</h4>
+<h4>Add ebean section</h4>
 <p>
-    Add a <code>ebean</code> section to control the debug level of the enhancement. This is optional but generally a
-    good idea.
+  Add a <code>ebean</code> section to control the debug level of the4) t enhancement. This is optional but generally a
+  good idea.
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">ebean</span> <span class="o">{</span>
   <span class="n">debugLevel</span> <span class="o">=</span> <span class="mi">1</span>
@@ -125,10 +127,10 @@
 </div>
 
 
-<h4>4) test output</h4>
+<h4>Test output</h4>
 <p>
-    Gradle by default suppresses output logging. If we want to see SQL, DDL, Transaction logging etc we
-    need to set <code>testLogging.showStandardStreams</code> = <code>true</code> in the test section like:
+  Gradle by default suppresses output logging. If we want to see SQL, DDL, Transaction logging etc we
+  need to set <code>testLogging.showStandardStreams</code> = <code>true</code> in the test section like:
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">{</span>
   <span class="n">testLogging</span><span class="o">.</span><span class="na">showStandardStreams</span> <span class="o">=</span> <span class="kc">true</span>
@@ -138,18 +140,18 @@
 
 <h2>Example project</h2>
 <p>
-    Have a look at the <a href="https://github.com/ebean-orm-examples/example-gradle-java">Example Gradle Java</a> for
-    a full example - it's <a href="https://github.com/ebean-orm-examples/example-gradle-java/blob/master/build.gradle">build.gradle</a>.
+  Have a look at the <a href="https://github.com/ebean-orm-examples/example-gradle-java">Example Gradle Java</a> for
+  a full example - it's <a href="https://github.com/ebean-orm-examples/example-gradle-java/blob/master/build.gradle">build.gradle</a>.
 </p>
 
 
 <h2>Test output</h2>
 <p>
-    Below is a example output from <code>./gradlew clean test</code>. Specifically we can see:
+  Below is a example output from <code>./gradlew clean test</code>. Specifically we can see:
 </p>
 <ul>
-    <li>The classes being enhanced (due to ebean debugLevel = 1)</li>
-    <li>The DDL, SQL and Transactions (controlled by logback-test.xml in this case)</li>
+  <li>The classes being enhanced (due to ebean debugLevel = 1)</li>
+  <li>The DDL, SQL and Transactions (controlled by logback-test.xml in this case)</li>
 </ul>
 <pre>
 $ ./gradlew clean test
@@ -184,10 +186,13 @@ bats:BeanList size[0] list[]
 BUILD SUCCESSFUL in 1s
 </pre>
 
-
 <div class="next pull-right">
-    <a href="agent" class="btn btn-info">Next: Agent</a>
+  <a href="gradle-querybeans" class="btn btn-info">Next: Gradle Query beans</a>
 </div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/tooling/gradle.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
 
 
     </div>
@@ -196,6 +201,9 @@ BUILD SUCCESSFUL in 1s
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 
+<li >
+  <a href="/docs/tooling/cli-tool">CLI tool</a>
+</li>
 <li >
   <a href="/docs/tooling/enhancement">Enhancement</a>
 </li>
@@ -208,13 +216,14 @@ BUILD SUCCESSFUL in 1s
 <li >
   <a href="/docs/tooling/maven">Maven</a>
 </li>
+<li >
+  <a href="/docs/tooling/maven-querybeans">Maven Querybeans</a>
+</li>
 <li class="active">
   <a href="/docs/tooling/gradle">Gradle</a>
-<ul class="nav">
-    <li><a href="/docs/tooling/gradle">Plugin</a></li>
-    <li><a href="/docs/tooling/gradle-apt">APT</a></li>
-    <li><a href="/docs/tooling/gradle-plugin-source">Plugin source</a></li>
-</ul>
+</li>
+<li >
+  <a href="/docs/tooling/gradle-querybeans">Gradle Querybeans</a>
 </li>
 <li >
   <a href="/docs/tooling/agent">Agent</a>

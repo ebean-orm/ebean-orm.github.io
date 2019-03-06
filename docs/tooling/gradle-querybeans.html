@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Gradle query bean generation | Getting started | Ebean</title>
+  <title>Gradle query bean generation | Tooling | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -31,9 +31,9 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
-  <li class="active"><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
   <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
@@ -43,9 +43,9 @@
         <div class="mobile-nav">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
   <li ><a href="/videos">Videos</a></li>
-  <li class="active"><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Support</a></li>
   <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
   <li ><a href="/releases">Releases</a></li>
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / Gradle Query beans</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/tooling">Tooling</a> / Gradle Query beans</h1>
   </div>
 </div>
 
@@ -86,9 +86,6 @@
       </form>
 
       
-<div class="pull-right">
-  <p>Related: <a href="/docs/trouble-shooting">Trouble Shooting</a></p>
-</div>
 
 
 <h2>Query bean generation with Gradle</h2>
@@ -229,10 +226,10 @@
 <p>&nbsp;</p>
 
 <div class="next pull-right">
-  <a href="cli-tool" class="btn btn-info">Next: CLI Tool</a>
+  <a href="agent" class="btn btn-info">Next: Agent</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/tooling/gradle-querybeans.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -242,65 +239,33 @@
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
+
 <li >
-  <a href="/docs/getting-started#ide">IDE Plugin</a>
+  <a href="/docs/tooling/cli-tool">CLI tool</a>
 </li>
 <li >
-  <a href="/docs/getting-started/dependencies">Dependencies</a>
+  <a href="/docs/tooling/enhancement">Enhancement</a>
 </li>
 <li >
-  <a href="/docs/getting-started/maven">Maven</a>
+  <a href="/docs/tooling/idea">IntelliJ IDEA</a>
 </li>
 <li >
-  <a href="/docs/getting-started/maven-querybeans">Maven Query beans</a>
+  <a href="/docs/tooling/eclipse">Eclipse IDE</a>
 </li>
 <li >
-  <a href="/docs/getting-started/gradle">Gradle</a>
+  <a href="/docs/tooling/maven">Maven</a>
+</li>
+<li >
+  <a href="/docs/tooling/maven-querybeans">Maven Querybeans</a>
+</li>
+<li >
+  <a href="/docs/tooling/gradle">Gradle</a>
 </li>
 <li class="active">
-  <a href="/docs/getting-started/gradle-querybeans">Gradle Query beans</a>
+  <a href="/docs/tooling/gradle-querybeans">Gradle Querybeans</a>
 </li>
 <li >
-  <a href="/docs/getting-started/cli-tool">CLI Tool</a>
-</li>
-
-<li><b>Java</b></li>
-<li >
-  <a href="/docs/getting-started/java-first-entity">First entity</a>
-</li>
-<li >
-  <a href="/docs/getting-started/java-constructors">Constructors</a>
-</li>
-<li >
-  <a href="/docs/getting-started/java-mapped-superclass">MappedSuperclass</a>
-</li>
-<li >
-  <a href="/docs/getting-started/java-model">Model</a>
-</li>
-<li >
-  <a href="/docs/getting-started/java-finder">Finder</a>
-</li>
-<li >
-  <a href="/docs/getting-started/java-next-steps">Next steps</a>
-</li>
-<li><b>Kotlin</b></li>
-<li >
-  <a href="/docs/getting-started/kotlin-first-entity">First entity</a>
-</li>
-<li >
-  <a href="/docs/getting-started/kotlin-constructors">Constructors</a>
-</li>
-<li >
-  <a href="/docs/getting-started/kotlin-mapped-superclass">MappedSuperclass</a>
-</li>
-<li >
-  <a href="/docs/getting-started/kotlin-model">Model</a>
-</li>
-<li >
-  <a href="/docs/getting-started/kotlin-finder">Finder</a>
-</li>
-<li >
-  <a href="/docs/getting-started/kotlin-next-steps">Next steps</a>
+  <a href="/docs/tooling/agent">Agent</a>
 </li>
         </ul>
       </nav>
