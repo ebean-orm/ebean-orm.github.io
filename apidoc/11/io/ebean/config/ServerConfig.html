@@ -894,7 +894,7 @@ opposed to DB encryption functions).</div>
 <tr id="i112" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../io/ebean/config/ServerConfig.html#isCollectQueryStatsByNode--">isCollectQueryStatsByNode</a></span>()</code>
-<div class="block">Return true if the ebeanServer should collection query statistics by ObjectGraphNode.</div>
+<div class="block">Return true if query statistics should be collected by ObjectGraphNode.</div>
 </td>
 </tr>
 <tr id="i113" class="rowColor">
@@ -4284,7 +4284,7 @@ entities and perhaps listeners.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>isSkipCacheAfterWrite</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2368">isSkipCacheAfterWrite</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2364">isSkipCacheAfterWrite</a>()</pre>
 <div class="block">Return true if L2 bean cache should be skipped once writes have occurred on a transaction.
 <p>
 This defaults to true and means that for "find by id" and "find by natural key"
@@ -4294,8 +4294,7 @@ on the transaction.
 <p>
 <div class="syntax java"><div class="highlight"><pre>  <span class="c1">// assume Customer has L2 bean caching enabled ...</span>
 
-  <span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
-  <span class="k">try</span> <span class="o">{</span>
+  <span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
     <span class="c1">// this uses L2 bean cache as the transaction</span>
     <span class="c1">// ... is considered &quot;query only&quot; at this point</span>
@@ -4303,7 +4302,7 @@ on the transaction.
 
     <span class="c1">// transaction no longer &quot;query only&quot; once</span>
     <span class="c1">// ... a bean has been saved etc</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">someBean</span><span class="o">);</span>
+    <span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">someBean</span><span class="o">);</span>
 
     <span class="c1">// will NOT use L2 bean cache as the transaction</span>
     <span class="c1">// ... is no longer considered &quot;query only&quot;</span>
@@ -4322,9 +4321,6 @@ on the transaction.
     <span class="n">transaction</span><span class="o">.</span><span class="na">setSkipCache</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
     <span class="n">Customer</span><span class="o">.</span><span class="na">find</span><span class="o">.</span><span class="na">byId</span><span class="o">(</span><span class="mi">99</span><span class="o">);</span> <span class="c1">// skips l2 bean cache</span>
 
-
-  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-    <span class="n">transaction</span><span class="o">.</span><span class="na">end</span><span class="o">();</span>
   <span class="o">}</span>
 </pre></div>
 </div></div>
@@ -4340,7 +4336,7 @@ on the transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>setSkipCacheAfterWrite</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2375">setSkipCacheAfterWrite</a>(boolean&nbsp;skipCacheAfterWrite)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2371">setSkipCacheAfterWrite</a>(boolean&nbsp;skipCacheAfterWrite)</pre>
 <div class="block">Set to false when we still want to hit the cache after a write has occurred on a transaction.</div>
 </li>
 </ul>
@@ -4350,7 +4346,7 @@ on the transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>isUpdateChangesOnly</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2382">isUpdateChangesOnly</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2378">isUpdateChangesOnly</a>()</pre>
 <div class="block">Return true to only update changed properties.</div>
 </li>
 </ul>
@@ -4360,7 +4356,7 @@ on the transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>setUpdateChangesOnly</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2389">setUpdateChangesOnly</a>(boolean&nbsp;updateChangesOnly)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2385">setUpdateChangesOnly</a>(boolean&nbsp;updateChangesOnly)</pre>
 <div class="block">Set to true to only update changed properties.</div>
 </li>
 </ul>
@@ -4370,7 +4366,7 @@ on the transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>isUpdateAllPropertiesInBatch</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2396">isUpdateAllPropertiesInBatch</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2392">isUpdateAllPropertiesInBatch</a>()</pre>
 <div class="block">Returns true if updates in JDBC batch default to include all properties by default.</div>
 </li>
 </ul>
@@ -4380,7 +4376,7 @@ on the transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>setUpdateAllPropertiesInBatch</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2408">setUpdateAllPropertiesInBatch</a>(boolean&nbsp;updateAllPropertiesInBatch)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2404">setUpdateAllPropertiesInBatch</a>(boolean&nbsp;updateAllPropertiesInBatch)</pre>
 <div class="block">Set to false if by default updates in JDBC batch should not include all properties.
 <p>
 This mode can be explicitly set per transaction.
@@ -4397,7 +4393,7 @@ This mode can be explicitly set per transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>isUpdatesDeleteMissingChildren</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2416">isUpdatesDeleteMissingChildren</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2412">isUpdatesDeleteMissingChildren</a>()</pre>
 <div class="block">Return true if updates by default delete missing children when cascading save to a OneToMany or
 ManyToMany. When not set this defaults to true.</div>
 </li>
@@ -4408,7 +4404,7 @@ ManyToMany. When not set this defaults to true.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>setUpdatesDeleteMissingChildren</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2424">setUpdatesDeleteMissingChildren</a>(boolean&nbsp;updatesDeleteMissingChildren)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2420">setUpdatesDeleteMissingChildren</a>(boolean&nbsp;updatesDeleteMissingChildren)</pre>
 <div class="block">Set if updates by default delete missing children when cascading save to a OneToMany or
 ManyToMany. When not set this defaults to true.</div>
 </li>
@@ -4419,8 +4415,8 @@ ManyToMany. When not set this defaults to true.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>isCollectQueryStatsByNode</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2431">isCollectQueryStatsByNode</a>()</pre>
-<div class="block">Return true if the ebeanServer should collection query statistics by ObjectGraphNode.</div>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2427">isCollectQueryStatsByNode</a>()</pre>
+<div class="block">Return true if query statistics should be collected by ObjectGraphNode.</div>
 </li>
 </ul>
 <a name="setCollectQueryStatsByNode-boolean-">
@@ -4429,7 +4425,7 @@ ManyToMany. When not set this defaults to true.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>setCollectQueryStatsByNode</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2449">setCollectQueryStatsByNode</a>(boolean&nbsp;collectQueryStatsByNode)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2445">setCollectQueryStatsByNode</a>(boolean&nbsp;collectQueryStatsByNode)</pre>
 <div class="block">Set to true to collection query execution statistics by ObjectGraphNode.
 <p>
 These statistics can be used to highlight code/query 'origin points' that result in lots of lazy loading.
@@ -4452,7 +4448,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>isCollectQueryOrigins</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2457">isCollectQueryOrigins</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2453">isCollectQueryOrigins</a>()</pre>
 <div class="block">Return true if query plans should also collect their 'origins'. This means for a given query plan you
 can identify the code/origin points where this query resulted from including lazy loading origins.</div>
 </li>
@@ -4463,7 +4459,7 @@ can identify the code/origin points where this query resulted from including laz
 <ul class="blockList">
 <li class="blockList">
 <h4>setCollectQueryOrigins</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2470">setCollectQueryOrigins</a>(boolean&nbsp;collectQueryOrigins)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2466">setCollectQueryOrigins</a>(boolean&nbsp;collectQueryOrigins)</pre>
 <div class="block">Set to true if query plans should collect their 'origin' points. This means for a given query plan you
 can identify the code/origin points where this query resulted from including lazy loading origins.
 <p>
@@ -4481,7 +4477,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>getResourceDirectory</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2477">getResourceDirectory</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2473">getResourceDirectory</a>()</pre>
 <div class="block">Returns the resource directory.</div>
 </li>
 </ul>
@@ -4491,7 +4487,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>setResourceDirectory</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2484">setResourceDirectory</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;resourceDirectory)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2480">setResourceDirectory</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;resourceDirectory)</pre>
 <div class="block">Sets the resource directory.</div>
 </li>
 </ul>
@@ -4501,7 +4497,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>addCustomMapping</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2505">addCustomMapping</a>(<a href="../../../io/ebean/config/dbplatform/DbType.html" title="enum in io.ebean.config.dbplatform">DbType</a>&nbsp;type,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2501">addCustomMapping</a>(<a href="../../../io/ebean/config/dbplatform/DbType.html" title="enum in io.ebean.config.dbplatform">DbType</a>&nbsp;type,
                              <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;columnDefinition,
                              io.ebean.annotation.Platform&nbsp;platform)</pre>
 <div class="block">Add a custom type mapping.
@@ -4527,7 +4523,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>addCustomMapping</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2525">addCustomMapping</a>(<a href="../../../io/ebean/config/dbplatform/DbType.html" title="enum in io.ebean.config.dbplatform">DbType</a>&nbsp;type,
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2521">addCustomMapping</a>(<a href="../../../io/ebean/config/dbplatform/DbType.html" title="enum in io.ebean.config.dbplatform">DbType</a>&nbsp;type,
                              <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;columnDefinition)</pre>
 <div class="block">Add a custom type mapping that applies to all platforms.
 <p>
@@ -4551,7 +4547,7 @@ This information can be later retrieved via <a href="../../../io/ebean/meta/Meta
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2536">add</a>(<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&nbsp;beanQueryAdapter)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2532">add</a>(<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&nbsp;beanQueryAdapter)</pre>
 <div class="block">Register a BeanQueryAdapter instance.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#setQueryAdapters-java.util.List-"><code>setQueryAdapters(List)</code></a> to set all
@@ -4565,7 +4561,7 @@ the BeanQueryAdapter instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getQueryAdapters</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2543">getQueryAdapters</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2539">getQueryAdapters</a>()</pre>
 <div class="block">Return the BeanQueryAdapter instances.</div>
 </li>
 </ul>
@@ -4575,7 +4571,7 @@ the BeanQueryAdapter instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setQueryAdapters</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2554">setQueryAdapters</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&gt;&nbsp;queryAdapters)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2550">setQueryAdapters</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanQueryAdapter.html" title="interface in io.ebean.event">BeanQueryAdapter</a>&gt;&nbsp;queryAdapters)</pre>
 <div class="block">Register all the BeanQueryAdapter instances.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#add-io.ebean.event.BeanQueryAdapter-"><code>add(BeanQueryAdapter)</code></a> to add
@@ -4589,7 +4585,7 @@ BeanQueryAdapter instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>getIdGenerators</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2561">getIdGenerators</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2557">getIdGenerators</a>()</pre>
 <div class="block">Return the custom IdGenerator instances.</div>
 </li>
 </ul>
@@ -4599,7 +4595,7 @@ BeanQueryAdapter instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>setIdGenerators</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2568">setIdGenerators</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&gt;&nbsp;idGenerators)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2564">setIdGenerators</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&gt;&nbsp;idGenerators)</pre>
 <div class="block">Set the custom IdGenerator instances.</div>
 </li>
 </ul>
@@ -4609,7 +4605,7 @@ BeanQueryAdapter instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2575">add</a>(<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&nbsp;idGenerator)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2571">add</a>(<a href="../../../io/ebean/config/IdGenerator.html" title="interface in io.ebean.config">IdGenerator</a>&nbsp;idGenerator)</pre>
 <div class="block">Register a customer IdGenerator instance.</div>
 </li>
 </ul>
@@ -4619,7 +4615,7 @@ BeanQueryAdapter instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2586">add</a>(<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&nbsp;beanPersistController)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2582">add</a>(<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&nbsp;beanPersistController)</pre>
 <div class="block">Register a BeanPersistController instance.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#setPersistControllers-java.util.List-"><code>setPersistControllers(List)</code></a> to set
@@ -4633,7 +4629,7 @@ all the BeanPersistController instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2597">add</a>(<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&nbsp;postLoad)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2593">add</a>(<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&nbsp;postLoad)</pre>
 <div class="block">Register a BeanPostLoad instance.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#setPostLoaders-java.util.List-"><code>setPostLoaders(List)</code></a> to set
@@ -4647,7 +4643,7 @@ all the BeanPostLoad instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2608">add</a>(<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&nbsp;listener)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2604">add</a>(<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&nbsp;listener)</pre>
 <div class="block">Register a BeanPostConstructListener instance.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#setPostConstructListeners-java.util.List-"><code>setPostConstructListeners(List)</code></a> to set
@@ -4661,7 +4657,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getFindControllers</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanFindController.html" title="interface in io.ebean.event">BeanFindController</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2615">getFindControllers</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanFindController.html" title="interface in io.ebean.event">BeanFindController</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2611">getFindControllers</a>()</pre>
 <div class="block">Return the list of BeanFindController instances.</div>
 </li>
 </ul>
@@ -4671,7 +4667,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setFindControllers</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2622">setFindControllers</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanFindController.html" title="interface in io.ebean.event">BeanFindController</a>&gt;&nbsp;findControllers)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2618">setFindControllers</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanFindController.html" title="interface in io.ebean.event">BeanFindController</a>&gt;&nbsp;findControllers)</pre>
 <div class="block">Set the list of BeanFindController instances.</div>
 </li>
 </ul>
@@ -4681,7 +4677,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPostLoaders</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2629">getPostLoaders</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2625">getPostLoaders</a>()</pre>
 <div class="block">Return the list of BeanPostLoader instances.</div>
 </li>
 </ul>
@@ -4691,7 +4687,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setPostLoaders</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2636">setPostLoaders</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&gt;&nbsp;postLoaders)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2632">setPostLoaders</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostLoad.html" title="interface in io.ebean.event">BeanPostLoad</a>&gt;&nbsp;postLoaders)</pre>
 <div class="block">Set the list of BeanPostLoader instances.</div>
 </li>
 </ul>
@@ -4701,7 +4697,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPostConstructListeners</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2643">getPostConstructListeners</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2639">getPostConstructListeners</a>()</pre>
 <div class="block">Return the list of BeanPostLoader instances.</div>
 </li>
 </ul>
@@ -4711,7 +4707,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setPostConstructListeners</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2650">setPostConstructListeners</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&gt;&nbsp;listeners)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2646">setPostConstructListeners</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPostConstructListener.html" title="interface in io.ebean.event">BeanPostConstructListener</a>&gt;&nbsp;listeners)</pre>
 <div class="block">Set the list of BeanPostLoader instances.</div>
 </li>
 </ul>
@@ -4721,7 +4717,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPersistControllers</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2657">getPersistControllers</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2653">getPersistControllers</a>()</pre>
 <div class="block">Return the BeanPersistController instances.</div>
 </li>
 </ul>
@@ -4731,7 +4727,7 @@ all the BeanPostConstructListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setPersistControllers</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2668">setPersistControllers</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&gt;&nbsp;persistControllers)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2664">setPersistControllers</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistController.html" title="interface in io.ebean.event">BeanPersistController</a>&gt;&nbsp;persistControllers)</pre>
 <div class="block">Register all the BeanPersistController instances.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#add-io.ebean.event.BeanPersistController-"><code>add(BeanPersistController)</code></a> to add
@@ -4745,7 +4741,7 @@ BeanPersistController instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2679">add</a>(<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&nbsp;beanPersistListener)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2675">add</a>(<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&nbsp;beanPersistListener)</pre>
 <div class="block">Register a BeanPersistListener instance.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#setPersistListeners-java.util.List-"><code>setPersistListeners(List)</code></a> to set
@@ -4759,7 +4755,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPersistListeners</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2686">getPersistListeners</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2682">getPersistListeners</a>()</pre>
 <div class="block">Return the BeanPersistListener instances.</div>
 </li>
 </ul>
@@ -4769,7 +4765,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>add</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2693">add</a>(<a href="../../../io/ebean/event/BulkTableEventListener.html" title="interface in io.ebean.event">BulkTableEventListener</a>&nbsp;bulkTableEventListener)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2689">add</a>(<a href="../../../io/ebean/event/BulkTableEventListener.html" title="interface in io.ebean.event">BulkTableEventListener</a>&nbsp;bulkTableEventListener)</pre>
 <div class="block">Add a BulkTableEventListener</div>
 </li>
 </ul>
@@ -4779,7 +4775,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getBulkTableEventListeners</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BulkTableEventListener.html" title="interface in io.ebean.event">BulkTableEventListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2700">getBulkTableEventListeners</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BulkTableEventListener.html" title="interface in io.ebean.event">BulkTableEventListener</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2696">getBulkTableEventListeners</a>()</pre>
 <div class="block">Return the list of BulkTableEventListener instances.</div>
 </li>
 </ul>
@@ -4789,7 +4785,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>addServerConfigStartup</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2707">addServerConfigStartup</a>(<a href="../../../io/ebean/event/ServerConfigStartup.html" title="interface in io.ebean.event">ServerConfigStartup</a>&nbsp;configStartupListener)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2703">addServerConfigStartup</a>(<a href="../../../io/ebean/event/ServerConfigStartup.html" title="interface in io.ebean.event">ServerConfigStartup</a>&nbsp;configStartupListener)</pre>
 <div class="block">Add a ServerConfigStartup.</div>
 </li>
 </ul>
@@ -4799,7 +4795,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>getServerConfigStartupListeners</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/ServerConfigStartup.html" title="interface in io.ebean.event">ServerConfigStartup</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2714">getServerConfigStartupListeners</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/ServerConfigStartup.html" title="interface in io.ebean.event">ServerConfigStartup</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2710">getServerConfigStartupListeners</a>()</pre>
 <div class="block">Return the list of ServerConfigStartup instances.</div>
 </li>
 </ul>
@@ -4809,7 +4805,7 @@ all the BeanPersistListener instances.
 <ul class="blockList">
 <li class="blockList">
 <h4>setPersistListeners</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2725">setPersistListeners</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&gt;&nbsp;persistListeners)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2721">setPersistListeners</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="../../../io/ebean/event/BeanPersistListener.html" title="interface in io.ebean.event">BeanPersistListener</a>&gt;&nbsp;persistListeners)</pre>
 <div class="block">Register all the BeanPersistListener instances.
 <p>
 Note alternatively you can use <a href="../../../io/ebean/config/ServerConfig.html#add-io.ebean.event.BeanPersistListener-"><code>add(BeanPersistListener)</code></a> to add
@@ -4823,7 +4819,7 @@ BeanPersistListener instances one at a time.
 <ul class="blockList">
 <li class="blockList">
 <h4>getPersistenceContextScope</h4>
-<pre>public&nbsp;<a href="../../../io/ebean/PersistenceContextScope.html" title="enum in io.ebean">PersistenceContextScope</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2738">getPersistenceContextScope</a>()</pre>
+<pre>public&nbsp;<a href="../../../io/ebean/PersistenceContextScope.html" title="enum in io.ebean">PersistenceContextScope</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2734">getPersistenceContextScope</a>()</pre>
 <div class="block">Return the default PersistenceContextScope to be used if one is not explicitly set on a query.
 <p/>
 The PersistenceContextScope can specified on each query via <a href="../../../io/ebean/package-summary.html"><code>.Query#setPersistenceContextScope(io.ebean.PersistenceContextScope)</code></a>. If it
@@ -4840,7 +4836,7 @@ is not set on the query this default scope is used.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>setPersistenceContextScope</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2754">setPersistenceContextScope</a>(<a href="../../../io/ebean/PersistenceContextScope.html" title="enum in io.ebean">PersistenceContextScope</a>&nbsp;persistenceContextScope)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2750">setPersistenceContextScope</a>(<a href="../../../io/ebean/PersistenceContextScope.html" title="enum in io.ebean">PersistenceContextScope</a>&nbsp;persistenceContextScope)</pre>
 <div class="block">Set the PersistenceContext scope to be used if one is not explicitly set on a query.
 <p/>
 This defaults to <a href="../../../io/ebean/PersistenceContextScope.html#TRANSACTION"><code>PersistenceContextScope.TRANSACTION</code></a>.
@@ -4859,7 +4855,7 @@ is not set on the query this scope is used.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getClassLoadConfig</h4>
-<pre>public&nbsp;<a href="../../../io/ebean/config/ClassLoadConfig.html" title="class in io.ebean.config">ClassLoadConfig</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2762">getClassLoadConfig</a>()</pre>
+<pre>public&nbsp;<a href="../../../io/ebean/config/ClassLoadConfig.html" title="class in io.ebean.config">ClassLoadConfig</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2758">getClassLoadConfig</a>()</pre>
 <div class="block">Return the ClassLoadConfig which is used to detect Joda, Java8 types etc and also
 create new instances of plugins given a className.</div>
 </li>
@@ -4870,7 +4866,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>setClassLoadConfig</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2770">setClassLoadConfig</a>(<a href="../../../io/ebean/config/ClassLoadConfig.html" title="class in io.ebean.config">ClassLoadConfig</a>&nbsp;classLoadConfig)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2766">setClassLoadConfig</a>(<a href="../../../io/ebean/config/ClassLoadConfig.html" title="class in io.ebean.config">ClassLoadConfig</a>&nbsp;classLoadConfig)</pre>
 <div class="block">Set the ClassLoadConfig which is used to detect Joda, Java8 types etc and also
 create new instances of plugins given a className.</div>
 </li>
@@ -4881,7 +4877,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>serviceLoad</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html?is-external=true" title="class or interface in java.util">ServiceLoader</a>&lt;T&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2777">serviceLoad</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;spiService)</pre>
+<pre>public&nbsp;&lt;T&gt;&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html?is-external=true" title="class or interface in java.util">ServiceLoader</a>&lt;T&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2773">serviceLoad</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;spiService)</pre>
 <div class="block">Return the service loader using the classLoader defined in ClassLoadConfig.</div>
 </li>
 </ul>
@@ -4891,7 +4887,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>service</h4>
-<pre>public&nbsp;&lt;T&gt;&nbsp;T&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2785">service</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;spiService)</pre>
+<pre>public&nbsp;&lt;T&gt;&nbsp;T&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2781">service</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Class.html?is-external=true" title="class or interface in java.lang">Class</a>&lt;T&gt;&nbsp;spiService)</pre>
 <div class="block">Return the first service using the service loader (or null).</div>
 </li>
 </ul>
@@ -4901,7 +4897,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>loadFromProperties</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2794">loadFromProperties</a>()</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2790">loadFromProperties</a>()</pre>
 <div class="block">Load settings from ebean.properties.</div>
 </li>
 </ul>
@@ -4911,7 +4907,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>loadFromProperties</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2802">loadFromProperties</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;properties)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2798">loadFromProperties</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;properties)</pre>
 <div class="block">Load the settings from the given properties</div>
 </li>
 </ul>
@@ -4921,7 +4917,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getProperties</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2835">getProperties</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/Properties.html?is-external=true" title="class or interface in java.util">Properties</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.2831">getProperties</a>()</pre>
 <div class="block">Return the properties that we used for configuration and were set via a call to loadFromProperties().</div>
 </li>
 </ul>
@@ -4931,7 +4927,7 @@ create new instances of plugins given a className.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>appliedPersistBatchOnCascade</h4>
-<pre>public&nbsp;io.ebean.annotation.PersistBatch&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3063">appliedPersistBatchOnCascade</a>()</pre>
+<pre>public&nbsp;io.ebean.annotation.PersistBatch&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3059">appliedPersistBatchOnCascade</a>()</pre>
 <div class="block">Return the PersistBatch mode to use for 'batchOnCascade' taking into account if the database
 platform supports getGeneratedKeys in batch mode.</div>
 </li>
@@ -4942,7 +4938,7 @@ platform supports getGeneratedKeys in batch mode.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getObjectMapper</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3078">getObjectMapper</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3074">getObjectMapper</a>()</pre>
 <div class="block">Return the Jackson ObjectMapper.
 <p>
 Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.
@@ -4955,7 +4951,7 @@ Note that this is not strongly typed as Jackson ObjectMapper is an optional depe
 <ul class="blockList">
 <li class="blockList">
 <h4>setObjectMapper</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3088">setObjectMapper</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;objectMapper)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3084">setObjectMapper</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a>&nbsp;objectMapper)</pre>
 <div class="block">Set the Jackson ObjectMapper.
 <p>
 Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.
@@ -4968,7 +4964,7 @@ Note that this is not strongly typed as Jackson ObjectMapper is an optional depe
 <ul class="blockList">
 <li class="blockList">
 <h4>isExpressionEqualsWithNullAsNoop</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3095">isExpressionEqualsWithNullAsNoop</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3091">isExpressionEqualsWithNullAsNoop</a>()</pre>
 <div class="block">Return true if eq("someProperty", null) should to generate "1=1" rather than "is null" sql expression.</div>
 </li>
 </ul>
@@ -4978,7 +4974,7 @@ Note that this is not strongly typed as Jackson ObjectMapper is an optional depe
 <ul class="blockList">
 <li class="blockList">
 <h4>setExpressionEqualsWithNullAsNoop</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3107">setExpressionEqualsWithNullAsNoop</a>(boolean&nbsp;expressionEqualsWithNullAsNoop)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3103">setExpressionEqualsWithNullAsNoop</a>(boolean&nbsp;expressionEqualsWithNullAsNoop)</pre>
 <div class="block">Set to true if you want eq("someProperty", null) to generate "1=1" rather than "is null" sql expression.
 <p>
 Setting this to true has the effect that eq(propertyName, value), ieq(propertyName, value) and
@@ -4993,7 +4989,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>isExpressionNativeIlike</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3114">isExpressionNativeIlike</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3110">isExpressionNativeIlike</a>()</pre>
 <div class="block">Return true if native ILIKE expression should be used if supported by the database platform (e.g. Postgres).</div>
 </li>
 </ul>
@@ -5003,7 +4999,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>setExpressionNativeIlike</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3121">setExpressionNativeIlike</a>(boolean&nbsp;expressionNativeIlike)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3117">setExpressionNativeIlike</a>(boolean&nbsp;expressionNativeIlike)</pre>
 <div class="block">Set to true to use native ILIKE expression if supported by the database platform (e.g. Postgres).</div>
 </li>
 </ul>
@@ -5013,7 +5009,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>isDisableL2Cache</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3128">isDisableL2Cache</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3124">isDisableL2Cache</a>()</pre>
 <div class="block">Return true if L2 cache is disabled.</div>
 </li>
 </ul>
@@ -5023,7 +5019,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>setDisableL2Cache</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3135">setDisableL2Cache</a>(boolean&nbsp;disableL2Cache)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3131">setDisableL2Cache</a>(boolean&nbsp;disableL2Cache)</pre>
 <div class="block">Set to true to disable L2 caching. Typically useful in performance testing.</div>
 </li>
 </ul>
@@ -5033,7 +5029,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>isUseJavaxValidationNotNull</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3142">isUseJavaxValidationNotNull</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3138">isUseJavaxValidationNotNull</a>()</pre>
 <div class="block">Returns if we use javax.validation.constraints.NotNull</div>
 </li>
 </ul>
@@ -5043,7 +5039,7 @@ which will add "1=1" into the SQL rather than "is null".
 <ul class="blockList">
 <li class="blockList">
 <h4>setUseJavaxValidationNotNull</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3154">setUseJavaxValidationNotNull</a>(boolean&nbsp;useJavaxValidationNotNull)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3150">setUseJavaxValidationNotNull</a>(boolean&nbsp;useJavaxValidationNotNull)</pre>
 <div class="block">Controls if Ebean should ignore <code>&x64;javax.validation.contstraints.NotNull</code>
 with respect to generating a <code>NOT NULL</code> column.
 <p>
@@ -5058,7 +5054,7 @@ we instead use Ebean's own NotNull annotation or JPA Column(nullable=false) anno
 <ul class="blockList">
 <li class="blockList">
 <h4>isNotifyL2CacheInForeground</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3161">isNotifyL2CacheInForeground</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3157">isNotifyL2CacheInForeground</a>()</pre>
 <div class="block">Return true if L2 cache notification should run in the foreground.</div>
 </li>
 </ul>
@@ -5068,7 +5064,7 @@ we instead use Ebean's own NotNull annotation or JPA Column(nullable=false) anno
 <ul class="blockList">
 <li class="blockList">
 <h4>setNotifyL2CacheInForeground</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3173">setNotifyL2CacheInForeground</a>(boolean&nbsp;notifyL2CacheInForeground)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3169">setNotifyL2CacheInForeground</a>(boolean&nbsp;notifyL2CacheInForeground)</pre>
 <div class="block">Set this to true to run L2 cache notification in the foreground.
 <p>
 In general we don't want to do that as when we use a distributed cache (like Ignite, Hazelcast etc)
@@ -5083,7 +5079,7 @@ of the executing transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>getQueryPlanTTLSeconds</h4>
-<pre>public&nbsp;int&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3180">getQueryPlanTTLSeconds</a>()</pre>
+<pre>public&nbsp;int&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3176">getQueryPlanTTLSeconds</a>()</pre>
 <div class="block">Return the query plan time to live.</div>
 </li>
 </ul>
@@ -5093,7 +5089,7 @@ of the executing transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>setQueryPlanTTLSeconds</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3187">setQueryPlanTTLSeconds</a>(int&nbsp;queryPlanTTLSeconds)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3183">setQueryPlanTTLSeconds</a>(int&nbsp;queryPlanTTLSeconds)</pre>
 <div class="block">Set the query plan time to live.</div>
 </li>
 </ul>
@@ -5103,7 +5099,7 @@ of the executing transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>runDbMigration</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3194">runDbMigration</a>(<a href="http://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource)</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3190">runDbMigration</a>(<a href="http://docs.oracle.com/javase/7/docs/api/javax/sql/DataSource.html?is-external=true" title="class or interface in javax.sql">DataSource</a>&nbsp;dataSource)</pre>
 <div class="block">Run the DB migration against the DataSource.</div>
 </li>
 </ul>
@@ -5113,7 +5109,7 @@ of the executing transaction.
 <ul class="blockList">
 <li class="blockList">
 <h4>newPlatformConfig</h4>
-<pre>public&nbsp;<a href="../../../io/ebean/config/PlatformConfig.html" title="class in io.ebean.config">PlatformConfig</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3214">newPlatformConfig</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;propertiesPath,
+<pre>public&nbsp;<a href="../../../io/ebean/config/PlatformConfig.html" title="class in io.ebean.config">PlatformConfig</a>&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3210">newPlatformConfig</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;propertiesPath,
                                         <a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;platformPrefix)</pre>
 <div class="block">Create a new PlatformConfig based of the one held but with overridden properties by reading
 properties with the given path and prefix.
@@ -5136,7 +5132,7 @@ configuration for IdType, UUID, quoted identifiers etc.
 <ul class="blockList">
 <li class="blockList">
 <h4>addMappingLocation</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3227">addMappingLocation</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;mappingLocation)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3223">addMappingLocation</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;mappingLocation)</pre>
 <div class="block">Add a mapping location to search for xml mapping via class path search.</div>
 </li>
 </ul>
@@ -5146,7 +5142,7 @@ configuration for IdType, UUID, quoted identifiers etc.
 <ul class="blockList">
 <li class="blockList">
 <h4>getMappingLocations</h4>
-<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3237">getMappingLocations</a>()</pre>
+<pre>public&nbsp;<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3233">getMappingLocations</a>()</pre>
 <div class="block">Return mapping locations to search for xml mapping via class path search.</div>
 </li>
 </ul>
@@ -5156,7 +5152,7 @@ configuration for IdType, UUID, quoted identifiers etc.
 <ul class="blockList">
 <li class="blockList">
 <h4>setMappingLocations</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3247">setMappingLocations</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;mappingLocations)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3243">setMappingLocations</a>(<a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html?is-external=true" title="class or interface in java.util">List</a>&lt;<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&gt;&nbsp;mappingLocations)</pre>
 <div class="block">Set mapping locations to search for xml mapping via class path search.
 <p>
 This is only used if classes have not been explicitly specified.
@@ -5169,7 +5165,7 @@ This is only used if classes have not been explicitly specified.
 <ul class="blockList">
 <li class="blockList">
 <h4>isIdGeneratorAutomatic</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3256">isIdGeneratorAutomatic</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3252">isIdGeneratorAutomatic</a>()</pre>
 <div class="block">When false we need explicit <code>@GeneratedValue</code> mapping to assign
 Identity or Sequence generated values. When true Id properties are automatically
 assigned Identity or Sequence without the GeneratedValue mapping.</div>
@@ -5181,7 +5177,7 @@ assigned Identity or Sequence without the GeneratedValue mapping.</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>setIdGeneratorAutomatic</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3264">setIdGeneratorAutomatic</a>(boolean&nbsp;idGeneratorAutomatic)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3260">setIdGeneratorAutomatic</a>(boolean&nbsp;idGeneratorAutomatic)</pre>
 <div class="block">Set to false such that Id properties require explicit <code>@GeneratedValue</code>
 mapping before they are assigned Identity or Sequence generation based on platform.</div>
 </li>
@@ -5192,7 +5188,7 @@ mapping before they are assigned Identity or Sequence generation based on platfo
 <ul class="blockList">
 <li class="blockList">
 <h4>isCollectQueryPlans</h4>
-<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3271">isCollectQueryPlans</a>()</pre>
+<pre>public&nbsp;boolean&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3267">isCollectQueryPlans</a>()</pre>
 <div class="block">Return true if query plan capture is enabled.</div>
 </li>
 </ul>
@@ -5202,7 +5198,7 @@ mapping before they are assigned Identity or Sequence generation based on platfo
 <ul class="blockListLast">
 <li class="blockList">
 <h4>setCollectQueryPlans</h4>
-<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3278">setCollectQueryPlans</a>(boolean&nbsp;collectQueryPlans)</pre>
+<pre>public&nbsp;void&nbsp;<a href="../../../src-html/io/ebean/config/ServerConfig.html#line.3274">setCollectQueryPlans</a>(boolean&nbsp;collectQueryPlans)</pre>
 <div class="block">Set to true to enable query plan capture.</div>
 </li>
 </ul>

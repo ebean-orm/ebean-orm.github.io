@@ -38,9 +38,9 @@
 <span class="sourceLineNo">030</span> *     Expr.or(Expr.eq("status", Order.Status.NEW),<a name="line.30"></a>
 <span class="sourceLineNo">031</span> *             Expr.gt("orderDate", lastWeek));<a name="line.31"></a>
 <span class="sourceLineNo">032</span> *<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * Query&lt;Order&gt; query = Ebean.createQuery(Order.class);<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * query.where().add(newOrLastWeek);<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * List&lt;Order&gt; list = query.findList();<a name="line.35"></a>
+<span class="sourceLineNo">033</span> * List&lt;Order&gt; list = DB.find(Order.class)<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *   .where().add(newOrLastWeek)<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *   .findList();<a name="line.35"></a>
 <span class="sourceLineNo">036</span> * ...<a name="line.36"></a>
 <span class="sourceLineNo">037</span> * }&lt;/pre&gt;<a name="line.37"></a>
 <span class="sourceLineNo">038</span> *<a name="line.38"></a>

@@ -30,8 +30,8 @@
 <span class="sourceLineNo">022</span> * example.setName("Rob%");<a name="line.22"></a>
 <span class="sourceLineNo">023</span> * example.setNotes("%something%");<a name="line.23"></a>
 <span class="sourceLineNo">024</span> *<a name="line.24"></a>
-<span class="sourceLineNo">025</span> * List&amp;lt;Customer&amp;gt; list =<a name="line.25"></a>
-<span class="sourceLineNo">026</span> *     Ebean.find(Customer.class)<a name="line.26"></a>
+<span class="sourceLineNo">025</span> * List&lt;Customer&gt; list =<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *     DB.find(Customer.class)<a name="line.26"></a>
 <span class="sourceLineNo">027</span> *         .where()<a name="line.27"></a>
 <span class="sourceLineNo">028</span> *         // pass the bean into the where() clause<a name="line.28"></a>
 <span class="sourceLineNo">029</span> *         .exampleLike(example)<a name="line.29"></a>
@@ -54,7 +54,7 @@
 <span class="sourceLineNo">046</span> *     .includeZeros();<a name="line.46"></a>
 <span class="sourceLineNo">047</span> *<a name="line.47"></a>
 <span class="sourceLineNo">048</span> * List&lt;Customer&gt; list =<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *     Ebean.find(Customer.class)<a name="line.49"></a>
+<span class="sourceLineNo">049</span> *     DB.find(Customer.class)<a name="line.49"></a>
 <span class="sourceLineNo">050</span> *         .where()<a name="line.50"></a>
 <span class="sourceLineNo">051</span> *         .add(qbe)<a name="line.51"></a>
 <span class="sourceLineNo">052</span> *         .findList();<a name="line.52"></a>

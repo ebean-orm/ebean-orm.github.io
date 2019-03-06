@@ -329,7 +329,7 @@
 <span class="sourceLineNo">321</span>   * &lt;pre&gt;{@code<a name="line.321"></a>
 <span class="sourceLineNo">322</span>   *<a name="line.322"></a>
 <span class="sourceLineNo">323</span>   *  List&lt;String&gt; names =<a name="line.323"></a>
-<span class="sourceLineNo">324</span>   *    Ebean.find(Customer.class)<a name="line.324"></a>
+<span class="sourceLineNo">324</span>   *    DB.find(Customer.class)<a name="line.324"></a>
 <span class="sourceLineNo">325</span>   *      .select("name")<a name="line.325"></a>
 <span class="sourceLineNo">326</span>   *      .orderBy().asc("name")<a name="line.326"></a>
 <span class="sourceLineNo">327</span>   *      .findSingleAttributeList();<a name="line.327"></a>
@@ -340,7 +340,7 @@
 <span class="sourceLineNo">332</span>   * &lt;pre&gt;{@code<a name="line.332"></a>
 <span class="sourceLineNo">333</span>   *<a name="line.333"></a>
 <span class="sourceLineNo">334</span>   *  List&lt;String&gt; names =<a name="line.334"></a>
-<span class="sourceLineNo">335</span>   *    Ebean.find(Customer.class)<a name="line.335"></a>
+<span class="sourceLineNo">335</span>   *    DB.find(Customer.class)<a name="line.335"></a>
 <span class="sourceLineNo">336</span>   *      .setDistinct(true)<a name="line.336"></a>
 <span class="sourceLineNo">337</span>   *      .select("name")<a name="line.337"></a>
 <span class="sourceLineNo">338</span>   *      .where().eq("status", Customer.Status.NEW)<a name="line.338"></a>
@@ -360,7 +360,7 @@
 <span class="sourceLineNo">352</span>   * &lt;pre&gt;{@code<a name="line.352"></a>
 <span class="sourceLineNo">353</span>   *<a name="line.353"></a>
 <span class="sourceLineNo">354</span>   *  String name =<a name="line.354"></a>
-<span class="sourceLineNo">355</span>   *    Ebean.find(Customer.class)<a name="line.355"></a>
+<span class="sourceLineNo">355</span>   *    DB.find(Customer.class)<a name="line.355"></a>
 <span class="sourceLineNo">356</span>   *      .select("name")<a name="line.356"></a>
 <span class="sourceLineNo">357</span>   *      .where().eq("id", 42)<a name="line.357"></a>
 <span class="sourceLineNo">358</span>   *      .findSingleAttribute();<a name="line.358"></a>
@@ -443,7 +443,7 @@
 <span class="sourceLineNo">435</span>   * &lt;/p&gt;<a name="line.435"></a>
 <span class="sourceLineNo">436</span>   * &lt;pre&gt;{@code<a name="line.436"></a>
 <span class="sourceLineNo">437</span>   *<a name="line.437"></a>
-<span class="sourceLineNo">438</span>   *  PagedList&lt;Order&gt; pagedList = Ebean.find(Order.class)<a name="line.438"></a>
+<span class="sourceLineNo">438</span>   *  PagedList&lt;Order&gt; pagedList = DB.find(Order.class)<a name="line.438"></a>
 <span class="sourceLineNo">439</span>   *       .setFirstRow(50)<a name="line.439"></a>
 <span class="sourceLineNo">440</span>   *       .setMaxRows(20)<a name="line.440"></a>
 <span class="sourceLineNo">441</span>   *       .findPagedList();<a name="line.441"></a>
@@ -510,7 +510,7 @@
 <span class="sourceLineNo">502</span>   * &lt;pre&gt;{@code<a name="line.502"></a>
 <span class="sourceLineNo">503</span>   *<a name="line.503"></a>
 <span class="sourceLineNo">504</span>   *   List&lt;Customer&gt; customers =<a name="line.504"></a>
-<span class="sourceLineNo">505</span>   *       Ebean.find(Customer.class)<a name="line.505"></a>
+<span class="sourceLineNo">505</span>   *       DB.find(Customer.class)<a name="line.505"></a>
 <span class="sourceLineNo">506</span>   *          .setDistinct(true)<a name="line.506"></a>
 <span class="sourceLineNo">507</span>   *          .select("name")     // only select the customer name<a name="line.507"></a>
 <span class="sourceLineNo">508</span>   *          .findList();<a name="line.508"></a>
@@ -583,7 +583,7 @@
 <span class="sourceLineNo">575</span>   *<a name="line.575"></a>
 <span class="sourceLineNo">576</span>   *  List&lt;CountedValue&lt;Order.Status&gt;&gt; orderStatusCount =<a name="line.576"></a>
 <span class="sourceLineNo">577</span>   *<a name="line.577"></a>
-<span class="sourceLineNo">578</span>   *     Ebean.find(Order.class)<a name="line.578"></a>
+<span class="sourceLineNo">578</span>   *     DB.find(Order.class)<a name="line.578"></a>
 <span class="sourceLineNo">579</span>   *      .select("status")<a name="line.579"></a>
 <span class="sourceLineNo">580</span>   *      .where()<a name="line.580"></a>
 <span class="sourceLineNo">581</span>   *      .gt("orderDate", LocalDate.now().minusMonths(3))<a name="line.581"></a>
@@ -766,839 +766,824 @@
 <span class="sourceLineNo">758</span><a name="line.758"></a>
 <span class="sourceLineNo">759</span>  /**<a name="line.759"></a>
 <span class="sourceLineNo">760</span>   * Add an Expression to the list.<a name="line.760"></a>
-<span class="sourceLineNo">761</span>   * &lt;p&gt;<a name="line.761"></a>
-<span class="sourceLineNo">762</span>   * This returns the list so that add() can be chained.<a name="line.762"></a>
-<span class="sourceLineNo">763</span>   * &lt;/p&gt;<a name="line.763"></a>
-<span class="sourceLineNo">764</span>   * &lt;pre&gt;{@code<a name="line.764"></a>
-<span class="sourceLineNo">765</span>   *<a name="line.765"></a>
-<span class="sourceLineNo">766</span>   * Query&lt;Customer&gt; query = Ebean.find(Customer.class);<a name="line.766"></a>
-<span class="sourceLineNo">767</span>   * query.where()<a name="line.767"></a>
-<span class="sourceLineNo">768</span>   *     .like("name","Rob%")<a name="line.768"></a>
-<span class="sourceLineNo">769</span>   *     .eq("status", Customer.ACTIVE);<a name="line.769"></a>
-<span class="sourceLineNo">770</span>   *<a name="line.770"></a>
-<span class="sourceLineNo">771</span>   * List&lt;Customer&gt; list = query.findList();<a name="line.771"></a>
-<span class="sourceLineNo">772</span>   * ...<a name="line.772"></a>
-<span class="sourceLineNo">773</span>   *<a name="line.773"></a>
-<span class="sourceLineNo">774</span>   * }&lt;/pre&gt;<a name="line.774"></a>
-<span class="sourceLineNo">775</span>   */<a name="line.775"></a>
-<span class="sourceLineNo">776</span>  ExpressionList&lt;T&gt; add(Expression expr);<a name="line.776"></a>
-<span class="sourceLineNo">777</span><a name="line.777"></a>
-<span class="sourceLineNo">778</span>  /**<a name="line.778"></a>
-<span class="sourceLineNo">779</span>   * Add a list of Expressions to this ExpressionList.s<a name="line.779"></a>
-<span class="sourceLineNo">780</span>   */<a name="line.780"></a>
-<span class="sourceLineNo">781</span>  ExpressionList&lt;T&gt; addAll(ExpressionList&lt;T&gt; exprList);<a name="line.781"></a>
-<span class="sourceLineNo">782</span><a name="line.782"></a>
-<span class="sourceLineNo">783</span>  /**<a name="line.783"></a>
-<span class="sourceLineNo">784</span>   * Equal To - property is equal to a given value.<a name="line.784"></a>
-<span class="sourceLineNo">785</span>   */<a name="line.785"></a>
-<span class="sourceLineNo">786</span>  ExpressionList&lt;T&gt; eq(String propertyName, Object value);<a name="line.786"></a>
-<span class="sourceLineNo">787</span><a name="line.787"></a>
-<span class="sourceLineNo">788</span>  /**<a name="line.788"></a>
-<span class="sourceLineNo">789</span>   * Equal To or Null - property is equal to a given value or null.<a name="line.789"></a>
-<span class="sourceLineNo">790</span>   */<a name="line.790"></a>
-<span class="sourceLineNo">791</span>  ExpressionList&lt;T&gt; eqOrNull(String propertyName, Object value);<a name="line.791"></a>
-<span class="sourceLineNo">792</span><a name="line.792"></a>
-<span class="sourceLineNo">793</span>  /**<a name="line.793"></a>
-<span class="sourceLineNo">794</span>   * Not Equal To - property not equal to the given value.<a name="line.794"></a>
-<span class="sourceLineNo">795</span>   */<a name="line.795"></a>
-<span class="sourceLineNo">796</span>  ExpressionList&lt;T&gt; ne(String propertyName, Object value);<a name="line.796"></a>
-<span class="sourceLineNo">797</span><a name="line.797"></a>
-<span class="sourceLineNo">798</span>  /**<a name="line.798"></a>
-<span class="sourceLineNo">799</span>   * Case Insensitive Equal To - property equal to the given value (typically<a name="line.799"></a>
-<span class="sourceLineNo">800</span>   * using a lower() function to make it case insensitive).<a name="line.800"></a>
-<span class="sourceLineNo">801</span>   */<a name="line.801"></a>
-<span class="sourceLineNo">802</span>  ExpressionList&lt;T&gt; ieq(String propertyName, String value);<a name="line.802"></a>
-<span class="sourceLineNo">803</span><a name="line.803"></a>
-<span class="sourceLineNo">804</span>  /**<a name="line.804"></a>
-<span class="sourceLineNo">805</span>   * Case Insensitive Not Equal To - property not equal to the given value (typically<a name="line.805"></a>
-<span class="sourceLineNo">806</span>   * using a lower() function to make it case insensitive).<a name="line.806"></a>
-<span class="sourceLineNo">807</span>   */<a name="line.807"></a>
-<span class="sourceLineNo">808</span>  ExpressionList&lt;T&gt; ine(String propertyName, String value);<a name="line.808"></a>
-<span class="sourceLineNo">809</span><a name="line.809"></a>
-<span class="sourceLineNo">810</span>  /**<a name="line.810"></a>
-<span class="sourceLineNo">811</span>   * Value in Range between 2 properties.<a name="line.811"></a>
-<span class="sourceLineNo">812</span>   *<a name="line.812"></a>
-<span class="sourceLineNo">813</span>   * &lt;pre&gt;{@code<a name="line.813"></a>
-<span class="sourceLineNo">814</span>   *<a name="line.814"></a>
-<span class="sourceLineNo">815</span>   *    .startDate.inRangeWith(endDate, now)<a name="line.815"></a>
-<span class="sourceLineNo">816</span>   *<a name="line.816"></a>
-<span class="sourceLineNo">817</span>   *    // which equates to<a name="line.817"></a>
-<span class="sourceLineNo">818</span>   *    startDate &lt;= now and (endDate &gt; now or endDate is null)<a name="line.818"></a>
-<span class="sourceLineNo">819</span>   *<a name="line.819"></a>
-<span class="sourceLineNo">820</span>   * }&lt;/pre&gt;<a name="line.820"></a>
-<span class="sourceLineNo">821</span>   *<a name="line.821"></a>
-<span class="sourceLineNo">822</span>   * &lt;p&gt;<a name="line.822"></a>
-<span class="sourceLineNo">823</span>   * This is a convenience expression combining a number of simple expressions.<a name="line.823"></a>
-<span class="sourceLineNo">824</span>   * The most common use of this could be called "effective dating" where 2 date or<a name="line.824"></a>
-<span class="sourceLineNo">825</span>   * timestamp columns represent the date range in which<a name="line.825"></a>
-<span class="sourceLineNo">826</span>   */<a name="line.826"></a>
-<span class="sourceLineNo">827</span>  ExpressionList&lt;T&gt; inRangeWith(String lowProperty, String highProperty, Object value);<a name="line.827"></a>
-<span class="sourceLineNo">828</span><a name="line.828"></a>
-<span class="sourceLineNo">829</span>  /**<a name="line.829"></a>
-<span class="sourceLineNo">830</span>   * In Range - property &gt;= value1 and property &lt; value2.<a name="line.830"></a>
-<span class="sourceLineNo">831</span>   * &lt;p&gt;<a name="line.831"></a>
-<span class="sourceLineNo">832</span>   * Unlike Between inRange is "half open" and usually more useful for use with dates or timestamps.<a name="line.832"></a>
-<span class="sourceLineNo">833</span>   * &lt;/p&gt;<a name="line.833"></a>
-<span class="sourceLineNo">834</span>   */<a name="line.834"></a>
-<span class="sourceLineNo">835</span>  ExpressionList&lt;T&gt; inRange(String propertyName, Object value1, Object value2);<a name="line.835"></a>
-<span class="sourceLineNo">836</span><a name="line.836"></a>
-<span class="sourceLineNo">837</span>    /**<a name="line.837"></a>
-<span class="sourceLineNo">838</span>     * Between - property between the two given values.<a name="line.838"></a>
-<span class="sourceLineNo">839</span>     */<a name="line.839"></a>
-<span class="sourceLineNo">840</span>  ExpressionList&lt;T&gt; between(String propertyName, Object value1, Object value2);<a name="line.840"></a>
-<span class="sourceLineNo">841</span><a name="line.841"></a>
-<span class="sourceLineNo">842</span>  /**<a name="line.842"></a>
-<span class="sourceLineNo">843</span>   * Between - value between the two properties.<a name="line.843"></a>
-<span class="sourceLineNo">844</span>   */<a name="line.844"></a>
-<span class="sourceLineNo">845</span>  ExpressionList&lt;T&gt; betweenProperties(String lowProperty, String highProperty, Object value);<a name="line.845"></a>
-<span class="sourceLineNo">846</span><a name="line.846"></a>
-<span class="sourceLineNo">847</span>  /**<a name="line.847"></a>
-<span class="sourceLineNo">848</span>   * Greater Than - property greater than the given value.<a name="line.848"></a>
-<span class="sourceLineNo">849</span>   */<a name="line.849"></a>
-<span class="sourceLineNo">850</span>  ExpressionList&lt;T&gt; gt(String propertyName, Object value);<a name="line.850"></a>
-<span class="sourceLineNo">851</span><a name="line.851"></a>
-<span class="sourceLineNo">852</span>  /**<a name="line.852"></a>
-<span class="sourceLineNo">853</span>   * Greater Than or Null - property greater than the given value or null.<a name="line.853"></a>
-<span class="sourceLineNo">854</span>   */<a name="line.854"></a>
-<span class="sourceLineNo">855</span>  ExpressionList&lt;T&gt; gtOrNull(String propertyName, Object value);<a name="line.855"></a>
-<span class="sourceLineNo">856</span><a name="line.856"></a>
-<span class="sourceLineNo">857</span>  /**<a name="line.857"></a>
-<span class="sourceLineNo">858</span>   * Greater Than or Equal to - property greater than or equal to the given<a name="line.858"></a>
-<span class="sourceLineNo">859</span>   * value.<a name="line.859"></a>
-<span class="sourceLineNo">860</span>   */<a name="line.860"></a>
-<span class="sourceLineNo">861</span>  ExpressionList&lt;T&gt; ge(String propertyName, Object value);<a name="line.861"></a>
-<span class="sourceLineNo">862</span><a name="line.862"></a>
-<span class="sourceLineNo">863</span>  /**<a name="line.863"></a>
-<span class="sourceLineNo">864</span>   * Less Than - property less than the given value.<a name="line.864"></a>
-<span class="sourceLineNo">865</span>   */<a name="line.865"></a>
-<span class="sourceLineNo">866</span>  ExpressionList&lt;T&gt; lt(String propertyName, Object value);<a name="line.866"></a>
-<span class="sourceLineNo">867</span><a name="line.867"></a>
-<span class="sourceLineNo">868</span>  /**<a name="line.868"></a>
-<span class="sourceLineNo">869</span>   * Less Than or Null - property less than the given value or null.<a name="line.869"></a>
-<span class="sourceLineNo">870</span>   */<a name="line.870"></a>
-<span class="sourceLineNo">871</span>  ExpressionList&lt;T&gt; ltOrNull(String propertyName, Object value);<a name="line.871"></a>
-<span class="sourceLineNo">872</span><a name="line.872"></a>
-<span class="sourceLineNo">873</span>  /**<a name="line.873"></a>
-<span class="sourceLineNo">874</span>   * Less Than or Equal to - property less than or equal to the given value.<a name="line.874"></a>
-<span class="sourceLineNo">875</span>   */<a name="line.875"></a>
-<span class="sourceLineNo">876</span>  ExpressionList&lt;T&gt; le(String propertyName, Object value);<a name="line.876"></a>
-<span class="sourceLineNo">877</span><a name="line.877"></a>
-<span class="sourceLineNo">878</span>  /**<a name="line.878"></a>
-<span class="sourceLineNo">879</span>   * Is Null - property is null.<a name="line.879"></a>
-<span class="sourceLineNo">880</span>   */<a name="line.880"></a>
-<span class="sourceLineNo">881</span>  ExpressionList&lt;T&gt; isNull(String propertyName);<a name="line.881"></a>
-<span class="sourceLineNo">882</span><a name="line.882"></a>
-<span class="sourceLineNo">883</span>  /**<a name="line.883"></a>
-<span class="sourceLineNo">884</span>   * Is Not Null - property is not null.<a name="line.884"></a>
-<span class="sourceLineNo">885</span>   */<a name="line.885"></a>
-<span class="sourceLineNo">886</span>  ExpressionList&lt;T&gt; isNotNull(String propertyName);<a name="line.886"></a>
-<span class="sourceLineNo">887</span><a name="line.887"></a>
-<span class="sourceLineNo">888</span>  /**<a name="line.888"></a>
-<span class="sourceLineNo">889</span>   * A "Query By Example" type of expression.<a name="line.889"></a>
-<span class="sourceLineNo">890</span>   * &lt;p&gt;<a name="line.890"></a>
-<span class="sourceLineNo">891</span>   * Pass in an example entity and for each non-null scalar properties an<a name="line.891"></a>
-<span class="sourceLineNo">892</span>   * expression is added.<a name="line.892"></a>
-<span class="sourceLineNo">893</span>   * &lt;/p&gt;<a name="line.893"></a>
-<span class="sourceLineNo">894</span>   * &lt;p&gt;<a name="line.894"></a>
-<span class="sourceLineNo">895</span>   * By Default this case sensitive, will ignore numeric zero values and will<a name="line.895"></a>
-<span class="sourceLineNo">896</span>   * use a Like for string values (you must put in your own wildcards).<a name="line.896"></a>
-<span class="sourceLineNo">897</span>   * &lt;/p&gt;<a name="line.897"></a>
-<span class="sourceLineNo">898</span>   * &lt;p&gt;<a name="line.898"></a>
-<span class="sourceLineNo">899</span>   * To get control over the options you can create an ExampleExpression and set<a name="line.899"></a>
-<span class="sourceLineNo">900</span>   * those options such as case insensitive etc.<a name="line.900"></a>
-<span class="sourceLineNo">901</span>   * &lt;/p&gt;<a name="line.901"></a>
-<span class="sourceLineNo">902</span>   * &lt;pre&gt;{@code<a name="line.902"></a>
-<span class="sourceLineNo">903</span>   *<a name="line.903"></a>
-<span class="sourceLineNo">904</span>   * // create an example bean and set the properties<a name="line.904"></a>
-<span class="sourceLineNo">905</span>   * // with the query parameters you want<a name="line.905"></a>
-<span class="sourceLineNo">906</span>   * Customer example = new Customer();<a name="line.906"></a>
-<span class="sourceLineNo">907</span>   * example.setName("Rob%");<a name="line.907"></a>
-<span class="sourceLineNo">908</span>   * example.setNotes("%something%");<a name="line.908"></a>
-<span class="sourceLineNo">909</span>   *<a name="line.909"></a>
-<span class="sourceLineNo">910</span>   * List&lt;Customer&gt; list = Ebean.find(Customer.class).where()<a name="line.910"></a>
-<span class="sourceLineNo">911</span>   *     // pass the bean into the where() clause<a name="line.911"></a>
-<span class="sourceLineNo">912</span>   *     .exampleLike(example)<a name="line.912"></a>
-<span class="sourceLineNo">913</span>   *     // you can add other expressions to the same query<a name="line.913"></a>
-<span class="sourceLineNo">914</span>   *     .gt("id", 2).findList();<a name="line.914"></a>
+<span class="sourceLineNo">761</span>   */<a name="line.761"></a>
+<span class="sourceLineNo">762</span>  ExpressionList&lt;T&gt; add(Expression expr);<a name="line.762"></a>
+<span class="sourceLineNo">763</span><a name="line.763"></a>
+<span class="sourceLineNo">764</span>  /**<a name="line.764"></a>
+<span class="sourceLineNo">765</span>   * Add a list of Expressions to this ExpressionList.s<a name="line.765"></a>
+<span class="sourceLineNo">766</span>   */<a name="line.766"></a>
+<span class="sourceLineNo">767</span>  ExpressionList&lt;T&gt; addAll(ExpressionList&lt;T&gt; exprList);<a name="line.767"></a>
+<span class="sourceLineNo">768</span><a name="line.768"></a>
+<span class="sourceLineNo">769</span>  /**<a name="line.769"></a>
+<span class="sourceLineNo">770</span>   * Equal To - property is equal to a given value.<a name="line.770"></a>
+<span class="sourceLineNo">771</span>   */<a name="line.771"></a>
+<span class="sourceLineNo">772</span>  ExpressionList&lt;T&gt; eq(String propertyName, Object value);<a name="line.772"></a>
+<span class="sourceLineNo">773</span><a name="line.773"></a>
+<span class="sourceLineNo">774</span>  /**<a name="line.774"></a>
+<span class="sourceLineNo">775</span>   * Equal To or Null - property is equal to a given value or null.<a name="line.775"></a>
+<span class="sourceLineNo">776</span>   */<a name="line.776"></a>
+<span class="sourceLineNo">777</span>  ExpressionList&lt;T&gt; eqOrNull(String propertyName, Object value);<a name="line.777"></a>
+<span class="sourceLineNo">778</span><a name="line.778"></a>
+<span class="sourceLineNo">779</span>  /**<a name="line.779"></a>
+<span class="sourceLineNo">780</span>   * Not Equal To - property not equal to the given value.<a name="line.780"></a>
+<span class="sourceLineNo">781</span>   */<a name="line.781"></a>
+<span class="sourceLineNo">782</span>  ExpressionList&lt;T&gt; ne(String propertyName, Object value);<a name="line.782"></a>
+<span class="sourceLineNo">783</span><a name="line.783"></a>
+<span class="sourceLineNo">784</span>  /**<a name="line.784"></a>
+<span class="sourceLineNo">785</span>   * Case Insensitive Equal To - property equal to the given value (typically<a name="line.785"></a>
+<span class="sourceLineNo">786</span>   * using a lower() function to make it case insensitive).<a name="line.786"></a>
+<span class="sourceLineNo">787</span>   */<a name="line.787"></a>
+<span class="sourceLineNo">788</span>  ExpressionList&lt;T&gt; ieq(String propertyName, String value);<a name="line.788"></a>
+<span class="sourceLineNo">789</span><a name="line.789"></a>
+<span class="sourceLineNo">790</span>  /**<a name="line.790"></a>
+<span class="sourceLineNo">791</span>   * Case Insensitive Not Equal To - property not equal to the given value (typically<a name="line.791"></a>
+<span class="sourceLineNo">792</span>   * using a lower() function to make it case insensitive).<a name="line.792"></a>
+<span class="sourceLineNo">793</span>   */<a name="line.793"></a>
+<span class="sourceLineNo">794</span>  ExpressionList&lt;T&gt; ine(String propertyName, String value);<a name="line.794"></a>
+<span class="sourceLineNo">795</span><a name="line.795"></a>
+<span class="sourceLineNo">796</span>  /**<a name="line.796"></a>
+<span class="sourceLineNo">797</span>   * Value in Range between 2 properties.<a name="line.797"></a>
+<span class="sourceLineNo">798</span>   *<a name="line.798"></a>
+<span class="sourceLineNo">799</span>   * &lt;pre&gt;{@code<a name="line.799"></a>
+<span class="sourceLineNo">800</span>   *<a name="line.800"></a>
+<span class="sourceLineNo">801</span>   *    .startDate.inRangeWith(endDate, now)<a name="line.801"></a>
+<span class="sourceLineNo">802</span>   *<a name="line.802"></a>
+<span class="sourceLineNo">803</span>   *    // which equates to<a name="line.803"></a>
+<span class="sourceLineNo">804</span>   *    startDate &lt;= now and (endDate &gt; now or endDate is null)<a name="line.804"></a>
+<span class="sourceLineNo">805</span>   *<a name="line.805"></a>
+<span class="sourceLineNo">806</span>   * }&lt;/pre&gt;<a name="line.806"></a>
+<span class="sourceLineNo">807</span>   *<a name="line.807"></a>
+<span class="sourceLineNo">808</span>   * &lt;p&gt;<a name="line.808"></a>
+<span class="sourceLineNo">809</span>   * This is a convenience expression combining a number of simple expressions.<a name="line.809"></a>
+<span class="sourceLineNo">810</span>   * The most common use of this could be called "effective dating" where 2 date or<a name="line.810"></a>
+<span class="sourceLineNo">811</span>   * timestamp columns represent the date range in which<a name="line.811"></a>
+<span class="sourceLineNo">812</span>   */<a name="line.812"></a>
+<span class="sourceLineNo">813</span>  ExpressionList&lt;T&gt; inRangeWith(String lowProperty, String highProperty, Object value);<a name="line.813"></a>
+<span class="sourceLineNo">814</span><a name="line.814"></a>
+<span class="sourceLineNo">815</span>  /**<a name="line.815"></a>
+<span class="sourceLineNo">816</span>   * In Range - property &gt;= value1 and property &lt; value2.<a name="line.816"></a>
+<span class="sourceLineNo">817</span>   * &lt;p&gt;<a name="line.817"></a>
+<span class="sourceLineNo">818</span>   * Unlike Between inRange is "half open" and usually more useful for use with dates or timestamps.<a name="line.818"></a>
+<span class="sourceLineNo">819</span>   * &lt;/p&gt;<a name="line.819"></a>
+<span class="sourceLineNo">820</span>   */<a name="line.820"></a>
+<span class="sourceLineNo">821</span>  ExpressionList&lt;T&gt; inRange(String propertyName, Object value1, Object value2);<a name="line.821"></a>
+<span class="sourceLineNo">822</span><a name="line.822"></a>
+<span class="sourceLineNo">823</span>    /**<a name="line.823"></a>
+<span class="sourceLineNo">824</span>     * Between - property between the two given values.<a name="line.824"></a>
+<span class="sourceLineNo">825</span>     */<a name="line.825"></a>
+<span class="sourceLineNo">826</span>  ExpressionList&lt;T&gt; between(String propertyName, Object value1, Object value2);<a name="line.826"></a>
+<span class="sourceLineNo">827</span><a name="line.827"></a>
+<span class="sourceLineNo">828</span>  /**<a name="line.828"></a>
+<span class="sourceLineNo">829</span>   * Between - value between the two properties.<a name="line.829"></a>
+<span class="sourceLineNo">830</span>   */<a name="line.830"></a>
+<span class="sourceLineNo">831</span>  ExpressionList&lt;T&gt; betweenProperties(String lowProperty, String highProperty, Object value);<a name="line.831"></a>
+<span class="sourceLineNo">832</span><a name="line.832"></a>
+<span class="sourceLineNo">833</span>  /**<a name="line.833"></a>
+<span class="sourceLineNo">834</span>   * Greater Than - property greater than the given value.<a name="line.834"></a>
+<span class="sourceLineNo">835</span>   */<a name="line.835"></a>
+<span class="sourceLineNo">836</span>  ExpressionList&lt;T&gt; gt(String propertyName, Object value);<a name="line.836"></a>
+<span class="sourceLineNo">837</span><a name="line.837"></a>
+<span class="sourceLineNo">838</span>  /**<a name="line.838"></a>
+<span class="sourceLineNo">839</span>   * Greater Than or Null - property greater than the given value or null.<a name="line.839"></a>
+<span class="sourceLineNo">840</span>   */<a name="line.840"></a>
+<span class="sourceLineNo">841</span>  ExpressionList&lt;T&gt; gtOrNull(String propertyName, Object value);<a name="line.841"></a>
+<span class="sourceLineNo">842</span><a name="line.842"></a>
+<span class="sourceLineNo">843</span>  /**<a name="line.843"></a>
+<span class="sourceLineNo">844</span>   * Greater Than or Equal to - property greater than or equal to the given<a name="line.844"></a>
+<span class="sourceLineNo">845</span>   * value.<a name="line.845"></a>
+<span class="sourceLineNo">846</span>   */<a name="line.846"></a>
+<span class="sourceLineNo">847</span>  ExpressionList&lt;T&gt; ge(String propertyName, Object value);<a name="line.847"></a>
+<span class="sourceLineNo">848</span><a name="line.848"></a>
+<span class="sourceLineNo">849</span>  /**<a name="line.849"></a>
+<span class="sourceLineNo">850</span>   * Less Than - property less than the given value.<a name="line.850"></a>
+<span class="sourceLineNo">851</span>   */<a name="line.851"></a>
+<span class="sourceLineNo">852</span>  ExpressionList&lt;T&gt; lt(String propertyName, Object value);<a name="line.852"></a>
+<span class="sourceLineNo">853</span><a name="line.853"></a>
+<span class="sourceLineNo">854</span>  /**<a name="line.854"></a>
+<span class="sourceLineNo">855</span>   * Less Than or Null - property less than the given value or null.<a name="line.855"></a>
+<span class="sourceLineNo">856</span>   */<a name="line.856"></a>
+<span class="sourceLineNo">857</span>  ExpressionList&lt;T&gt; ltOrNull(String propertyName, Object value);<a name="line.857"></a>
+<span class="sourceLineNo">858</span><a name="line.858"></a>
+<span class="sourceLineNo">859</span>  /**<a name="line.859"></a>
+<span class="sourceLineNo">860</span>   * Less Than or Equal to - property less than or equal to the given value.<a name="line.860"></a>
+<span class="sourceLineNo">861</span>   */<a name="line.861"></a>
+<span class="sourceLineNo">862</span>  ExpressionList&lt;T&gt; le(String propertyName, Object value);<a name="line.862"></a>
+<span class="sourceLineNo">863</span><a name="line.863"></a>
+<span class="sourceLineNo">864</span>  /**<a name="line.864"></a>
+<span class="sourceLineNo">865</span>   * Is Null - property is null.<a name="line.865"></a>
+<span class="sourceLineNo">866</span>   */<a name="line.866"></a>
+<span class="sourceLineNo">867</span>  ExpressionList&lt;T&gt; isNull(String propertyName);<a name="line.867"></a>
+<span class="sourceLineNo">868</span><a name="line.868"></a>
+<span class="sourceLineNo">869</span>  /**<a name="line.869"></a>
+<span class="sourceLineNo">870</span>   * Is Not Null - property is not null.<a name="line.870"></a>
+<span class="sourceLineNo">871</span>   */<a name="line.871"></a>
+<span class="sourceLineNo">872</span>  ExpressionList&lt;T&gt; isNotNull(String propertyName);<a name="line.872"></a>
+<span class="sourceLineNo">873</span><a name="line.873"></a>
+<span class="sourceLineNo">874</span>  /**<a name="line.874"></a>
+<span class="sourceLineNo">875</span>   * A "Query By Example" type of expression.<a name="line.875"></a>
+<span class="sourceLineNo">876</span>   * &lt;p&gt;<a name="line.876"></a>
+<span class="sourceLineNo">877</span>   * Pass in an example entity and for each non-null scalar properties an<a name="line.877"></a>
+<span class="sourceLineNo">878</span>   * expression is added.<a name="line.878"></a>
+<span class="sourceLineNo">879</span>   * &lt;/p&gt;<a name="line.879"></a>
+<span class="sourceLineNo">880</span>   * &lt;p&gt;<a name="line.880"></a>
+<span class="sourceLineNo">881</span>   * By Default this case sensitive, will ignore numeric zero values and will<a name="line.881"></a>
+<span class="sourceLineNo">882</span>   * use a Like for string values (you must put in your own wildcards).<a name="line.882"></a>
+<span class="sourceLineNo">883</span>   * &lt;/p&gt;<a name="line.883"></a>
+<span class="sourceLineNo">884</span>   * &lt;p&gt;<a name="line.884"></a>
+<span class="sourceLineNo">885</span>   * To get control over the options you can create an ExampleExpression and set<a name="line.885"></a>
+<span class="sourceLineNo">886</span>   * those options such as case insensitive etc.<a name="line.886"></a>
+<span class="sourceLineNo">887</span>   * &lt;/p&gt;<a name="line.887"></a>
+<span class="sourceLineNo">888</span>   * &lt;pre&gt;{@code<a name="line.888"></a>
+<span class="sourceLineNo">889</span>   *<a name="line.889"></a>
+<span class="sourceLineNo">890</span>   * // create an example bean and set the properties<a name="line.890"></a>
+<span class="sourceLineNo">891</span>   * // with the query parameters you want<a name="line.891"></a>
+<span class="sourceLineNo">892</span>   * Customer example = new Customer();<a name="line.892"></a>
+<span class="sourceLineNo">893</span>   * example.setName("Rob%");<a name="line.893"></a>
+<span class="sourceLineNo">894</span>   * example.setNotes("%something%");<a name="line.894"></a>
+<span class="sourceLineNo">895</span>   *<a name="line.895"></a>
+<span class="sourceLineNo">896</span>   * List&lt;Customer&gt; list =<a name="line.896"></a>
+<span class="sourceLineNo">897</span>   *   DB.find(Customer.class)<a name="line.897"></a>
+<span class="sourceLineNo">898</span>   *     .where().exampleLike(example)<a name="line.898"></a>
+<span class="sourceLineNo">899</span>   *     .findList();<a name="line.899"></a>
+<span class="sourceLineNo">900</span>   *<a name="line.900"></a>
+<span class="sourceLineNo">901</span>   * }&lt;/pre&gt;<a name="line.901"></a>
+<span class="sourceLineNo">902</span>   * &lt;p&gt;<a name="line.902"></a>
+<span class="sourceLineNo">903</span>   * Similarly you can create an ExampleExpression<a name="line.903"></a>
+<span class="sourceLineNo">904</span>   * &lt;/p&gt;<a name="line.904"></a>
+<span class="sourceLineNo">905</span>   * &lt;pre&gt;{@code<a name="line.905"></a>
+<span class="sourceLineNo">906</span>   *<a name="line.906"></a>
+<span class="sourceLineNo">907</span>   * Customer example = new Customer();<a name="line.907"></a>
+<span class="sourceLineNo">908</span>   * example.setName("Rob%");<a name="line.908"></a>
+<span class="sourceLineNo">909</span>   * example.setNotes("%something%");<a name="line.909"></a>
+<span class="sourceLineNo">910</span>   *<a name="line.910"></a>
+<span class="sourceLineNo">911</span>   * // create a ExampleExpression with more control<a name="line.911"></a>
+<span class="sourceLineNo">912</span>   * ExampleExpression qbe = new ExampleExpression(example, true, LikeType.EQUAL_TO).includeZeros();<a name="line.912"></a>
+<span class="sourceLineNo">913</span>   *<a name="line.913"></a>
+<span class="sourceLineNo">914</span>   * List&lt;Customer&gt; list = DB.find(Customer.class).where().add(qbe).findList();<a name="line.914"></a>
 <span class="sourceLineNo">915</span>   *<a name="line.915"></a>
 <span class="sourceLineNo">916</span>   * }&lt;/pre&gt;<a name="line.916"></a>
-<span class="sourceLineNo">917</span>   * &lt;p&gt;<a name="line.917"></a>
-<span class="sourceLineNo">918</span>   * Similarly you can create an ExampleExpression<a name="line.918"></a>
-<span class="sourceLineNo">919</span>   * &lt;/p&gt;<a name="line.919"></a>
-<span class="sourceLineNo">920</span>   * &lt;pre&gt;{@code<a name="line.920"></a>
-<span class="sourceLineNo">921</span>   *<a name="line.921"></a>
-<span class="sourceLineNo">922</span>   * Customer example = new Customer();<a name="line.922"></a>
-<span class="sourceLineNo">923</span>   * example.setName("Rob%");<a name="line.923"></a>
-<span class="sourceLineNo">924</span>   * example.setNotes("%something%");<a name="line.924"></a>
-<span class="sourceLineNo">925</span>   *<a name="line.925"></a>
-<span class="sourceLineNo">926</span>   * // create a ExampleExpression with more control<a name="line.926"></a>
-<span class="sourceLineNo">927</span>   * ExampleExpression qbe = new ExampleExpression(example, true, LikeType.EQUAL_TO).includeZeros();<a name="line.927"></a>
-<span class="sourceLineNo">928</span>   *<a name="line.928"></a>
-<span class="sourceLineNo">929</span>   * List&lt;Customer&gt; list = Ebean.find(Customer.class).where().add(qbe).findList();<a name="line.929"></a>
-<span class="sourceLineNo">930</span>   *<a name="line.930"></a>
-<span class="sourceLineNo">931</span>   * }&lt;/pre&gt;<a name="line.931"></a>
-<span class="sourceLineNo">932</span>   */<a name="line.932"></a>
-<span class="sourceLineNo">933</span>  ExpressionList&lt;T&gt; exampleLike(Object example);<a name="line.933"></a>
-<span class="sourceLineNo">934</span><a name="line.934"></a>
-<span class="sourceLineNo">935</span>  /**<a name="line.935"></a>
-<span class="sourceLineNo">936</span>   * Case insensitive version of {@link #exampleLike(Object)}<a name="line.936"></a>
-<span class="sourceLineNo">937</span>   */<a name="line.937"></a>
-<span class="sourceLineNo">938</span>  ExpressionList&lt;T&gt; iexampleLike(Object example);<a name="line.938"></a>
-<span class="sourceLineNo">939</span><a name="line.939"></a>
-<span class="sourceLineNo">940</span>  /**<a name="line.940"></a>
-<span class="sourceLineNo">941</span>   * Like - property like value where the value contains the SQL wild card<a name="line.941"></a>
-<span class="sourceLineNo">942</span>   * characters % (percentage) and _ (underscore).<a name="line.942"></a>
-<span class="sourceLineNo">943</span>   */<a name="line.943"></a>
-<span class="sourceLineNo">944</span>  ExpressionList&lt;T&gt; like(String propertyName, String value);<a name="line.944"></a>
-<span class="sourceLineNo">945</span><a name="line.945"></a>
-<span class="sourceLineNo">946</span>  /**<a name="line.946"></a>
-<span class="sourceLineNo">947</span>   * Case insensitive Like - property like value where the value contains the<a name="line.947"></a>
-<span class="sourceLineNo">948</span>   * SQL wild card characters % (percentage) and _ (underscore). Typically uses<a name="line.948"></a>
-<span class="sourceLineNo">949</span>   * a lower() function to make the expression case insensitive.<a name="line.949"></a>
-<span class="sourceLineNo">950</span>   */<a name="line.950"></a>
-<span class="sourceLineNo">951</span>  ExpressionList&lt;T&gt; ilike(String propertyName, String value);<a name="line.951"></a>
-<span class="sourceLineNo">952</span><a name="line.952"></a>
-<span class="sourceLineNo">953</span>  /**<a name="line.953"></a>
-<span class="sourceLineNo">954</span>   * Starts With - property like value%.<a name="line.954"></a>
-<span class="sourceLineNo">955</span>   */<a name="line.955"></a>
-<span class="sourceLineNo">956</span>  ExpressionList&lt;T&gt; startsWith(String propertyName, String value);<a name="line.956"></a>
-<span class="sourceLineNo">957</span><a name="line.957"></a>
-<span class="sourceLineNo">958</span>  /**<a name="line.958"></a>
-<span class="sourceLineNo">959</span>   * Case insensitive Starts With - property like value%. Typically uses a<a name="line.959"></a>
-<span class="sourceLineNo">960</span>   * lower() function to make the expression case insensitive.<a name="line.960"></a>
-<span class="sourceLineNo">961</span>   */<a name="line.961"></a>
-<span class="sourceLineNo">962</span>  ExpressionList&lt;T&gt; istartsWith(String propertyName, String value);<a name="line.962"></a>
-<span class="sourceLineNo">963</span><a name="line.963"></a>
-<span class="sourceLineNo">964</span>  /**<a name="line.964"></a>
-<span class="sourceLineNo">965</span>   * Ends With - property like %value.<a name="line.965"></a>
-<span class="sourceLineNo">966</span>   */<a name="line.966"></a>
-<span class="sourceLineNo">967</span>  ExpressionList&lt;T&gt; endsWith(String propertyName, String value);<a name="line.967"></a>
-<span class="sourceLineNo">968</span><a name="line.968"></a>
-<span class="sourceLineNo">969</span>  /**<a name="line.969"></a>
-<span class="sourceLineNo">970</span>   * Case insensitive Ends With - property like %value. Typically uses a lower()<a name="line.970"></a>
-<span class="sourceLineNo">971</span>   * function to make the expression case insensitive.<a name="line.971"></a>
-<span class="sourceLineNo">972</span>   */<a name="line.972"></a>
-<span class="sourceLineNo">973</span>  ExpressionList&lt;T&gt; iendsWith(String propertyName, String value);<a name="line.973"></a>
-<span class="sourceLineNo">974</span><a name="line.974"></a>
-<span class="sourceLineNo">975</span>  /**<a name="line.975"></a>
-<span class="sourceLineNo">976</span>   * Contains - property like %value%.<a name="line.976"></a>
-<span class="sourceLineNo">977</span>   */<a name="line.977"></a>
-<span class="sourceLineNo">978</span>  ExpressionList&lt;T&gt; contains(String propertyName, String value);<a name="line.978"></a>
-<span class="sourceLineNo">979</span><a name="line.979"></a>
-<span class="sourceLineNo">980</span>  /**<a name="line.980"></a>
-<span class="sourceLineNo">981</span>   * Case insensitive Contains - property like %value%. Typically uses a lower()<a name="line.981"></a>
-<span class="sourceLineNo">982</span>   * function to make the expression case insensitive.<a name="line.982"></a>
+<span class="sourceLineNo">917</span>   */<a name="line.917"></a>
+<span class="sourceLineNo">918</span>  ExpressionList&lt;T&gt; exampleLike(Object example);<a name="line.918"></a>
+<span class="sourceLineNo">919</span><a name="line.919"></a>
+<span class="sourceLineNo">920</span>  /**<a name="line.920"></a>
+<span class="sourceLineNo">921</span>   * Case insensitive version of {@link #exampleLike(Object)}<a name="line.921"></a>
+<span class="sourceLineNo">922</span>   */<a name="line.922"></a>
+<span class="sourceLineNo">923</span>  ExpressionList&lt;T&gt; iexampleLike(Object example);<a name="line.923"></a>
+<span class="sourceLineNo">924</span><a name="line.924"></a>
+<span class="sourceLineNo">925</span>  /**<a name="line.925"></a>
+<span class="sourceLineNo">926</span>   * Like - property like value where the value contains the SQL wild card<a name="line.926"></a>
+<span class="sourceLineNo">927</span>   * characters % (percentage) and _ (underscore).<a name="line.927"></a>
+<span class="sourceLineNo">928</span>   */<a name="line.928"></a>
+<span class="sourceLineNo">929</span>  ExpressionList&lt;T&gt; like(String propertyName, String value);<a name="line.929"></a>
+<span class="sourceLineNo">930</span><a name="line.930"></a>
+<span class="sourceLineNo">931</span>  /**<a name="line.931"></a>
+<span class="sourceLineNo">932</span>   * Case insensitive Like - property like value where the value contains the<a name="line.932"></a>
+<span class="sourceLineNo">933</span>   * SQL wild card characters % (percentage) and _ (underscore). Typically uses<a name="line.933"></a>
+<span class="sourceLineNo">934</span>   * a lower() function to make the expression case insensitive.<a name="line.934"></a>
+<span class="sourceLineNo">935</span>   */<a name="line.935"></a>
+<span class="sourceLineNo">936</span>  ExpressionList&lt;T&gt; ilike(String propertyName, String value);<a name="line.936"></a>
+<span class="sourceLineNo">937</span><a name="line.937"></a>
+<span class="sourceLineNo">938</span>  /**<a name="line.938"></a>
+<span class="sourceLineNo">939</span>   * Starts With - property like value%.<a name="line.939"></a>
+<span class="sourceLineNo">940</span>   */<a name="line.940"></a>
+<span class="sourceLineNo">941</span>  ExpressionList&lt;T&gt; startsWith(String propertyName, String value);<a name="line.941"></a>
+<span class="sourceLineNo">942</span><a name="line.942"></a>
+<span class="sourceLineNo">943</span>  /**<a name="line.943"></a>
+<span class="sourceLineNo">944</span>   * Case insensitive Starts With - property like value%. Typically uses a<a name="line.944"></a>
+<span class="sourceLineNo">945</span>   * lower() function to make the expression case insensitive.<a name="line.945"></a>
+<span class="sourceLineNo">946</span>   */<a name="line.946"></a>
+<span class="sourceLineNo">947</span>  ExpressionList&lt;T&gt; istartsWith(String propertyName, String value);<a name="line.947"></a>
+<span class="sourceLineNo">948</span><a name="line.948"></a>
+<span class="sourceLineNo">949</span>  /**<a name="line.949"></a>
+<span class="sourceLineNo">950</span>   * Ends With - property like %value.<a name="line.950"></a>
+<span class="sourceLineNo">951</span>   */<a name="line.951"></a>
+<span class="sourceLineNo">952</span>  ExpressionList&lt;T&gt; endsWith(String propertyName, String value);<a name="line.952"></a>
+<span class="sourceLineNo">953</span><a name="line.953"></a>
+<span class="sourceLineNo">954</span>  /**<a name="line.954"></a>
+<span class="sourceLineNo">955</span>   * Case insensitive Ends With - property like %value. Typically uses a lower()<a name="line.955"></a>
+<span class="sourceLineNo">956</span>   * function to make the expression case insensitive.<a name="line.956"></a>
+<span class="sourceLineNo">957</span>   */<a name="line.957"></a>
+<span class="sourceLineNo">958</span>  ExpressionList&lt;T&gt; iendsWith(String propertyName, String value);<a name="line.958"></a>
+<span class="sourceLineNo">959</span><a name="line.959"></a>
+<span class="sourceLineNo">960</span>  /**<a name="line.960"></a>
+<span class="sourceLineNo">961</span>   * Contains - property like %value%.<a name="line.961"></a>
+<span class="sourceLineNo">962</span>   */<a name="line.962"></a>
+<span class="sourceLineNo">963</span>  ExpressionList&lt;T&gt; contains(String propertyName, String value);<a name="line.963"></a>
+<span class="sourceLineNo">964</span><a name="line.964"></a>
+<span class="sourceLineNo">965</span>  /**<a name="line.965"></a>
+<span class="sourceLineNo">966</span>   * Case insensitive Contains - property like %value%. Typically uses a lower()<a name="line.966"></a>
+<span class="sourceLineNo">967</span>   * function to make the expression case insensitive.<a name="line.967"></a>
+<span class="sourceLineNo">968</span>   */<a name="line.968"></a>
+<span class="sourceLineNo">969</span>  ExpressionList&lt;T&gt; icontains(String propertyName, String value);<a name="line.969"></a>
+<span class="sourceLineNo">970</span><a name="line.970"></a>
+<span class="sourceLineNo">971</span>  /**<a name="line.971"></a>
+<span class="sourceLineNo">972</span>   * In expression using pairs of value objects.<a name="line.972"></a>
+<span class="sourceLineNo">973</span>   */<a name="line.973"></a>
+<span class="sourceLineNo">974</span>  ExpressionList&lt;T&gt; inPairs(Pairs pairs);<a name="line.974"></a>
+<span class="sourceLineNo">975</span><a name="line.975"></a>
+<span class="sourceLineNo">976</span>  /**<a name="line.976"></a>
+<span class="sourceLineNo">977</span>   * In - using a subQuery.<a name="line.977"></a>
+<span class="sourceLineNo">978</span>   */<a name="line.978"></a>
+<span class="sourceLineNo">979</span>  ExpressionList&lt;T&gt; in(String propertyName, Query&lt;?&gt; subQuery);<a name="line.979"></a>
+<span class="sourceLineNo">980</span><a name="line.980"></a>
+<span class="sourceLineNo">981</span>  /**<a name="line.981"></a>
+<span class="sourceLineNo">982</span>   * In - property has a value in the array of values.<a name="line.982"></a>
 <span class="sourceLineNo">983</span>   */<a name="line.983"></a>
-<span class="sourceLineNo">984</span>  ExpressionList&lt;T&gt; icontains(String propertyName, String value);<a name="line.984"></a>
+<span class="sourceLineNo">984</span>  ExpressionList&lt;T&gt; in(String propertyName, Object... values);<a name="line.984"></a>
 <span class="sourceLineNo">985</span><a name="line.985"></a>
 <span class="sourceLineNo">986</span>  /**<a name="line.986"></a>
-<span class="sourceLineNo">987</span>   * In expression using pairs of value objects.<a name="line.987"></a>
+<span class="sourceLineNo">987</span>   * In - property has a value in the collection of values.<a name="line.987"></a>
 <span class="sourceLineNo">988</span>   */<a name="line.988"></a>
-<span class="sourceLineNo">989</span>  ExpressionList&lt;T&gt; inPairs(Pairs pairs);<a name="line.989"></a>
+<span class="sourceLineNo">989</span>  ExpressionList&lt;T&gt; in(String propertyName, Collection&lt;?&gt; values);<a name="line.989"></a>
 <span class="sourceLineNo">990</span><a name="line.990"></a>
 <span class="sourceLineNo">991</span>  /**<a name="line.991"></a>
-<span class="sourceLineNo">992</span>   * In - using a subQuery.<a name="line.992"></a>
-<span class="sourceLineNo">993</span>   */<a name="line.993"></a>
-<span class="sourceLineNo">994</span>  ExpressionList&lt;T&gt; in(String propertyName, Query&lt;?&gt; subQuery);<a name="line.994"></a>
-<span class="sourceLineNo">995</span><a name="line.995"></a>
-<span class="sourceLineNo">996</span>  /**<a name="line.996"></a>
-<span class="sourceLineNo">997</span>   * In - property has a value in the array of values.<a name="line.997"></a>
-<span class="sourceLineNo">998</span>   */<a name="line.998"></a>
-<span class="sourceLineNo">999</span>  ExpressionList&lt;T&gt; in(String propertyName, Object... values);<a name="line.999"></a>
-<span class="sourceLineNo">1000</span><a name="line.1000"></a>
-<span class="sourceLineNo">1001</span>  /**<a name="line.1001"></a>
-<span class="sourceLineNo">1002</span>   * In - property has a value in the collection of values.<a name="line.1002"></a>
-<span class="sourceLineNo">1003</span>   */<a name="line.1003"></a>
-<span class="sourceLineNo">1004</span>  ExpressionList&lt;T&gt; in(String propertyName, Collection&lt;?&gt; values);<a name="line.1004"></a>
-<span class="sourceLineNo">1005</span><a name="line.1005"></a>
-<span class="sourceLineNo">1006</span>  /**<a name="line.1006"></a>
-<span class="sourceLineNo">1007</span>   * In where null or empty values means that no predicate is added to the query.<a name="line.1007"></a>
-<span class="sourceLineNo">1008</span>   * &lt;p&gt;<a name="line.1008"></a>
-<span class="sourceLineNo">1009</span>   * That is, only add the IN predicate if the values are not null or empty.<a name="line.1009"></a>
-<span class="sourceLineNo">1010</span>   * &lt;p&gt;<a name="line.1010"></a>
-<span class="sourceLineNo">1011</span>   * Without this we typically need to code an &lt;code&gt;if&lt;/code&gt; block to only add<a name="line.1011"></a>
-<span class="sourceLineNo">1012</span>   * the IN predicate if the collection is not empty like:<a name="line.1012"></a>
-<span class="sourceLineNo">1013</span>   * &lt;/p&gt;<a name="line.1013"></a>
-<span class="sourceLineNo">1014</span>   *<a name="line.1014"></a>
-<span class="sourceLineNo">1015</span>   * &lt;h3&gt;Without inOrEmpty()&lt;/h3&gt;<a name="line.1015"></a>
-<span class="sourceLineNo">1016</span>   * &lt;pre&gt;{@code<a name="line.1016"></a>
-<span class="sourceLineNo">1017</span>   *<a name="line.1017"></a>
-<span class="sourceLineNo">1018</span>   *   query.where() // add some predicates<a name="line.1018"></a>
-<span class="sourceLineNo">1019</span>   *     .eq("status", Status.NEW);<a name="line.1019"></a>
-<span class="sourceLineNo">1020</span>   *<a name="line.1020"></a>
-<span class="sourceLineNo">1021</span>   *   if (ids != null &amp;&amp; !ids.isEmpty()) {<a name="line.1021"></a>
-<span class="sourceLineNo">1022</span>   *     query.where().in("customer.id", ids);<a name="line.1022"></a>
-<span class="sourceLineNo">1023</span>   *   }<a name="line.1023"></a>
-<span class="sourceLineNo">1024</span>   *<a name="line.1024"></a>
-<span class="sourceLineNo">1025</span>   *   query.findList();<a name="line.1025"></a>
-<span class="sourceLineNo">1026</span>   *<a name="line.1026"></a>
-<span class="sourceLineNo">1027</span>   * }&lt;/pre&gt;<a name="line.1027"></a>
-<span class="sourceLineNo">1028</span>   *<a name="line.1028"></a>
-<span class="sourceLineNo">1029</span>   * &lt;h3&gt;Using inOrEmpty()&lt;/h3&gt;<a name="line.1029"></a>
-<span class="sourceLineNo">1030</span>   * &lt;pre&gt;{@code<a name="line.1030"></a>
-<span class="sourceLineNo">1031</span>   *<a name="line.1031"></a>
-<span class="sourceLineNo">1032</span>   *   query.where()<a name="line.1032"></a>
-<span class="sourceLineNo">1033</span>   *     .eq("status", Status.NEW)<a name="line.1033"></a>
-<span class="sourceLineNo">1034</span>   *     .inOrEmpty("customer.id", ids)<a name="line.1034"></a>
-<span class="sourceLineNo">1035</span>   *     .findList();<a name="line.1035"></a>
-<span class="sourceLineNo">1036</span>   *<a name="line.1036"></a>
-<span class="sourceLineNo">1037</span>   * }&lt;/pre&gt;<a name="line.1037"></a>
-<span class="sourceLineNo">1038</span>   */<a name="line.1038"></a>
-<span class="sourceLineNo">1039</span>  ExpressionList&lt;T&gt; inOrEmpty(String propertyName, Collection&lt;?&gt; values);<a name="line.1039"></a>
-<span class="sourceLineNo">1040</span><a name="line.1040"></a>
-<span class="sourceLineNo">1041</span>  /**<a name="line.1041"></a>
-<span class="sourceLineNo">1042</span>   * In - using a subQuery.<a name="line.1042"></a>
-<span class="sourceLineNo">1043</span>   * &lt;p&gt;<a name="line.1043"></a>
-<span class="sourceLineNo">1044</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1044"></a>
-<span class="sourceLineNo">1045</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1045"></a>
-<span class="sourceLineNo">1046</span>   */<a name="line.1046"></a>
-<span class="sourceLineNo">1047</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Query&lt;?&gt; subQuery) {<a name="line.1047"></a>
-<span class="sourceLineNo">1048</span>    return in(propertyName, subQuery);<a name="line.1048"></a>
-<span class="sourceLineNo">1049</span>  }<a name="line.1049"></a>
-<span class="sourceLineNo">1050</span><a name="line.1050"></a>
-<span class="sourceLineNo">1051</span>  /**<a name="line.1051"></a>
-<span class="sourceLineNo">1052</span>   * In - property has a value in the array of values.<a name="line.1052"></a>
-<span class="sourceLineNo">1053</span>   * &lt;p&gt;<a name="line.1053"></a>
-<span class="sourceLineNo">1054</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1054"></a>
-<span class="sourceLineNo">1055</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1055"></a>
-<span class="sourceLineNo">1056</span>   */<a name="line.1056"></a>
-<span class="sourceLineNo">1057</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Object... values) {<a name="line.1057"></a>
-<span class="sourceLineNo">1058</span>    return in(propertyName, values);<a name="line.1058"></a>
-<span class="sourceLineNo">1059</span>  }<a name="line.1059"></a>
+<span class="sourceLineNo">992</span>   * In where null or empty values means that no predicate is added to the query.<a name="line.992"></a>
+<span class="sourceLineNo">993</span>   * &lt;p&gt;<a name="line.993"></a>
+<span class="sourceLineNo">994</span>   * That is, only add the IN predicate if the values are not null or empty.<a name="line.994"></a>
+<span class="sourceLineNo">995</span>   * &lt;p&gt;<a name="line.995"></a>
+<span class="sourceLineNo">996</span>   * Without this we typically need to code an &lt;code&gt;if&lt;/code&gt; block to only add<a name="line.996"></a>
+<span class="sourceLineNo">997</span>   * the IN predicate if the collection is not empty like:<a name="line.997"></a>
+<span class="sourceLineNo">998</span>   * &lt;/p&gt;<a name="line.998"></a>
+<span class="sourceLineNo">999</span>   *<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>   * &lt;h3&gt;Without inOrEmpty()&lt;/h3&gt;<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>   * &lt;pre&gt;{@code<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>   *<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>   *   query.where() // add some predicates<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>   *     .eq("status", Status.NEW);<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>   *<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>   *   if (ids != null &amp;&amp; !ids.isEmpty()) {<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>   *     query.where().in("customer.id", ids);<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>   *   }<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>   *<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>   *   query.findList();<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>   *<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>   * }&lt;/pre&gt;<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>   *<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>   * &lt;h3&gt;Using inOrEmpty()&lt;/h3&gt;<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>   * &lt;pre&gt;{@code<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>   *<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>   *   query.where()<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>   *     .eq("status", Status.NEW)<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>   *     .inOrEmpty("customer.id", ids)<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>   *     .findList();<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>   *<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>   * }&lt;/pre&gt;<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>   */<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>  ExpressionList&lt;T&gt; inOrEmpty(String propertyName, Collection&lt;?&gt; values);<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span><a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>  /**<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>   * In - using a subQuery.<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>   * &lt;p&gt;<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>   */<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Query&lt;?&gt; subQuery) {<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>    return in(propertyName, subQuery);<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>  }<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span><a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>  /**<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>   * In - property has a value in the array of values.<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>   * &lt;p&gt;<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>   */<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Object... values) {<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>    return in(propertyName, values);<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>  }<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span><a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>  /**<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>   * In - property has a value in the collection of values.<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>   * &lt;p&gt;<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>   */<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Collection&lt;?&gt; values) {<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>    return in(propertyName, values);<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>  }<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span><a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>  /**<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>   * Not In - property has a value in the array of values.<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>   */<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Object... values);<a name="line.1059"></a>
 <span class="sourceLineNo">1060</span><a name="line.1060"></a>
 <span class="sourceLineNo">1061</span>  /**<a name="line.1061"></a>
-<span class="sourceLineNo">1062</span>   * In - property has a value in the collection of values.<a name="line.1062"></a>
-<span class="sourceLineNo">1063</span>   * &lt;p&gt;<a name="line.1063"></a>
-<span class="sourceLineNo">1064</span>   * This is exactly the same as in() and provided due to "in" being a Kotlin keyword<a name="line.1064"></a>
-<span class="sourceLineNo">1065</span>   * (and hence to avoid the slightly ugly escaping when using in() in Kotlin)<a name="line.1065"></a>
-<span class="sourceLineNo">1066</span>   */<a name="line.1066"></a>
-<span class="sourceLineNo">1067</span>  default ExpressionList&lt;T&gt; isIn(String propertyName, Collection&lt;?&gt; values) {<a name="line.1067"></a>
-<span class="sourceLineNo">1068</span>    return in(propertyName, values);<a name="line.1068"></a>
-<span class="sourceLineNo">1069</span>  }<a name="line.1069"></a>
+<span class="sourceLineNo">1062</span>   * Not In - property has a value in the collection of values.<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>   */<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Collection&lt;?&gt; values);<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span><a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>  /**<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>   * Not In - using a subQuery.<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>   */<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Query&lt;?&gt; subQuery);<a name="line.1069"></a>
 <span class="sourceLineNo">1070</span><a name="line.1070"></a>
 <span class="sourceLineNo">1071</span>  /**<a name="line.1071"></a>
-<span class="sourceLineNo">1072</span>   * Not In - property has a value in the array of values.<a name="line.1072"></a>
+<span class="sourceLineNo">1072</span>   * Is empty expression for collection properties.<a name="line.1072"></a>
 <span class="sourceLineNo">1073</span>   */<a name="line.1073"></a>
-<span class="sourceLineNo">1074</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Object... values);<a name="line.1074"></a>
+<span class="sourceLineNo">1074</span>  ExpressionList&lt;T&gt; isEmpty(String propertyName);<a name="line.1074"></a>
 <span class="sourceLineNo">1075</span><a name="line.1075"></a>
 <span class="sourceLineNo">1076</span>  /**<a name="line.1076"></a>
-<span class="sourceLineNo">1077</span>   * Not In - property has a value in the collection of values.<a name="line.1077"></a>
+<span class="sourceLineNo">1077</span>   * Is not empty expression for collection properties.<a name="line.1077"></a>
 <span class="sourceLineNo">1078</span>   */<a name="line.1078"></a>
-<span class="sourceLineNo">1079</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Collection&lt;?&gt; values);<a name="line.1079"></a>
+<span class="sourceLineNo">1079</span>  ExpressionList&lt;T&gt; isNotEmpty(String propertyName);<a name="line.1079"></a>
 <span class="sourceLineNo">1080</span><a name="line.1080"></a>
 <span class="sourceLineNo">1081</span>  /**<a name="line.1081"></a>
-<span class="sourceLineNo">1082</span>   * Not In - using a subQuery.<a name="line.1082"></a>
+<span class="sourceLineNo">1082</span>   * Exists expression<a name="line.1082"></a>
 <span class="sourceLineNo">1083</span>   */<a name="line.1083"></a>
-<span class="sourceLineNo">1084</span>  ExpressionList&lt;T&gt; notIn(String propertyName, Query&lt;?&gt; subQuery);<a name="line.1084"></a>
+<span class="sourceLineNo">1084</span>  ExpressionList&lt;T&gt; exists(Query&lt;?&gt; subQuery);<a name="line.1084"></a>
 <span class="sourceLineNo">1085</span><a name="line.1085"></a>
 <span class="sourceLineNo">1086</span>  /**<a name="line.1086"></a>
-<span class="sourceLineNo">1087</span>   * Is empty expression for collection properties.<a name="line.1087"></a>
+<span class="sourceLineNo">1087</span>   * Not exists expression<a name="line.1087"></a>
 <span class="sourceLineNo">1088</span>   */<a name="line.1088"></a>
-<span class="sourceLineNo">1089</span>  ExpressionList&lt;T&gt; isEmpty(String propertyName);<a name="line.1089"></a>
+<span class="sourceLineNo">1089</span>  ExpressionList&lt;T&gt; notExists(Query&lt;?&gt; subQuery);<a name="line.1089"></a>
 <span class="sourceLineNo">1090</span><a name="line.1090"></a>
 <span class="sourceLineNo">1091</span>  /**<a name="line.1091"></a>
-<span class="sourceLineNo">1092</span>   * Is not empty expression for collection properties.<a name="line.1092"></a>
+<span class="sourceLineNo">1092</span>   * Id IN a list of id values.<a name="line.1092"></a>
 <span class="sourceLineNo">1093</span>   */<a name="line.1093"></a>
-<span class="sourceLineNo">1094</span>  ExpressionList&lt;T&gt; isNotEmpty(String propertyName);<a name="line.1094"></a>
+<span class="sourceLineNo">1094</span>  ExpressionList&lt;T&gt; idIn(Object... idValues);<a name="line.1094"></a>
 <span class="sourceLineNo">1095</span><a name="line.1095"></a>
 <span class="sourceLineNo">1096</span>  /**<a name="line.1096"></a>
-<span class="sourceLineNo">1097</span>   * Exists expression<a name="line.1097"></a>
+<span class="sourceLineNo">1097</span>   * Id IN a collection of id values.<a name="line.1097"></a>
 <span class="sourceLineNo">1098</span>   */<a name="line.1098"></a>
-<span class="sourceLineNo">1099</span>  ExpressionList&lt;T&gt; exists(Query&lt;?&gt; subQuery);<a name="line.1099"></a>
+<span class="sourceLineNo">1099</span>  ExpressionList&lt;T&gt; idIn(Collection&lt;?&gt; idValues);<a name="line.1099"></a>
 <span class="sourceLineNo">1100</span><a name="line.1100"></a>
 <span class="sourceLineNo">1101</span>  /**<a name="line.1101"></a>
-<span class="sourceLineNo">1102</span>   * Not exists expression<a name="line.1102"></a>
+<span class="sourceLineNo">1102</span>   * Id Equal to - ID property is equal to the value.<a name="line.1102"></a>
 <span class="sourceLineNo">1103</span>   */<a name="line.1103"></a>
-<span class="sourceLineNo">1104</span>  ExpressionList&lt;T&gt; notExists(Query&lt;?&gt; subQuery);<a name="line.1104"></a>
+<span class="sourceLineNo">1104</span>  ExpressionList&lt;T&gt; idEq(Object value);<a name="line.1104"></a>
 <span class="sourceLineNo">1105</span><a name="line.1105"></a>
 <span class="sourceLineNo">1106</span>  /**<a name="line.1106"></a>
-<span class="sourceLineNo">1107</span>   * Id IN a list of id values.<a name="line.1107"></a>
-<span class="sourceLineNo">1108</span>   */<a name="line.1108"></a>
-<span class="sourceLineNo">1109</span>  ExpressionList&lt;T&gt; idIn(Object... idValues);<a name="line.1109"></a>
-<span class="sourceLineNo">1110</span><a name="line.1110"></a>
-<span class="sourceLineNo">1111</span>  /**<a name="line.1111"></a>
-<span class="sourceLineNo">1112</span>   * Id IN a collection of id values.<a name="line.1112"></a>
-<span class="sourceLineNo">1113</span>   */<a name="line.1113"></a>
-<span class="sourceLineNo">1114</span>  ExpressionList&lt;T&gt; idIn(Collection&lt;?&gt; idValues);<a name="line.1114"></a>
-<span class="sourceLineNo">1115</span><a name="line.1115"></a>
-<span class="sourceLineNo">1116</span>  /**<a name="line.1116"></a>
-<span class="sourceLineNo">1117</span>   * Id Equal to - ID property is equal to the value.<a name="line.1117"></a>
-<span class="sourceLineNo">1118</span>   */<a name="line.1118"></a>
-<span class="sourceLineNo">1119</span>  ExpressionList&lt;T&gt; idEq(Object value);<a name="line.1119"></a>
-<span class="sourceLineNo">1120</span><a name="line.1120"></a>
-<span class="sourceLineNo">1121</span>  /**<a name="line.1121"></a>
-<span class="sourceLineNo">1122</span>   * All Equal - Map containing property names and their values.<a name="line.1122"></a>
-<span class="sourceLineNo">1123</span>   * &lt;p&gt;<a name="line.1123"></a>
-<span class="sourceLineNo">1124</span>   * Expression where all the property names in the map are equal to the<a name="line.1124"></a>
-<span class="sourceLineNo">1125</span>   * corresponding value.<a name="line.1125"></a>
+<span class="sourceLineNo">1107</span>   * All Equal - Map containing property names and their values.<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>   * &lt;p&gt;<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>   * Expression where all the property names in the map are equal to the<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span>   * corresponding value.<a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>   * &lt;/p&gt;<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>   *<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>   * @param propertyMap a map keyed by property names.<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>   */<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>  ExpressionList&lt;T&gt; allEq(Map&lt;String, Object&gt; propertyMap);<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span><a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>  /**<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>   * Array property contains entries with the given values.<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>   */<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>  ExpressionList&lt;T&gt; arrayContains(String propertyName, Object... values);<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span><a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>  /**<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>   * Array does not contain the given values.<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span>   * &lt;p&gt;<a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1125"></a>
 <span class="sourceLineNo">1126</span>   * &lt;/p&gt;<a name="line.1126"></a>
-<span class="sourceLineNo">1127</span>   *<a name="line.1127"></a>
-<span class="sourceLineNo">1128</span>   * @param propertyMap a map keyed by property names.<a name="line.1128"></a>
-<span class="sourceLineNo">1129</span>   */<a name="line.1129"></a>
-<span class="sourceLineNo">1130</span>  ExpressionList&lt;T&gt; allEq(Map&lt;String, Object&gt; propertyMap);<a name="line.1130"></a>
-<span class="sourceLineNo">1131</span><a name="line.1131"></a>
-<span class="sourceLineNo">1132</span>  /**<a name="line.1132"></a>
-<span class="sourceLineNo">1133</span>   * Array property contains entries with the given values.<a name="line.1133"></a>
-<span class="sourceLineNo">1134</span>   */<a name="line.1134"></a>
-<span class="sourceLineNo">1135</span>  ExpressionList&lt;T&gt; arrayContains(String propertyName, Object... values);<a name="line.1135"></a>
-<span class="sourceLineNo">1136</span><a name="line.1136"></a>
-<span class="sourceLineNo">1137</span>  /**<a name="line.1137"></a>
-<span class="sourceLineNo">1138</span>   * Array does not contain the given values.<a name="line.1138"></a>
-<span class="sourceLineNo">1139</span>   * &lt;p&gt;<a name="line.1139"></a>
-<span class="sourceLineNo">1140</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1140"></a>
-<span class="sourceLineNo">1141</span>   * &lt;/p&gt;<a name="line.1141"></a>
-<span class="sourceLineNo">1142</span>   */<a name="line.1142"></a>
-<span class="sourceLineNo">1143</span>  ExpressionList&lt;T&gt; arrayNotContains(String propertyName, Object... values);<a name="line.1143"></a>
-<span class="sourceLineNo">1144</span><a name="line.1144"></a>
-<span class="sourceLineNo">1145</span>  /**<a name="line.1145"></a>
-<span class="sourceLineNo">1146</span>   * Array is empty - for the given array property.<a name="line.1146"></a>
-<span class="sourceLineNo">1147</span>   * &lt;p&gt;<a name="line.1147"></a>
-<span class="sourceLineNo">1148</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1148"></a>
-<span class="sourceLineNo">1149</span>   * &lt;/p&gt;<a name="line.1149"></a>
-<span class="sourceLineNo">1150</span>   */<a name="line.1150"></a>
-<span class="sourceLineNo">1151</span>  ExpressionList&lt;T&gt; arrayIsEmpty(String propertyName);<a name="line.1151"></a>
-<span class="sourceLineNo">1152</span><a name="line.1152"></a>
-<span class="sourceLineNo">1153</span>  /**<a name="line.1153"></a>
-<span class="sourceLineNo">1154</span>   * Array is not empty - for the given array property.<a name="line.1154"></a>
-<span class="sourceLineNo">1155</span>   * &lt;p&gt;<a name="line.1155"></a>
-<span class="sourceLineNo">1156</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1156"></a>
-<span class="sourceLineNo">1157</span>   * &lt;/p&gt;<a name="line.1157"></a>
-<span class="sourceLineNo">1158</span>   */<a name="line.1158"></a>
-<span class="sourceLineNo">1159</span>  ExpressionList&lt;T&gt; arrayIsNotEmpty(String propertyName);<a name="line.1159"></a>
-<span class="sourceLineNo">1160</span><a name="line.1160"></a>
-<span class="sourceLineNo">1161</span>  /**<a name="line.1161"></a>
-<span class="sourceLineNo">1162</span>   * Add expression for ANY of the given bit flags to be set.<a name="line.1162"></a>
-<span class="sourceLineNo">1163</span>   * &lt;pre&gt;{@code<a name="line.1163"></a>
+<span class="sourceLineNo">1127</span>   */<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>  ExpressionList&lt;T&gt; arrayNotContains(String propertyName, Object... values);<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span><a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>  /**<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>   * Array is empty - for the given array property.<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>   * &lt;p&gt;<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>   * &lt;/p&gt;<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>   */<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>  ExpressionList&lt;T&gt; arrayIsEmpty(String propertyName);<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span><a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>  /**<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>   * Array is not empty - for the given array property.<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>   * &lt;p&gt;<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>   * Array support is effectively limited to Postgres at this time.<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>   * &lt;/p&gt;<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span>   */<a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>  ExpressionList&lt;T&gt; arrayIsNotEmpty(String propertyName);<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span><a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>  /**<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span>   * Add expression for ANY of the given bit flags to be set.<a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>   * &lt;pre&gt;{@code<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>   *<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>   * where().bitwiseAny("flags", BwFlags.HAS_BULK + BwFlags.HAS_COLOUR)<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>   *<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span>   * }&lt;/pre&gt;<a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>   *<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>   * @param propertyName The property that holds the flags value<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>   * @param flags        The flags we are looking for<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>   */<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>  ExpressionList&lt;T&gt; bitwiseAny(String propertyName, long flags);<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span><a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>  /**<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>   * Add expression for ALL of the given bit flags to be set.<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>   * &lt;pre&gt;{@code<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>   *<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>   * where().bitwiseAll("flags", BwFlags.HAS_BULK + BwFlags.HAS_COLOUR)<a name="line.1163"></a>
 <span class="sourceLineNo">1164</span>   *<a name="line.1164"></a>
-<span class="sourceLineNo">1165</span>   * where().bitwiseAny("flags", BwFlags.HAS_BULK + BwFlags.HAS_COLOUR)<a name="line.1165"></a>
+<span class="sourceLineNo">1165</span>   * }&lt;/pre&gt;<a name="line.1165"></a>
 <span class="sourceLineNo">1166</span>   *<a name="line.1166"></a>
-<span class="sourceLineNo">1167</span>   * }&lt;/pre&gt;<a name="line.1167"></a>
-<span class="sourceLineNo">1168</span>   *<a name="line.1168"></a>
-<span class="sourceLineNo">1169</span>   * @param propertyName The property that holds the flags value<a name="line.1169"></a>
-<span class="sourceLineNo">1170</span>   * @param flags        The flags we are looking for<a name="line.1170"></a>
-<span class="sourceLineNo">1171</span>   */<a name="line.1171"></a>
-<span class="sourceLineNo">1172</span>  ExpressionList&lt;T&gt; bitwiseAny(String propertyName, long flags);<a name="line.1172"></a>
-<span class="sourceLineNo">1173</span><a name="line.1173"></a>
-<span class="sourceLineNo">1174</span>  /**<a name="line.1174"></a>
-<span class="sourceLineNo">1175</span>   * Add expression for ALL of the given bit flags to be set.<a name="line.1175"></a>
-<span class="sourceLineNo">1176</span>   * &lt;pre&gt;{@code<a name="line.1176"></a>
+<span class="sourceLineNo">1167</span>   * @param propertyName The property that holds the flags value<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>   * @param flags        The flags we are looking for<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>   */<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>  ExpressionList&lt;T&gt; bitwiseAll(String propertyName, long flags);<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span><a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>  /**<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>   * Add expression for the given bit flags to be NOT set.<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>   * &lt;pre&gt;{@code<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>   *<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>   * where().bitwiseNot("flags", BwFlags.HAS_COLOUR)<a name="line.1176"></a>
 <span class="sourceLineNo">1177</span>   *<a name="line.1177"></a>
-<span class="sourceLineNo">1178</span>   * where().bitwiseAll("flags", BwFlags.HAS_BULK + BwFlags.HAS_COLOUR)<a name="line.1178"></a>
+<span class="sourceLineNo">1178</span>   * }&lt;/pre&gt;<a name="line.1178"></a>
 <span class="sourceLineNo">1179</span>   *<a name="line.1179"></a>
-<span class="sourceLineNo">1180</span>   * }&lt;/pre&gt;<a name="line.1180"></a>
-<span class="sourceLineNo">1181</span>   *<a name="line.1181"></a>
-<span class="sourceLineNo">1182</span>   * @param propertyName The property that holds the flags value<a name="line.1182"></a>
-<span class="sourceLineNo">1183</span>   * @param flags        The flags we are looking for<a name="line.1183"></a>
-<span class="sourceLineNo">1184</span>   */<a name="line.1184"></a>
-<span class="sourceLineNo">1185</span>  ExpressionList&lt;T&gt; bitwiseAll(String propertyName, long flags);<a name="line.1185"></a>
-<span class="sourceLineNo">1186</span><a name="line.1186"></a>
-<span class="sourceLineNo">1187</span>  /**<a name="line.1187"></a>
-<span class="sourceLineNo">1188</span>   * Add expression for the given bit flags to be NOT set.<a name="line.1188"></a>
-<span class="sourceLineNo">1189</span>   * &lt;pre&gt;{@code<a name="line.1189"></a>
-<span class="sourceLineNo">1190</span>   *<a name="line.1190"></a>
-<span class="sourceLineNo">1191</span>   * where().bitwiseNot("flags", BwFlags.HAS_COLOUR)<a name="line.1191"></a>
+<span class="sourceLineNo">1180</span>   * @param propertyName The property that holds the flags value<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>   * @param flags        The flags we are looking for<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>   */<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>  ExpressionList&lt;T&gt; bitwiseNot(String propertyName, long flags);<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span><a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>  /**<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>   * Add bitwise AND expression of the given bit flags to compare with the match/mask.<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>   * &lt;p&gt;<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>   * &lt;pre&gt;{@code<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>   *<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>   * // Flags Bulk + Size = Size<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>   * // ... meaning Bulk is not set and Size is set<a name="line.1191"></a>
 <span class="sourceLineNo">1192</span>   *<a name="line.1192"></a>
-<span class="sourceLineNo">1193</span>   * }&lt;/pre&gt;<a name="line.1193"></a>
-<span class="sourceLineNo">1194</span>   *<a name="line.1194"></a>
-<span class="sourceLineNo">1195</span>   * @param propertyName The property that holds the flags value<a name="line.1195"></a>
-<span class="sourceLineNo">1196</span>   * @param flags        The flags we are looking for<a name="line.1196"></a>
-<span class="sourceLineNo">1197</span>   */<a name="line.1197"></a>
-<span class="sourceLineNo">1198</span>  ExpressionList&lt;T&gt; bitwiseNot(String propertyName, long flags);<a name="line.1198"></a>
-<span class="sourceLineNo">1199</span><a name="line.1199"></a>
-<span class="sourceLineNo">1200</span>  /**<a name="line.1200"></a>
-<span class="sourceLineNo">1201</span>   * Add bitwise AND expression of the given bit flags to compare with the match/mask.<a name="line.1201"></a>
-<span class="sourceLineNo">1202</span>   * &lt;p&gt;<a name="line.1202"></a>
-<span class="sourceLineNo">1203</span>   * &lt;pre&gt;{@code<a name="line.1203"></a>
-<span class="sourceLineNo">1204</span>   *<a name="line.1204"></a>
-<span class="sourceLineNo">1205</span>   * // Flags Bulk + Size = Size<a name="line.1205"></a>
-<span class="sourceLineNo">1206</span>   * // ... meaning Bulk is not set and Size is set<a name="line.1206"></a>
-<span class="sourceLineNo">1207</span>   *<a name="line.1207"></a>
-<span class="sourceLineNo">1208</span>   * long selectedFlags = BwFlags.HAS_BULK + BwFlags.HAS_SIZE;<a name="line.1208"></a>
-<span class="sourceLineNo">1209</span>   * long mask = BwFlags.HAS_SIZE; // Only Size flag set<a name="line.1209"></a>
-<span class="sourceLineNo">1210</span>   *<a name="line.1210"></a>
-<span class="sourceLineNo">1211</span>   * where().bitwiseAnd("flags", selectedFlags, mask)<a name="line.1211"></a>
-<span class="sourceLineNo">1212</span>   *<a name="line.1212"></a>
-<span class="sourceLineNo">1213</span>   * }&lt;/pre&gt;<a name="line.1213"></a>
-<span class="sourceLineNo">1214</span>   *<a name="line.1214"></a>
-<span class="sourceLineNo">1215</span>   * @param propertyName The property that holds the flags value<a name="line.1215"></a>
-<span class="sourceLineNo">1216</span>   * @param flags        The flags we are looking for<a name="line.1216"></a>
-<span class="sourceLineNo">1217</span>   */<a name="line.1217"></a>
-<span class="sourceLineNo">1218</span>  ExpressionList&lt;T&gt; bitwiseAnd(String propertyName, long flags, long match);<a name="line.1218"></a>
-<span class="sourceLineNo">1219</span><a name="line.1219"></a>
-<span class="sourceLineNo">1220</span>  /**<a name="line.1220"></a>
-<span class="sourceLineNo">1221</span>   * Add raw expression with a single parameter.<a name="line.1221"></a>
-<span class="sourceLineNo">1222</span>   * &lt;p&gt;<a name="line.1222"></a>
-<span class="sourceLineNo">1223</span>   * The raw expression should contain a single ? at the location of the<a name="line.1223"></a>
-<span class="sourceLineNo">1224</span>   * parameter.<a name="line.1224"></a>
-<span class="sourceLineNo">1225</span>   * &lt;/p&gt;<a name="line.1225"></a>
-<span class="sourceLineNo">1226</span>   * &lt;p&gt;<a name="line.1226"></a>
-<span class="sourceLineNo">1227</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1227"></a>
-<span class="sourceLineNo">1228</span>   * then they are not translated. logical property name names (not fully<a name="line.1228"></a>
-<span class="sourceLineNo">1229</span>   * qualified) will still be translated to their physical name.<a name="line.1229"></a>
-<span class="sourceLineNo">1230</span>   * &lt;/p&gt;<a name="line.1230"></a>
-<span class="sourceLineNo">1231</span>   * &lt;p&gt;<a name="line.1231"></a>
-<span class="sourceLineNo">1232</span>   * &lt;h4&gt;Example:&lt;/h4&gt;<a name="line.1232"></a>
-<span class="sourceLineNo">1233</span>   * &lt;pre&gt;{@code<a name="line.1233"></a>
-<span class="sourceLineNo">1234</span>   *<a name="line.1234"></a>
-<span class="sourceLineNo">1235</span>   *   // use a database function<a name="line.1235"></a>
-<span class="sourceLineNo">1236</span>   *   raw("add_days(orderDate, 10) &lt; ?", someDate)<a name="line.1236"></a>
-<span class="sourceLineNo">1237</span>   *<a name="line.1237"></a>
-<span class="sourceLineNo">1238</span>   * }&lt;/pre&gt;<a name="line.1238"></a>
-<span class="sourceLineNo">1239</span>   *<a name="line.1239"></a>
-<span class="sourceLineNo">1240</span>   * &lt;h4&gt;Subquery example:&lt;/h4&gt;<a name="line.1240"></a>
-<span class="sourceLineNo">1241</span>   * &lt;pre&gt;{@code<a name="line.1241"></a>
-<span class="sourceLineNo">1242</span>   *<a name="line.1242"></a>
-<span class="sourceLineNo">1243</span>   *   .raw("t0.customer_id in (select customer_id from customer_group where group_id = any(?::uuid[]))", groupIds)<a name="line.1243"></a>
-<span class="sourceLineNo">1244</span>   *<a name="line.1244"></a>
-<span class="sourceLineNo">1245</span>   * }&lt;/pre&gt;<a name="line.1245"></a>
-<span class="sourceLineNo">1246</span>   */<a name="line.1246"></a>
-<span class="sourceLineNo">1247</span>  ExpressionList&lt;T&gt; raw(String raw, Object value);<a name="line.1247"></a>
-<span class="sourceLineNo">1248</span><a name="line.1248"></a>
-<span class="sourceLineNo">1249</span>  /**<a name="line.1249"></a>
-<span class="sourceLineNo">1250</span>   * Add raw expression with an array of parameters.<a name="line.1250"></a>
-<span class="sourceLineNo">1251</span>   * &lt;p&gt;<a name="line.1251"></a>
-<span class="sourceLineNo">1252</span>   * The raw expression should contain the same number of ? as there are<a name="line.1252"></a>
-<span class="sourceLineNo">1253</span>   * parameters.<a name="line.1253"></a>
+<span class="sourceLineNo">1193</span>   * long selectedFlags = BwFlags.HAS_BULK + BwFlags.HAS_SIZE;<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>   * long mask = BwFlags.HAS_SIZE; // Only Size flag set<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span>   *<a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>   * where().bitwiseAnd("flags", selectedFlags, mask)<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>   *<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>   * }&lt;/pre&gt;<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>   *<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>   * @param propertyName The property that holds the flags value<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>   * @param flags        The flags we are looking for<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>   */<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>  ExpressionList&lt;T&gt; bitwiseAnd(String propertyName, long flags, long match);<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span><a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>  /**<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>   * Add raw expression with a single parameter.<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span>   * &lt;p&gt;<a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>   * The raw expression should contain a single ? at the location of the<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>   * parameter.<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>   * &lt;/p&gt;<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>   * &lt;p&gt;<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>   * then they are not translated. logical property name names (not fully<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>   * qualified) will still be translated to their physical name.<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>   * &lt;/p&gt;<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>   * &lt;p&gt;<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>   * &lt;h4&gt;Example:&lt;/h4&gt;<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>   * &lt;pre&gt;{@code<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>   *<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span>   *   // use a database function<a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>   *   raw("add_days(orderDate, 10) &lt; ?", someDate)<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>   *<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>   * }&lt;/pre&gt;<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>   *<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>   * &lt;h4&gt;Subquery example:&lt;/h4&gt;<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>   * &lt;pre&gt;{@code<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>   *<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>   *   .raw("t0.customer_id in (select customer_id from customer_group where group_id = any(?::uuid[]))", groupIds)<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>   *<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span>   * }&lt;/pre&gt;<a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>   */<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>  ExpressionList&lt;T&gt; raw(String raw, Object value);<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span><a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>  /**<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>   * Add raw expression with an array of parameters.<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span>   * &lt;p&gt;<a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>   * The raw expression should contain the same number of ? as there are<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>   * parameters.<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span>   * &lt;/p&gt;<a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>   * &lt;p&gt;<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span>   * then they are not translated. logical property name names (not fully<a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>   * qualified) will still be translated to their physical name.<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>   * &lt;/p&gt;<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>   */<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>  ExpressionList&lt;T&gt; raw(String raw, Object... values);<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span><a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>  /**<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span>   * Add raw expression with no parameters.<a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>   * &lt;p&gt;<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>   * then they are not translated. logical property name names (not fully<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>   * qualified) will still be translated to their physical name.<a name="line.1253"></a>
 <span class="sourceLineNo">1254</span>   * &lt;/p&gt;<a name="line.1254"></a>
-<span class="sourceLineNo">1255</span>   * &lt;p&gt;<a name="line.1255"></a>
-<span class="sourceLineNo">1256</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1256"></a>
-<span class="sourceLineNo">1257</span>   * then they are not translated. logical property name names (not fully<a name="line.1257"></a>
-<span class="sourceLineNo">1258</span>   * qualified) will still be translated to their physical name.<a name="line.1258"></a>
-<span class="sourceLineNo">1259</span>   * &lt;/p&gt;<a name="line.1259"></a>
-<span class="sourceLineNo">1260</span>   */<a name="line.1260"></a>
-<span class="sourceLineNo">1261</span>  ExpressionList&lt;T&gt; raw(String raw, Object... values);<a name="line.1261"></a>
-<span class="sourceLineNo">1262</span><a name="line.1262"></a>
-<span class="sourceLineNo">1263</span>  /**<a name="line.1263"></a>
-<span class="sourceLineNo">1264</span>   * Add raw expression with no parameters.<a name="line.1264"></a>
-<span class="sourceLineNo">1265</span>   * &lt;p&gt;<a name="line.1265"></a>
-<span class="sourceLineNo">1266</span>   * When properties in the clause are fully qualified as table-column names<a name="line.1266"></a>
-<span class="sourceLineNo">1267</span>   * then they are not translated. logical property name names (not fully<a name="line.1267"></a>
-<span class="sourceLineNo">1268</span>   * qualified) will still be translated to their physical name.<a name="line.1268"></a>
-<span class="sourceLineNo">1269</span>   * &lt;/p&gt;<a name="line.1269"></a>
-<span class="sourceLineNo">1270</span>   * &lt;pre&gt;{@code<a name="line.1270"></a>
-<span class="sourceLineNo">1271</span>   *<a name="line.1271"></a>
-<span class="sourceLineNo">1272</span>   *   raw("orderQty &lt; shipQty")<a name="line.1272"></a>
-<span class="sourceLineNo">1273</span>   *<a name="line.1273"></a>
-<span class="sourceLineNo">1274</span>   * }&lt;/pre&gt;<a name="line.1274"></a>
-<span class="sourceLineNo">1275</span>   *<a name="line.1275"></a>
-<span class="sourceLineNo">1276</span>   * &lt;h4&gt;Subquery example:&lt;/h4&gt;<a name="line.1276"></a>
-<span class="sourceLineNo">1277</span>   * &lt;pre&gt;{@code<a name="line.1277"></a>
-<span class="sourceLineNo">1278</span>   *<a name="line.1278"></a>
-<span class="sourceLineNo">1279</span>   *   .raw("t0.customer_id in (select customer_id from customer_group where group_id = any(?::uuid[]))", groupIds)<a name="line.1279"></a>
-<span class="sourceLineNo">1280</span>   *<a name="line.1280"></a>
-<span class="sourceLineNo">1281</span>   * }&lt;/pre&gt;<a name="line.1281"></a>
-<span class="sourceLineNo">1282</span>   */<a name="line.1282"></a>
-<span class="sourceLineNo">1283</span>  ExpressionList&lt;T&gt; raw(String raw);<a name="line.1283"></a>
-<span class="sourceLineNo">1284</span><a name="line.1284"></a>
-<span class="sourceLineNo">1285</span>  /**<a name="line.1285"></a>
-<span class="sourceLineNo">1286</span>   * Only add the raw expression if the values is not null or empty.<a name="line.1286"></a>
-<span class="sourceLineNo">1287</span>   * &lt;p&gt;<a name="line.1287"></a>
-<span class="sourceLineNo">1288</span>   * This is a pure convenience expression to make it nicer to deal with the pattern where we use<a name="line.1288"></a>
-<span class="sourceLineNo">1289</span>   * raw() expression with a subquery and only want to add the subquery predicate when the collection<a name="line.1289"></a>
-<span class="sourceLineNo">1290</span>   * of values is not empty.<a name="line.1290"></a>
-<span class="sourceLineNo">1291</span>   * &lt;/p&gt;<a name="line.1291"></a>
-<span class="sourceLineNo">1292</span>   * &lt;h3&gt;Without inOrEmpty()&lt;/h3&gt;<a name="line.1292"></a>
-<span class="sourceLineNo">1293</span>   * &lt;pre&gt;{@code<a name="line.1293"></a>
-<span class="sourceLineNo">1294</span>   *<a name="line.1294"></a>
-<span class="sourceLineNo">1295</span>   *   query.where() // add some predicates<a name="line.1295"></a>
-<span class="sourceLineNo">1296</span>   *     .eq("status", Status.NEW);<a name="line.1296"></a>
+<span class="sourceLineNo">1255</span>   * &lt;pre&gt;{@code<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>   *<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>   *   raw("orderQty &lt; shipQty")<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>   *<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>   * }&lt;/pre&gt;<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>   *<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>   * &lt;h4&gt;Subquery example:&lt;/h4&gt;<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>   * &lt;pre&gt;{@code<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span>   *<a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>   *   .raw("t0.customer_id in (select customer_id from customer_group where group_id = any(?::uuid[]))", groupIds)<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>   *<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>   * }&lt;/pre&gt;<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>   */<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>  ExpressionList&lt;T&gt; raw(String raw);<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span><a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>  /**<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>   * Only add the raw expression if the values is not null or empty.<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>   * &lt;p&gt;<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>   * This is a pure convenience expression to make it nicer to deal with the pattern where we use<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>   * raw() expression with a subquery and only want to add the subquery predicate when the collection<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>   * of values is not empty.<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>   * &lt;/p&gt;<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>   * &lt;h3&gt;Without inOrEmpty()&lt;/h3&gt;<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>   * &lt;pre&gt;{@code<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>   *<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>   *   query.where() // add some predicates<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span>   *     .eq("status", Status.NEW);<a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>   *<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>   *   // common pattern - we can use rawOrEmpty() instead<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>   *   if (orderIds != null &amp;&amp; !orderIds.isEmpty()) {<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>   *     query.where().raw("t0.customer_id in (select o.customer_id from orders o where o.id in (?1))", orderIds);<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>   *   }<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>   *<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>   *   query.findList();<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>   *<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span>   * }&lt;/pre&gt;<a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>   *<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>   * &lt;h3&gt;Using rawOrEmpty()&lt;/h3&gt;<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>   * Note that in the example below we use the &lt;code&gt;?1&lt;/code&gt; bind parameter to get  "parameter expansion"<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>   * for each element in the collection.<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>   *<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>   * &lt;pre&gt;{@code<a name="line.1296"></a>
 <span class="sourceLineNo">1297</span>   *<a name="line.1297"></a>
-<span class="sourceLineNo">1298</span>   *   // common pattern - we can use rawOrEmpty() instead<a name="line.1298"></a>
-<span class="sourceLineNo">1299</span>   *   if (orderIds != null &amp;&amp; !orderIds.isEmpty()) {<a name="line.1299"></a>
-<span class="sourceLineNo">1300</span>   *     query.where().raw("t0.customer_id in (select o.customer_id from orders o where o.id in (?1))", orderIds);<a name="line.1300"></a>
-<span class="sourceLineNo">1301</span>   *   }<a name="line.1301"></a>
-<span class="sourceLineNo">1302</span>   *<a name="line.1302"></a>
-<span class="sourceLineNo">1303</span>   *   query.findList();<a name="line.1303"></a>
-<span class="sourceLineNo">1304</span>   *<a name="line.1304"></a>
-<span class="sourceLineNo">1305</span>   * }&lt;/pre&gt;<a name="line.1305"></a>
-<span class="sourceLineNo">1306</span>   *<a name="line.1306"></a>
-<span class="sourceLineNo">1307</span>   * &lt;h3&gt;Using rawOrEmpty()&lt;/h3&gt;<a name="line.1307"></a>
-<span class="sourceLineNo">1308</span>   * Note that in the example below we use the &lt;code&gt;?1&lt;/code&gt; bind parameter to get  "parameter expansion"<a name="line.1308"></a>
-<span class="sourceLineNo">1309</span>   * for each element in the collection.<a name="line.1309"></a>
-<span class="sourceLineNo">1310</span>   *<a name="line.1310"></a>
-<span class="sourceLineNo">1311</span>   * &lt;pre&gt;{@code<a name="line.1311"></a>
-<span class="sourceLineNo">1312</span>   *<a name="line.1312"></a>
-<span class="sourceLineNo">1313</span>   *   query.where()<a name="line.1313"></a>
-<span class="sourceLineNo">1314</span>   *     .eq("status", Status.NEW)<a name="line.1314"></a>
-<span class="sourceLineNo">1315</span>   *     // only add the expression if orderIds is not empty<a name="line.1315"></a>
-<span class="sourceLineNo">1316</span>   *     .rawOrEmpty("t0.customer_id in (select o.customer_id from orders o where o.id in (?1))", orderIds);<a name="line.1316"></a>
-<span class="sourceLineNo">1317</span>   *     .findList();<a name="line.1317"></a>
-<span class="sourceLineNo">1318</span>   *<a name="line.1318"></a>
-<span class="sourceLineNo">1319</span>   * }&lt;/pre&gt;<a name="line.1319"></a>
-<span class="sourceLineNo">1320</span>   *<a name="line.1320"></a>
-<span class="sourceLineNo">1321</span>   * &lt;h3&gt;Postgres ANY&lt;/h3&gt;<a name="line.1321"></a>
-<span class="sourceLineNo">1322</span>   * With Postgres we would often use the SQL &lt;code&gt;ANY&lt;/code&gt; expression and array parameter binding<a name="line.1322"></a>
-<span class="sourceLineNo">1323</span>   * rather than &lt;code&gt;IN&lt;/code&gt;.<a name="line.1323"></a>
+<span class="sourceLineNo">1298</span>   *   query.where()<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>   *     .eq("status", Status.NEW)<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span>   *     // only add the expression if orderIds is not empty<a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>   *     .rawOrEmpty("t0.customer_id in (select o.customer_id from orders o where o.id in (?1))", orderIds);<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>   *     .findList();<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>   *<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>   * }&lt;/pre&gt;<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>   *<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>   * &lt;h3&gt;Postgres ANY&lt;/h3&gt;<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>   * With Postgres we would often use the SQL &lt;code&gt;ANY&lt;/code&gt; expression and array parameter binding<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>   * rather than &lt;code&gt;IN&lt;/code&gt;.<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span>   *<a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>   * &lt;pre&gt;{@code<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>   *<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>   *   query.where()<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>   *     .eq("status", Status.NEW)<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>   *     .rawOrEmpty("t0.customer_id in (select o.customer_id from orders o where o.id = any(?))", orderIds);<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>   *     .findList();<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>   *<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>   * }&lt;/pre&gt;<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span>   * &lt;p&gt;<a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>   *   Note that we need to cast the Postgres array for UUID types like:<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>   * &lt;/p&gt;<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>   * &lt;pre&gt;{@code<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>   *<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>   *   " ... = any(?::uuid[])"<a name="line.1323"></a>
 <span class="sourceLineNo">1324</span>   *<a name="line.1324"></a>
-<span class="sourceLineNo">1325</span>   * &lt;pre&gt;{@code<a name="line.1325"></a>
+<span class="sourceLineNo">1325</span>   * }&lt;/pre&gt;<a name="line.1325"></a>
 <span class="sourceLineNo">1326</span>   *<a name="line.1326"></a>
-<span class="sourceLineNo">1327</span>   *   query.where()<a name="line.1327"></a>
-<span class="sourceLineNo">1328</span>   *     .eq("status", Status.NEW)<a name="line.1328"></a>
-<span class="sourceLineNo">1329</span>   *     .rawOrEmpty("t0.customer_id in (select o.customer_id from orders o where o.id = any(?))", orderIds);<a name="line.1329"></a>
-<span class="sourceLineNo">1330</span>   *     .findList();<a name="line.1330"></a>
-<span class="sourceLineNo">1331</span>   *<a name="line.1331"></a>
-<span class="sourceLineNo">1332</span>   * }&lt;/pre&gt;<a name="line.1332"></a>
-<span class="sourceLineNo">1333</span>   * &lt;p&gt;<a name="line.1333"></a>
-<span class="sourceLineNo">1334</span>   *   Note that we need to cast the Postgres array for UUID types like:<a name="line.1334"></a>
-<span class="sourceLineNo">1335</span>   * &lt;/p&gt;<a name="line.1335"></a>
-<span class="sourceLineNo">1336</span>   * &lt;pre&gt;{@code<a name="line.1336"></a>
-<span class="sourceLineNo">1337</span>   *<a name="line.1337"></a>
-<span class="sourceLineNo">1338</span>   *   " ... = any(?::uuid[])"<a name="line.1338"></a>
-<span class="sourceLineNo">1339</span>   *<a name="line.1339"></a>
-<span class="sourceLineNo">1340</span>   * }&lt;/pre&gt;<a name="line.1340"></a>
-<span class="sourceLineNo">1341</span>   *<a name="line.1341"></a>
-<span class="sourceLineNo">1342</span>   * @param raw The raw expression that is typically a subquery<a name="line.1342"></a>
-<span class="sourceLineNo">1343</span>   * @param values The values which is typically a list or set of id values.<a name="line.1343"></a>
-<span class="sourceLineNo">1344</span>   */<a name="line.1344"></a>
-<span class="sourceLineNo">1345</span>  ExpressionList&lt;T&gt; rawOrEmpty(String raw, Collection&lt;?&gt; values);<a name="line.1345"></a>
-<span class="sourceLineNo">1346</span><a name="line.1346"></a>
-<span class="sourceLineNo">1347</span>  /**<a name="line.1347"></a>
-<span class="sourceLineNo">1348</span>   * Add a match expression.<a name="line.1348"></a>
-<span class="sourceLineNo">1349</span>   *<a name="line.1349"></a>
-<span class="sourceLineNo">1350</span>   * @param propertyName The property name for the match<a name="line.1350"></a>
-<span class="sourceLineNo">1351</span>   * @param search       The search value<a name="line.1351"></a>
-<span class="sourceLineNo">1352</span>   */<a name="line.1352"></a>
-<span class="sourceLineNo">1353</span>  ExpressionList&lt;T&gt; match(String propertyName, String search);<a name="line.1353"></a>
-<span class="sourceLineNo">1354</span><a name="line.1354"></a>
-<span class="sourceLineNo">1355</span>  /**<a name="line.1355"></a>
-<span class="sourceLineNo">1356</span>   * Add a match expression with options.<a name="line.1356"></a>
-<span class="sourceLineNo">1357</span>   *<a name="line.1357"></a>
-<span class="sourceLineNo">1358</span>   * @param propertyName The property name for the match<a name="line.1358"></a>
-<span class="sourceLineNo">1359</span>   * @param search       The search value<a name="line.1359"></a>
+<span class="sourceLineNo">1327</span>   * @param raw The raw expression that is typically a subquery<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span>   * @param values The values which is typically a list or set of id values.<a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>   */<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>  ExpressionList&lt;T&gt; rawOrEmpty(String raw, Collection&lt;?&gt; values);<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span><a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>  /**<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>   * Add a match expression.<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>   *<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>   * @param propertyName The property name for the match<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>   * @param search       The search value<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>   */<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span>  ExpressionList&lt;T&gt; match(String propertyName, String search);<a name="line.1338"></a>
+<span class="sourceLineNo">1339</span><a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>  /**<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>   * Add a match expression with options.<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>   *<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>   * @param propertyName The property name for the match<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>   * @param search       The search value<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>   */<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>  ExpressionList&lt;T&gt; match(String propertyName, String search, Match options);<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span><a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>  /**<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>   * Add a multi-match expression.<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>   */<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span>  ExpressionList&lt;T&gt; multiMatch(String search, String... properties);<a name="line.1351"></a>
+<span class="sourceLineNo">1352</span><a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>  /**<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>   * Add a multi-match expression using options.<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>   */<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>  ExpressionList&lt;T&gt; multiMatch(String search, MultiMatch options);<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span><a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>  /**<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>   * Add a simple query string expression.<a name="line.1359"></a>
 <span class="sourceLineNo">1360</span>   */<a name="line.1360"></a>
-<span class="sourceLineNo">1361</span>  ExpressionList&lt;T&gt; match(String propertyName, String search, Match options);<a name="line.1361"></a>
+<span class="sourceLineNo">1361</span>  ExpressionList&lt;T&gt; textSimple(String search, TextSimple options);<a name="line.1361"></a>
 <span class="sourceLineNo">1362</span><a name="line.1362"></a>
 <span class="sourceLineNo">1363</span>  /**<a name="line.1363"></a>
-<span class="sourceLineNo">1364</span>   * Add a multi-match expression.<a name="line.1364"></a>
+<span class="sourceLineNo">1364</span>   * Add a query string expression.<a name="line.1364"></a>
 <span class="sourceLineNo">1365</span>   */<a name="line.1365"></a>
-<span class="sourceLineNo">1366</span>  ExpressionList&lt;T&gt; multiMatch(String search, String... properties);<a name="line.1366"></a>
+<span class="sourceLineNo">1366</span>  ExpressionList&lt;T&gt; textQueryString(String search, TextQueryString options);<a name="line.1366"></a>
 <span class="sourceLineNo">1367</span><a name="line.1367"></a>
 <span class="sourceLineNo">1368</span>  /**<a name="line.1368"></a>
-<span class="sourceLineNo">1369</span>   * Add a multi-match expression using options.<a name="line.1369"></a>
+<span class="sourceLineNo">1369</span>   * Add common terms expression.<a name="line.1369"></a>
 <span class="sourceLineNo">1370</span>   */<a name="line.1370"></a>
-<span class="sourceLineNo">1371</span>  ExpressionList&lt;T&gt; multiMatch(String search, MultiMatch options);<a name="line.1371"></a>
+<span class="sourceLineNo">1371</span>  ExpressionList&lt;T&gt; textCommonTerms(String search, TextCommonTerms options);<a name="line.1371"></a>
 <span class="sourceLineNo">1372</span><a name="line.1372"></a>
 <span class="sourceLineNo">1373</span>  /**<a name="line.1373"></a>
-<span class="sourceLineNo">1374</span>   * Add a simple query string expression.<a name="line.1374"></a>
+<span class="sourceLineNo">1374</span>   * And - join two expressions with a logical and.<a name="line.1374"></a>
 <span class="sourceLineNo">1375</span>   */<a name="line.1375"></a>
-<span class="sourceLineNo">1376</span>  ExpressionList&lt;T&gt; textSimple(String search, TextSimple options);<a name="line.1376"></a>
+<span class="sourceLineNo">1376</span>  ExpressionList&lt;T&gt; and(Expression expOne, Expression expTwo);<a name="line.1376"></a>
 <span class="sourceLineNo">1377</span><a name="line.1377"></a>
 <span class="sourceLineNo">1378</span>  /**<a name="line.1378"></a>
-<span class="sourceLineNo">1379</span>   * Add a query string expression.<a name="line.1379"></a>
+<span class="sourceLineNo">1379</span>   * Or - join two expressions with a logical or.<a name="line.1379"></a>
 <span class="sourceLineNo">1380</span>   */<a name="line.1380"></a>
-<span class="sourceLineNo">1381</span>  ExpressionList&lt;T&gt; textQueryString(String search, TextQueryString options);<a name="line.1381"></a>
+<span class="sourceLineNo">1381</span>  ExpressionList&lt;T&gt; or(Expression expOne, Expression expTwo);<a name="line.1381"></a>
 <span class="sourceLineNo">1382</span><a name="line.1382"></a>
 <span class="sourceLineNo">1383</span>  /**<a name="line.1383"></a>
-<span class="sourceLineNo">1384</span>   * Add common terms expression.<a name="line.1384"></a>
+<span class="sourceLineNo">1384</span>   * Negate the expression (prefix it with NOT).<a name="line.1384"></a>
 <span class="sourceLineNo">1385</span>   */<a name="line.1385"></a>
-<span class="sourceLineNo">1386</span>  ExpressionList&lt;T&gt; textCommonTerms(String search, TextCommonTerms options);<a name="line.1386"></a>
+<span class="sourceLineNo">1386</span>  ExpressionList&lt;T&gt; not(Expression exp);<a name="line.1386"></a>
 <span class="sourceLineNo">1387</span><a name="line.1387"></a>
 <span class="sourceLineNo">1388</span>  /**<a name="line.1388"></a>
-<span class="sourceLineNo">1389</span>   * And - join two expressions with a logical and.<a name="line.1389"></a>
-<span class="sourceLineNo">1390</span>   */<a name="line.1390"></a>
-<span class="sourceLineNo">1391</span>  ExpressionList&lt;T&gt; and(Expression expOne, Expression expTwo);<a name="line.1391"></a>
-<span class="sourceLineNo">1392</span><a name="line.1392"></a>
-<span class="sourceLineNo">1393</span>  /**<a name="line.1393"></a>
-<span class="sourceLineNo">1394</span>   * Or - join two expressions with a logical or.<a name="line.1394"></a>
-<span class="sourceLineNo">1395</span>   */<a name="line.1395"></a>
-<span class="sourceLineNo">1396</span>  ExpressionList&lt;T&gt; or(Expression expOne, Expression expTwo);<a name="line.1396"></a>
-<span class="sourceLineNo">1397</span><a name="line.1397"></a>
-<span class="sourceLineNo">1398</span>  /**<a name="line.1398"></a>
-<span class="sourceLineNo">1399</span>   * Negate the expression (prefix it with NOT).<a name="line.1399"></a>
-<span class="sourceLineNo">1400</span>   */<a name="line.1400"></a>
-<span class="sourceLineNo">1401</span>  ExpressionList&lt;T&gt; not(Expression exp);<a name="line.1401"></a>
-<span class="sourceLineNo">1402</span><a name="line.1402"></a>
-<span class="sourceLineNo">1403</span>  /**<a name="line.1403"></a>
-<span class="sourceLineNo">1404</span>   * Start a list of expressions that will be joined by AND's<a name="line.1404"></a>
-<span class="sourceLineNo">1405</span>   * returning the expression list the expressions are added to.<a name="line.1405"></a>
-<span class="sourceLineNo">1406</span>   * &lt;p&gt;<a name="line.1406"></a>
-<span class="sourceLineNo">1407</span>   * This is exactly the same as conjunction();<a name="line.1407"></a>
-<span class="sourceLineNo">1408</span>   * &lt;/p&gt;<a name="line.1408"></a>
-<span class="sourceLineNo">1409</span>   * &lt;p&gt;<a name="line.1409"></a>
-<span class="sourceLineNo">1410</span>   * Use endAnd() or endJunction() to end the AND junction.<a name="line.1410"></a>
-<span class="sourceLineNo">1411</span>   * &lt;/p&gt;<a name="line.1411"></a>
-<span class="sourceLineNo">1412</span>   * &lt;p&gt;<a name="line.1412"></a>
-<span class="sourceLineNo">1413</span>   * Note that a where() clause defaults to an AND junction so<a name="line.1413"></a>
-<span class="sourceLineNo">1414</span>   * typically you only explicitly need to use the and() junction<a name="line.1414"></a>
-<span class="sourceLineNo">1415</span>   * when it is nested inside an or() or not() junction.<a name="line.1415"></a>
-<span class="sourceLineNo">1416</span>   * &lt;/p&gt;<a name="line.1416"></a>
-<span class="sourceLineNo">1417</span>   * &lt;pre&gt;{@code<a name="line.1417"></a>
-<span class="sourceLineNo">1418</span>   *<a name="line.1418"></a>
-<span class="sourceLineNo">1419</span>   *  // Example: Nested and()<a name="line.1419"></a>
-<span class="sourceLineNo">1420</span>   *<a name="line.1420"></a>
-<span class="sourceLineNo">1421</span>   *    .where()<a name="line.1421"></a>
-<span class="sourceLineNo">1422</span>   *    .or()<a name="line.1422"></a>
-<span class="sourceLineNo">1423</span>   *      .and() // nested and<a name="line.1423"></a>
-<span class="sourceLineNo">1424</span>   *        .startsWith("name", "r")<a name="line.1424"></a>
-<span class="sourceLineNo">1425</span>   *        .eq("anniversary", onAfter)<a name="line.1425"></a>
-<span class="sourceLineNo">1426</span>   *        .endAnd()<a name="line.1426"></a>
-<span class="sourceLineNo">1427</span>   *      .and()<a name="line.1427"></a>
-<span class="sourceLineNo">1428</span>   *        .eq("status", Customer.Status.ACTIVE)<a name="line.1428"></a>
-<span class="sourceLineNo">1429</span>   *        .gt("id", 0)<a name="line.1429"></a>
-<span class="sourceLineNo">1430</span>   *        .endAnd()<a name="line.1430"></a>
-<span class="sourceLineNo">1431</span>   *      .orderBy().asc("name")<a name="line.1431"></a>
-<span class="sourceLineNo">1432</span>   *      .findList();<a name="line.1432"></a>
-<span class="sourceLineNo">1433</span>   * }&lt;/pre&gt;<a name="line.1433"></a>
-<span class="sourceLineNo">1434</span>   */<a name="line.1434"></a>
-<span class="sourceLineNo">1435</span>  Junction&lt;T&gt; and();<a name="line.1435"></a>
-<span class="sourceLineNo">1436</span><a name="line.1436"></a>
-<span class="sourceLineNo">1437</span>  /**<a name="line.1437"></a>
-<span class="sourceLineNo">1438</span>   * Return a list of expressions that will be joined by OR's.<a name="line.1438"></a>
-<span class="sourceLineNo">1439</span>   * This is exactly the same as disjunction();<a name="line.1439"></a>
-<span class="sourceLineNo">1440</span>   * &lt;p&gt;<a name="line.1440"></a>
-<span class="sourceLineNo">1441</span>   * Use endOr() or endJunction() to end the OR junction.<a name="line.1441"></a>
-<span class="sourceLineNo">1442</span>   * &lt;/p&gt;<a name="line.1442"></a>
+<span class="sourceLineNo">1389</span>   * Start a list of expressions that will be joined by AND's<a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>   * returning the expression list the expressions are added to.<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>   * &lt;p&gt;<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>   * This is exactly the same as conjunction();<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>   * &lt;/p&gt;<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>   * &lt;p&gt;<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>   * Use endAnd() or endJunction() to end the AND junction.<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>   * &lt;/p&gt;<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>   * &lt;p&gt;<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>   * Note that a where() clause defaults to an AND junction so<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>   * typically you only explicitly need to use the and() junction<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>   * when it is nested inside an or() or not() junction.<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>   * &lt;/p&gt;<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>   * &lt;pre&gt;{@code<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>   *<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>   *  // Example: Nested and()<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>   *<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>   *    .where()<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span>   *    .or()<a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>   *      .and() // nested and<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>   *        .startsWith("name", "r")<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>   *        .eq("anniversary", onAfter)<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>   *        .endAnd()<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>   *      .and()<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>   *        .eq("status", Customer.Status.ACTIVE)<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>   *        .gt("id", 0)<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>   *        .endAnd()<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>   *      .orderBy().asc("name")<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>   *      .findList();<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>   * }&lt;/pre&gt;<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span>   */<a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>  Junction&lt;T&gt; and();<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span><a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>  /**<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>   * Return a list of expressions that will be joined by OR's.<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>   * This is exactly the same as disjunction();<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>   * &lt;p&gt;<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>   * Use endOr() or endJunction() to end the OR junction.<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>   * &lt;/p&gt;<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>   *<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>   * &lt;pre&gt;{@code<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>   *<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span>   *  // Example: (status active OR anniversary is null)<a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>   *<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>   *    .where()<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>   *    .or()<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>   *      .eq("status", Customer.Status.ACTIVE)<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>   *      .isNull("anniversary")<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>   *    .orderBy().asc("name")<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>   *    .findList();<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>   *<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>   * }&lt;/pre&gt;<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>   *<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>   * &lt;pre&gt;{@code<a name="line.1442"></a>
 <span class="sourceLineNo">1443</span>   *<a name="line.1443"></a>
-<span class="sourceLineNo">1444</span>   * &lt;pre&gt;{@code<a name="line.1444"></a>
-<span class="sourceLineNo">1445</span>   *<a name="line.1445"></a>
-<span class="sourceLineNo">1446</span>   *  // Example: (status active OR anniversary is null)<a name="line.1446"></a>
-<span class="sourceLineNo">1447</span>   *<a name="line.1447"></a>
-<span class="sourceLineNo">1448</span>   *    .where()<a name="line.1448"></a>
-<span class="sourceLineNo">1449</span>   *    .or()<a name="line.1449"></a>
-<span class="sourceLineNo">1450</span>   *      .eq("status", Customer.Status.ACTIVE)<a name="line.1450"></a>
-<span class="sourceLineNo">1451</span>   *      .isNull("anniversary")<a name="line.1451"></a>
-<span class="sourceLineNo">1452</span>   *    .orderBy().asc("name")<a name="line.1452"></a>
-<span class="sourceLineNo">1453</span>   *    .findList();<a name="line.1453"></a>
-<span class="sourceLineNo">1454</span>   *<a name="line.1454"></a>
-<span class="sourceLineNo">1455</span>   * }&lt;/pre&gt;<a name="line.1455"></a>
-<span class="sourceLineNo">1456</span>   *<a name="line.1456"></a>
-<span class="sourceLineNo">1457</span>   * &lt;pre&gt;{@code<a name="line.1457"></a>
-<span class="sourceLineNo">1458</span>   *<a name="line.1458"></a>
-<span class="sourceLineNo">1459</span>   *  // Example: Use or() to join<a name="line.1459"></a>
-<span class="sourceLineNo">1460</span>   *  // two nested and() expressions<a name="line.1460"></a>
-<span class="sourceLineNo">1461</span>   *<a name="line.1461"></a>
-<span class="sourceLineNo">1462</span>   *    .where()<a name="line.1462"></a>
-<span class="sourceLineNo">1463</span>   *    .or()<a name="line.1463"></a>
-<span class="sourceLineNo">1464</span>   *      .and()<a name="line.1464"></a>
-<span class="sourceLineNo">1465</span>   *        .startsWith("name", "r")<a name="line.1465"></a>
-<span class="sourceLineNo">1466</span>   *        .eq("anniversary", onAfter)<a name="line.1466"></a>
-<span class="sourceLineNo">1467</span>   *        .endAnd()<a name="line.1467"></a>
-<span class="sourceLineNo">1468</span>   *      .and()<a name="line.1468"></a>
-<span class="sourceLineNo">1469</span>   *        .eq("status", Customer.Status.ACTIVE)<a name="line.1469"></a>
-<span class="sourceLineNo">1470</span>   *        .gt("id", 0)<a name="line.1470"></a>
-<span class="sourceLineNo">1471</span>   *        .endAnd()<a name="line.1471"></a>
-<span class="sourceLineNo">1472</span>   *      .orderBy().asc("name")<a name="line.1472"></a>
-<span class="sourceLineNo">1473</span>   *      .findList();<a name="line.1473"></a>
-<span class="sourceLineNo">1474</span>   *<a name="line.1474"></a>
-<span class="sourceLineNo">1475</span>   * }&lt;/pre&gt;<a name="line.1475"></a>
-<span class="sourceLineNo">1476</span>   */<a name="line.1476"></a>
-<span class="sourceLineNo">1477</span>  Junction&lt;T&gt; or();<a name="line.1477"></a>
-<span class="sourceLineNo">1478</span><a name="line.1478"></a>
-<span class="sourceLineNo">1479</span>  /**<a name="line.1479"></a>
-<span class="sourceLineNo">1480</span>   * Return a list of expressions that will be wrapped by NOT.<a name="line.1480"></a>
-<span class="sourceLineNo">1481</span>   * &lt;p&gt;<a name="line.1481"></a>
-<span class="sourceLineNo">1482</span>   * Use endNot() or endJunction() to end expressions being added to the<a name="line.1482"></a>
-<span class="sourceLineNo">1483</span>   * NOT expression list.<a name="line.1483"></a>
-<span class="sourceLineNo">1484</span>   * &lt;/p&gt;<a name="line.1484"></a>
-<span class="sourceLineNo">1485</span>   *<a name="line.1485"></a>
-<span class="sourceLineNo">1486</span>   * &lt;pre&gt;{@code<a name="line.1486"></a>
-<span class="sourceLineNo">1487</span>   *<a name="line.1487"></a>
-<span class="sourceLineNo">1488</span>   *    .where()<a name="line.1488"></a>
-<span class="sourceLineNo">1489</span>   *      .not()<a name="line.1489"></a>
-<span class="sourceLineNo">1490</span>   *        .gt("id", 1)<a name="line.1490"></a>
-<span class="sourceLineNo">1491</span>   *        .eq("anniversary", onAfter)<a name="line.1491"></a>
-<span class="sourceLineNo">1492</span>   *        .endNot()<a name="line.1492"></a>
-<span class="sourceLineNo">1493</span>   *<a name="line.1493"></a>
-<span class="sourceLineNo">1494</span>   * }&lt;/pre&gt;<a name="line.1494"></a>
-<span class="sourceLineNo">1495</span>   *<a name="line.1495"></a>
-<span class="sourceLineNo">1496</span>   * &lt;pre&gt;{@code<a name="line.1496"></a>
-<span class="sourceLineNo">1497</span>   *<a name="line.1497"></a>
-<span class="sourceLineNo">1498</span>   * // Example: nested not()<a name="line.1498"></a>
-<span class="sourceLineNo">1499</span>   *<a name="line.1499"></a>
-<span class="sourceLineNo">1500</span>   *   .where()<a name="line.1500"></a>
-<span class="sourceLineNo">1501</span>   *     .eq("status", Customer.Status.ACTIVE)<a name="line.1501"></a>
-<span class="sourceLineNo">1502</span>   *     .not()<a name="line.1502"></a>
-<span class="sourceLineNo">1503</span>   *       .gt("id", 1)<a name="line.1503"></a>
-<span class="sourceLineNo">1504</span>   *       .eq("anniversary", onAfter)<a name="line.1504"></a>
-<span class="sourceLineNo">1505</span>   *       .endNot()<a name="line.1505"></a>
-<span class="sourceLineNo">1506</span>   *     .orderBy()<a name="line.1506"></a>
-<span class="sourceLineNo">1507</span>   *       .asc("name")<a name="line.1507"></a>
-<span class="sourceLineNo">1508</span>   *     .findList();<a name="line.1508"></a>
-<span class="sourceLineNo">1509</span>   *<a name="line.1509"></a>
-<span class="sourceLineNo">1510</span>   * }&lt;/pre&gt;<a name="line.1510"></a>
-<span class="sourceLineNo">1511</span>   */<a name="line.1511"></a>
-<span class="sourceLineNo">1512</span>  Junction&lt;T&gt; not();<a name="line.1512"></a>
-<span class="sourceLineNo">1513</span><a name="line.1513"></a>
-<span class="sourceLineNo">1514</span>  /**<a name="line.1514"></a>
-<span class="sourceLineNo">1515</span>   * Start (and return) a list of expressions that will be joined by AND's.<a name="line.1515"></a>
-<span class="sourceLineNo">1516</span>   * &lt;p&gt;<a name="line.1516"></a>
-<span class="sourceLineNo">1517</span>   * This is the same as and().<a name="line.1517"></a>
-<span class="sourceLineNo">1518</span>   * &lt;/p&gt;<a name="line.1518"></a>
-<span class="sourceLineNo">1519</span>   */<a name="line.1519"></a>
-<span class="sourceLineNo">1520</span>  Junction&lt;T&gt; conjunction();<a name="line.1520"></a>
-<span class="sourceLineNo">1521</span><a name="line.1521"></a>
-<span class="sourceLineNo">1522</span>  /**<a name="line.1522"></a>
-<span class="sourceLineNo">1523</span>   * Start (and return) a list of expressions that will be joined by OR's.<a name="line.1523"></a>
-<span class="sourceLineNo">1524</span>   * &lt;p&gt;<a name="line.1524"></a>
-<span class="sourceLineNo">1525</span>   * This is the same as or().<a name="line.1525"></a>
-<span class="sourceLineNo">1526</span>   * &lt;/p&gt;<a name="line.1526"></a>
-<span class="sourceLineNo">1527</span>   */<a name="line.1527"></a>
-<span class="sourceLineNo">1528</span>  Junction&lt;T&gt; disjunction();<a name="line.1528"></a>
-<span class="sourceLineNo">1529</span><a name="line.1529"></a>
-<span class="sourceLineNo">1530</span>  /**<a name="line.1530"></a>
-<span class="sourceLineNo">1531</span>   * Start a list of expressions that will be joined by MUST.<a name="line.1531"></a>
-<span class="sourceLineNo">1532</span>   * &lt;p&gt;<a name="line.1532"></a>
-<span class="sourceLineNo">1533</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1533"></a>
-<span class="sourceLineNo">1534</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1534"></a>
+<span class="sourceLineNo">1444</span>   *  // Example: Use or() to join<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>   *  // two nested and() expressions<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>   *<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>   *    .where()<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>   *    .or()<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>   *      .and()<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>   *        .startsWith("name", "r")<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>   *        .eq("anniversary", onAfter)<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>   *        .endAnd()<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span>   *      .and()<a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>   *        .eq("status", Customer.Status.ACTIVE)<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>   *        .gt("id", 0)<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>   *        .endAnd()<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>   *      .orderBy().asc("name")<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>   *      .findList();<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>   *<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>   * }&lt;/pre&gt;<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>   */<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>  Junction&lt;T&gt; or();<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span><a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>  /**<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>   * Return a list of expressions that will be wrapped by NOT.<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>   * &lt;p&gt;<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>   * Use endNot() or endJunction() to end expressions being added to the<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span>   * NOT expression list.<a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>   * &lt;/p&gt;<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>   *<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>   * &lt;pre&gt;{@code<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>   *<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>   *    .where()<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>   *      .not()<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>   *        .gt("id", 1)<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>   *        .eq("anniversary", onAfter)<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>   *        .endNot()<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>   *<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>   * }&lt;/pre&gt;<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>   *<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>   * &lt;pre&gt;{@code<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>   *<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>   * // Example: nested not()<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>   *<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>   *   .where()<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>   *     .eq("status", Customer.Status.ACTIVE)<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>   *     .not()<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>   *       .gt("id", 1)<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>   *       .eq("anniversary", onAfter)<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>   *       .endNot()<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span>   *     .orderBy()<a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>   *       .asc("name")<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>   *     .findList();<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>   *<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>   * }&lt;/pre&gt;<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>   */<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>  Junction&lt;T&gt; not();<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span><a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>  /**<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>   * Start (and return) a list of expressions that will be joined by AND's.<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>   * &lt;p&gt;<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>   * This is the same as and().<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>   * &lt;/p&gt;<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>   */<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>  Junction&lt;T&gt; conjunction();<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span><a name="line.1506"></a>
+<span class="sourceLineNo">1507</span>  /**<a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>   * Start (and return) a list of expressions that will be joined by OR's.<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>   * &lt;p&gt;<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>   * This is the same as or().<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>   * &lt;/p&gt;<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>   */<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>  Junction&lt;T&gt; disjunction();<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span><a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>  /**<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>   * Start a list of expressions that will be joined by MUST.<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span>   * &lt;p&gt;<a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>   * &lt;/p&gt;<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>   * &lt;p&gt;<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>   * This is logically similar to and().<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>   * &lt;/p&gt;<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>   */<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>  Junction&lt;T&gt; must();<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span><a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>  /**<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>   * Start a list of expressions that will be joined by SHOULD.<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>   * &lt;p&gt;<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>   * &lt;/p&gt;<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>   * &lt;p&gt;<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span>   * This is logically similar to or().<a name="line.1534"></a>
 <span class="sourceLineNo">1535</span>   * &lt;/p&gt;<a name="line.1535"></a>
-<span class="sourceLineNo">1536</span>   * &lt;p&gt;<a name="line.1536"></a>
-<span class="sourceLineNo">1537</span>   * This is logically similar to and().<a name="line.1537"></a>
-<span class="sourceLineNo">1538</span>   * &lt;/p&gt;<a name="line.1538"></a>
-<span class="sourceLineNo">1539</span>   */<a name="line.1539"></a>
-<span class="sourceLineNo">1540</span>  Junction&lt;T&gt; must();<a name="line.1540"></a>
-<span class="sourceLineNo">1541</span><a name="line.1541"></a>
-<span class="sourceLineNo">1542</span>  /**<a name="line.1542"></a>
-<span class="sourceLineNo">1543</span>   * Start a list of expressions that will be joined by SHOULD.<a name="line.1543"></a>
-<span class="sourceLineNo">1544</span>   * &lt;p&gt;<a name="line.1544"></a>
-<span class="sourceLineNo">1545</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1545"></a>
-<span class="sourceLineNo">1546</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1546"></a>
+<span class="sourceLineNo">1536</span>   */<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>  Junction&lt;T&gt; should();<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span><a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>  /**<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>   * Start a list of expressions that will be joined by MUST NOT.<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>   * &lt;p&gt;<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>   * &lt;/p&gt;<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>   * &lt;p&gt;<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>   * This is logically similar to not().<a name="line.1546"></a>
 <span class="sourceLineNo">1547</span>   * &lt;/p&gt;<a name="line.1547"></a>
-<span class="sourceLineNo">1548</span>   * &lt;p&gt;<a name="line.1548"></a>
-<span class="sourceLineNo">1549</span>   * This is logically similar to or().<a name="line.1549"></a>
-<span class="sourceLineNo">1550</span>   * &lt;/p&gt;<a name="line.1550"></a>
-<span class="sourceLineNo">1551</span>   */<a name="line.1551"></a>
-<span class="sourceLineNo">1552</span>  Junction&lt;T&gt; should();<a name="line.1552"></a>
-<span class="sourceLineNo">1553</span><a name="line.1553"></a>
-<span class="sourceLineNo">1554</span>  /**<a name="line.1554"></a>
-<span class="sourceLineNo">1555</span>   * Start a list of expressions that will be joined by MUST NOT.<a name="line.1555"></a>
-<span class="sourceLineNo">1556</span>   * &lt;p&gt;<a name="line.1556"></a>
-<span class="sourceLineNo">1557</span>   * This automatically makes the query a useDocStore(true) query that<a name="line.1557"></a>
-<span class="sourceLineNo">1558</span>   * will execute against the document store (ElasticSearch etc).<a name="line.1558"></a>
+<span class="sourceLineNo">1548</span>   */<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span>  Junction&lt;T&gt; mustNot();<a name="line.1549"></a>
+<span class="sourceLineNo">1550</span><a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>  /**<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>   * End a junction returning the parent expression list.<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>   * &lt;p&gt;<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>   * Ends a and(), or(), not(), must(), mustNot() or should() junction<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>   * such that you get the parent expression.<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>   * &lt;/p&gt;<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>   * &lt;p&gt;<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>   * Alternatively you can always use where() to return the top level expression list.<a name="line.1558"></a>
 <span class="sourceLineNo">1559</span>   * &lt;/p&gt;<a name="line.1559"></a>
-<span class="sourceLineNo">1560</span>   * &lt;p&gt;<a name="line.1560"></a>
-<span class="sourceLineNo">1561</span>   * This is logically similar to not().<a name="line.1561"></a>
-<span class="sourceLineNo">1562</span>   * &lt;/p&gt;<a name="line.1562"></a>
-<span class="sourceLineNo">1563</span>   */<a name="line.1563"></a>
-<span class="sourceLineNo">1564</span>  Junction&lt;T&gt; mustNot();<a name="line.1564"></a>
-<span class="sourceLineNo">1565</span><a name="line.1565"></a>
-<span class="sourceLineNo">1566</span>  /**<a name="line.1566"></a>
-<span class="sourceLineNo">1567</span>   * End a junction returning the parent expression list.<a name="line.1567"></a>
-<span class="sourceLineNo">1568</span>   * &lt;p&gt;<a name="line.1568"></a>
-<span class="sourceLineNo">1569</span>   * Ends a and(), or(), not(), must(), mustNot() or should() junction<a name="line.1569"></a>
-<span class="sourceLineNo">1570</span>   * such that you get the parent expression.<a name="line.1570"></a>
-<span class="sourceLineNo">1571</span>   * &lt;/p&gt;<a name="line.1571"></a>
-<span class="sourceLineNo">1572</span>   * &lt;p&gt;<a name="line.1572"></a>
-<span class="sourceLineNo">1573</span>   * Alternatively you can always use where() to return the top level expression list.<a name="line.1573"></a>
-<span class="sourceLineNo">1574</span>   * &lt;/p&gt;<a name="line.1574"></a>
+<span class="sourceLineNo">1560</span>   */<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>  ExpressionList&lt;T&gt; endJunction();<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span><a name="line.1562"></a>
+<span class="sourceLineNo">1563</span>  /**<a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>   * End a AND junction - synonym for endJunction().<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>   */<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>  ExpressionList&lt;T&gt; endAnd();<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span><a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>  /**<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>   * End a AND junction - synonym for endJunction().<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>   */<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span>  ExpressionList&lt;T&gt; endOr();<a name="line.1571"></a>
+<span class="sourceLineNo">1572</span><a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>  /**<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>   * End a NOT junction - synonym for endJunction().<a name="line.1574"></a>
 <span class="sourceLineNo">1575</span>   */<a name="line.1575"></a>
-<span class="sourceLineNo">1576</span>  ExpressionList&lt;T&gt; endJunction();<a name="line.1576"></a>
+<span class="sourceLineNo">1576</span>  ExpressionList&lt;T&gt; endNot();<a name="line.1576"></a>
 <span class="sourceLineNo">1577</span><a name="line.1577"></a>
-<span class="sourceLineNo">1578</span>  /**<a name="line.1578"></a>
-<span class="sourceLineNo">1579</span>   * End a AND junction - synonym for endJunction().<a name="line.1579"></a>
-<span class="sourceLineNo">1580</span>   */<a name="line.1580"></a>
-<span class="sourceLineNo">1581</span>  ExpressionList&lt;T&gt; endAnd();<a name="line.1581"></a>
-<span class="sourceLineNo">1582</span><a name="line.1582"></a>
-<span class="sourceLineNo">1583</span>  /**<a name="line.1583"></a>
-<span class="sourceLineNo">1584</span>   * End a AND junction - synonym for endJunction().<a name="line.1584"></a>
-<span class="sourceLineNo">1585</span>   */<a name="line.1585"></a>
-<span class="sourceLineNo">1586</span>  ExpressionList&lt;T&gt; endOr();<a name="line.1586"></a>
-<span class="sourceLineNo">1587</span><a name="line.1587"></a>
-<span class="sourceLineNo">1588</span>  /**<a name="line.1588"></a>
-<span class="sourceLineNo">1589</span>   * End a NOT junction - synonym for endJunction().<a name="line.1589"></a>
-<span class="sourceLineNo">1590</span>   */<a name="line.1590"></a>
-<span class="sourceLineNo">1591</span>  ExpressionList&lt;T&gt; endNot();<a name="line.1591"></a>
-<span class="sourceLineNo">1592</span><a name="line.1592"></a>
-<span class="sourceLineNo">1593</span>}<a name="line.1593"></a>
+<span class="sourceLineNo">1578</span>}<a name="line.1578"></a>
 
 
 

@@ -181,7 +181,7 @@ bi-directional relationships.
 <h3>Example:</h3>
 <div class="syntax java"><div class="highlight"><pre> <span class="c1">// find some customers ...</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;id, name, status, shippingAddress&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;billingAddress&quot;</span><span class="o">,</span><span class="s">&quot;line1, city&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;billingAddress.country&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">)</span>
@@ -189,7 +189,7 @@ bi-directional relationships.
     <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 
-<span class="n">JsonContext</span> <span class="n">json</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">json</span><span class="o">();</span>
+<span class="n">JsonContext</span> <span class="n">json</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">json</span><span class="o">();</span>
 
  <span class="c1">// output as a JSON string</span>
 <span class="n">String</span> <span class="n">jsonOutput</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">list</span><span class="o">);</span>

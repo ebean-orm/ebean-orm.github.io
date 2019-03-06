@@ -406,7 +406,7 @@ Note: There are some special cases:
        If you need really the String "null", you have to specify <code>@DbDefault("'null'")</code>
        which gives you the <code>default 'null'</code> statement.</li>
    <li>Any statement, that begins and ends with single quote will not be checked or get quoted again.</li>
-   <li>A statement that begins with "$RAW:", e.g <code>@DbDefault("$RAW:N'SANDNES'")</code> will lead to 
+   <li>A statement that begins with "$RAW:", e.g <code>@DbDefault("$RAW:N'SANDNES'")</code> will lead to
        a <code>default N'SANDNES'</code> in DDL. Note that this is platform specific!</li>
 </ul></div>
 </li>

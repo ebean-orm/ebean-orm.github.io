@@ -2336,963 +2336,959 @@
 <span class="sourceLineNo">2328</span>   *<a name="line.2328"></a>
 <span class="sourceLineNo">2329</span>   *   // assume Customer has L2 bean caching enabled ...<a name="line.2329"></a>
 <span class="sourceLineNo">2330</span>   *<a name="line.2330"></a>
-<span class="sourceLineNo">2331</span>   *   Transaction transaction = Ebean.beginTransaction();<a name="line.2331"></a>
-<span class="sourceLineNo">2332</span>   *   try {<a name="line.2332"></a>
-<span class="sourceLineNo">2333</span>   *<a name="line.2333"></a>
-<span class="sourceLineNo">2334</span>   *     // this uses L2 bean cache as the transaction<a name="line.2334"></a>
-<span class="sourceLineNo">2335</span>   *     // ... is considered "query only" at this point<a name="line.2335"></a>
-<span class="sourceLineNo">2336</span>   *     Customer.find.byId(42);<a name="line.2336"></a>
-<span class="sourceLineNo">2337</span>   *<a name="line.2337"></a>
-<span class="sourceLineNo">2338</span>   *     // transaction no longer "query only" once<a name="line.2338"></a>
-<span class="sourceLineNo">2339</span>   *     // ... a bean has been saved etc<a name="line.2339"></a>
-<span class="sourceLineNo">2340</span>   *     Ebean.save(someBean);<a name="line.2340"></a>
-<span class="sourceLineNo">2341</span>   *<a name="line.2341"></a>
-<span class="sourceLineNo">2342</span>   *     // will NOT use L2 bean cache as the transaction<a name="line.2342"></a>
-<span class="sourceLineNo">2343</span>   *     // ... is no longer considered "query only"<a name="line.2343"></a>
-<span class="sourceLineNo">2344</span>   *     Customer.find.byId(55);<a name="line.2344"></a>
+<span class="sourceLineNo">2331</span>   *   try (Transaction transaction = DB.beginTransaction()) {<a name="line.2331"></a>
+<span class="sourceLineNo">2332</span>   *<a name="line.2332"></a>
+<span class="sourceLineNo">2333</span>   *     // this uses L2 bean cache as the transaction<a name="line.2333"></a>
+<span class="sourceLineNo">2334</span>   *     // ... is considered "query only" at this point<a name="line.2334"></a>
+<span class="sourceLineNo">2335</span>   *     Customer.find.byId(42);<a name="line.2335"></a>
+<span class="sourceLineNo">2336</span>   *<a name="line.2336"></a>
+<span class="sourceLineNo">2337</span>   *     // transaction no longer "query only" once<a name="line.2337"></a>
+<span class="sourceLineNo">2338</span>   *     // ... a bean has been saved etc<a name="line.2338"></a>
+<span class="sourceLineNo">2339</span>   *     DB.save(someBean);<a name="line.2339"></a>
+<span class="sourceLineNo">2340</span>   *<a name="line.2340"></a>
+<span class="sourceLineNo">2341</span>   *     // will NOT use L2 bean cache as the transaction<a name="line.2341"></a>
+<span class="sourceLineNo">2342</span>   *     // ... is no longer considered "query only"<a name="line.2342"></a>
+<span class="sourceLineNo">2343</span>   *     Customer.find.byId(55);<a name="line.2343"></a>
+<span class="sourceLineNo">2344</span>   *<a name="line.2344"></a>
 <span class="sourceLineNo">2345</span>   *<a name="line.2345"></a>
 <span class="sourceLineNo">2346</span>   *<a name="line.2346"></a>
-<span class="sourceLineNo">2347</span>   *<a name="line.2347"></a>
-<span class="sourceLineNo">2348</span>   *     // explicit control - please use L2 bean cache<a name="line.2348"></a>
-<span class="sourceLineNo">2349</span>   *<a name="line.2349"></a>
-<span class="sourceLineNo">2350</span>   *     transaction.setSkipCache(false);<a name="line.2350"></a>
-<span class="sourceLineNo">2351</span>   *     Customer.find.byId(77); // hit the l2 bean cache<a name="line.2351"></a>
+<span class="sourceLineNo">2347</span>   *     // explicit control - please use L2 bean cache<a name="line.2347"></a>
+<span class="sourceLineNo">2348</span>   *<a name="line.2348"></a>
+<span class="sourceLineNo">2349</span>   *     transaction.setSkipCache(false);<a name="line.2349"></a>
+<span class="sourceLineNo">2350</span>   *     Customer.find.byId(77); // hit the l2 bean cache<a name="line.2350"></a>
+<span class="sourceLineNo">2351</span>   *<a name="line.2351"></a>
 <span class="sourceLineNo">2352</span>   *<a name="line.2352"></a>
-<span class="sourceLineNo">2353</span>   *<a name="line.2353"></a>
-<span class="sourceLineNo">2354</span>   *     // explicit control - please don't use L2 bean cache<a name="line.2354"></a>
-<span class="sourceLineNo">2355</span>   *<a name="line.2355"></a>
-<span class="sourceLineNo">2356</span>   *     transaction.setSkipCache(true);<a name="line.2356"></a>
-<span class="sourceLineNo">2357</span>   *     Customer.find.byId(99); // skips l2 bean cache<a name="line.2357"></a>
-<span class="sourceLineNo">2358</span>   *<a name="line.2358"></a>
+<span class="sourceLineNo">2353</span>   *     // explicit control - please don't use L2 bean cache<a name="line.2353"></a>
+<span class="sourceLineNo">2354</span>   *<a name="line.2354"></a>
+<span class="sourceLineNo">2355</span>   *     transaction.setSkipCache(true);<a name="line.2355"></a>
+<span class="sourceLineNo">2356</span>   *     Customer.find.byId(99); // skips l2 bean cache<a name="line.2356"></a>
+<span class="sourceLineNo">2357</span>   *<a name="line.2357"></a>
+<span class="sourceLineNo">2358</span>   *   }<a name="line.2358"></a>
 <span class="sourceLineNo">2359</span>   *<a name="line.2359"></a>
-<span class="sourceLineNo">2360</span>   *   } finally {<a name="line.2360"></a>
-<span class="sourceLineNo">2361</span>   *     transaction.end();<a name="line.2361"></a>
-<span class="sourceLineNo">2362</span>   *   }<a name="line.2362"></a>
-<span class="sourceLineNo">2363</span>   *<a name="line.2363"></a>
-<span class="sourceLineNo">2364</span>   * }&lt;/pre&gt;<a name="line.2364"></a>
-<span class="sourceLineNo">2365</span>   *<a name="line.2365"></a>
-<span class="sourceLineNo">2366</span>   * @see Transaction#setSkipCache(boolean)<a name="line.2366"></a>
-<span class="sourceLineNo">2367</span>   */<a name="line.2367"></a>
-<span class="sourceLineNo">2368</span>  public boolean isSkipCacheAfterWrite() {<a name="line.2368"></a>
-<span class="sourceLineNo">2369</span>    return skipCacheAfterWrite;<a name="line.2369"></a>
-<span class="sourceLineNo">2370</span>  }<a name="line.2370"></a>
-<span class="sourceLineNo">2371</span><a name="line.2371"></a>
-<span class="sourceLineNo">2372</span>  /**<a name="line.2372"></a>
-<span class="sourceLineNo">2373</span>   * Set to false when we still want to hit the cache after a write has occurred on a transaction.<a name="line.2373"></a>
-<span class="sourceLineNo">2374</span>   */<a name="line.2374"></a>
-<span class="sourceLineNo">2375</span>  public void setSkipCacheAfterWrite(boolean skipCacheAfterWrite) {<a name="line.2375"></a>
-<span class="sourceLineNo">2376</span>    this.skipCacheAfterWrite = skipCacheAfterWrite;<a name="line.2376"></a>
-<span class="sourceLineNo">2377</span>  }<a name="line.2377"></a>
-<span class="sourceLineNo">2378</span><a name="line.2378"></a>
-<span class="sourceLineNo">2379</span>  /**<a name="line.2379"></a>
-<span class="sourceLineNo">2380</span>   * Return true to only update changed properties.<a name="line.2380"></a>
-<span class="sourceLineNo">2381</span>   */<a name="line.2381"></a>
-<span class="sourceLineNo">2382</span>  public boolean isUpdateChangesOnly() {<a name="line.2382"></a>
-<span class="sourceLineNo">2383</span>    return updateChangesOnly;<a name="line.2383"></a>
-<span class="sourceLineNo">2384</span>  }<a name="line.2384"></a>
-<span class="sourceLineNo">2385</span><a name="line.2385"></a>
-<span class="sourceLineNo">2386</span>  /**<a name="line.2386"></a>
-<span class="sourceLineNo">2387</span>   * Set to true to only update changed properties.<a name="line.2387"></a>
-<span class="sourceLineNo">2388</span>   */<a name="line.2388"></a>
-<span class="sourceLineNo">2389</span>  public void setUpdateChangesOnly(boolean updateChangesOnly) {<a name="line.2389"></a>
-<span class="sourceLineNo">2390</span>    this.updateChangesOnly = updateChangesOnly;<a name="line.2390"></a>
-<span class="sourceLineNo">2391</span>  }<a name="line.2391"></a>
-<span class="sourceLineNo">2392</span><a name="line.2392"></a>
-<span class="sourceLineNo">2393</span>  /**<a name="line.2393"></a>
-<span class="sourceLineNo">2394</span>   * Returns true if updates in JDBC batch default to include all properties by default.<a name="line.2394"></a>
-<span class="sourceLineNo">2395</span>   */<a name="line.2395"></a>
-<span class="sourceLineNo">2396</span>  public boolean isUpdateAllPropertiesInBatch() {<a name="line.2396"></a>
-<span class="sourceLineNo">2397</span>    return updateAllPropertiesInBatch;<a name="line.2397"></a>
-<span class="sourceLineNo">2398</span>  }<a name="line.2398"></a>
-<span class="sourceLineNo">2399</span><a name="line.2399"></a>
-<span class="sourceLineNo">2400</span>  /**<a name="line.2400"></a>
-<span class="sourceLineNo">2401</span>   * Set to false if by default updates in JDBC batch should not include all properties.<a name="line.2401"></a>
-<span class="sourceLineNo">2402</span>   * &lt;p&gt;<a name="line.2402"></a>
-<span class="sourceLineNo">2403</span>   * This mode can be explicitly set per transaction.<a name="line.2403"></a>
-<span class="sourceLineNo">2404</span>   * &lt;/p&gt;<a name="line.2404"></a>
-<span class="sourceLineNo">2405</span>   *<a name="line.2405"></a>
-<span class="sourceLineNo">2406</span>   * @see Transaction#setUpdateAllLoadedProperties(boolean)<a name="line.2406"></a>
-<span class="sourceLineNo">2407</span>   */<a name="line.2407"></a>
-<span class="sourceLineNo">2408</span>  public void setUpdateAllPropertiesInBatch(boolean updateAllPropertiesInBatch) {<a name="line.2408"></a>
-<span class="sourceLineNo">2409</span>    this.updateAllPropertiesInBatch = updateAllPropertiesInBatch;<a name="line.2409"></a>
-<span class="sourceLineNo">2410</span>  }<a name="line.2410"></a>
-<span class="sourceLineNo">2411</span><a name="line.2411"></a>
-<span class="sourceLineNo">2412</span>  /**<a name="line.2412"></a>
-<span class="sourceLineNo">2413</span>   * Return true if updates by default delete missing children when cascading save to a OneToMany or<a name="line.2413"></a>
-<span class="sourceLineNo">2414</span>   * ManyToMany. When not set this defaults to true.<a name="line.2414"></a>
-<span class="sourceLineNo">2415</span>   */<a name="line.2415"></a>
-<span class="sourceLineNo">2416</span>  public boolean isUpdatesDeleteMissingChildren() {<a name="line.2416"></a>
-<span class="sourceLineNo">2417</span>    return updatesDeleteMissingChildren;<a name="line.2417"></a>
-<span class="sourceLineNo">2418</span>  }<a name="line.2418"></a>
-<span class="sourceLineNo">2419</span><a name="line.2419"></a>
-<span class="sourceLineNo">2420</span>  /**<a name="line.2420"></a>
-<span class="sourceLineNo">2421</span>   * Set if updates by default delete missing children when cascading save to a OneToMany or<a name="line.2421"></a>
-<span class="sourceLineNo">2422</span>   * ManyToMany. When not set this defaults to true.<a name="line.2422"></a>
-<span class="sourceLineNo">2423</span>   */<a name="line.2423"></a>
-<span class="sourceLineNo">2424</span>  public void setUpdatesDeleteMissingChildren(boolean updatesDeleteMissingChildren) {<a name="line.2424"></a>
-<span class="sourceLineNo">2425</span>    this.updatesDeleteMissingChildren = updatesDeleteMissingChildren;<a name="line.2425"></a>
-<span class="sourceLineNo">2426</span>  }<a name="line.2426"></a>
-<span class="sourceLineNo">2427</span><a name="line.2427"></a>
-<span class="sourceLineNo">2428</span>  /**<a name="line.2428"></a>
-<span class="sourceLineNo">2429</span>   * Return true if the ebeanServer should collection query statistics by ObjectGraphNode.<a name="line.2429"></a>
-<span class="sourceLineNo">2430</span>   */<a name="line.2430"></a>
-<span class="sourceLineNo">2431</span>  public boolean isCollectQueryStatsByNode() {<a name="line.2431"></a>
-<span class="sourceLineNo">2432</span>    return collectQueryStatsByNode;<a name="line.2432"></a>
-<span class="sourceLineNo">2433</span>  }<a name="line.2433"></a>
-<span class="sourceLineNo">2434</span><a name="line.2434"></a>
-<span class="sourceLineNo">2435</span>  /**<a name="line.2435"></a>
-<span class="sourceLineNo">2436</span>   * Set to true to collection query execution statistics by ObjectGraphNode.<a name="line.2436"></a>
-<span class="sourceLineNo">2437</span>   * &lt;p&gt;<a name="line.2437"></a>
-<span class="sourceLineNo">2438</span>   * These statistics can be used to highlight code/query 'origin points' that result in lots of lazy loading.<a name="line.2438"></a>
-<span class="sourceLineNo">2439</span>   * &lt;/p&gt;<a name="line.2439"></a>
-<span class="sourceLineNo">2440</span>   * &lt;p&gt;<a name="line.2440"></a>
-<span class="sourceLineNo">2441</span>   * It is considered safe/fine to have this set to true for production.<a name="line.2441"></a>
-<span class="sourceLineNo">2442</span>   * &lt;/p&gt;<a name="line.2442"></a>
-<span class="sourceLineNo">2443</span>   * &lt;p&gt;<a name="line.2443"></a>
-<span class="sourceLineNo">2444</span>   * This information can be later retrieved via {@link MetaInfoManager}.<a name="line.2444"></a>
-<span class="sourceLineNo">2445</span>   * &lt;/p&gt;<a name="line.2445"></a>
-<span class="sourceLineNo">2446</span>   *<a name="line.2446"></a>
-<span class="sourceLineNo">2447</span>   * @see MetaInfoManager<a name="line.2447"></a>
-<span class="sourceLineNo">2448</span>   */<a name="line.2448"></a>
-<span class="sourceLineNo">2449</span>  public void setCollectQueryStatsByNode(boolean collectQueryStatsByNode) {<a name="line.2449"></a>
-<span class="sourceLineNo">2450</span>    this.collectQueryStatsByNode = collectQueryStatsByNode;<a name="line.2450"></a>
-<span class="sourceLineNo">2451</span>  }<a name="line.2451"></a>
-<span class="sourceLineNo">2452</span><a name="line.2452"></a>
-<span class="sourceLineNo">2453</span>  /**<a name="line.2453"></a>
-<span class="sourceLineNo">2454</span>   * Return true if query plans should also collect their 'origins'. This means for a given query plan you<a name="line.2454"></a>
-<span class="sourceLineNo">2455</span>   * can identify the code/origin points where this query resulted from including lazy loading origins.<a name="line.2455"></a>
-<span class="sourceLineNo">2456</span>   */<a name="line.2456"></a>
-<span class="sourceLineNo">2457</span>  public boolean isCollectQueryOrigins() {<a name="line.2457"></a>
-<span class="sourceLineNo">2458</span>    return collectQueryOrigins;<a name="line.2458"></a>
-<span class="sourceLineNo">2459</span>  }<a name="line.2459"></a>
-<span class="sourceLineNo">2460</span><a name="line.2460"></a>
-<span class="sourceLineNo">2461</span>  /**<a name="line.2461"></a>
-<span class="sourceLineNo">2462</span>   * Set to true if query plans should collect their 'origin' points. This means for a given query plan you<a name="line.2462"></a>
-<span class="sourceLineNo">2463</span>   * can identify the code/origin points where this query resulted from including lazy loading origins.<a name="line.2463"></a>
-<span class="sourceLineNo">2464</span>   * &lt;p&gt;<a name="line.2464"></a>
-<span class="sourceLineNo">2465</span>   * This information can be later retrieved via {@link MetaInfoManager}.<a name="line.2465"></a>
-<span class="sourceLineNo">2466</span>   * &lt;/p&gt;<a name="line.2466"></a>
-<span class="sourceLineNo">2467</span>   *<a name="line.2467"></a>
-<span class="sourceLineNo">2468</span>   * @see MetaInfoManager<a name="line.2468"></a>
-<span class="sourceLineNo">2469</span>   */<a name="line.2469"></a>
-<span class="sourceLineNo">2470</span>  public void setCollectQueryOrigins(boolean collectQueryOrigins) {<a name="line.2470"></a>
-<span class="sourceLineNo">2471</span>    this.collectQueryOrigins = collectQueryOrigins;<a name="line.2471"></a>
-<span class="sourceLineNo">2472</span>  }<a name="line.2472"></a>
-<span class="sourceLineNo">2473</span><a name="line.2473"></a>
-<span class="sourceLineNo">2474</span>  /**<a name="line.2474"></a>
-<span class="sourceLineNo">2475</span>   * Returns the resource directory.<a name="line.2475"></a>
-<span class="sourceLineNo">2476</span>   */<a name="line.2476"></a>
-<span class="sourceLineNo">2477</span>  public String getResourceDirectory() {<a name="line.2477"></a>
-<span class="sourceLineNo">2478</span>    return resourceDirectory;<a name="line.2478"></a>
-<span class="sourceLineNo">2479</span>  }<a name="line.2479"></a>
-<span class="sourceLineNo">2480</span><a name="line.2480"></a>
-<span class="sourceLineNo">2481</span>  /**<a name="line.2481"></a>
-<span class="sourceLineNo">2482</span>   * Sets the resource directory.<a name="line.2482"></a>
-<span class="sourceLineNo">2483</span>   */<a name="line.2483"></a>
-<span class="sourceLineNo">2484</span>  public void setResourceDirectory(String resourceDirectory) {<a name="line.2484"></a>
-<span class="sourceLineNo">2485</span>    this.resourceDirectory = resourceDirectory;<a name="line.2485"></a>
-<span class="sourceLineNo">2486</span>  }<a name="line.2486"></a>
-<span class="sourceLineNo">2487</span><a name="line.2487"></a>
-<span class="sourceLineNo">2488</span>  /**<a name="line.2488"></a>
-<span class="sourceLineNo">2489</span>   * Add a custom type mapping.<a name="line.2489"></a>
-<span class="sourceLineNo">2490</span>   * &lt;p&gt;<a name="line.2490"></a>
-<span class="sourceLineNo">2491</span>   * &lt;pre&gt;{@code<a name="line.2491"></a>
-<span class="sourceLineNo">2492</span>   *<a name="line.2492"></a>
-<span class="sourceLineNo">2493</span>   *   // set the default mapping for BigDecimal.class/decimal<a name="line.2493"></a>
-<span class="sourceLineNo">2494</span>   *   serverConfig.addCustomMapping(DbType.DECIMAL, "decimal(18,6)");<a name="line.2494"></a>
-<span class="sourceLineNo">2495</span>   *<a name="line.2495"></a>
-<span class="sourceLineNo">2496</span>   *   // set the default mapping for String.class/varchar but only for Postgres<a name="line.2496"></a>
-<span class="sourceLineNo">2497</span>   *   serverConfig.addCustomMapping(DbType.VARCHAR, "text", Platform.POSTGRES);<a name="line.2497"></a>
-<span class="sourceLineNo">2498</span>   *<a name="line.2498"></a>
-<span class="sourceLineNo">2499</span>   * }&lt;/pre&gt;<a name="line.2499"></a>
-<span class="sourceLineNo">2500</span>   *<a name="line.2500"></a>
-<span class="sourceLineNo">2501</span>   * @param type             The DB type this mapping should apply to<a name="line.2501"></a>
-<span class="sourceLineNo">2502</span>   * @param columnDefinition The column definition that should be used<a name="line.2502"></a>
-<span class="sourceLineNo">2503</span>   * @param platform         Optionally specify the platform this mapping should apply to.<a name="line.2503"></a>
-<span class="sourceLineNo">2504</span>   */<a name="line.2504"></a>
-<span class="sourceLineNo">2505</span>  public void addCustomMapping(DbType type, String columnDefinition, Platform platform) {<a name="line.2505"></a>
-<span class="sourceLineNo">2506</span>    platformConfig.addCustomMapping(type, columnDefinition, platform);<a name="line.2506"></a>
-<span class="sourceLineNo">2507</span>  }<a name="line.2507"></a>
-<span class="sourceLineNo">2508</span><a name="line.2508"></a>
-<span class="sourceLineNo">2509</span>  /**<a name="line.2509"></a>
-<span class="sourceLineNo">2510</span>   * Add a custom type mapping that applies to all platforms.<a name="line.2510"></a>
-<span class="sourceLineNo">2511</span>   * &lt;p&gt;<a name="line.2511"></a>
-<span class="sourceLineNo">2512</span>   * &lt;pre&gt;{@code<a name="line.2512"></a>
-<span class="sourceLineNo">2513</span>   *<a name="line.2513"></a>
-<span class="sourceLineNo">2514</span>   *   // set the default mapping for BigDecimal/decimal<a name="line.2514"></a>
-<span class="sourceLineNo">2515</span>   *   serverConfig.addCustomMapping(DbType.DECIMAL, "decimal(18,6)");<a name="line.2515"></a>
-<span class="sourceLineNo">2516</span>   *<a name="line.2516"></a>
-<span class="sourceLineNo">2517</span>   *   // set the default mapping for String/varchar<a name="line.2517"></a>
-<span class="sourceLineNo">2518</span>   *   serverConfig.addCustomMapping(DbType.VARCHAR, "text");<a name="line.2518"></a>
-<span class="sourceLineNo">2519</span>   *<a name="line.2519"></a>
-<span class="sourceLineNo">2520</span>   * }&lt;/pre&gt;<a name="line.2520"></a>
-<span class="sourceLineNo">2521</span>   *<a name="line.2521"></a>
-<span class="sourceLineNo">2522</span>   * @param type             The DB type this mapping should apply to<a name="line.2522"></a>
-<span class="sourceLineNo">2523</span>   * @param columnDefinition The column definition that should be used<a name="line.2523"></a>
-<span class="sourceLineNo">2524</span>   */<a name="line.2524"></a>
-<span class="sourceLineNo">2525</span>  public void addCustomMapping(DbType type, String columnDefinition) {<a name="line.2525"></a>
-<span class="sourceLineNo">2526</span>    platformConfig.addCustomMapping(type, columnDefinition);<a name="line.2526"></a>
-<span class="sourceLineNo">2527</span>  }<a name="line.2527"></a>
-<span class="sourceLineNo">2528</span><a name="line.2528"></a>
-<span class="sourceLineNo">2529</span>  /**<a name="line.2529"></a>
-<span class="sourceLineNo">2530</span>   * Register a BeanQueryAdapter instance.<a name="line.2530"></a>
-<span class="sourceLineNo">2531</span>   * &lt;p&gt;<a name="line.2531"></a>
-<span class="sourceLineNo">2532</span>   * Note alternatively you can use {@link #setQueryAdapters(List)} to set all<a name="line.2532"></a>
-<span class="sourceLineNo">2533</span>   * the BeanQueryAdapter instances.<a name="line.2533"></a>
-<span class="sourceLineNo">2534</span>   * &lt;/p&gt;<a name="line.2534"></a>
-<span class="sourceLineNo">2535</span>   */<a name="line.2535"></a>
-<span class="sourceLineNo">2536</span>  public void add(BeanQueryAdapter beanQueryAdapter) {<a name="line.2536"></a>
-<span class="sourceLineNo">2537</span>    queryAdapters.add(beanQueryAdapter);<a name="line.2537"></a>
-<span class="sourceLineNo">2538</span>  }<a name="line.2538"></a>
-<span class="sourceLineNo">2539</span><a name="line.2539"></a>
-<span class="sourceLineNo">2540</span>  /**<a name="line.2540"></a>
-<span class="sourceLineNo">2541</span>   * Return the BeanQueryAdapter instances.<a name="line.2541"></a>
-<span class="sourceLineNo">2542</span>   */<a name="line.2542"></a>
-<span class="sourceLineNo">2543</span>  public List&lt;BeanQueryAdapter&gt; getQueryAdapters() {<a name="line.2543"></a>
-<span class="sourceLineNo">2544</span>    return queryAdapters;<a name="line.2544"></a>
-<span class="sourceLineNo">2545</span>  }<a name="line.2545"></a>
-<span class="sourceLineNo">2546</span><a name="line.2546"></a>
-<span class="sourceLineNo">2547</span>  /**<a name="line.2547"></a>
-<span class="sourceLineNo">2548</span>   * Register all the BeanQueryAdapter instances.<a name="line.2548"></a>
-<span class="sourceLineNo">2549</span>   * &lt;p&gt;<a name="line.2549"></a>
-<span class="sourceLineNo">2550</span>   * Note alternatively you can use {@link #add(BeanQueryAdapter)} to add<a name="line.2550"></a>
-<span class="sourceLineNo">2551</span>   * BeanQueryAdapter instances one at a time.<a name="line.2551"></a>
-<span class="sourceLineNo">2552</span>   * &lt;/p&gt;<a name="line.2552"></a>
-<span class="sourceLineNo">2553</span>   */<a name="line.2553"></a>
-<span class="sourceLineNo">2554</span>  public void setQueryAdapters(List&lt;BeanQueryAdapter&gt; queryAdapters) {<a name="line.2554"></a>
-<span class="sourceLineNo">2555</span>    this.queryAdapters = queryAdapters;<a name="line.2555"></a>
-<span class="sourceLineNo">2556</span>  }<a name="line.2556"></a>
-<span class="sourceLineNo">2557</span><a name="line.2557"></a>
-<span class="sourceLineNo">2558</span>  /**<a name="line.2558"></a>
-<span class="sourceLineNo">2559</span>   * Return the custom IdGenerator instances.<a name="line.2559"></a>
-<span class="sourceLineNo">2560</span>   */<a name="line.2560"></a>
-<span class="sourceLineNo">2561</span>  public List&lt;IdGenerator&gt; getIdGenerators() {<a name="line.2561"></a>
-<span class="sourceLineNo">2562</span>    return idGenerators;<a name="line.2562"></a>
-<span class="sourceLineNo">2563</span>  }<a name="line.2563"></a>
-<span class="sourceLineNo">2564</span><a name="line.2564"></a>
-<span class="sourceLineNo">2565</span>  /**<a name="line.2565"></a>
-<span class="sourceLineNo">2566</span>   * Set the custom IdGenerator instances.<a name="line.2566"></a>
-<span class="sourceLineNo">2567</span>   */<a name="line.2567"></a>
-<span class="sourceLineNo">2568</span>  public void setIdGenerators(List&lt;IdGenerator&gt; idGenerators) {<a name="line.2568"></a>
-<span class="sourceLineNo">2569</span>    this.idGenerators = idGenerators;<a name="line.2569"></a>
-<span class="sourceLineNo">2570</span>  }<a name="line.2570"></a>
-<span class="sourceLineNo">2571</span><a name="line.2571"></a>
-<span class="sourceLineNo">2572</span>  /**<a name="line.2572"></a>
-<span class="sourceLineNo">2573</span>   * Register a customer IdGenerator instance.<a name="line.2573"></a>
-<span class="sourceLineNo">2574</span>   */<a name="line.2574"></a>
-<span class="sourceLineNo">2575</span>  public void add(IdGenerator idGenerator) {<a name="line.2575"></a>
-<span class="sourceLineNo">2576</span>    idGenerators.add(idGenerator);<a name="line.2576"></a>
-<span class="sourceLineNo">2577</span>  }<a name="line.2577"></a>
-<span class="sourceLineNo">2578</span><a name="line.2578"></a>
-<span class="sourceLineNo">2579</span>  /**<a name="line.2579"></a>
-<span class="sourceLineNo">2580</span>   * Register a BeanPersistController instance.<a name="line.2580"></a>
-<span class="sourceLineNo">2581</span>   * &lt;p&gt;<a name="line.2581"></a>
-<span class="sourceLineNo">2582</span>   * Note alternatively you can use {@link #setPersistControllers(List)} to set<a name="line.2582"></a>
-<span class="sourceLineNo">2583</span>   * all the BeanPersistController instances.<a name="line.2583"></a>
-<span class="sourceLineNo">2584</span>   * &lt;/p&gt;<a name="line.2584"></a>
-<span class="sourceLineNo">2585</span>   */<a name="line.2585"></a>
-<span class="sourceLineNo">2586</span>  public void add(BeanPersistController beanPersistController) {<a name="line.2586"></a>
-<span class="sourceLineNo">2587</span>    persistControllers.add(beanPersistController);<a name="line.2587"></a>
-<span class="sourceLineNo">2588</span>  }<a name="line.2588"></a>
-<span class="sourceLineNo">2589</span><a name="line.2589"></a>
-<span class="sourceLineNo">2590</span>  /**<a name="line.2590"></a>
-<span class="sourceLineNo">2591</span>   * Register a BeanPostLoad instance.<a name="line.2591"></a>
-<span class="sourceLineNo">2592</span>   * &lt;p&gt;<a name="line.2592"></a>
-<span class="sourceLineNo">2593</span>   * Note alternatively you can use {@link #setPostLoaders(List)} to set<a name="line.2593"></a>
-<span class="sourceLineNo">2594</span>   * all the BeanPostLoad instances.<a name="line.2594"></a>
-<span class="sourceLineNo">2595</span>   * &lt;/p&gt;<a name="line.2595"></a>
-<span class="sourceLineNo">2596</span>   */<a name="line.2596"></a>
-<span class="sourceLineNo">2597</span>  public void add(BeanPostLoad postLoad) {<a name="line.2597"></a>
-<span class="sourceLineNo">2598</span>    postLoaders.add(postLoad);<a name="line.2598"></a>
-<span class="sourceLineNo">2599</span>  }<a name="line.2599"></a>
-<span class="sourceLineNo">2600</span><a name="line.2600"></a>
-<span class="sourceLineNo">2601</span>  /**<a name="line.2601"></a>
-<span class="sourceLineNo">2602</span>   * Register a BeanPostConstructListener instance.<a name="line.2602"></a>
-<span class="sourceLineNo">2603</span>   * &lt;p&gt;<a name="line.2603"></a>
-<span class="sourceLineNo">2604</span>   * Note alternatively you can use {@link #setPostConstructListeners(List)} to set<a name="line.2604"></a>
-<span class="sourceLineNo">2605</span>   * all the BeanPostConstructListener instances.<a name="line.2605"></a>
-<span class="sourceLineNo">2606</span>   * &lt;/p&gt;<a name="line.2606"></a>
-<span class="sourceLineNo">2607</span>   */<a name="line.2607"></a>
-<span class="sourceLineNo">2608</span>  public void add(BeanPostConstructListener listener) {<a name="line.2608"></a>
-<span class="sourceLineNo">2609</span>    postConstructListeners.add(listener);<a name="line.2609"></a>
-<span class="sourceLineNo">2610</span>  }<a name="line.2610"></a>
-<span class="sourceLineNo">2611</span><a name="line.2611"></a>
-<span class="sourceLineNo">2612</span>  /**<a name="line.2612"></a>
-<span class="sourceLineNo">2613</span>   * Return the list of BeanFindController instances.<a name="line.2613"></a>
-<span class="sourceLineNo">2614</span>   */<a name="line.2614"></a>
-<span class="sourceLineNo">2615</span>  public List&lt;BeanFindController&gt; getFindControllers() {<a name="line.2615"></a>
-<span class="sourceLineNo">2616</span>    return findControllers;<a name="line.2616"></a>
-<span class="sourceLineNo">2617</span>  }<a name="line.2617"></a>
-<span class="sourceLineNo">2618</span><a name="line.2618"></a>
-<span class="sourceLineNo">2619</span>  /**<a name="line.2619"></a>
-<span class="sourceLineNo">2620</span>   * Set the list of BeanFindController instances.<a name="line.2620"></a>
-<span class="sourceLineNo">2621</span>   */<a name="line.2621"></a>
-<span class="sourceLineNo">2622</span>  public void setFindControllers(List&lt;BeanFindController&gt; findControllers) {<a name="line.2622"></a>
-<span class="sourceLineNo">2623</span>    this.findControllers = findControllers;<a name="line.2623"></a>
-<span class="sourceLineNo">2624</span>  }<a name="line.2624"></a>
-<span class="sourceLineNo">2625</span><a name="line.2625"></a>
-<span class="sourceLineNo">2626</span>  /**<a name="line.2626"></a>
-<span class="sourceLineNo">2627</span>   * Return the list of BeanPostLoader instances.<a name="line.2627"></a>
-<span class="sourceLineNo">2628</span>   */<a name="line.2628"></a>
-<span class="sourceLineNo">2629</span>  public List&lt;BeanPostLoad&gt; getPostLoaders() {<a name="line.2629"></a>
-<span class="sourceLineNo">2630</span>    return postLoaders;<a name="line.2630"></a>
-<span class="sourceLineNo">2631</span>  }<a name="line.2631"></a>
-<span class="sourceLineNo">2632</span><a name="line.2632"></a>
-<span class="sourceLineNo">2633</span>  /**<a name="line.2633"></a>
-<span class="sourceLineNo">2634</span>   * Set the list of BeanPostLoader instances.<a name="line.2634"></a>
-<span class="sourceLineNo">2635</span>   */<a name="line.2635"></a>
-<span class="sourceLineNo">2636</span>  public void setPostLoaders(List&lt;BeanPostLoad&gt; postLoaders) {<a name="line.2636"></a>
-<span class="sourceLineNo">2637</span>    this.postLoaders = postLoaders;<a name="line.2637"></a>
-<span class="sourceLineNo">2638</span>  }<a name="line.2638"></a>
-<span class="sourceLineNo">2639</span><a name="line.2639"></a>
-<span class="sourceLineNo">2640</span>  /**<a name="line.2640"></a>
-<span class="sourceLineNo">2641</span>   * Return the list of BeanPostLoader instances.<a name="line.2641"></a>
-<span class="sourceLineNo">2642</span>   */<a name="line.2642"></a>
-<span class="sourceLineNo">2643</span>  public List&lt;BeanPostConstructListener&gt; getPostConstructListeners() {<a name="line.2643"></a>
-<span class="sourceLineNo">2644</span>    return postConstructListeners;<a name="line.2644"></a>
-<span class="sourceLineNo">2645</span>  }<a name="line.2645"></a>
-<span class="sourceLineNo">2646</span><a name="line.2646"></a>
-<span class="sourceLineNo">2647</span>  /**<a name="line.2647"></a>
-<span class="sourceLineNo">2648</span>   * Set the list of BeanPostLoader instances.<a name="line.2648"></a>
-<span class="sourceLineNo">2649</span>   */<a name="line.2649"></a>
-<span class="sourceLineNo">2650</span>  public void setPostConstructListeners(List&lt;BeanPostConstructListener&gt; listeners) {<a name="line.2650"></a>
-<span class="sourceLineNo">2651</span>    this.postConstructListeners = listeners;<a name="line.2651"></a>
-<span class="sourceLineNo">2652</span>  }<a name="line.2652"></a>
-<span class="sourceLineNo">2653</span><a name="line.2653"></a>
-<span class="sourceLineNo">2654</span>  /**<a name="line.2654"></a>
-<span class="sourceLineNo">2655</span>   * Return the BeanPersistController instances.<a name="line.2655"></a>
-<span class="sourceLineNo">2656</span>   */<a name="line.2656"></a>
-<span class="sourceLineNo">2657</span>  public List&lt;BeanPersistController&gt; getPersistControllers() {<a name="line.2657"></a>
-<span class="sourceLineNo">2658</span>    return persistControllers;<a name="line.2658"></a>
-<span class="sourceLineNo">2659</span>  }<a name="line.2659"></a>
-<span class="sourceLineNo">2660</span><a name="line.2660"></a>
-<span class="sourceLineNo">2661</span>  /**<a name="line.2661"></a>
-<span class="sourceLineNo">2662</span>   * Register all the BeanPersistController instances.<a name="line.2662"></a>
-<span class="sourceLineNo">2663</span>   * &lt;p&gt;<a name="line.2663"></a>
-<span class="sourceLineNo">2664</span>   * Note alternatively you can use {@link #add(BeanPersistController)} to add<a name="line.2664"></a>
-<span class="sourceLineNo">2665</span>   * BeanPersistController instances one at a time.<a name="line.2665"></a>
-<span class="sourceLineNo">2666</span>   * &lt;/p&gt;<a name="line.2666"></a>
-<span class="sourceLineNo">2667</span>   */<a name="line.2667"></a>
-<span class="sourceLineNo">2668</span>  public void setPersistControllers(List&lt;BeanPersistController&gt; persistControllers) {<a name="line.2668"></a>
-<span class="sourceLineNo">2669</span>    this.persistControllers = persistControllers;<a name="line.2669"></a>
-<span class="sourceLineNo">2670</span>  }<a name="line.2670"></a>
-<span class="sourceLineNo">2671</span><a name="line.2671"></a>
-<span class="sourceLineNo">2672</span>  /**<a name="line.2672"></a>
-<span class="sourceLineNo">2673</span>   * Register a BeanPersistListener instance.<a name="line.2673"></a>
-<span class="sourceLineNo">2674</span>   * &lt;p&gt;<a name="line.2674"></a>
-<span class="sourceLineNo">2675</span>   * Note alternatively you can use {@link #setPersistListeners(List)} to set<a name="line.2675"></a>
-<span class="sourceLineNo">2676</span>   * all the BeanPersistListener instances.<a name="line.2676"></a>
-<span class="sourceLineNo">2677</span>   * &lt;/p&gt;<a name="line.2677"></a>
-<span class="sourceLineNo">2678</span>   */<a name="line.2678"></a>
-<span class="sourceLineNo">2679</span>  public void add(BeanPersistListener beanPersistListener) {<a name="line.2679"></a>
-<span class="sourceLineNo">2680</span>    persistListeners.add(beanPersistListener);<a name="line.2680"></a>
-<span class="sourceLineNo">2681</span>  }<a name="line.2681"></a>
-<span class="sourceLineNo">2682</span><a name="line.2682"></a>
-<span class="sourceLineNo">2683</span>  /**<a name="line.2683"></a>
-<span class="sourceLineNo">2684</span>   * Return the BeanPersistListener instances.<a name="line.2684"></a>
-<span class="sourceLineNo">2685</span>   */<a name="line.2685"></a>
-<span class="sourceLineNo">2686</span>  public List&lt;BeanPersistListener&gt; getPersistListeners() {<a name="line.2686"></a>
-<span class="sourceLineNo">2687</span>    return persistListeners;<a name="line.2687"></a>
-<span class="sourceLineNo">2688</span>  }<a name="line.2688"></a>
-<span class="sourceLineNo">2689</span><a name="line.2689"></a>
-<span class="sourceLineNo">2690</span>  /**<a name="line.2690"></a>
-<span class="sourceLineNo">2691</span>   * Add a BulkTableEventListener<a name="line.2691"></a>
-<span class="sourceLineNo">2692</span>   */<a name="line.2692"></a>
-<span class="sourceLineNo">2693</span>  public void add(BulkTableEventListener bulkTableEventListener) {<a name="line.2693"></a>
-<span class="sourceLineNo">2694</span>    bulkTableEventListeners.add(bulkTableEventListener);<a name="line.2694"></a>
-<span class="sourceLineNo">2695</span>  }<a name="line.2695"></a>
-<span class="sourceLineNo">2696</span><a name="line.2696"></a>
-<span class="sourceLineNo">2697</span>  /**<a name="line.2697"></a>
-<span class="sourceLineNo">2698</span>   * Return the list of BulkTableEventListener instances.<a name="line.2698"></a>
-<span class="sourceLineNo">2699</span>   */<a name="line.2699"></a>
-<span class="sourceLineNo">2700</span>  public List&lt;BulkTableEventListener&gt; getBulkTableEventListeners() {<a name="line.2700"></a>
-<span class="sourceLineNo">2701</span>    return bulkTableEventListeners;<a name="line.2701"></a>
-<span class="sourceLineNo">2702</span>  }<a name="line.2702"></a>
-<span class="sourceLineNo">2703</span><a name="line.2703"></a>
-<span class="sourceLineNo">2704</span>  /**<a name="line.2704"></a>
-<span class="sourceLineNo">2705</span>   * Add a ServerConfigStartup.<a name="line.2705"></a>
-<span class="sourceLineNo">2706</span>   */<a name="line.2706"></a>
-<span class="sourceLineNo">2707</span>  public void addServerConfigStartup(ServerConfigStartup configStartupListener) {<a name="line.2707"></a>
-<span class="sourceLineNo">2708</span>    configStartupListeners.add(configStartupListener);<a name="line.2708"></a>
-<span class="sourceLineNo">2709</span>  }<a name="line.2709"></a>
-<span class="sourceLineNo">2710</span><a name="line.2710"></a>
-<span class="sourceLineNo">2711</span>  /**<a name="line.2711"></a>
-<span class="sourceLineNo">2712</span>   * Return the list of ServerConfigStartup instances.<a name="line.2712"></a>
-<span class="sourceLineNo">2713</span>   */<a name="line.2713"></a>
-<span class="sourceLineNo">2714</span>  public List&lt;ServerConfigStartup&gt; getServerConfigStartupListeners() {<a name="line.2714"></a>
-<span class="sourceLineNo">2715</span>    return configStartupListeners;<a name="line.2715"></a>
-<span class="sourceLineNo">2716</span>  }<a name="line.2716"></a>
-<span class="sourceLineNo">2717</span><a name="line.2717"></a>
-<span class="sourceLineNo">2718</span>  /**<a name="line.2718"></a>
-<span class="sourceLineNo">2719</span>   * Register all the BeanPersistListener instances.<a name="line.2719"></a>
-<span class="sourceLineNo">2720</span>   * &lt;p&gt;<a name="line.2720"></a>
-<span class="sourceLineNo">2721</span>   * Note alternatively you can use {@link #add(BeanPersistListener)} to add<a name="line.2721"></a>
-<span class="sourceLineNo">2722</span>   * BeanPersistListener instances one at a time.<a name="line.2722"></a>
-<span class="sourceLineNo">2723</span>   * &lt;/p&gt;<a name="line.2723"></a>
-<span class="sourceLineNo">2724</span>   */<a name="line.2724"></a>
-<span class="sourceLineNo">2725</span>  public void setPersistListeners(List&lt;BeanPersistListener&gt; persistListeners) {<a name="line.2725"></a>
-<span class="sourceLineNo">2726</span>    this.persistListeners = persistListeners;<a name="line.2726"></a>
-<span class="sourceLineNo">2727</span>  }<a name="line.2727"></a>
-<span class="sourceLineNo">2728</span><a name="line.2728"></a>
-<span class="sourceLineNo">2729</span>  /**<a name="line.2729"></a>
-<span class="sourceLineNo">2730</span>   * Return the default PersistenceContextScope to be used if one is not explicitly set on a query.<a name="line.2730"></a>
-<span class="sourceLineNo">2731</span>   * &lt;p/&gt;<a name="line.2731"></a>
-<span class="sourceLineNo">2732</span>   * The PersistenceContextScope can specified on each query via {@link io.ebean<a name="line.2732"></a>
-<span class="sourceLineNo">2733</span>   * .Query#setPersistenceContextScope(io.ebean.PersistenceContextScope)}. If it<a name="line.2733"></a>
-<span class="sourceLineNo">2734</span>   * is not set on the query this default scope is used.<a name="line.2734"></a>
-<span class="sourceLineNo">2735</span>   *<a name="line.2735"></a>
-<span class="sourceLineNo">2736</span>   * @see Query#setPersistenceContextScope(PersistenceContextScope)<a name="line.2736"></a>
-<span class="sourceLineNo">2737</span>   */<a name="line.2737"></a>
-<span class="sourceLineNo">2738</span>  public PersistenceContextScope getPersistenceContextScope() {<a name="line.2738"></a>
-<span class="sourceLineNo">2739</span>    // if somehow null return TRANSACTION scope<a name="line.2739"></a>
-<span class="sourceLineNo">2740</span>    return persistenceContextScope == null ? PersistenceContextScope.TRANSACTION : persistenceContextScope;<a name="line.2740"></a>
-<span class="sourceLineNo">2741</span>  }<a name="line.2741"></a>
-<span class="sourceLineNo">2742</span><a name="line.2742"></a>
-<span class="sourceLineNo">2743</span>  /**<a name="line.2743"></a>
-<span class="sourceLineNo">2744</span>   * Set the PersistenceContext scope to be used if one is not explicitly set on a query.<a name="line.2744"></a>
-<span class="sourceLineNo">2745</span>   * &lt;p/&gt;<a name="line.2745"></a>
-<span class="sourceLineNo">2746</span>   * This defaults to {@link PersistenceContextScope#TRANSACTION}.<a name="line.2746"></a>
-<span class="sourceLineNo">2747</span>   * &lt;p/&gt;<a name="line.2747"></a>
-<span class="sourceLineNo">2748</span>   * The PersistenceContextScope can specified on each query via {@link io.ebean<a name="line.2748"></a>
-<span class="sourceLineNo">2749</span>   * .Query#setPersistenceContextScope(io.ebean.PersistenceContextScope)}. If it<a name="line.2749"></a>
-<span class="sourceLineNo">2750</span>   * is not set on the query this scope is used.<a name="line.2750"></a>
-<span class="sourceLineNo">2751</span>   *<a name="line.2751"></a>
-<span class="sourceLineNo">2752</span>   * @see Query#setPersistenceContextScope(PersistenceContextScope)<a name="line.2752"></a>
-<span class="sourceLineNo">2753</span>   */<a name="line.2753"></a>
-<span class="sourceLineNo">2754</span>  public void setPersistenceContextScope(PersistenceContextScope persistenceContextScope) {<a name="line.2754"></a>
-<span class="sourceLineNo">2755</span>    this.persistenceContextScope = persistenceContextScope;<a name="line.2755"></a>
-<span class="sourceLineNo">2756</span>  }<a name="line.2756"></a>
-<span class="sourceLineNo">2757</span><a name="line.2757"></a>
-<span class="sourceLineNo">2758</span>  /**<a name="line.2758"></a>
-<span class="sourceLineNo">2759</span>   * Return the ClassLoadConfig which is used to detect Joda, Java8 types etc and also<a name="line.2759"></a>
-<span class="sourceLineNo">2760</span>   * create new instances of plugins given a className.<a name="line.2760"></a>
-<span class="sourceLineNo">2761</span>   */<a name="line.2761"></a>
-<span class="sourceLineNo">2762</span>  public ClassLoadConfig getClassLoadConfig() {<a name="line.2762"></a>
-<span class="sourceLineNo">2763</span>    return classLoadConfig;<a name="line.2763"></a>
-<span class="sourceLineNo">2764</span>  }<a name="line.2764"></a>
-<span class="sourceLineNo">2765</span><a name="line.2765"></a>
-<span class="sourceLineNo">2766</span>  /**<a name="line.2766"></a>
-<span class="sourceLineNo">2767</span>   * Set the ClassLoadConfig which is used to detect Joda, Java8 types etc and also<a name="line.2767"></a>
-<span class="sourceLineNo">2768</span>   * create new instances of plugins given a className.<a name="line.2768"></a>
-<span class="sourceLineNo">2769</span>   */<a name="line.2769"></a>
-<span class="sourceLineNo">2770</span>  public void setClassLoadConfig(ClassLoadConfig classLoadConfig) {<a name="line.2770"></a>
-<span class="sourceLineNo">2771</span>    this.classLoadConfig = classLoadConfig;<a name="line.2771"></a>
-<span class="sourceLineNo">2772</span>  }<a name="line.2772"></a>
-<span class="sourceLineNo">2773</span><a name="line.2773"></a>
-<span class="sourceLineNo">2774</span>  /**<a name="line.2774"></a>
-<span class="sourceLineNo">2775</span>   * Return the service loader using the classLoader defined in ClassLoadConfig.<a name="line.2775"></a>
-<span class="sourceLineNo">2776</span>   */<a name="line.2776"></a>
-<span class="sourceLineNo">2777</span>  public &lt;T&gt; ServiceLoader&lt;T&gt; serviceLoad(Class&lt;T&gt; spiService) {<a name="line.2777"></a>
-<span class="sourceLineNo">2778</span><a name="line.2778"></a>
-<span class="sourceLineNo">2779</span>    return ServiceLoader.load(spiService, classLoadConfig.getClassLoader());<a name="line.2779"></a>
-<span class="sourceLineNo">2780</span>  }<a name="line.2780"></a>
-<span class="sourceLineNo">2781</span><a name="line.2781"></a>
-<span class="sourceLineNo">2782</span>  /**<a name="line.2782"></a>
-<span class="sourceLineNo">2783</span>   * Return the first service using the service loader (or null).<a name="line.2783"></a>
-<span class="sourceLineNo">2784</span>   */<a name="line.2784"></a>
-<span class="sourceLineNo">2785</span>  public &lt;T&gt; T service(Class&lt;T&gt; spiService) {<a name="line.2785"></a>
-<span class="sourceLineNo">2786</span>    ServiceLoader&lt;T&gt; load = serviceLoad(spiService);<a name="line.2786"></a>
-<span class="sourceLineNo">2787</span>    Iterator&lt;T&gt; serviceInstances = load.iterator();<a name="line.2787"></a>
-<span class="sourceLineNo">2788</span>    return serviceInstances.hasNext() ? serviceInstances.next() : null;<a name="line.2788"></a>
-<span class="sourceLineNo">2789</span>  }<a name="line.2789"></a>
-<span class="sourceLineNo">2790</span><a name="line.2790"></a>
-<span class="sourceLineNo">2791</span>  /**<a name="line.2791"></a>
-<span class="sourceLineNo">2792</span>   * Load settings from ebean.properties.<a name="line.2792"></a>
-<span class="sourceLineNo">2793</span>   */<a name="line.2793"></a>
-<span class="sourceLineNo">2794</span>  public void loadFromProperties() {<a name="line.2794"></a>
-<span class="sourceLineNo">2795</span>    this.properties = PropertiesLoader.load();<a name="line.2795"></a>
-<span class="sourceLineNo">2796</span>    configureFromProperties();<a name="line.2796"></a>
-<span class="sourceLineNo">2797</span>  }<a name="line.2797"></a>
-<span class="sourceLineNo">2798</span><a name="line.2798"></a>
-<span class="sourceLineNo">2799</span>  /**<a name="line.2799"></a>
-<span class="sourceLineNo">2800</span>   * Load the settings from the given properties<a name="line.2800"></a>
-<span class="sourceLineNo">2801</span>   */<a name="line.2801"></a>
-<span class="sourceLineNo">2802</span>  public void loadFromProperties(Properties properties) {<a name="line.2802"></a>
-<span class="sourceLineNo">2803</span>    // keep the properties used for configuration so that these are available for plugins<a name="line.2803"></a>
-<span class="sourceLineNo">2804</span>    this.properties = PropertiesLoader.eval(properties);<a name="line.2804"></a>
-<span class="sourceLineNo">2805</span>    configureFromProperties();<a name="line.2805"></a>
-<span class="sourceLineNo">2806</span>  }<a name="line.2806"></a>
-<span class="sourceLineNo">2807</span><a name="line.2807"></a>
-<span class="sourceLineNo">2808</span>  /**<a name="line.2808"></a>
-<span class="sourceLineNo">2809</span>   * Load the settings from the given properties<a name="line.2809"></a>
-<span class="sourceLineNo">2810</span>   */<a name="line.2810"></a>
-<span class="sourceLineNo">2811</span>  private void configureFromProperties() {<a name="line.2811"></a>
-<span class="sourceLineNo">2812</span>    List&lt;AutoConfigure&gt; autoConfigures = autoConfiguration();<a name="line.2812"></a>
-<span class="sourceLineNo">2813</span>    loadSettings(new PropertiesWrapper("ebean", name, properties, classLoadConfig));<a name="line.2813"></a>
-<span class="sourceLineNo">2814</span>    for (AutoConfigure autoConfigure : autoConfigures) {<a name="line.2814"></a>
-<span class="sourceLineNo">2815</span>      autoConfigure.postConfigure(this);<a name="line.2815"></a>
-<span class="sourceLineNo">2816</span>    }<a name="line.2816"></a>
-<span class="sourceLineNo">2817</span>  }<a name="line.2817"></a>
-<span class="sourceLineNo">2818</span><a name="line.2818"></a>
-<span class="sourceLineNo">2819</span>  /**<a name="line.2819"></a>
-<span class="sourceLineNo">2820</span>   * Use a 'plugin' to provide automatic configuration. Intended for automatic testing<a name="line.2820"></a>
-<span class="sourceLineNo">2821</span>   * configuration with Docker containers via ebean-test-config.<a name="line.2821"></a>
-<span class="sourceLineNo">2822</span>   */<a name="line.2822"></a>
-<span class="sourceLineNo">2823</span>  private List&lt;AutoConfigure&gt; autoConfiguration() {<a name="line.2823"></a>
-<span class="sourceLineNo">2824</span>    List&lt;AutoConfigure&gt; list = new ArrayList&lt;&gt;();<a name="line.2824"></a>
-<span class="sourceLineNo">2825</span>    for (AutoConfigure autoConfigure : serviceLoad(AutoConfigure.class)) {<a name="line.2825"></a>
-<span class="sourceLineNo">2826</span>      autoConfigure.preConfigure(this);<a name="line.2826"></a>
-<span class="sourceLineNo">2827</span>      list.add(autoConfigure);<a name="line.2827"></a>
-<span class="sourceLineNo">2828</span>    }<a name="line.2828"></a>
-<span class="sourceLineNo">2829</span>    return list;<a name="line.2829"></a>
-<span class="sourceLineNo">2830</span>  }<a name="line.2830"></a>
-<span class="sourceLineNo">2831</span><a name="line.2831"></a>
-<span class="sourceLineNo">2832</span>  /**<a name="line.2832"></a>
-<span class="sourceLineNo">2833</span>   * Return the properties that we used for configuration and were set via a call to loadFromProperties().<a name="line.2833"></a>
-<span class="sourceLineNo">2834</span>   */<a name="line.2834"></a>
-<span class="sourceLineNo">2835</span>  public Properties getProperties() {<a name="line.2835"></a>
-<span class="sourceLineNo">2836</span>    return properties;<a name="line.2836"></a>
-<span class="sourceLineNo">2837</span>  }<a name="line.2837"></a>
-<span class="sourceLineNo">2838</span><a name="line.2838"></a>
-<span class="sourceLineNo">2839</span>  /**<a name="line.2839"></a>
-<span class="sourceLineNo">2840</span>   * loads the data source settings to preserve existing behaviour. IMHO, if someone has set the datasource config already,<a name="line.2840"></a>
-<span class="sourceLineNo">2841</span>   * they don't want the settings to be reloaded and reset. This allows a descending class to override this behaviour and prevent it<a name="line.2841"></a>
-<span class="sourceLineNo">2842</span>   * from happening.<a name="line.2842"></a>
-<span class="sourceLineNo">2843</span>   *<a name="line.2843"></a>
-<span class="sourceLineNo">2844</span>   * @param p - The defined property source passed to load settings<a name="line.2844"></a>
-<span class="sourceLineNo">2845</span>   */<a name="line.2845"></a>
-<span class="sourceLineNo">2846</span>  protected void loadDataSourceSettings(PropertiesWrapper p) {<a name="line.2846"></a>
-<span class="sourceLineNo">2847</span>    dataSourceConfig.loadSettings(p.properties, name);<a name="line.2847"></a>
-<span class="sourceLineNo">2848</span>    readOnlyDataSourceConfig.loadSettings(p.properties, name);<a name="line.2848"></a>
-<span class="sourceLineNo">2849</span>  }<a name="line.2849"></a>
-<span class="sourceLineNo">2850</span><a name="line.2850"></a>
-<span class="sourceLineNo">2851</span>  /**<a name="line.2851"></a>
-<span class="sourceLineNo">2852</span>   * This is broken out to allow overridden behaviour.<a name="line.2852"></a>
-<span class="sourceLineNo">2853</span>   */<a name="line.2853"></a>
-<span class="sourceLineNo">2854</span>  protected void loadDocStoreSettings(PropertiesWrapper p) {<a name="line.2854"></a>
-<span class="sourceLineNo">2855</span>    docStoreConfig.loadSettings(p);<a name="line.2855"></a>
-<span class="sourceLineNo">2856</span>  }<a name="line.2856"></a>
-<span class="sourceLineNo">2857</span><a name="line.2857"></a>
-<span class="sourceLineNo">2858</span>  /**<a name="line.2858"></a>
-<span class="sourceLineNo">2859</span>   * This is broken out to allow overridden behaviour.<a name="line.2859"></a>
-<span class="sourceLineNo">2860</span>   */<a name="line.2860"></a>
-<span class="sourceLineNo">2861</span>  protected void loadAutoTuneSettings(PropertiesWrapper p) {<a name="line.2861"></a>
-<span class="sourceLineNo">2862</span>    autoTuneConfig.loadSettings(p);<a name="line.2862"></a>
-<span class="sourceLineNo">2863</span>  }<a name="line.2863"></a>
-<span class="sourceLineNo">2864</span><a name="line.2864"></a>
-<span class="sourceLineNo">2865</span>  /**<a name="line.2865"></a>
-<span class="sourceLineNo">2866</span>   * Load the configuration settings from the properties file.<a name="line.2866"></a>
-<span class="sourceLineNo">2867</span>   */<a name="line.2867"></a>
-<span class="sourceLineNo">2868</span>  protected void loadSettings(PropertiesWrapper p) {<a name="line.2868"></a>
-<span class="sourceLineNo">2869</span><a name="line.2869"></a>
-<span class="sourceLineNo">2870</span>    dbSchema = p.get("dbSchema", dbSchema);<a name="line.2870"></a>
-<span class="sourceLineNo">2871</span>    if (dbSchema != null) {<a name="line.2871"></a>
-<span class="sourceLineNo">2872</span>      migrationConfig.setDefaultDbSchema(dbSchema);<a name="line.2872"></a>
-<span class="sourceLineNo">2873</span>    }<a name="line.2873"></a>
-<span class="sourceLineNo">2874</span>    profilingConfig.loadSettings(p, name);<a name="line.2874"></a>
-<span class="sourceLineNo">2875</span>    migrationConfig.loadSettings(p, name);<a name="line.2875"></a>
-<span class="sourceLineNo">2876</span>    platformConfig.loadSettings(p);<a name="line.2876"></a>
-<span class="sourceLineNo">2877</span>    if (platformConfig.isAllQuotedIdentifiers()) {<a name="line.2877"></a>
-<span class="sourceLineNo">2878</span>      adjustNamingConventionForAllQuoted();<a name="line.2878"></a>
+<span class="sourceLineNo">2360</span>   * }&lt;/pre&gt;<a name="line.2360"></a>
+<span class="sourceLineNo">2361</span>   *<a name="line.2361"></a>
+<span class="sourceLineNo">2362</span>   * @see Transaction#setSkipCache(boolean)<a name="line.2362"></a>
+<span class="sourceLineNo">2363</span>   */<a name="line.2363"></a>
+<span class="sourceLineNo">2364</span>  public boolean isSkipCacheAfterWrite() {<a name="line.2364"></a>
+<span class="sourceLineNo">2365</span>    return skipCacheAfterWrite;<a name="line.2365"></a>
+<span class="sourceLineNo">2366</span>  }<a name="line.2366"></a>
+<span class="sourceLineNo">2367</span><a name="line.2367"></a>
+<span class="sourceLineNo">2368</span>  /**<a name="line.2368"></a>
+<span class="sourceLineNo">2369</span>   * Set to false when we still want to hit the cache after a write has occurred on a transaction.<a name="line.2369"></a>
+<span class="sourceLineNo">2370</span>   */<a name="line.2370"></a>
+<span class="sourceLineNo">2371</span>  public void setSkipCacheAfterWrite(boolean skipCacheAfterWrite) {<a name="line.2371"></a>
+<span class="sourceLineNo">2372</span>    this.skipCacheAfterWrite = skipCacheAfterWrite;<a name="line.2372"></a>
+<span class="sourceLineNo">2373</span>  }<a name="line.2373"></a>
+<span class="sourceLineNo">2374</span><a name="line.2374"></a>
+<span class="sourceLineNo">2375</span>  /**<a name="line.2375"></a>
+<span class="sourceLineNo">2376</span>   * Return true to only update changed properties.<a name="line.2376"></a>
+<span class="sourceLineNo">2377</span>   */<a name="line.2377"></a>
+<span class="sourceLineNo">2378</span>  public boolean isUpdateChangesOnly() {<a name="line.2378"></a>
+<span class="sourceLineNo">2379</span>    return updateChangesOnly;<a name="line.2379"></a>
+<span class="sourceLineNo">2380</span>  }<a name="line.2380"></a>
+<span class="sourceLineNo">2381</span><a name="line.2381"></a>
+<span class="sourceLineNo">2382</span>  /**<a name="line.2382"></a>
+<span class="sourceLineNo">2383</span>   * Set to true to only update changed properties.<a name="line.2383"></a>
+<span class="sourceLineNo">2384</span>   */<a name="line.2384"></a>
+<span class="sourceLineNo">2385</span>  public void setUpdateChangesOnly(boolean updateChangesOnly) {<a name="line.2385"></a>
+<span class="sourceLineNo">2386</span>    this.updateChangesOnly = updateChangesOnly;<a name="line.2386"></a>
+<span class="sourceLineNo">2387</span>  }<a name="line.2387"></a>
+<span class="sourceLineNo">2388</span><a name="line.2388"></a>
+<span class="sourceLineNo">2389</span>  /**<a name="line.2389"></a>
+<span class="sourceLineNo">2390</span>   * Returns true if updates in JDBC batch default to include all properties by default.<a name="line.2390"></a>
+<span class="sourceLineNo">2391</span>   */<a name="line.2391"></a>
+<span class="sourceLineNo">2392</span>  public boolean isUpdateAllPropertiesInBatch() {<a name="line.2392"></a>
+<span class="sourceLineNo">2393</span>    return updateAllPropertiesInBatch;<a name="line.2393"></a>
+<span class="sourceLineNo">2394</span>  }<a name="line.2394"></a>
+<span class="sourceLineNo">2395</span><a name="line.2395"></a>
+<span class="sourceLineNo">2396</span>  /**<a name="line.2396"></a>
+<span class="sourceLineNo">2397</span>   * Set to false if by default updates in JDBC batch should not include all properties.<a name="line.2397"></a>
+<span class="sourceLineNo">2398</span>   * &lt;p&gt;<a name="line.2398"></a>
+<span class="sourceLineNo">2399</span>   * This mode can be explicitly set per transaction.<a name="line.2399"></a>
+<span class="sourceLineNo">2400</span>   * &lt;/p&gt;<a name="line.2400"></a>
+<span class="sourceLineNo">2401</span>   *<a name="line.2401"></a>
+<span class="sourceLineNo">2402</span>   * @see Transaction#setUpdateAllLoadedProperties(boolean)<a name="line.2402"></a>
+<span class="sourceLineNo">2403</span>   */<a name="line.2403"></a>
+<span class="sourceLineNo">2404</span>  public void setUpdateAllPropertiesInBatch(boolean updateAllPropertiesInBatch) {<a name="line.2404"></a>
+<span class="sourceLineNo">2405</span>    this.updateAllPropertiesInBatch = updateAllPropertiesInBatch;<a name="line.2405"></a>
+<span class="sourceLineNo">2406</span>  }<a name="line.2406"></a>
+<span class="sourceLineNo">2407</span><a name="line.2407"></a>
+<span class="sourceLineNo">2408</span>  /**<a name="line.2408"></a>
+<span class="sourceLineNo">2409</span>   * Return true if updates by default delete missing children when cascading save to a OneToMany or<a name="line.2409"></a>
+<span class="sourceLineNo">2410</span>   * ManyToMany. When not set this defaults to true.<a name="line.2410"></a>
+<span class="sourceLineNo">2411</span>   */<a name="line.2411"></a>
+<span class="sourceLineNo">2412</span>  public boolean isUpdatesDeleteMissingChildren() {<a name="line.2412"></a>
+<span class="sourceLineNo">2413</span>    return updatesDeleteMissingChildren;<a name="line.2413"></a>
+<span class="sourceLineNo">2414</span>  }<a name="line.2414"></a>
+<span class="sourceLineNo">2415</span><a name="line.2415"></a>
+<span class="sourceLineNo">2416</span>  /**<a name="line.2416"></a>
+<span class="sourceLineNo">2417</span>   * Set if updates by default delete missing children when cascading save to a OneToMany or<a name="line.2417"></a>
+<span class="sourceLineNo">2418</span>   * ManyToMany. When not set this defaults to true.<a name="line.2418"></a>
+<span class="sourceLineNo">2419</span>   */<a name="line.2419"></a>
+<span class="sourceLineNo">2420</span>  public void setUpdatesDeleteMissingChildren(boolean updatesDeleteMissingChildren) {<a name="line.2420"></a>
+<span class="sourceLineNo">2421</span>    this.updatesDeleteMissingChildren = updatesDeleteMissingChildren;<a name="line.2421"></a>
+<span class="sourceLineNo">2422</span>  }<a name="line.2422"></a>
+<span class="sourceLineNo">2423</span><a name="line.2423"></a>
+<span class="sourceLineNo">2424</span>  /**<a name="line.2424"></a>
+<span class="sourceLineNo">2425</span>   * Return true if query statistics should be collected by ObjectGraphNode.<a name="line.2425"></a>
+<span class="sourceLineNo">2426</span>   */<a name="line.2426"></a>
+<span class="sourceLineNo">2427</span>  public boolean isCollectQueryStatsByNode() {<a name="line.2427"></a>
+<span class="sourceLineNo">2428</span>    return collectQueryStatsByNode;<a name="line.2428"></a>
+<span class="sourceLineNo">2429</span>  }<a name="line.2429"></a>
+<span class="sourceLineNo">2430</span><a name="line.2430"></a>
+<span class="sourceLineNo">2431</span>  /**<a name="line.2431"></a>
+<span class="sourceLineNo">2432</span>   * Set to true to collection query execution statistics by ObjectGraphNode.<a name="line.2432"></a>
+<span class="sourceLineNo">2433</span>   * &lt;p&gt;<a name="line.2433"></a>
+<span class="sourceLineNo">2434</span>   * These statistics can be used to highlight code/query 'origin points' that result in lots of lazy loading.<a name="line.2434"></a>
+<span class="sourceLineNo">2435</span>   * &lt;/p&gt;<a name="line.2435"></a>
+<span class="sourceLineNo">2436</span>   * &lt;p&gt;<a name="line.2436"></a>
+<span class="sourceLineNo">2437</span>   * It is considered safe/fine to have this set to true for production.<a name="line.2437"></a>
+<span class="sourceLineNo">2438</span>   * &lt;/p&gt;<a name="line.2438"></a>
+<span class="sourceLineNo">2439</span>   * &lt;p&gt;<a name="line.2439"></a>
+<span class="sourceLineNo">2440</span>   * This information can be later retrieved via {@link MetaInfoManager}.<a name="line.2440"></a>
+<span class="sourceLineNo">2441</span>   * &lt;/p&gt;<a name="line.2441"></a>
+<span class="sourceLineNo">2442</span>   *<a name="line.2442"></a>
+<span class="sourceLineNo">2443</span>   * @see MetaInfoManager<a name="line.2443"></a>
+<span class="sourceLineNo">2444</span>   */<a name="line.2444"></a>
+<span class="sourceLineNo">2445</span>  public void setCollectQueryStatsByNode(boolean collectQueryStatsByNode) {<a name="line.2445"></a>
+<span class="sourceLineNo">2446</span>    this.collectQueryStatsByNode = collectQueryStatsByNode;<a name="line.2446"></a>
+<span class="sourceLineNo">2447</span>  }<a name="line.2447"></a>
+<span class="sourceLineNo">2448</span><a name="line.2448"></a>
+<span class="sourceLineNo">2449</span>  /**<a name="line.2449"></a>
+<span class="sourceLineNo">2450</span>   * Return true if query plans should also collect their 'origins'. This means for a given query plan you<a name="line.2450"></a>
+<span class="sourceLineNo">2451</span>   * can identify the code/origin points where this query resulted from including lazy loading origins.<a name="line.2451"></a>
+<span class="sourceLineNo">2452</span>   */<a name="line.2452"></a>
+<span class="sourceLineNo">2453</span>  public boolean isCollectQueryOrigins() {<a name="line.2453"></a>
+<span class="sourceLineNo">2454</span>    return collectQueryOrigins;<a name="line.2454"></a>
+<span class="sourceLineNo">2455</span>  }<a name="line.2455"></a>
+<span class="sourceLineNo">2456</span><a name="line.2456"></a>
+<span class="sourceLineNo">2457</span>  /**<a name="line.2457"></a>
+<span class="sourceLineNo">2458</span>   * Set to true if query plans should collect their 'origin' points. This means for a given query plan you<a name="line.2458"></a>
+<span class="sourceLineNo">2459</span>   * can identify the code/origin points where this query resulted from including lazy loading origins.<a name="line.2459"></a>
+<span class="sourceLineNo">2460</span>   * &lt;p&gt;<a name="line.2460"></a>
+<span class="sourceLineNo">2461</span>   * This information can be later retrieved via {@link MetaInfoManager}.<a name="line.2461"></a>
+<span class="sourceLineNo">2462</span>   * &lt;/p&gt;<a name="line.2462"></a>
+<span class="sourceLineNo">2463</span>   *<a name="line.2463"></a>
+<span class="sourceLineNo">2464</span>   * @see MetaInfoManager<a name="line.2464"></a>
+<span class="sourceLineNo">2465</span>   */<a name="line.2465"></a>
+<span class="sourceLineNo">2466</span>  public void setCollectQueryOrigins(boolean collectQueryOrigins) {<a name="line.2466"></a>
+<span class="sourceLineNo">2467</span>    this.collectQueryOrigins = collectQueryOrigins;<a name="line.2467"></a>
+<span class="sourceLineNo">2468</span>  }<a name="line.2468"></a>
+<span class="sourceLineNo">2469</span><a name="line.2469"></a>
+<span class="sourceLineNo">2470</span>  /**<a name="line.2470"></a>
+<span class="sourceLineNo">2471</span>   * Returns the resource directory.<a name="line.2471"></a>
+<span class="sourceLineNo">2472</span>   */<a name="line.2472"></a>
+<span class="sourceLineNo">2473</span>  public String getResourceDirectory() {<a name="line.2473"></a>
+<span class="sourceLineNo">2474</span>    return resourceDirectory;<a name="line.2474"></a>
+<span class="sourceLineNo">2475</span>  }<a name="line.2475"></a>
+<span class="sourceLineNo">2476</span><a name="line.2476"></a>
+<span class="sourceLineNo">2477</span>  /**<a name="line.2477"></a>
+<span class="sourceLineNo">2478</span>   * Sets the resource directory.<a name="line.2478"></a>
+<span class="sourceLineNo">2479</span>   */<a name="line.2479"></a>
+<span class="sourceLineNo">2480</span>  public void setResourceDirectory(String resourceDirectory) {<a name="line.2480"></a>
+<span class="sourceLineNo">2481</span>    this.resourceDirectory = resourceDirectory;<a name="line.2481"></a>
+<span class="sourceLineNo">2482</span>  }<a name="line.2482"></a>
+<span class="sourceLineNo">2483</span><a name="line.2483"></a>
+<span class="sourceLineNo">2484</span>  /**<a name="line.2484"></a>
+<span class="sourceLineNo">2485</span>   * Add a custom type mapping.<a name="line.2485"></a>
+<span class="sourceLineNo">2486</span>   * &lt;p&gt;<a name="line.2486"></a>
+<span class="sourceLineNo">2487</span>   * &lt;pre&gt;{@code<a name="line.2487"></a>
+<span class="sourceLineNo">2488</span>   *<a name="line.2488"></a>
+<span class="sourceLineNo">2489</span>   *   // set the default mapping for BigDecimal.class/decimal<a name="line.2489"></a>
+<span class="sourceLineNo">2490</span>   *   serverConfig.addCustomMapping(DbType.DECIMAL, "decimal(18,6)");<a name="line.2490"></a>
+<span class="sourceLineNo">2491</span>   *<a name="line.2491"></a>
+<span class="sourceLineNo">2492</span>   *   // set the default mapping for String.class/varchar but only for Postgres<a name="line.2492"></a>
+<span class="sourceLineNo">2493</span>   *   serverConfig.addCustomMapping(DbType.VARCHAR, "text", Platform.POSTGRES);<a name="line.2493"></a>
+<span class="sourceLineNo">2494</span>   *<a name="line.2494"></a>
+<span class="sourceLineNo">2495</span>   * }&lt;/pre&gt;<a name="line.2495"></a>
+<span class="sourceLineNo">2496</span>   *<a name="line.2496"></a>
+<span class="sourceLineNo">2497</span>   * @param type             The DB type this mapping should apply to<a name="line.2497"></a>
+<span class="sourceLineNo">2498</span>   * @param columnDefinition The column definition that should be used<a name="line.2498"></a>
+<span class="sourceLineNo">2499</span>   * @param platform         Optionally specify the platform this mapping should apply to.<a name="line.2499"></a>
+<span class="sourceLineNo">2500</span>   */<a name="line.2500"></a>
+<span class="sourceLineNo">2501</span>  public void addCustomMapping(DbType type, String columnDefinition, Platform platform) {<a name="line.2501"></a>
+<span class="sourceLineNo">2502</span>    platformConfig.addCustomMapping(type, columnDefinition, platform);<a name="line.2502"></a>
+<span class="sourceLineNo">2503</span>  }<a name="line.2503"></a>
+<span class="sourceLineNo">2504</span><a name="line.2504"></a>
+<span class="sourceLineNo">2505</span>  /**<a name="line.2505"></a>
+<span class="sourceLineNo">2506</span>   * Add a custom type mapping that applies to all platforms.<a name="line.2506"></a>
+<span class="sourceLineNo">2507</span>   * &lt;p&gt;<a name="line.2507"></a>
+<span class="sourceLineNo">2508</span>   * &lt;pre&gt;{@code<a name="line.2508"></a>
+<span class="sourceLineNo">2509</span>   *<a name="line.2509"></a>
+<span class="sourceLineNo">2510</span>   *   // set the default mapping for BigDecimal/decimal<a name="line.2510"></a>
+<span class="sourceLineNo">2511</span>   *   serverConfig.addCustomMapping(DbType.DECIMAL, "decimal(18,6)");<a name="line.2511"></a>
+<span class="sourceLineNo">2512</span>   *<a name="line.2512"></a>
+<span class="sourceLineNo">2513</span>   *   // set the default mapping for String/varchar<a name="line.2513"></a>
+<span class="sourceLineNo">2514</span>   *   serverConfig.addCustomMapping(DbType.VARCHAR, "text");<a name="line.2514"></a>
+<span class="sourceLineNo">2515</span>   *<a name="line.2515"></a>
+<span class="sourceLineNo">2516</span>   * }&lt;/pre&gt;<a name="line.2516"></a>
+<span class="sourceLineNo">2517</span>   *<a name="line.2517"></a>
+<span class="sourceLineNo">2518</span>   * @param type             The DB type this mapping should apply to<a name="line.2518"></a>
+<span class="sourceLineNo">2519</span>   * @param columnDefinition The column definition that should be used<a name="line.2519"></a>
+<span class="sourceLineNo">2520</span>   */<a name="line.2520"></a>
+<span class="sourceLineNo">2521</span>  public void addCustomMapping(DbType type, String columnDefinition) {<a name="line.2521"></a>
+<span class="sourceLineNo">2522</span>    platformConfig.addCustomMapping(type, columnDefinition);<a name="line.2522"></a>
+<span class="sourceLineNo">2523</span>  }<a name="line.2523"></a>
+<span class="sourceLineNo">2524</span><a name="line.2524"></a>
+<span class="sourceLineNo">2525</span>  /**<a name="line.2525"></a>
+<span class="sourceLineNo">2526</span>   * Register a BeanQueryAdapter instance.<a name="line.2526"></a>
+<span class="sourceLineNo">2527</span>   * &lt;p&gt;<a name="line.2527"></a>
+<span class="sourceLineNo">2528</span>   * Note alternatively you can use {@link #setQueryAdapters(List)} to set all<a name="line.2528"></a>
+<span class="sourceLineNo">2529</span>   * the BeanQueryAdapter instances.<a name="line.2529"></a>
+<span class="sourceLineNo">2530</span>   * &lt;/p&gt;<a name="line.2530"></a>
+<span class="sourceLineNo">2531</span>   */<a name="line.2531"></a>
+<span class="sourceLineNo">2532</span>  public void add(BeanQueryAdapter beanQueryAdapter) {<a name="line.2532"></a>
+<span class="sourceLineNo">2533</span>    queryAdapters.add(beanQueryAdapter);<a name="line.2533"></a>
+<span class="sourceLineNo">2534</span>  }<a name="line.2534"></a>
+<span class="sourceLineNo">2535</span><a name="line.2535"></a>
+<span class="sourceLineNo">2536</span>  /**<a name="line.2536"></a>
+<span class="sourceLineNo">2537</span>   * Return the BeanQueryAdapter instances.<a name="line.2537"></a>
+<span class="sourceLineNo">2538</span>   */<a name="line.2538"></a>
+<span class="sourceLineNo">2539</span>  public List&lt;BeanQueryAdapter&gt; getQueryAdapters() {<a name="line.2539"></a>
+<span class="sourceLineNo">2540</span>    return queryAdapters;<a name="line.2540"></a>
+<span class="sourceLineNo">2541</span>  }<a name="line.2541"></a>
+<span class="sourceLineNo">2542</span><a name="line.2542"></a>
+<span class="sourceLineNo">2543</span>  /**<a name="line.2543"></a>
+<span class="sourceLineNo">2544</span>   * Register all the BeanQueryAdapter instances.<a name="line.2544"></a>
+<span class="sourceLineNo">2545</span>   * &lt;p&gt;<a name="line.2545"></a>
+<span class="sourceLineNo">2546</span>   * Note alternatively you can use {@link #add(BeanQueryAdapter)} to add<a name="line.2546"></a>
+<span class="sourceLineNo">2547</span>   * BeanQueryAdapter instances one at a time.<a name="line.2547"></a>
+<span class="sourceLineNo">2548</span>   * &lt;/p&gt;<a name="line.2548"></a>
+<span class="sourceLineNo">2549</span>   */<a name="line.2549"></a>
+<span class="sourceLineNo">2550</span>  public void setQueryAdapters(List&lt;BeanQueryAdapter&gt; queryAdapters) {<a name="line.2550"></a>
+<span class="sourceLineNo">2551</span>    this.queryAdapters = queryAdapters;<a name="line.2551"></a>
+<span class="sourceLineNo">2552</span>  }<a name="line.2552"></a>
+<span class="sourceLineNo">2553</span><a name="line.2553"></a>
+<span class="sourceLineNo">2554</span>  /**<a name="line.2554"></a>
+<span class="sourceLineNo">2555</span>   * Return the custom IdGenerator instances.<a name="line.2555"></a>
+<span class="sourceLineNo">2556</span>   */<a name="line.2556"></a>
+<span class="sourceLineNo">2557</span>  public List&lt;IdGenerator&gt; getIdGenerators() {<a name="line.2557"></a>
+<span class="sourceLineNo">2558</span>    return idGenerators;<a name="line.2558"></a>
+<span class="sourceLineNo">2559</span>  }<a name="line.2559"></a>
+<span class="sourceLineNo">2560</span><a name="line.2560"></a>
+<span class="sourceLineNo">2561</span>  /**<a name="line.2561"></a>
+<span class="sourceLineNo">2562</span>   * Set the custom IdGenerator instances.<a name="line.2562"></a>
+<span class="sourceLineNo">2563</span>   */<a name="line.2563"></a>
+<span class="sourceLineNo">2564</span>  public void setIdGenerators(List&lt;IdGenerator&gt; idGenerators) {<a name="line.2564"></a>
+<span class="sourceLineNo">2565</span>    this.idGenerators = idGenerators;<a name="line.2565"></a>
+<span class="sourceLineNo">2566</span>  }<a name="line.2566"></a>
+<span class="sourceLineNo">2567</span><a name="line.2567"></a>
+<span class="sourceLineNo">2568</span>  /**<a name="line.2568"></a>
+<span class="sourceLineNo">2569</span>   * Register a customer IdGenerator instance.<a name="line.2569"></a>
+<span class="sourceLineNo">2570</span>   */<a name="line.2570"></a>
+<span class="sourceLineNo">2571</span>  public void add(IdGenerator idGenerator) {<a name="line.2571"></a>
+<span class="sourceLineNo">2572</span>    idGenerators.add(idGenerator);<a name="line.2572"></a>
+<span class="sourceLineNo">2573</span>  }<a name="line.2573"></a>
+<span class="sourceLineNo">2574</span><a name="line.2574"></a>
+<span class="sourceLineNo">2575</span>  /**<a name="line.2575"></a>
+<span class="sourceLineNo">2576</span>   * Register a BeanPersistController instance.<a name="line.2576"></a>
+<span class="sourceLineNo">2577</span>   * &lt;p&gt;<a name="line.2577"></a>
+<span class="sourceLineNo">2578</span>   * Note alternatively you can use {@link #setPersistControllers(List)} to set<a name="line.2578"></a>
+<span class="sourceLineNo">2579</span>   * all the BeanPersistController instances.<a name="line.2579"></a>
+<span class="sourceLineNo">2580</span>   * &lt;/p&gt;<a name="line.2580"></a>
+<span class="sourceLineNo">2581</span>   */<a name="line.2581"></a>
+<span class="sourceLineNo">2582</span>  public void add(BeanPersistController beanPersistController) {<a name="line.2582"></a>
+<span class="sourceLineNo">2583</span>    persistControllers.add(beanPersistController);<a name="line.2583"></a>
+<span class="sourceLineNo">2584</span>  }<a name="line.2584"></a>
+<span class="sourceLineNo">2585</span><a name="line.2585"></a>
+<span class="sourceLineNo">2586</span>  /**<a name="line.2586"></a>
+<span class="sourceLineNo">2587</span>   * Register a BeanPostLoad instance.<a name="line.2587"></a>
+<span class="sourceLineNo">2588</span>   * &lt;p&gt;<a name="line.2588"></a>
+<span class="sourceLineNo">2589</span>   * Note alternatively you can use {@link #setPostLoaders(List)} to set<a name="line.2589"></a>
+<span class="sourceLineNo">2590</span>   * all the BeanPostLoad instances.<a name="line.2590"></a>
+<span class="sourceLineNo">2591</span>   * &lt;/p&gt;<a name="line.2591"></a>
+<span class="sourceLineNo">2592</span>   */<a name="line.2592"></a>
+<span class="sourceLineNo">2593</span>  public void add(BeanPostLoad postLoad) {<a name="line.2593"></a>
+<span class="sourceLineNo">2594</span>    postLoaders.add(postLoad);<a name="line.2594"></a>
+<span class="sourceLineNo">2595</span>  }<a name="line.2595"></a>
+<span class="sourceLineNo">2596</span><a name="line.2596"></a>
+<span class="sourceLineNo">2597</span>  /**<a name="line.2597"></a>
+<span class="sourceLineNo">2598</span>   * Register a BeanPostConstructListener instance.<a name="line.2598"></a>
+<span class="sourceLineNo">2599</span>   * &lt;p&gt;<a name="line.2599"></a>
+<span class="sourceLineNo">2600</span>   * Note alternatively you can use {@link #setPostConstructListeners(List)} to set<a name="line.2600"></a>
+<span class="sourceLineNo">2601</span>   * all the BeanPostConstructListener instances.<a name="line.2601"></a>
+<span class="sourceLineNo">2602</span>   * &lt;/p&gt;<a name="line.2602"></a>
+<span class="sourceLineNo">2603</span>   */<a name="line.2603"></a>
+<span class="sourceLineNo">2604</span>  public void add(BeanPostConstructListener listener) {<a name="line.2604"></a>
+<span class="sourceLineNo">2605</span>    postConstructListeners.add(listener);<a name="line.2605"></a>
+<span class="sourceLineNo">2606</span>  }<a name="line.2606"></a>
+<span class="sourceLineNo">2607</span><a name="line.2607"></a>
+<span class="sourceLineNo">2608</span>  /**<a name="line.2608"></a>
+<span class="sourceLineNo">2609</span>   * Return the list of BeanFindController instances.<a name="line.2609"></a>
+<span class="sourceLineNo">2610</span>   */<a name="line.2610"></a>
+<span class="sourceLineNo">2611</span>  public List&lt;BeanFindController&gt; getFindControllers() {<a name="line.2611"></a>
+<span class="sourceLineNo">2612</span>    return findControllers;<a name="line.2612"></a>
+<span class="sourceLineNo">2613</span>  }<a name="line.2613"></a>
+<span class="sourceLineNo">2614</span><a name="line.2614"></a>
+<span class="sourceLineNo">2615</span>  /**<a name="line.2615"></a>
+<span class="sourceLineNo">2616</span>   * Set the list of BeanFindController instances.<a name="line.2616"></a>
+<span class="sourceLineNo">2617</span>   */<a name="line.2617"></a>
+<span class="sourceLineNo">2618</span>  public void setFindControllers(List&lt;BeanFindController&gt; findControllers) {<a name="line.2618"></a>
+<span class="sourceLineNo">2619</span>    this.findControllers = findControllers;<a name="line.2619"></a>
+<span class="sourceLineNo">2620</span>  }<a name="line.2620"></a>
+<span class="sourceLineNo">2621</span><a name="line.2621"></a>
+<span class="sourceLineNo">2622</span>  /**<a name="line.2622"></a>
+<span class="sourceLineNo">2623</span>   * Return the list of BeanPostLoader instances.<a name="line.2623"></a>
+<span class="sourceLineNo">2624</span>   */<a name="line.2624"></a>
+<span class="sourceLineNo">2625</span>  public List&lt;BeanPostLoad&gt; getPostLoaders() {<a name="line.2625"></a>
+<span class="sourceLineNo">2626</span>    return postLoaders;<a name="line.2626"></a>
+<span class="sourceLineNo">2627</span>  }<a name="line.2627"></a>
+<span class="sourceLineNo">2628</span><a name="line.2628"></a>
+<span class="sourceLineNo">2629</span>  /**<a name="line.2629"></a>
+<span class="sourceLineNo">2630</span>   * Set the list of BeanPostLoader instances.<a name="line.2630"></a>
+<span class="sourceLineNo">2631</span>   */<a name="line.2631"></a>
+<span class="sourceLineNo">2632</span>  public void setPostLoaders(List&lt;BeanPostLoad&gt; postLoaders) {<a name="line.2632"></a>
+<span class="sourceLineNo">2633</span>    this.postLoaders = postLoaders;<a name="line.2633"></a>
+<span class="sourceLineNo">2634</span>  }<a name="line.2634"></a>
+<span class="sourceLineNo">2635</span><a name="line.2635"></a>
+<span class="sourceLineNo">2636</span>  /**<a name="line.2636"></a>
+<span class="sourceLineNo">2637</span>   * Return the list of BeanPostLoader instances.<a name="line.2637"></a>
+<span class="sourceLineNo">2638</span>   */<a name="line.2638"></a>
+<span class="sourceLineNo">2639</span>  public List&lt;BeanPostConstructListener&gt; getPostConstructListeners() {<a name="line.2639"></a>
+<span class="sourceLineNo">2640</span>    return postConstructListeners;<a name="line.2640"></a>
+<span class="sourceLineNo">2641</span>  }<a name="line.2641"></a>
+<span class="sourceLineNo">2642</span><a name="line.2642"></a>
+<span class="sourceLineNo">2643</span>  /**<a name="line.2643"></a>
+<span class="sourceLineNo">2644</span>   * Set the list of BeanPostLoader instances.<a name="line.2644"></a>
+<span class="sourceLineNo">2645</span>   */<a name="line.2645"></a>
+<span class="sourceLineNo">2646</span>  public void setPostConstructListeners(List&lt;BeanPostConstructListener&gt; listeners) {<a name="line.2646"></a>
+<span class="sourceLineNo">2647</span>    this.postConstructListeners = listeners;<a name="line.2647"></a>
+<span class="sourceLineNo">2648</span>  }<a name="line.2648"></a>
+<span class="sourceLineNo">2649</span><a name="line.2649"></a>
+<span class="sourceLineNo">2650</span>  /**<a name="line.2650"></a>
+<span class="sourceLineNo">2651</span>   * Return the BeanPersistController instances.<a name="line.2651"></a>
+<span class="sourceLineNo">2652</span>   */<a name="line.2652"></a>
+<span class="sourceLineNo">2653</span>  public List&lt;BeanPersistController&gt; getPersistControllers() {<a name="line.2653"></a>
+<span class="sourceLineNo">2654</span>    return persistControllers;<a name="line.2654"></a>
+<span class="sourceLineNo">2655</span>  }<a name="line.2655"></a>
+<span class="sourceLineNo">2656</span><a name="line.2656"></a>
+<span class="sourceLineNo">2657</span>  /**<a name="line.2657"></a>
+<span class="sourceLineNo">2658</span>   * Register all the BeanPersistController instances.<a name="line.2658"></a>
+<span class="sourceLineNo">2659</span>   * &lt;p&gt;<a name="line.2659"></a>
+<span class="sourceLineNo">2660</span>   * Note alternatively you can use {@link #add(BeanPersistController)} to add<a name="line.2660"></a>
+<span class="sourceLineNo">2661</span>   * BeanPersistController instances one at a time.<a name="line.2661"></a>
+<span class="sourceLineNo">2662</span>   * &lt;/p&gt;<a name="line.2662"></a>
+<span class="sourceLineNo">2663</span>   */<a name="line.2663"></a>
+<span class="sourceLineNo">2664</span>  public void setPersistControllers(List&lt;BeanPersistController&gt; persistControllers) {<a name="line.2664"></a>
+<span class="sourceLineNo">2665</span>    this.persistControllers = persistControllers;<a name="line.2665"></a>
+<span class="sourceLineNo">2666</span>  }<a name="line.2666"></a>
+<span class="sourceLineNo">2667</span><a name="line.2667"></a>
+<span class="sourceLineNo">2668</span>  /**<a name="line.2668"></a>
+<span class="sourceLineNo">2669</span>   * Register a BeanPersistListener instance.<a name="line.2669"></a>
+<span class="sourceLineNo">2670</span>   * &lt;p&gt;<a name="line.2670"></a>
+<span class="sourceLineNo">2671</span>   * Note alternatively you can use {@link #setPersistListeners(List)} to set<a name="line.2671"></a>
+<span class="sourceLineNo">2672</span>   * all the BeanPersistListener instances.<a name="line.2672"></a>
+<span class="sourceLineNo">2673</span>   * &lt;/p&gt;<a name="line.2673"></a>
+<span class="sourceLineNo">2674</span>   */<a name="line.2674"></a>
+<span class="sourceLineNo">2675</span>  public void add(BeanPersistListener beanPersistListener) {<a name="line.2675"></a>
+<span class="sourceLineNo">2676</span>    persistListeners.add(beanPersistListener);<a name="line.2676"></a>
+<span class="sourceLineNo">2677</span>  }<a name="line.2677"></a>
+<span class="sourceLineNo">2678</span><a name="line.2678"></a>
+<span class="sourceLineNo">2679</span>  /**<a name="line.2679"></a>
+<span class="sourceLineNo">2680</span>   * Return the BeanPersistListener instances.<a name="line.2680"></a>
+<span class="sourceLineNo">2681</span>   */<a name="line.2681"></a>
+<span class="sourceLineNo">2682</span>  public List&lt;BeanPersistListener&gt; getPersistListeners() {<a name="line.2682"></a>
+<span class="sourceLineNo">2683</span>    return persistListeners;<a name="line.2683"></a>
+<span class="sourceLineNo">2684</span>  }<a name="line.2684"></a>
+<span class="sourceLineNo">2685</span><a name="line.2685"></a>
+<span class="sourceLineNo">2686</span>  /**<a name="line.2686"></a>
+<span class="sourceLineNo">2687</span>   * Add a BulkTableEventListener<a name="line.2687"></a>
+<span class="sourceLineNo">2688</span>   */<a name="line.2688"></a>
+<span class="sourceLineNo">2689</span>  public void add(BulkTableEventListener bulkTableEventListener) {<a name="line.2689"></a>
+<span class="sourceLineNo">2690</span>    bulkTableEventListeners.add(bulkTableEventListener);<a name="line.2690"></a>
+<span class="sourceLineNo">2691</span>  }<a name="line.2691"></a>
+<span class="sourceLineNo">2692</span><a name="line.2692"></a>
+<span class="sourceLineNo">2693</span>  /**<a name="line.2693"></a>
+<span class="sourceLineNo">2694</span>   * Return the list of BulkTableEventListener instances.<a name="line.2694"></a>
+<span class="sourceLineNo">2695</span>   */<a name="line.2695"></a>
+<span class="sourceLineNo">2696</span>  public List&lt;BulkTableEventListener&gt; getBulkTableEventListeners() {<a name="line.2696"></a>
+<span class="sourceLineNo">2697</span>    return bulkTableEventListeners;<a name="line.2697"></a>
+<span class="sourceLineNo">2698</span>  }<a name="line.2698"></a>
+<span class="sourceLineNo">2699</span><a name="line.2699"></a>
+<span class="sourceLineNo">2700</span>  /**<a name="line.2700"></a>
+<span class="sourceLineNo">2701</span>   * Add a ServerConfigStartup.<a name="line.2701"></a>
+<span class="sourceLineNo">2702</span>   */<a name="line.2702"></a>
+<span class="sourceLineNo">2703</span>  public void addServerConfigStartup(ServerConfigStartup configStartupListener) {<a name="line.2703"></a>
+<span class="sourceLineNo">2704</span>    configStartupListeners.add(configStartupListener);<a name="line.2704"></a>
+<span class="sourceLineNo">2705</span>  }<a name="line.2705"></a>
+<span class="sourceLineNo">2706</span><a name="line.2706"></a>
+<span class="sourceLineNo">2707</span>  /**<a name="line.2707"></a>
+<span class="sourceLineNo">2708</span>   * Return the list of ServerConfigStartup instances.<a name="line.2708"></a>
+<span class="sourceLineNo">2709</span>   */<a name="line.2709"></a>
+<span class="sourceLineNo">2710</span>  public List&lt;ServerConfigStartup&gt; getServerConfigStartupListeners() {<a name="line.2710"></a>
+<span class="sourceLineNo">2711</span>    return configStartupListeners;<a name="line.2711"></a>
+<span class="sourceLineNo">2712</span>  }<a name="line.2712"></a>
+<span class="sourceLineNo">2713</span><a name="line.2713"></a>
+<span class="sourceLineNo">2714</span>  /**<a name="line.2714"></a>
+<span class="sourceLineNo">2715</span>   * Register all the BeanPersistListener instances.<a name="line.2715"></a>
+<span class="sourceLineNo">2716</span>   * &lt;p&gt;<a name="line.2716"></a>
+<span class="sourceLineNo">2717</span>   * Note alternatively you can use {@link #add(BeanPersistListener)} to add<a name="line.2717"></a>
+<span class="sourceLineNo">2718</span>   * BeanPersistListener instances one at a time.<a name="line.2718"></a>
+<span class="sourceLineNo">2719</span>   * &lt;/p&gt;<a name="line.2719"></a>
+<span class="sourceLineNo">2720</span>   */<a name="line.2720"></a>
+<span class="sourceLineNo">2721</span>  public void setPersistListeners(List&lt;BeanPersistListener&gt; persistListeners) {<a name="line.2721"></a>
+<span class="sourceLineNo">2722</span>    this.persistListeners = persistListeners;<a name="line.2722"></a>
+<span class="sourceLineNo">2723</span>  }<a name="line.2723"></a>
+<span class="sourceLineNo">2724</span><a name="line.2724"></a>
+<span class="sourceLineNo">2725</span>  /**<a name="line.2725"></a>
+<span class="sourceLineNo">2726</span>   * Return the default PersistenceContextScope to be used if one is not explicitly set on a query.<a name="line.2726"></a>
+<span class="sourceLineNo">2727</span>   * &lt;p/&gt;<a name="line.2727"></a>
+<span class="sourceLineNo">2728</span>   * The PersistenceContextScope can specified on each query via {@link io.ebean<a name="line.2728"></a>
+<span class="sourceLineNo">2729</span>   * .Query#setPersistenceContextScope(io.ebean.PersistenceContextScope)}. If it<a name="line.2729"></a>
+<span class="sourceLineNo">2730</span>   * is not set on the query this default scope is used.<a name="line.2730"></a>
+<span class="sourceLineNo">2731</span>   *<a name="line.2731"></a>
+<span class="sourceLineNo">2732</span>   * @see Query#setPersistenceContextScope(PersistenceContextScope)<a name="line.2732"></a>
+<span class="sourceLineNo">2733</span>   */<a name="line.2733"></a>
+<span class="sourceLineNo">2734</span>  public PersistenceContextScope getPersistenceContextScope() {<a name="line.2734"></a>
+<span class="sourceLineNo">2735</span>    // if somehow null return TRANSACTION scope<a name="line.2735"></a>
+<span class="sourceLineNo">2736</span>    return persistenceContextScope == null ? PersistenceContextScope.TRANSACTION : persistenceContextScope;<a name="line.2736"></a>
+<span class="sourceLineNo">2737</span>  }<a name="line.2737"></a>
+<span class="sourceLineNo">2738</span><a name="line.2738"></a>
+<span class="sourceLineNo">2739</span>  /**<a name="line.2739"></a>
+<span class="sourceLineNo">2740</span>   * Set the PersistenceContext scope to be used if one is not explicitly set on a query.<a name="line.2740"></a>
+<span class="sourceLineNo">2741</span>   * &lt;p/&gt;<a name="line.2741"></a>
+<span class="sourceLineNo">2742</span>   * This defaults to {@link PersistenceContextScope#TRANSACTION}.<a name="line.2742"></a>
+<span class="sourceLineNo">2743</span>   * &lt;p/&gt;<a name="line.2743"></a>
+<span class="sourceLineNo">2744</span>   * The PersistenceContextScope can specified on each query via {@link io.ebean<a name="line.2744"></a>
+<span class="sourceLineNo">2745</span>   * .Query#setPersistenceContextScope(io.ebean.PersistenceContextScope)}. If it<a name="line.2745"></a>
+<span class="sourceLineNo">2746</span>   * is not set on the query this scope is used.<a name="line.2746"></a>
+<span class="sourceLineNo">2747</span>   *<a name="line.2747"></a>
+<span class="sourceLineNo">2748</span>   * @see Query#setPersistenceContextScope(PersistenceContextScope)<a name="line.2748"></a>
+<span class="sourceLineNo">2749</span>   */<a name="line.2749"></a>
+<span class="sourceLineNo">2750</span>  public void setPersistenceContextScope(PersistenceContextScope persistenceContextScope) {<a name="line.2750"></a>
+<span class="sourceLineNo">2751</span>    this.persistenceContextScope = persistenceContextScope;<a name="line.2751"></a>
+<span class="sourceLineNo">2752</span>  }<a name="line.2752"></a>
+<span class="sourceLineNo">2753</span><a name="line.2753"></a>
+<span class="sourceLineNo">2754</span>  /**<a name="line.2754"></a>
+<span class="sourceLineNo">2755</span>   * Return the ClassLoadConfig which is used to detect Joda, Java8 types etc and also<a name="line.2755"></a>
+<span class="sourceLineNo">2756</span>   * create new instances of plugins given a className.<a name="line.2756"></a>
+<span class="sourceLineNo">2757</span>   */<a name="line.2757"></a>
+<span class="sourceLineNo">2758</span>  public ClassLoadConfig getClassLoadConfig() {<a name="line.2758"></a>
+<span class="sourceLineNo">2759</span>    return classLoadConfig;<a name="line.2759"></a>
+<span class="sourceLineNo">2760</span>  }<a name="line.2760"></a>
+<span class="sourceLineNo">2761</span><a name="line.2761"></a>
+<span class="sourceLineNo">2762</span>  /**<a name="line.2762"></a>
+<span class="sourceLineNo">2763</span>   * Set the ClassLoadConfig which is used to detect Joda, Java8 types etc and also<a name="line.2763"></a>
+<span class="sourceLineNo">2764</span>   * create new instances of plugins given a className.<a name="line.2764"></a>
+<span class="sourceLineNo">2765</span>   */<a name="line.2765"></a>
+<span class="sourceLineNo">2766</span>  public void setClassLoadConfig(ClassLoadConfig classLoadConfig) {<a name="line.2766"></a>
+<span class="sourceLineNo">2767</span>    this.classLoadConfig = classLoadConfig;<a name="line.2767"></a>
+<span class="sourceLineNo">2768</span>  }<a name="line.2768"></a>
+<span class="sourceLineNo">2769</span><a name="line.2769"></a>
+<span class="sourceLineNo">2770</span>  /**<a name="line.2770"></a>
+<span class="sourceLineNo">2771</span>   * Return the service loader using the classLoader defined in ClassLoadConfig.<a name="line.2771"></a>
+<span class="sourceLineNo">2772</span>   */<a name="line.2772"></a>
+<span class="sourceLineNo">2773</span>  public &lt;T&gt; ServiceLoader&lt;T&gt; serviceLoad(Class&lt;T&gt; spiService) {<a name="line.2773"></a>
+<span class="sourceLineNo">2774</span><a name="line.2774"></a>
+<span class="sourceLineNo">2775</span>    return ServiceLoader.load(spiService, classLoadConfig.getClassLoader());<a name="line.2775"></a>
+<span class="sourceLineNo">2776</span>  }<a name="line.2776"></a>
+<span class="sourceLineNo">2777</span><a name="line.2777"></a>
+<span class="sourceLineNo">2778</span>  /**<a name="line.2778"></a>
+<span class="sourceLineNo">2779</span>   * Return the first service using the service loader (or null).<a name="line.2779"></a>
+<span class="sourceLineNo">2780</span>   */<a name="line.2780"></a>
+<span class="sourceLineNo">2781</span>  public &lt;T&gt; T service(Class&lt;T&gt; spiService) {<a name="line.2781"></a>
+<span class="sourceLineNo">2782</span>    ServiceLoader&lt;T&gt; load = serviceLoad(spiService);<a name="line.2782"></a>
+<span class="sourceLineNo">2783</span>    Iterator&lt;T&gt; serviceInstances = load.iterator();<a name="line.2783"></a>
+<span class="sourceLineNo">2784</span>    return serviceInstances.hasNext() ? serviceInstances.next() : null;<a name="line.2784"></a>
+<span class="sourceLineNo">2785</span>  }<a name="line.2785"></a>
+<span class="sourceLineNo">2786</span><a name="line.2786"></a>
+<span class="sourceLineNo">2787</span>  /**<a name="line.2787"></a>
+<span class="sourceLineNo">2788</span>   * Load settings from ebean.properties.<a name="line.2788"></a>
+<span class="sourceLineNo">2789</span>   */<a name="line.2789"></a>
+<span class="sourceLineNo">2790</span>  public void loadFromProperties() {<a name="line.2790"></a>
+<span class="sourceLineNo">2791</span>    this.properties = PropertiesLoader.load();<a name="line.2791"></a>
+<span class="sourceLineNo">2792</span>    configureFromProperties();<a name="line.2792"></a>
+<span class="sourceLineNo">2793</span>  }<a name="line.2793"></a>
+<span class="sourceLineNo">2794</span><a name="line.2794"></a>
+<span class="sourceLineNo">2795</span>  /**<a name="line.2795"></a>
+<span class="sourceLineNo">2796</span>   * Load the settings from the given properties<a name="line.2796"></a>
+<span class="sourceLineNo">2797</span>   */<a name="line.2797"></a>
+<span class="sourceLineNo">2798</span>  public void loadFromProperties(Properties properties) {<a name="line.2798"></a>
+<span class="sourceLineNo">2799</span>    // keep the properties used for configuration so that these are available for plugins<a name="line.2799"></a>
+<span class="sourceLineNo">2800</span>    this.properties = PropertiesLoader.eval(properties);<a name="line.2800"></a>
+<span class="sourceLineNo">2801</span>    configureFromProperties();<a name="line.2801"></a>
+<span class="sourceLineNo">2802</span>  }<a name="line.2802"></a>
+<span class="sourceLineNo">2803</span><a name="line.2803"></a>
+<span class="sourceLineNo">2804</span>  /**<a name="line.2804"></a>
+<span class="sourceLineNo">2805</span>   * Load the settings from the given properties<a name="line.2805"></a>
+<span class="sourceLineNo">2806</span>   */<a name="line.2806"></a>
+<span class="sourceLineNo">2807</span>  private void configureFromProperties() {<a name="line.2807"></a>
+<span class="sourceLineNo">2808</span>    List&lt;AutoConfigure&gt; autoConfigures = autoConfiguration();<a name="line.2808"></a>
+<span class="sourceLineNo">2809</span>    loadSettings(new PropertiesWrapper("ebean", name, properties, classLoadConfig));<a name="line.2809"></a>
+<span class="sourceLineNo">2810</span>    for (AutoConfigure autoConfigure : autoConfigures) {<a name="line.2810"></a>
+<span class="sourceLineNo">2811</span>      autoConfigure.postConfigure(this);<a name="line.2811"></a>
+<span class="sourceLineNo">2812</span>    }<a name="line.2812"></a>
+<span class="sourceLineNo">2813</span>  }<a name="line.2813"></a>
+<span class="sourceLineNo">2814</span><a name="line.2814"></a>
+<span class="sourceLineNo">2815</span>  /**<a name="line.2815"></a>
+<span class="sourceLineNo">2816</span>   * Use a 'plugin' to provide automatic configuration. Intended for automatic testing<a name="line.2816"></a>
+<span class="sourceLineNo">2817</span>   * configuration with Docker containers via ebean-test-config.<a name="line.2817"></a>
+<span class="sourceLineNo">2818</span>   */<a name="line.2818"></a>
+<span class="sourceLineNo">2819</span>  private List&lt;AutoConfigure&gt; autoConfiguration() {<a name="line.2819"></a>
+<span class="sourceLineNo">2820</span>    List&lt;AutoConfigure&gt; list = new ArrayList&lt;&gt;();<a name="line.2820"></a>
+<span class="sourceLineNo">2821</span>    for (AutoConfigure autoConfigure : serviceLoad(AutoConfigure.class)) {<a name="line.2821"></a>
+<span class="sourceLineNo">2822</span>      autoConfigure.preConfigure(this);<a name="line.2822"></a>
+<span class="sourceLineNo">2823</span>      list.add(autoConfigure);<a name="line.2823"></a>
+<span class="sourceLineNo">2824</span>    }<a name="line.2824"></a>
+<span class="sourceLineNo">2825</span>    return list;<a name="line.2825"></a>
+<span class="sourceLineNo">2826</span>  }<a name="line.2826"></a>
+<span class="sourceLineNo">2827</span><a name="line.2827"></a>
+<span class="sourceLineNo">2828</span>  /**<a name="line.2828"></a>
+<span class="sourceLineNo">2829</span>   * Return the properties that we used for configuration and were set via a call to loadFromProperties().<a name="line.2829"></a>
+<span class="sourceLineNo">2830</span>   */<a name="line.2830"></a>
+<span class="sourceLineNo">2831</span>  public Properties getProperties() {<a name="line.2831"></a>
+<span class="sourceLineNo">2832</span>    return properties;<a name="line.2832"></a>
+<span class="sourceLineNo">2833</span>  }<a name="line.2833"></a>
+<span class="sourceLineNo">2834</span><a name="line.2834"></a>
+<span class="sourceLineNo">2835</span>  /**<a name="line.2835"></a>
+<span class="sourceLineNo">2836</span>   * loads the data source settings to preserve existing behaviour. IMHO, if someone has set the datasource config already,<a name="line.2836"></a>
+<span class="sourceLineNo">2837</span>   * they don't want the settings to be reloaded and reset. This allows a descending class to override this behaviour and prevent it<a name="line.2837"></a>
+<span class="sourceLineNo">2838</span>   * from happening.<a name="line.2838"></a>
+<span class="sourceLineNo">2839</span>   *<a name="line.2839"></a>
+<span class="sourceLineNo">2840</span>   * @param p - The defined property source passed to load settings<a name="line.2840"></a>
+<span class="sourceLineNo">2841</span>   */<a name="line.2841"></a>
+<span class="sourceLineNo">2842</span>  protected void loadDataSourceSettings(PropertiesWrapper p) {<a name="line.2842"></a>
+<span class="sourceLineNo">2843</span>    dataSourceConfig.loadSettings(p.properties, name);<a name="line.2843"></a>
+<span class="sourceLineNo">2844</span>    readOnlyDataSourceConfig.loadSettings(p.properties, name);<a name="line.2844"></a>
+<span class="sourceLineNo">2845</span>  }<a name="line.2845"></a>
+<span class="sourceLineNo">2846</span><a name="line.2846"></a>
+<span class="sourceLineNo">2847</span>  /**<a name="line.2847"></a>
+<span class="sourceLineNo">2848</span>   * This is broken out to allow overridden behaviour.<a name="line.2848"></a>
+<span class="sourceLineNo">2849</span>   */<a name="line.2849"></a>
+<span class="sourceLineNo">2850</span>  protected void loadDocStoreSettings(PropertiesWrapper p) {<a name="line.2850"></a>
+<span class="sourceLineNo">2851</span>    docStoreConfig.loadSettings(p);<a name="line.2851"></a>
+<span class="sourceLineNo">2852</span>  }<a name="line.2852"></a>
+<span class="sourceLineNo">2853</span><a name="line.2853"></a>
+<span class="sourceLineNo">2854</span>  /**<a name="line.2854"></a>
+<span class="sourceLineNo">2855</span>   * This is broken out to allow overridden behaviour.<a name="line.2855"></a>
+<span class="sourceLineNo">2856</span>   */<a name="line.2856"></a>
+<span class="sourceLineNo">2857</span>  protected void loadAutoTuneSettings(PropertiesWrapper p) {<a name="line.2857"></a>
+<span class="sourceLineNo">2858</span>    autoTuneConfig.loadSettings(p);<a name="line.2858"></a>
+<span class="sourceLineNo">2859</span>  }<a name="line.2859"></a>
+<span class="sourceLineNo">2860</span><a name="line.2860"></a>
+<span class="sourceLineNo">2861</span>  /**<a name="line.2861"></a>
+<span class="sourceLineNo">2862</span>   * Load the configuration settings from the properties file.<a name="line.2862"></a>
+<span class="sourceLineNo">2863</span>   */<a name="line.2863"></a>
+<span class="sourceLineNo">2864</span>  protected void loadSettings(PropertiesWrapper p) {<a name="line.2864"></a>
+<span class="sourceLineNo">2865</span><a name="line.2865"></a>
+<span class="sourceLineNo">2866</span>    dbSchema = p.get("dbSchema", dbSchema);<a name="line.2866"></a>
+<span class="sourceLineNo">2867</span>    if (dbSchema != null) {<a name="line.2867"></a>
+<span class="sourceLineNo">2868</span>      migrationConfig.setDefaultDbSchema(dbSchema);<a name="line.2868"></a>
+<span class="sourceLineNo">2869</span>    }<a name="line.2869"></a>
+<span class="sourceLineNo">2870</span>    profilingConfig.loadSettings(p, name);<a name="line.2870"></a>
+<span class="sourceLineNo">2871</span>    migrationConfig.loadSettings(p, name);<a name="line.2871"></a>
+<span class="sourceLineNo">2872</span>    platformConfig.loadSettings(p);<a name="line.2872"></a>
+<span class="sourceLineNo">2873</span>    if (platformConfig.isAllQuotedIdentifiers()) {<a name="line.2873"></a>
+<span class="sourceLineNo">2874</span>      adjustNamingConventionForAllQuoted();<a name="line.2874"></a>
+<span class="sourceLineNo">2875</span>    }<a name="line.2875"></a>
+<span class="sourceLineNo">2876</span>    namingConvention = createNamingConvention(p, namingConvention);<a name="line.2876"></a>
+<span class="sourceLineNo">2877</span>    if (namingConvention != null) {<a name="line.2877"></a>
+<span class="sourceLineNo">2878</span>      namingConvention.loadFromProperties(p);<a name="line.2878"></a>
 <span class="sourceLineNo">2879</span>    }<a name="line.2879"></a>
-<span class="sourceLineNo">2880</span>    namingConvention = createNamingConvention(p, namingConvention);<a name="line.2880"></a>
-<span class="sourceLineNo">2881</span>    if (namingConvention != null) {<a name="line.2881"></a>
-<span class="sourceLineNo">2882</span>      namingConvention.loadFromProperties(p);<a name="line.2882"></a>
-<span class="sourceLineNo">2883</span>    }<a name="line.2883"></a>
-<span class="sourceLineNo">2884</span>    if (autoTuneConfig == null) {<a name="line.2884"></a>
-<span class="sourceLineNo">2885</span>      autoTuneConfig = new AutoTuneConfig();<a name="line.2885"></a>
-<span class="sourceLineNo">2886</span>    }<a name="line.2886"></a>
-<span class="sourceLineNo">2887</span>    loadAutoTuneSettings(p);<a name="line.2887"></a>
-<span class="sourceLineNo">2888</span><a name="line.2888"></a>
-<span class="sourceLineNo">2889</span>    if (dataSourceConfig == null) {<a name="line.2889"></a>
-<span class="sourceLineNo">2890</span>      dataSourceConfig = new DataSourceConfig();<a name="line.2890"></a>
-<span class="sourceLineNo">2891</span>    }<a name="line.2891"></a>
-<span class="sourceLineNo">2892</span>    loadDataSourceSettings(p);<a name="line.2892"></a>
-<span class="sourceLineNo">2893</span><a name="line.2893"></a>
-<span class="sourceLineNo">2894</span>    if (docStoreConfig == null) {<a name="line.2894"></a>
-<span class="sourceLineNo">2895</span>      docStoreConfig = new DocStoreConfig();<a name="line.2895"></a>
-<span class="sourceLineNo">2896</span>    }<a name="line.2896"></a>
-<span class="sourceLineNo">2897</span>    loadDocStoreSettings(p);<a name="line.2897"></a>
-<span class="sourceLineNo">2898</span><a name="line.2898"></a>
-<span class="sourceLineNo">2899</span>    queryPlanTTLSeconds = p.getInt("queryPlanTTLSeconds", queryPlanTTLSeconds);<a name="line.2899"></a>
-<span class="sourceLineNo">2900</span>    slowQueryMillis = p.getLong("slowQueryMillis", slowQueryMillis);<a name="line.2900"></a>
-<span class="sourceLineNo">2901</span>    collectQueryPlans = p.getBoolean("collectQueryPlans", collectQueryPlans);<a name="line.2901"></a>
-<span class="sourceLineNo">2902</span>    docStoreOnly = p.getBoolean("docStoreOnly", docStoreOnly);<a name="line.2902"></a>
-<span class="sourceLineNo">2903</span>    disableL2Cache = p.getBoolean("disableL2Cache", disableL2Cache);<a name="line.2903"></a>
-<span class="sourceLineNo">2904</span>    notifyL2CacheInForeground = p.getBoolean("notifyL2CacheInForeground", notifyL2CacheInForeground);<a name="line.2904"></a>
-<span class="sourceLineNo">2905</span>    explicitTransactionBeginMode = p.getBoolean("explicitTransactionBeginMode", explicitTransactionBeginMode);<a name="line.2905"></a>
-<span class="sourceLineNo">2906</span>    autoCommitMode = p.getBoolean("autoCommitMode", autoCommitMode);<a name="line.2906"></a>
-<span class="sourceLineNo">2907</span>    useJtaTransactionManager = p.getBoolean("useJtaTransactionManager", useJtaTransactionManager);<a name="line.2907"></a>
-<span class="sourceLineNo">2908</span>    useJavaxValidationNotNull = p.getBoolean("useJavaxValidationNotNull", useJavaxValidationNotNull);<a name="line.2908"></a>
-<span class="sourceLineNo">2909</span>    autoReadOnlyDataSource = p.getBoolean("autoReadOnlyDataSource", autoReadOnlyDataSource);<a name="line.2909"></a>
-<span class="sourceLineNo">2910</span>    idGeneratorAutomatic = p.getBoolean("idGeneratorAutomatic", idGeneratorAutomatic);<a name="line.2910"></a>
-<span class="sourceLineNo">2911</span><a name="line.2911"></a>
-<span class="sourceLineNo">2912</span>    backgroundExecutorSchedulePoolSize = p.getInt("backgroundExecutorSchedulePoolSize", backgroundExecutorSchedulePoolSize);<a name="line.2912"></a>
-<span class="sourceLineNo">2913</span>    backgroundExecutorShutdownSecs = p.getInt("backgroundExecutorShutdownSecs", backgroundExecutorShutdownSecs);<a name="line.2913"></a>
-<span class="sourceLineNo">2914</span>    disableClasspathSearch = p.getBoolean("disableClasspathSearch", disableClasspathSearch);<a name="line.2914"></a>
-<span class="sourceLineNo">2915</span>    currentUserProvider = p.createInstance(CurrentUserProvider.class, "currentUserProvider", currentUserProvider);<a name="line.2915"></a>
-<span class="sourceLineNo">2916</span>    databasePlatform = p.createInstance(DatabasePlatform.class, "databasePlatform", databasePlatform);<a name="line.2916"></a>
-<span class="sourceLineNo">2917</span>    encryptKeyManager = p.createInstance(EncryptKeyManager.class, "encryptKeyManager", encryptKeyManager);<a name="line.2917"></a>
-<span class="sourceLineNo">2918</span>    encryptDeployManager = p.createInstance(EncryptDeployManager.class, "encryptDeployManager", encryptDeployManager);<a name="line.2918"></a>
-<span class="sourceLineNo">2919</span>    encryptor = p.createInstance(Encryptor.class, "encryptor", encryptor);<a name="line.2919"></a>
-<span class="sourceLineNo">2920</span>    dbEncrypt = p.createInstance(DbEncrypt.class, "dbEncrypt", dbEncrypt);<a name="line.2920"></a>
-<span class="sourceLineNo">2921</span>    dbOffline = p.getBoolean("dbOffline", dbOffline);<a name="line.2921"></a>
-<span class="sourceLineNo">2922</span>    serverCachePlugin = p.createInstance(ServerCachePlugin.class, "serverCachePlugin", serverCachePlugin);<a name="line.2922"></a>
-<span class="sourceLineNo">2923</span><a name="line.2923"></a>
-<span class="sourceLineNo">2924</span>    String packagesProp = p.get("search.packages", p.get("packages", null));<a name="line.2924"></a>
-<span class="sourceLineNo">2925</span>    packages = getSearchList(packagesProp, packages);<a name="line.2925"></a>
-<span class="sourceLineNo">2926</span><a name="line.2926"></a>
-<span class="sourceLineNo">2927</span>    collectQueryStatsByNode = p.getBoolean("collectQueryStatsByNode", collectQueryStatsByNode);<a name="line.2927"></a>
-<span class="sourceLineNo">2928</span>    collectQueryOrigins = p.getBoolean("collectQueryOrigins", collectQueryOrigins);<a name="line.2928"></a>
+<span class="sourceLineNo">2880</span>    if (autoTuneConfig == null) {<a name="line.2880"></a>
+<span class="sourceLineNo">2881</span>      autoTuneConfig = new AutoTuneConfig();<a name="line.2881"></a>
+<span class="sourceLineNo">2882</span>    }<a name="line.2882"></a>
+<span class="sourceLineNo">2883</span>    loadAutoTuneSettings(p);<a name="line.2883"></a>
+<span class="sourceLineNo">2884</span><a name="line.2884"></a>
+<span class="sourceLineNo">2885</span>    if (dataSourceConfig == null) {<a name="line.2885"></a>
+<span class="sourceLineNo">2886</span>      dataSourceConfig = new DataSourceConfig();<a name="line.2886"></a>
+<span class="sourceLineNo">2887</span>    }<a name="line.2887"></a>
+<span class="sourceLineNo">2888</span>    loadDataSourceSettings(p);<a name="line.2888"></a>
+<span class="sourceLineNo">2889</span><a name="line.2889"></a>
+<span class="sourceLineNo">2890</span>    if (docStoreConfig == null) {<a name="line.2890"></a>
+<span class="sourceLineNo">2891</span>      docStoreConfig = new DocStoreConfig();<a name="line.2891"></a>
+<span class="sourceLineNo">2892</span>    }<a name="line.2892"></a>
+<span class="sourceLineNo">2893</span>    loadDocStoreSettings(p);<a name="line.2893"></a>
+<span class="sourceLineNo">2894</span><a name="line.2894"></a>
+<span class="sourceLineNo">2895</span>    queryPlanTTLSeconds = p.getInt("queryPlanTTLSeconds", queryPlanTTLSeconds);<a name="line.2895"></a>
+<span class="sourceLineNo">2896</span>    slowQueryMillis = p.getLong("slowQueryMillis", slowQueryMillis);<a name="line.2896"></a>
+<span class="sourceLineNo">2897</span>    collectQueryPlans = p.getBoolean("collectQueryPlans", collectQueryPlans);<a name="line.2897"></a>
+<span class="sourceLineNo">2898</span>    docStoreOnly = p.getBoolean("docStoreOnly", docStoreOnly);<a name="line.2898"></a>
+<span class="sourceLineNo">2899</span>    disableL2Cache = p.getBoolean("disableL2Cache", disableL2Cache);<a name="line.2899"></a>
+<span class="sourceLineNo">2900</span>    notifyL2CacheInForeground = p.getBoolean("notifyL2CacheInForeground", notifyL2CacheInForeground);<a name="line.2900"></a>
+<span class="sourceLineNo">2901</span>    explicitTransactionBeginMode = p.getBoolean("explicitTransactionBeginMode", explicitTransactionBeginMode);<a name="line.2901"></a>
+<span class="sourceLineNo">2902</span>    autoCommitMode = p.getBoolean("autoCommitMode", autoCommitMode);<a name="line.2902"></a>
+<span class="sourceLineNo">2903</span>    useJtaTransactionManager = p.getBoolean("useJtaTransactionManager", useJtaTransactionManager);<a name="line.2903"></a>
+<span class="sourceLineNo">2904</span>    useJavaxValidationNotNull = p.getBoolean("useJavaxValidationNotNull", useJavaxValidationNotNull);<a name="line.2904"></a>
+<span class="sourceLineNo">2905</span>    autoReadOnlyDataSource = p.getBoolean("autoReadOnlyDataSource", autoReadOnlyDataSource);<a name="line.2905"></a>
+<span class="sourceLineNo">2906</span>    idGeneratorAutomatic = p.getBoolean("idGeneratorAutomatic", idGeneratorAutomatic);<a name="line.2906"></a>
+<span class="sourceLineNo">2907</span><a name="line.2907"></a>
+<span class="sourceLineNo">2908</span>    backgroundExecutorSchedulePoolSize = p.getInt("backgroundExecutorSchedulePoolSize", backgroundExecutorSchedulePoolSize);<a name="line.2908"></a>
+<span class="sourceLineNo">2909</span>    backgroundExecutorShutdownSecs = p.getInt("backgroundExecutorShutdownSecs", backgroundExecutorShutdownSecs);<a name="line.2909"></a>
+<span class="sourceLineNo">2910</span>    disableClasspathSearch = p.getBoolean("disableClasspathSearch", disableClasspathSearch);<a name="line.2910"></a>
+<span class="sourceLineNo">2911</span>    currentUserProvider = p.createInstance(CurrentUserProvider.class, "currentUserProvider", currentUserProvider);<a name="line.2911"></a>
+<span class="sourceLineNo">2912</span>    databasePlatform = p.createInstance(DatabasePlatform.class, "databasePlatform", databasePlatform);<a name="line.2912"></a>
+<span class="sourceLineNo">2913</span>    encryptKeyManager = p.createInstance(EncryptKeyManager.class, "encryptKeyManager", encryptKeyManager);<a name="line.2913"></a>
+<span class="sourceLineNo">2914</span>    encryptDeployManager = p.createInstance(EncryptDeployManager.class, "encryptDeployManager", encryptDeployManager);<a name="line.2914"></a>
+<span class="sourceLineNo">2915</span>    encryptor = p.createInstance(Encryptor.class, "encryptor", encryptor);<a name="line.2915"></a>
+<span class="sourceLineNo">2916</span>    dbEncrypt = p.createInstance(DbEncrypt.class, "dbEncrypt", dbEncrypt);<a name="line.2916"></a>
+<span class="sourceLineNo">2917</span>    dbOffline = p.getBoolean("dbOffline", dbOffline);<a name="line.2917"></a>
+<span class="sourceLineNo">2918</span>    serverCachePlugin = p.createInstance(ServerCachePlugin.class, "serverCachePlugin", serverCachePlugin);<a name="line.2918"></a>
+<span class="sourceLineNo">2919</span><a name="line.2919"></a>
+<span class="sourceLineNo">2920</span>    String packagesProp = p.get("search.packages", p.get("packages", null));<a name="line.2920"></a>
+<span class="sourceLineNo">2921</span>    packages = getSearchList(packagesProp, packages);<a name="line.2921"></a>
+<span class="sourceLineNo">2922</span><a name="line.2922"></a>
+<span class="sourceLineNo">2923</span>    collectQueryStatsByNode = p.getBoolean("collectQueryStatsByNode", collectQueryStatsByNode);<a name="line.2923"></a>
+<span class="sourceLineNo">2924</span>    collectQueryOrigins = p.getBoolean("collectQueryOrigins", collectQueryOrigins);<a name="line.2924"></a>
+<span class="sourceLineNo">2925</span><a name="line.2925"></a>
+<span class="sourceLineNo">2926</span>    skipCacheAfterWrite = p.getBoolean("skipCacheAfterWrite", skipCacheAfterWrite);<a name="line.2926"></a>
+<span class="sourceLineNo">2927</span>    updateAllPropertiesInBatch = p.getBoolean("updateAllPropertiesInBatch", updateAllPropertiesInBatch);<a name="line.2927"></a>
+<span class="sourceLineNo">2928</span>    updateChangesOnly = p.getBoolean("updateChangesOnly", updateChangesOnly);<a name="line.2928"></a>
 <span class="sourceLineNo">2929</span><a name="line.2929"></a>
-<span class="sourceLineNo">2930</span>    skipCacheAfterWrite = p.getBoolean("skipCacheAfterWrite", skipCacheAfterWrite);<a name="line.2930"></a>
-<span class="sourceLineNo">2931</span>    updateAllPropertiesInBatch = p.getBoolean("updateAllPropertiesInBatch", updateAllPropertiesInBatch);<a name="line.2931"></a>
-<span class="sourceLineNo">2932</span>    updateChangesOnly = p.getBoolean("updateChangesOnly", updateChangesOnly);<a name="line.2932"></a>
-<span class="sourceLineNo">2933</span><a name="line.2933"></a>
-<span class="sourceLineNo">2934</span>    boolean defaultDeleteMissingChildren = p.getBoolean("defaultDeleteMissingChildren", updatesDeleteMissingChildren);<a name="line.2934"></a>
-<span class="sourceLineNo">2935</span>    updatesDeleteMissingChildren = p.getBoolean("updatesDeleteMissingChildren", defaultDeleteMissingChildren);<a name="line.2935"></a>
+<span class="sourceLineNo">2930</span>    boolean defaultDeleteMissingChildren = p.getBoolean("defaultDeleteMissingChildren", updatesDeleteMissingChildren);<a name="line.2930"></a>
+<span class="sourceLineNo">2931</span>    updatesDeleteMissingChildren = p.getBoolean("updatesDeleteMissingChildren", defaultDeleteMissingChildren);<a name="line.2931"></a>
+<span class="sourceLineNo">2932</span><a name="line.2932"></a>
+<span class="sourceLineNo">2933</span>    if (p.get("batch.mode") != null || p.get("persistBatching") != null) {<a name="line.2933"></a>
+<span class="sourceLineNo">2934</span>      throw new IllegalArgumentException("Property 'batch.mode' or 'persistBatching' is being set but no longer used. Please change to use 'persistBatchMode'");<a name="line.2934"></a>
+<span class="sourceLineNo">2935</span>    }<a name="line.2935"></a>
 <span class="sourceLineNo">2936</span><a name="line.2936"></a>
-<span class="sourceLineNo">2937</span>    if (p.get("batch.mode") != null || p.get("persistBatching") != null) {<a name="line.2937"></a>
-<span class="sourceLineNo">2938</span>      throw new IllegalArgumentException("Property 'batch.mode' or 'persistBatching' is being set but no longer used. Please change to use 'persistBatchMode'");<a name="line.2938"></a>
-<span class="sourceLineNo">2939</span>    }<a name="line.2939"></a>
-<span class="sourceLineNo">2940</span><a name="line.2940"></a>
-<span class="sourceLineNo">2941</span>    persistBatch = p.getEnum(PersistBatch.class, "persistBatch", persistBatch);<a name="line.2941"></a>
-<span class="sourceLineNo">2942</span>    persistBatchOnCascade = p.getEnum(PersistBatch.class, "persistBatchOnCascade", persistBatchOnCascade);<a name="line.2942"></a>
-<span class="sourceLineNo">2943</span><a name="line.2943"></a>
-<span class="sourceLineNo">2944</span>    int batchSize = p.getInt("batch.size", persistBatchSize);<a name="line.2944"></a>
-<span class="sourceLineNo">2945</span>    persistBatchSize = p.getInt("persistBatchSize", batchSize);<a name="line.2945"></a>
-<span class="sourceLineNo">2946</span><a name="line.2946"></a>
-<span class="sourceLineNo">2947</span>    persistenceContextScope = PersistenceContextScope.valueOf(p.get("persistenceContextScope", "TRANSACTION"));<a name="line.2947"></a>
-<span class="sourceLineNo">2948</span><a name="line.2948"></a>
-<span class="sourceLineNo">2949</span>    changeLogAsync = p.getBoolean("changeLogAsync", changeLogAsync);<a name="line.2949"></a>
-<span class="sourceLineNo">2950</span>    changeLogIncludeInserts = p.getBoolean("changeLogIncludeInserts", changeLogIncludeInserts);<a name="line.2950"></a>
-<span class="sourceLineNo">2951</span>    expressionEqualsWithNullAsNoop = p.getBoolean("expressionEqualsWithNullAsNoop", expressionEqualsWithNullAsNoop);<a name="line.2951"></a>
-<span class="sourceLineNo">2952</span>    expressionNativeIlike = p.getBoolean("expressionNativeIlike", expressionNativeIlike);<a name="line.2952"></a>
-<span class="sourceLineNo">2953</span><a name="line.2953"></a>
-<span class="sourceLineNo">2954</span>    dataTimeZone = p.get("dataTimeZone", dataTimeZone);<a name="line.2954"></a>
-<span class="sourceLineNo">2955</span>    asOfViewSuffix = p.get("asOfViewSuffix", asOfViewSuffix);<a name="line.2955"></a>
-<span class="sourceLineNo">2956</span>    asOfSysPeriod = p.get("asOfSysPeriod", asOfSysPeriod);<a name="line.2956"></a>
-<span class="sourceLineNo">2957</span>    historyTableSuffix = p.get("historyTableSuffix", historyTableSuffix);<a name="line.2957"></a>
-<span class="sourceLineNo">2958</span>    dataSourceJndiName = p.get("dataSourceJndiName", dataSourceJndiName);<a name="line.2958"></a>
-<span class="sourceLineNo">2959</span>    jdbcFetchSizeFindEach = p.getInt("jdbcFetchSizeFindEach", jdbcFetchSizeFindEach);<a name="line.2959"></a>
-<span class="sourceLineNo">2960</span>    jdbcFetchSizeFindList = p.getInt("jdbcFetchSizeFindList", jdbcFetchSizeFindList);<a name="line.2960"></a>
-<span class="sourceLineNo">2961</span>    databasePlatformName = p.get("databasePlatformName", databasePlatformName);<a name="line.2961"></a>
-<span class="sourceLineNo">2962</span>    defaultOrderById = p.getBoolean("defaultOrderById", defaultOrderById);<a name="line.2962"></a>
-<span class="sourceLineNo">2963</span><a name="line.2963"></a>
-<span class="sourceLineNo">2964</span>    uuidVersion = p.getEnum(UuidVersion.class, "uuidVersion", uuidVersion);<a name="line.2964"></a>
-<span class="sourceLineNo">2965</span>    uuidStateFile = p.get("uuidStateFile", uuidStateFile);<a name="line.2965"></a>
-<span class="sourceLineNo">2966</span><a name="line.2966"></a>
-<span class="sourceLineNo">2967</span>    localTimeWithNanos = p.getBoolean("localTimeWithNanos", localTimeWithNanos);<a name="line.2967"></a>
-<span class="sourceLineNo">2968</span>    jodaLocalTimeMode = p.get("jodaLocalTimeMode", jodaLocalTimeMode);<a name="line.2968"></a>
+<span class="sourceLineNo">2937</span>    persistBatch = p.getEnum(PersistBatch.class, "persistBatch", persistBatch);<a name="line.2937"></a>
+<span class="sourceLineNo">2938</span>    persistBatchOnCascade = p.getEnum(PersistBatch.class, "persistBatchOnCascade", persistBatchOnCascade);<a name="line.2938"></a>
+<span class="sourceLineNo">2939</span><a name="line.2939"></a>
+<span class="sourceLineNo">2940</span>    int batchSize = p.getInt("batch.size", persistBatchSize);<a name="line.2940"></a>
+<span class="sourceLineNo">2941</span>    persistBatchSize = p.getInt("persistBatchSize", batchSize);<a name="line.2941"></a>
+<span class="sourceLineNo">2942</span><a name="line.2942"></a>
+<span class="sourceLineNo">2943</span>    persistenceContextScope = PersistenceContextScope.valueOf(p.get("persistenceContextScope", "TRANSACTION"));<a name="line.2943"></a>
+<span class="sourceLineNo">2944</span><a name="line.2944"></a>
+<span class="sourceLineNo">2945</span>    changeLogAsync = p.getBoolean("changeLogAsync", changeLogAsync);<a name="line.2945"></a>
+<span class="sourceLineNo">2946</span>    changeLogIncludeInserts = p.getBoolean("changeLogIncludeInserts", changeLogIncludeInserts);<a name="line.2946"></a>
+<span class="sourceLineNo">2947</span>    expressionEqualsWithNullAsNoop = p.getBoolean("expressionEqualsWithNullAsNoop", expressionEqualsWithNullAsNoop);<a name="line.2947"></a>
+<span class="sourceLineNo">2948</span>    expressionNativeIlike = p.getBoolean("expressionNativeIlike", expressionNativeIlike);<a name="line.2948"></a>
+<span class="sourceLineNo">2949</span><a name="line.2949"></a>
+<span class="sourceLineNo">2950</span>    dataTimeZone = p.get("dataTimeZone", dataTimeZone);<a name="line.2950"></a>
+<span class="sourceLineNo">2951</span>    asOfViewSuffix = p.get("asOfViewSuffix", asOfViewSuffix);<a name="line.2951"></a>
+<span class="sourceLineNo">2952</span>    asOfSysPeriod = p.get("asOfSysPeriod", asOfSysPeriod);<a name="line.2952"></a>
+<span class="sourceLineNo">2953</span>    historyTableSuffix = p.get("historyTableSuffix", historyTableSuffix);<a name="line.2953"></a>
+<span class="sourceLineNo">2954</span>    dataSourceJndiName = p.get("dataSourceJndiName", dataSourceJndiName);<a name="line.2954"></a>
+<span class="sourceLineNo">2955</span>    jdbcFetchSizeFindEach = p.getInt("jdbcFetchSizeFindEach", jdbcFetchSizeFindEach);<a name="line.2955"></a>
+<span class="sourceLineNo">2956</span>    jdbcFetchSizeFindList = p.getInt("jdbcFetchSizeFindList", jdbcFetchSizeFindList);<a name="line.2956"></a>
+<span class="sourceLineNo">2957</span>    databasePlatformName = p.get("databasePlatformName", databasePlatformName);<a name="line.2957"></a>
+<span class="sourceLineNo">2958</span>    defaultOrderById = p.getBoolean("defaultOrderById", defaultOrderById);<a name="line.2958"></a>
+<span class="sourceLineNo">2959</span><a name="line.2959"></a>
+<span class="sourceLineNo">2960</span>    uuidVersion = p.getEnum(UuidVersion.class, "uuidVersion", uuidVersion);<a name="line.2960"></a>
+<span class="sourceLineNo">2961</span>    uuidStateFile = p.get("uuidStateFile", uuidStateFile);<a name="line.2961"></a>
+<span class="sourceLineNo">2962</span><a name="line.2962"></a>
+<span class="sourceLineNo">2963</span>    localTimeWithNanos = p.getBoolean("localTimeWithNanos", localTimeWithNanos);<a name="line.2963"></a>
+<span class="sourceLineNo">2964</span>    jodaLocalTimeMode = p.get("jodaLocalTimeMode", jodaLocalTimeMode);<a name="line.2964"></a>
+<span class="sourceLineNo">2965</span><a name="line.2965"></a>
+<span class="sourceLineNo">2966</span>    disableLazyLoading = p.getBoolean("disableLazyLoading", disableLazyLoading);<a name="line.2966"></a>
+<span class="sourceLineNo">2967</span>    lazyLoadBatchSize = p.getInt("lazyLoadBatchSize", lazyLoadBatchSize);<a name="line.2967"></a>
+<span class="sourceLineNo">2968</span>    queryBatchSize = p.getInt("queryBatchSize", queryBatchSize);<a name="line.2968"></a>
 <span class="sourceLineNo">2969</span><a name="line.2969"></a>
-<span class="sourceLineNo">2970</span>    disableLazyLoading = p.getBoolean("disableLazyLoading", disableLazyLoading);<a name="line.2970"></a>
-<span class="sourceLineNo">2971</span>    lazyLoadBatchSize = p.getInt("lazyLoadBatchSize", lazyLoadBatchSize);<a name="line.2971"></a>
-<span class="sourceLineNo">2972</span>    queryBatchSize = p.getInt("queryBatchSize", queryBatchSize);<a name="line.2972"></a>
-<span class="sourceLineNo">2973</span><a name="line.2973"></a>
-<span class="sourceLineNo">2974</span>    jsonInclude = p.getEnum(JsonConfig.Include.class, "jsonInclude", jsonInclude);<a name="line.2974"></a>
-<span class="sourceLineNo">2975</span>    String jsonDateTimeFormat = p.get("jsonDateTime", null);<a name="line.2975"></a>
-<span class="sourceLineNo">2976</span>    if (jsonDateTimeFormat != null) {<a name="line.2976"></a>
-<span class="sourceLineNo">2977</span>      jsonDateTime = JsonConfig.DateTime.valueOf(jsonDateTimeFormat);<a name="line.2977"></a>
-<span class="sourceLineNo">2978</span>    } else {<a name="line.2978"></a>
-<span class="sourceLineNo">2979</span>      jsonDateTime = JsonConfig.DateTime.MILLIS;<a name="line.2979"></a>
-<span class="sourceLineNo">2980</span>    }<a name="line.2980"></a>
-<span class="sourceLineNo">2981</span><a name="line.2981"></a>
-<span class="sourceLineNo">2982</span>    ddlGenerate = p.getBoolean("ddl.generate", ddlGenerate);<a name="line.2982"></a>
-<span class="sourceLineNo">2983</span>    ddlRun = p.getBoolean("ddl.run", ddlRun);<a name="line.2983"></a>
-<span class="sourceLineNo">2984</span>    ddlExtra = p.getBoolean("ddl.extra", ddlExtra);<a name="line.2984"></a>
-<span class="sourceLineNo">2985</span>    ddlCreateOnly = p.getBoolean("ddl.createOnly", ddlCreateOnly);<a name="line.2985"></a>
-<span class="sourceLineNo">2986</span>    ddlInitSql = p.get("ddl.initSql", ddlInitSql);<a name="line.2986"></a>
-<span class="sourceLineNo">2987</span>    ddlSeedSql = p.get("ddl.seedSql", ddlSeedSql);<a name="line.2987"></a>
-<span class="sourceLineNo">2988</span><a name="line.2988"></a>
-<span class="sourceLineNo">2989</span>    // read tenant-configuration from config:<a name="line.2989"></a>
-<span class="sourceLineNo">2990</span>    // tenant.mode = NONE | DB | SCHEMA | CATALOG | PARTITION<a name="line.2990"></a>
-<span class="sourceLineNo">2991</span>    String mode = p.get("tenant.mode");<a name="line.2991"></a>
-<span class="sourceLineNo">2992</span>    if (mode != null) {<a name="line.2992"></a>
-<span class="sourceLineNo">2993</span>      for (TenantMode value : TenantMode.values()) {<a name="line.2993"></a>
-<span class="sourceLineNo">2994</span>        if (value.name().equalsIgnoreCase(mode)) {<a name="line.2994"></a>
-<span class="sourceLineNo">2995</span>          tenantMode = value;<a name="line.2995"></a>
-<span class="sourceLineNo">2996</span>          break;<a name="line.2996"></a>
-<span class="sourceLineNo">2997</span>        }<a name="line.2997"></a>
-<span class="sourceLineNo">2998</span>      }<a name="line.2998"></a>
-<span class="sourceLineNo">2999</span>    }<a name="line.2999"></a>
-<span class="sourceLineNo">3000</span><a name="line.3000"></a>
-<span class="sourceLineNo">3001</span>    currentTenantProvider = p.createInstance(CurrentTenantProvider.class, "tenant.currentTenantProvider", currentTenantProvider);<a name="line.3001"></a>
-<span class="sourceLineNo">3002</span>    tenantCatalogProvider = p.createInstance(TenantCatalogProvider.class, "tenant.catalogProvider", tenantCatalogProvider);<a name="line.3002"></a>
-<span class="sourceLineNo">3003</span>    tenantSchemaProvider = p.createInstance(TenantSchemaProvider.class, "tenant.schemaProvider", tenantSchemaProvider);<a name="line.3003"></a>
-<span class="sourceLineNo">3004</span>    tenantPartitionColumn = p.get("tenant.partitionColumn", tenantPartitionColumn);<a name="line.3004"></a>
-<span class="sourceLineNo">3005</span>    classes = getClasses(p);<a name="line.3005"></a>
+<span class="sourceLineNo">2970</span>    jsonInclude = p.getEnum(JsonConfig.Include.class, "jsonInclude", jsonInclude);<a name="line.2970"></a>
+<span class="sourceLineNo">2971</span>    String jsonDateTimeFormat = p.get("jsonDateTime", null);<a name="line.2971"></a>
+<span class="sourceLineNo">2972</span>    if (jsonDateTimeFormat != null) {<a name="line.2972"></a>
+<span class="sourceLineNo">2973</span>      jsonDateTime = JsonConfig.DateTime.valueOf(jsonDateTimeFormat);<a name="line.2973"></a>
+<span class="sourceLineNo">2974</span>    } else {<a name="line.2974"></a>
+<span class="sourceLineNo">2975</span>      jsonDateTime = JsonConfig.DateTime.MILLIS;<a name="line.2975"></a>
+<span class="sourceLineNo">2976</span>    }<a name="line.2976"></a>
+<span class="sourceLineNo">2977</span><a name="line.2977"></a>
+<span class="sourceLineNo">2978</span>    ddlGenerate = p.getBoolean("ddl.generate", ddlGenerate);<a name="line.2978"></a>
+<span class="sourceLineNo">2979</span>    ddlRun = p.getBoolean("ddl.run", ddlRun);<a name="line.2979"></a>
+<span class="sourceLineNo">2980</span>    ddlExtra = p.getBoolean("ddl.extra", ddlExtra);<a name="line.2980"></a>
+<span class="sourceLineNo">2981</span>    ddlCreateOnly = p.getBoolean("ddl.createOnly", ddlCreateOnly);<a name="line.2981"></a>
+<span class="sourceLineNo">2982</span>    ddlInitSql = p.get("ddl.initSql", ddlInitSql);<a name="line.2982"></a>
+<span class="sourceLineNo">2983</span>    ddlSeedSql = p.get("ddl.seedSql", ddlSeedSql);<a name="line.2983"></a>
+<span class="sourceLineNo">2984</span><a name="line.2984"></a>
+<span class="sourceLineNo">2985</span>    // read tenant-configuration from config:<a name="line.2985"></a>
+<span class="sourceLineNo">2986</span>    // tenant.mode = NONE | DB | SCHEMA | CATALOG | PARTITION<a name="line.2986"></a>
+<span class="sourceLineNo">2987</span>    String mode = p.get("tenant.mode");<a name="line.2987"></a>
+<span class="sourceLineNo">2988</span>    if (mode != null) {<a name="line.2988"></a>
+<span class="sourceLineNo">2989</span>      for (TenantMode value : TenantMode.values()) {<a name="line.2989"></a>
+<span class="sourceLineNo">2990</span>        if (value.name().equalsIgnoreCase(mode)) {<a name="line.2990"></a>
+<span class="sourceLineNo">2991</span>          tenantMode = value;<a name="line.2991"></a>
+<span class="sourceLineNo">2992</span>          break;<a name="line.2992"></a>
+<span class="sourceLineNo">2993</span>        }<a name="line.2993"></a>
+<span class="sourceLineNo">2994</span>      }<a name="line.2994"></a>
+<span class="sourceLineNo">2995</span>    }<a name="line.2995"></a>
+<span class="sourceLineNo">2996</span><a name="line.2996"></a>
+<span class="sourceLineNo">2997</span>    currentTenantProvider = p.createInstance(CurrentTenantProvider.class, "tenant.currentTenantProvider", currentTenantProvider);<a name="line.2997"></a>
+<span class="sourceLineNo">2998</span>    tenantCatalogProvider = p.createInstance(TenantCatalogProvider.class, "tenant.catalogProvider", tenantCatalogProvider);<a name="line.2998"></a>
+<span class="sourceLineNo">2999</span>    tenantSchemaProvider = p.createInstance(TenantSchemaProvider.class, "tenant.schemaProvider", tenantSchemaProvider);<a name="line.2999"></a>
+<span class="sourceLineNo">3000</span>    tenantPartitionColumn = p.get("tenant.partitionColumn", tenantPartitionColumn);<a name="line.3000"></a>
+<span class="sourceLineNo">3001</span>    classes = getClasses(p);<a name="line.3001"></a>
+<span class="sourceLineNo">3002</span><a name="line.3002"></a>
+<span class="sourceLineNo">3003</span>    String mappingsProp = p.get("mappingLocations", null);<a name="line.3003"></a>
+<span class="sourceLineNo">3004</span>    mappingLocations = getSearchList(mappingsProp, mappingLocations);<a name="line.3004"></a>
+<span class="sourceLineNo">3005</span>  }<a name="line.3005"></a>
 <span class="sourceLineNo">3006</span><a name="line.3006"></a>
-<span class="sourceLineNo">3007</span>    String mappingsProp = p.get("mappingLocations", null);<a name="line.3007"></a>
-<span class="sourceLineNo">3008</span>    mappingLocations = getSearchList(mappingsProp, mappingLocations);<a name="line.3008"></a>
-<span class="sourceLineNo">3009</span>  }<a name="line.3009"></a>
-<span class="sourceLineNo">3010</span><a name="line.3010"></a>
-<span class="sourceLineNo">3011</span>  private NamingConvention createNamingConvention(PropertiesWrapper properties, NamingConvention namingConvention) {<a name="line.3011"></a>
-<span class="sourceLineNo">3012</span>    NamingConvention nc = properties.createInstance(NamingConvention.class, "namingConvention", null);<a name="line.3012"></a>
-<span class="sourceLineNo">3013</span>    return (nc != null) ? nc : namingConvention;<a name="line.3013"></a>
-<span class="sourceLineNo">3014</span>  }<a name="line.3014"></a>
-<span class="sourceLineNo">3015</span><a name="line.3015"></a>
-<span class="sourceLineNo">3016</span>  /**<a name="line.3016"></a>
-<span class="sourceLineNo">3017</span>   * Build the list of classes from the comma delimited string.<a name="line.3017"></a>
-<span class="sourceLineNo">3018</span>   *<a name="line.3018"></a>
-<span class="sourceLineNo">3019</span>   * @param properties the properties<a name="line.3019"></a>
-<span class="sourceLineNo">3020</span>   * @return the classes<a name="line.3020"></a>
-<span class="sourceLineNo">3021</span>   */<a name="line.3021"></a>
-<span class="sourceLineNo">3022</span>  private List&lt;Class&lt;?&gt;&gt; getClasses(PropertiesWrapper properties) {<a name="line.3022"></a>
-<span class="sourceLineNo">3023</span><a name="line.3023"></a>
-<span class="sourceLineNo">3024</span>    String classNames = properties.get("classes", null);<a name="line.3024"></a>
-<span class="sourceLineNo">3025</span>    if (classNames == null) {<a name="line.3025"></a>
-<span class="sourceLineNo">3026</span>      return classes;<a name="line.3026"></a>
-<span class="sourceLineNo">3027</span>    }<a name="line.3027"></a>
-<span class="sourceLineNo">3028</span><a name="line.3028"></a>
-<span class="sourceLineNo">3029</span>    List&lt;Class&lt;?&gt;&gt; classes = new ArrayList&lt;&gt;();<a name="line.3029"></a>
-<span class="sourceLineNo">3030</span><a name="line.3030"></a>
-<span class="sourceLineNo">3031</span>    String[] split = StringHelper.splitNames(classNames);<a name="line.3031"></a>
-<span class="sourceLineNo">3032</span>    for (String cn : split) {<a name="line.3032"></a>
-<span class="sourceLineNo">3033</span>      if (!"class".equalsIgnoreCase(cn)) {<a name="line.3033"></a>
-<span class="sourceLineNo">3034</span>        try {<a name="line.3034"></a>
-<span class="sourceLineNo">3035</span>          classes.add(Class.forName(cn));<a name="line.3035"></a>
-<span class="sourceLineNo">3036</span>        } catch (ClassNotFoundException e) {<a name="line.3036"></a>
-<span class="sourceLineNo">3037</span>          String msg = "Error registering class [" + cn + "] from [" + classNames + "]";<a name="line.3037"></a>
-<span class="sourceLineNo">3038</span>          throw new RuntimeException(msg, e);<a name="line.3038"></a>
-<span class="sourceLineNo">3039</span>        }<a name="line.3039"></a>
-<span class="sourceLineNo">3040</span>      }<a name="line.3040"></a>
-<span class="sourceLineNo">3041</span>    }<a name="line.3041"></a>
-<span class="sourceLineNo">3042</span>    return classes;<a name="line.3042"></a>
-<span class="sourceLineNo">3043</span>  }<a name="line.3043"></a>
-<span class="sourceLineNo">3044</span><a name="line.3044"></a>
-<span class="sourceLineNo">3045</span>  private List&lt;String&gt; getSearchList(String searchNames, List&lt;String&gt; defaultValue) {<a name="line.3045"></a>
-<span class="sourceLineNo">3046</span><a name="line.3046"></a>
-<span class="sourceLineNo">3047</span>    if (searchNames != null) {<a name="line.3047"></a>
-<span class="sourceLineNo">3048</span>      String[] entries = StringHelper.splitNames(searchNames);<a name="line.3048"></a>
-<span class="sourceLineNo">3049</span><a name="line.3049"></a>
-<span class="sourceLineNo">3050</span>      List&lt;String&gt; hitList = new ArrayList&lt;&gt;(entries.length);<a name="line.3050"></a>
-<span class="sourceLineNo">3051</span>      Collections.addAll(hitList, entries);<a name="line.3051"></a>
-<span class="sourceLineNo">3052</span><a name="line.3052"></a>
-<span class="sourceLineNo">3053</span>      return hitList;<a name="line.3053"></a>
-<span class="sourceLineNo">3054</span>    } else {<a name="line.3054"></a>
-<span class="sourceLineNo">3055</span>      return defaultValue;<a name="line.3055"></a>
-<span class="sourceLineNo">3056</span>    }<a name="line.3056"></a>
-<span class="sourceLineNo">3057</span>  }<a name="line.3057"></a>
-<span class="sourceLineNo">3058</span><a name="line.3058"></a>
-<span class="sourceLineNo">3059</span>  /**<a name="line.3059"></a>
-<span class="sourceLineNo">3060</span>   * Return the PersistBatch mode to use for 'batchOnCascade' taking into account if the database<a name="line.3060"></a>
-<span class="sourceLineNo">3061</span>   * platform supports getGeneratedKeys in batch mode.<a name="line.3061"></a>
-<span class="sourceLineNo">3062</span>   */<a name="line.3062"></a>
-<span class="sourceLineNo">3063</span>  public PersistBatch appliedPersistBatchOnCascade() {<a name="line.3063"></a>
-<span class="sourceLineNo">3064</span><a name="line.3064"></a>
-<span class="sourceLineNo">3065</span>    if (persistBatchOnCascade == PersistBatch.INHERIT) {<a name="line.3065"></a>
-<span class="sourceLineNo">3066</span>      // use the platform default (ALL except SQL Server which has NONE)<a name="line.3066"></a>
-<span class="sourceLineNo">3067</span>      return databasePlatform.getPersistBatchOnCascade();<a name="line.3067"></a>
-<span class="sourceLineNo">3068</span>    }<a name="line.3068"></a>
-<span class="sourceLineNo">3069</span>    return persistBatchOnCascade;<a name="line.3069"></a>
-<span class="sourceLineNo">3070</span>  }<a name="line.3070"></a>
-<span class="sourceLineNo">3071</span><a name="line.3071"></a>
-<span class="sourceLineNo">3072</span>  /**<a name="line.3072"></a>
-<span class="sourceLineNo">3073</span>   * Return the Jackson ObjectMapper.<a name="line.3073"></a>
-<span class="sourceLineNo">3074</span>   * &lt;p&gt;<a name="line.3074"></a>
-<span class="sourceLineNo">3075</span>   * Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.<a name="line.3075"></a>
-<span class="sourceLineNo">3076</span>   * &lt;/p&gt;<a name="line.3076"></a>
-<span class="sourceLineNo">3077</span>   */<a name="line.3077"></a>
-<span class="sourceLineNo">3078</span>  public Object getObjectMapper() {<a name="line.3078"></a>
-<span class="sourceLineNo">3079</span>    return objectMapper;<a name="line.3079"></a>
-<span class="sourceLineNo">3080</span>  }<a name="line.3080"></a>
-<span class="sourceLineNo">3081</span><a name="line.3081"></a>
-<span class="sourceLineNo">3082</span>  /**<a name="line.3082"></a>
-<span class="sourceLineNo">3083</span>   * Set the Jackson ObjectMapper.<a name="line.3083"></a>
-<span class="sourceLineNo">3084</span>   * &lt;p&gt;<a name="line.3084"></a>
-<span class="sourceLineNo">3085</span>   * Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.<a name="line.3085"></a>
-<span class="sourceLineNo">3086</span>   * &lt;/p&gt;<a name="line.3086"></a>
-<span class="sourceLineNo">3087</span>   */<a name="line.3087"></a>
-<span class="sourceLineNo">3088</span>  public void setObjectMapper(Object objectMapper) {<a name="line.3088"></a>
-<span class="sourceLineNo">3089</span>    this.objectMapper = objectMapper;<a name="line.3089"></a>
-<span class="sourceLineNo">3090</span>  }<a name="line.3090"></a>
-<span class="sourceLineNo">3091</span><a name="line.3091"></a>
-<span class="sourceLineNo">3092</span>  /**<a name="line.3092"></a>
-<span class="sourceLineNo">3093</span>   * Return true if eq("someProperty", null) should to generate "1=1" rather than "is null" sql expression.<a name="line.3093"></a>
-<span class="sourceLineNo">3094</span>   */<a name="line.3094"></a>
-<span class="sourceLineNo">3095</span>  public boolean isExpressionEqualsWithNullAsNoop() {<a name="line.3095"></a>
-<span class="sourceLineNo">3096</span>    return expressionEqualsWithNullAsNoop;<a name="line.3096"></a>
-<span class="sourceLineNo">3097</span>  }<a name="line.3097"></a>
-<span class="sourceLineNo">3098</span><a name="line.3098"></a>
-<span class="sourceLineNo">3099</span>  /**<a name="line.3099"></a>
-<span class="sourceLineNo">3100</span>   * Set to true if you want eq("someProperty", null) to generate "1=1" rather than "is null" sql expression.<a name="line.3100"></a>
-<span class="sourceLineNo">3101</span>   * &lt;p&gt;<a name="line.3101"></a>
-<span class="sourceLineNo">3102</span>   * Setting this to true has the effect that eq(propertyName, value), ieq(propertyName, value) and<a name="line.3102"></a>
-<span class="sourceLineNo">3103</span>   * ne(propertyName, value) have no effect when the value is null. The expression factory adds a NoopExpression<a name="line.3103"></a>
-<span class="sourceLineNo">3104</span>   * which will add "1=1" into the SQL rather than "is null".<a name="line.3104"></a>
-<span class="sourceLineNo">3105</span>   * &lt;/p&gt;<a name="line.3105"></a>
-<span class="sourceLineNo">3106</span>   */<a name="line.3106"></a>
-<span class="sourceLineNo">3107</span>  public void setExpressionEqualsWithNullAsNoop(boolean expressionEqualsWithNullAsNoop) {<a name="line.3107"></a>
-<span class="sourceLineNo">3108</span>    this.expressionEqualsWithNullAsNoop = expressionEqualsWithNullAsNoop;<a name="line.3108"></a>
-<span class="sourceLineNo">3109</span>  }<a name="line.3109"></a>
-<span class="sourceLineNo">3110</span><a name="line.3110"></a>
-<span class="sourceLineNo">3111</span>  /**<a name="line.3111"></a>
-<span class="sourceLineNo">3112</span>   * Return true if native ILIKE expression should be used if supported by the database platform (e.g. Postgres).<a name="line.3112"></a>
-<span class="sourceLineNo">3113</span>   */<a name="line.3113"></a>
-<span class="sourceLineNo">3114</span>  public boolean isExpressionNativeIlike() {<a name="line.3114"></a>
-<span class="sourceLineNo">3115</span>    return expressionNativeIlike;<a name="line.3115"></a>
-<span class="sourceLineNo">3116</span>  }<a name="line.3116"></a>
-<span class="sourceLineNo">3117</span><a name="line.3117"></a>
-<span class="sourceLineNo">3118</span>  /**<a name="line.3118"></a>
-<span class="sourceLineNo">3119</span>   * Set to true to use native ILIKE expression if supported by the database platform (e.g. Postgres).<a name="line.3119"></a>
-<span class="sourceLineNo">3120</span>   */<a name="line.3120"></a>
-<span class="sourceLineNo">3121</span>  public void setExpressionNativeIlike(boolean expressionNativeIlike) {<a name="line.3121"></a>
-<span class="sourceLineNo">3122</span>    this.expressionNativeIlike = expressionNativeIlike;<a name="line.3122"></a>
-<span class="sourceLineNo">3123</span>  }<a name="line.3123"></a>
-<span class="sourceLineNo">3124</span><a name="line.3124"></a>
-<span class="sourceLineNo">3125</span>  /**<a name="line.3125"></a>
-<span class="sourceLineNo">3126</span>   * Return true if L2 cache is disabled.<a name="line.3126"></a>
-<span class="sourceLineNo">3127</span>   */<a name="line.3127"></a>
-<span class="sourceLineNo">3128</span>  public boolean isDisableL2Cache() {<a name="line.3128"></a>
-<span class="sourceLineNo">3129</span>    return disableL2Cache;<a name="line.3129"></a>
-<span class="sourceLineNo">3130</span>  }<a name="line.3130"></a>
-<span class="sourceLineNo">3131</span><a name="line.3131"></a>
-<span class="sourceLineNo">3132</span>  /**<a name="line.3132"></a>
-<span class="sourceLineNo">3133</span>   * Set to true to disable L2 caching. Typically useful in performance testing.<a name="line.3133"></a>
-<span class="sourceLineNo">3134</span>   */<a name="line.3134"></a>
-<span class="sourceLineNo">3135</span>  public void setDisableL2Cache(boolean disableL2Cache) {<a name="line.3135"></a>
-<span class="sourceLineNo">3136</span>    this.disableL2Cache = disableL2Cache;<a name="line.3136"></a>
-<span class="sourceLineNo">3137</span>  }<a name="line.3137"></a>
-<span class="sourceLineNo">3138</span><a name="line.3138"></a>
-<span class="sourceLineNo">3139</span>  /**<a name="line.3139"></a>
-<span class="sourceLineNo">3140</span>   * Returns if we use javax.validation.constraints.NotNull<a name="line.3140"></a>
-<span class="sourceLineNo">3141</span>   */<a name="line.3141"></a>
-<span class="sourceLineNo">3142</span>  public boolean isUseJavaxValidationNotNull() {<a name="line.3142"></a>
-<span class="sourceLineNo">3143</span>    return useJavaxValidationNotNull;<a name="line.3143"></a>
-<span class="sourceLineNo">3144</span>  }<a name="line.3144"></a>
-<span class="sourceLineNo">3145</span><a name="line.3145"></a>
-<span class="sourceLineNo">3146</span>  /**<a name="line.3146"></a>
-<span class="sourceLineNo">3147</span>   * Controls if Ebean should ignore &lt;code&gt;&amp;x64;javax.validation.contstraints.NotNull&lt;/code&gt;<a name="line.3147"></a>
-<span class="sourceLineNo">3148</span>   * with respect to generating a &lt;code&gt;NOT NULL&lt;/code&gt; column.<a name="line.3148"></a>
-<span class="sourceLineNo">3149</span>   * &lt;p&gt;<a name="line.3149"></a>
-<span class="sourceLineNo">3150</span>   * Normally when Ebean sees javax NotNull annotation it means that column is defined as NOT NULL.<a name="line.3150"></a>
-<span class="sourceLineNo">3151</span>   * Set this to &lt;code&gt;false&lt;/code&gt; and the javax NotNull annotation is effectively ignored (and<a name="line.3151"></a>
-<span class="sourceLineNo">3152</span>   * we instead use Ebean's own NotNull annotation or JPA Column(nullable=false) annotation.<a name="line.3152"></a>
-<span class="sourceLineNo">3153</span>   */<a name="line.3153"></a>
-<span class="sourceLineNo">3154</span>  public void setUseJavaxValidationNotNull(boolean useJavaxValidationNotNull) {<a name="line.3154"></a>
-<span class="sourceLineNo">3155</span>    this.useJavaxValidationNotNull = useJavaxValidationNotNull;<a name="line.3155"></a>
-<span class="sourceLineNo">3156</span>  }<a name="line.3156"></a>
-<span class="sourceLineNo">3157</span><a name="line.3157"></a>
-<span class="sourceLineNo">3158</span>  /**<a name="line.3158"></a>
-<span class="sourceLineNo">3159</span>   * Return true if L2 cache notification should run in the foreground.<a name="line.3159"></a>
-<span class="sourceLineNo">3160</span>   */<a name="line.3160"></a>
-<span class="sourceLineNo">3161</span>  public boolean isNotifyL2CacheInForeground() {<a name="line.3161"></a>
-<span class="sourceLineNo">3162</span>    return notifyL2CacheInForeground;<a name="line.3162"></a>
-<span class="sourceLineNo">3163</span>  }<a name="line.3163"></a>
-<span class="sourceLineNo">3164</span><a name="line.3164"></a>
-<span class="sourceLineNo">3165</span>  /**<a name="line.3165"></a>
-<span class="sourceLineNo">3166</span>   * Set this to true to run L2 cache notification in the foreground.<a name="line.3166"></a>
-<span class="sourceLineNo">3167</span>   * &lt;p&gt;<a name="line.3167"></a>
-<span class="sourceLineNo">3168</span>   * In general we don't want to do that as when we use a distributed cache (like Ignite, Hazelcast etc)<a name="line.3168"></a>
-<span class="sourceLineNo">3169</span>   * we are making network calls and we prefer to do this in background and not impact the response time<a name="line.3169"></a>
-<span class="sourceLineNo">3170</span>   * of the executing transaction.<a name="line.3170"></a>
-<span class="sourceLineNo">3171</span>   * &lt;/p&gt;<a name="line.3171"></a>
-<span class="sourceLineNo">3172</span>   */<a name="line.3172"></a>
-<span class="sourceLineNo">3173</span>  public void setNotifyL2CacheInForeground(boolean notifyL2CacheInForeground) {<a name="line.3173"></a>
-<span class="sourceLineNo">3174</span>    this.notifyL2CacheInForeground = notifyL2CacheInForeground;<a name="line.3174"></a>
-<span class="sourceLineNo">3175</span>  }<a name="line.3175"></a>
-<span class="sourceLineNo">3176</span><a name="line.3176"></a>
-<span class="sourceLineNo">3177</span>  /**<a name="line.3177"></a>
-<span class="sourceLineNo">3178</span>   * Return the query plan time to live.<a name="line.3178"></a>
-<span class="sourceLineNo">3179</span>   */<a name="line.3179"></a>
-<span class="sourceLineNo">3180</span>  public int getQueryPlanTTLSeconds() {<a name="line.3180"></a>
-<span class="sourceLineNo">3181</span>    return queryPlanTTLSeconds;<a name="line.3181"></a>
-<span class="sourceLineNo">3182</span>  }<a name="line.3182"></a>
-<span class="sourceLineNo">3183</span><a name="line.3183"></a>
-<span class="sourceLineNo">3184</span>  /**<a name="line.3184"></a>
-<span class="sourceLineNo">3185</span>   * Set the query plan time to live.<a name="line.3185"></a>
-<span class="sourceLineNo">3186</span>   */<a name="line.3186"></a>
-<span class="sourceLineNo">3187</span>  public void setQueryPlanTTLSeconds(int queryPlanTTLSeconds) {<a name="line.3187"></a>
-<span class="sourceLineNo">3188</span>    this.queryPlanTTLSeconds = queryPlanTTLSeconds;<a name="line.3188"></a>
-<span class="sourceLineNo">3189</span>  }<a name="line.3189"></a>
-<span class="sourceLineNo">3190</span><a name="line.3190"></a>
-<span class="sourceLineNo">3191</span>  /**<a name="line.3191"></a>
-<span class="sourceLineNo">3192</span>   * Run the DB migration against the DataSource.<a name="line.3192"></a>
-<span class="sourceLineNo">3193</span>   */<a name="line.3193"></a>
-<span class="sourceLineNo">3194</span>  public DataSource runDbMigration(DataSource dataSource) {<a name="line.3194"></a>
-<span class="sourceLineNo">3195</span>    if (migrationConfig.isRunMigration()) {<a name="line.3195"></a>
-<span class="sourceLineNo">3196</span>      MigrationRunner runner = migrationConfig.createRunner(getClassLoadConfig().getClassLoader(), properties);<a name="line.3196"></a>
-<span class="sourceLineNo">3197</span>      runner.run(dataSource);<a name="line.3197"></a>
-<span class="sourceLineNo">3198</span>    }<a name="line.3198"></a>
-<span class="sourceLineNo">3199</span>    return dataSource;<a name="line.3199"></a>
-<span class="sourceLineNo">3200</span>  }<a name="line.3200"></a>
-<span class="sourceLineNo">3201</span><a name="line.3201"></a>
-<span class="sourceLineNo">3202</span>  /**<a name="line.3202"></a>
-<span class="sourceLineNo">3203</span>   * Create a new PlatformConfig based of the one held but with overridden properties by reading<a name="line.3203"></a>
-<span class="sourceLineNo">3204</span>   * properties with the given path and prefix.<a name="line.3204"></a>
-<span class="sourceLineNo">3205</span>   * &lt;p&gt;<a name="line.3205"></a>
-<span class="sourceLineNo">3206</span>   * Typically used in Db Migration generation for many platform targets that might have different<a name="line.3206"></a>
-<span class="sourceLineNo">3207</span>   * configuration for IdType, UUID, quoted identifiers etc.<a name="line.3207"></a>
-<span class="sourceLineNo">3208</span>   * &lt;/p&gt;<a name="line.3208"></a>
-<span class="sourceLineNo">3209</span>   *<a name="line.3209"></a>
-<span class="sourceLineNo">3210</span>   * @param propertiesPath The properties path used for loading and setting properties<a name="line.3210"></a>
-<span class="sourceLineNo">3211</span>   * @param platformPrefix The prefix used for loading and setting properties<a name="line.3211"></a>
-<span class="sourceLineNo">3212</span>   * @return A copy of the PlatformConfig with overridden properties<a name="line.3212"></a>
-<span class="sourceLineNo">3213</span>   */<a name="line.3213"></a>
-<span class="sourceLineNo">3214</span>  public PlatformConfig newPlatformConfig(String propertiesPath, String platformPrefix) {<a name="line.3214"></a>
-<span class="sourceLineNo">3215</span>    if (properties == null) {<a name="line.3215"></a>
-<span class="sourceLineNo">3216</span>      properties = new Properties();<a name="line.3216"></a>
-<span class="sourceLineNo">3217</span>    }<a name="line.3217"></a>
-<span class="sourceLineNo">3218</span>    PropertiesWrapper p = new PropertiesWrapper(propertiesPath, platformPrefix, properties, classLoadConfig);<a name="line.3218"></a>
-<span class="sourceLineNo">3219</span>    PlatformConfig config = new PlatformConfig(platformConfig);<a name="line.3219"></a>
-<span class="sourceLineNo">3220</span>    config.loadSettings(p);<a name="line.3220"></a>
-<span class="sourceLineNo">3221</span>    return config;<a name="line.3221"></a>
-<span class="sourceLineNo">3222</span>  }<a name="line.3222"></a>
-<span class="sourceLineNo">3223</span><a name="line.3223"></a>
-<span class="sourceLineNo">3224</span>  /**<a name="line.3224"></a>
-<span class="sourceLineNo">3225</span>   * Add a mapping location to search for xml mapping via class path search.<a name="line.3225"></a>
-<span class="sourceLineNo">3226</span>   */<a name="line.3226"></a>
-<span class="sourceLineNo">3227</span>  public void addMappingLocation(String mappingLocation) {<a name="line.3227"></a>
-<span class="sourceLineNo">3228</span>    if (mappingLocations == null) {<a name="line.3228"></a>
-<span class="sourceLineNo">3229</span>      mappingLocations = new ArrayList&lt;&gt;();<a name="line.3229"></a>
-<span class="sourceLineNo">3230</span>    }<a name="line.3230"></a>
-<span class="sourceLineNo">3231</span>    mappingLocations.add(mappingLocation);<a name="line.3231"></a>
-<span class="sourceLineNo">3232</span>  }<a name="line.3232"></a>
-<span class="sourceLineNo">3233</span><a name="line.3233"></a>
-<span class="sourceLineNo">3234</span>  /**<a name="line.3234"></a>
-<span class="sourceLineNo">3235</span>   * Return mapping locations to search for xml mapping via class path search.<a name="line.3235"></a>
-<span class="sourceLineNo">3236</span>   */<a name="line.3236"></a>
-<span class="sourceLineNo">3237</span>  public List&lt;String&gt; getMappingLocations() {<a name="line.3237"></a>
-<span class="sourceLineNo">3238</span>    return mappingLocations;<a name="line.3238"></a>
-<span class="sourceLineNo">3239</span>  }<a name="line.3239"></a>
-<span class="sourceLineNo">3240</span><a name="line.3240"></a>
-<span class="sourceLineNo">3241</span>  /**<a name="line.3241"></a>
-<span class="sourceLineNo">3242</span>   * Set mapping locations to search for xml mapping via class path search.<a name="line.3242"></a>
-<span class="sourceLineNo">3243</span>   * &lt;p&gt;<a name="line.3243"></a>
-<span class="sourceLineNo">3244</span>   * This is only used if classes have not been explicitly specified.<a name="line.3244"></a>
-<span class="sourceLineNo">3245</span>   * &lt;/p&gt;<a name="line.3245"></a>
-<span class="sourceLineNo">3246</span>   */<a name="line.3246"></a>
-<span class="sourceLineNo">3247</span>  public void setMappingLocations(List&lt;String&gt; mappingLocations) {<a name="line.3247"></a>
-<span class="sourceLineNo">3248</span>    this.mappingLocations = mappingLocations;<a name="line.3248"></a>
-<span class="sourceLineNo">3249</span>  }<a name="line.3249"></a>
-<span class="sourceLineNo">3250</span><a name="line.3250"></a>
-<span class="sourceLineNo">3251</span>  /**<a name="line.3251"></a>
-<span class="sourceLineNo">3252</span>   * When false we need explicit &lt;code&gt;@GeneratedValue&lt;/code&gt; mapping to assign<a name="line.3252"></a>
-<span class="sourceLineNo">3253</span>   * Identity or Sequence generated values. When true Id properties are automatically<a name="line.3253"></a>
-<span class="sourceLineNo">3254</span>   * assigned Identity or Sequence without the GeneratedValue mapping.<a name="line.3254"></a>
-<span class="sourceLineNo">3255</span>   */<a name="line.3255"></a>
-<span class="sourceLineNo">3256</span>  public boolean isIdGeneratorAutomatic() {<a name="line.3256"></a>
-<span class="sourceLineNo">3257</span>    return idGeneratorAutomatic;<a name="line.3257"></a>
-<span class="sourceLineNo">3258</span>  }<a name="line.3258"></a>
-<span class="sourceLineNo">3259</span><a name="line.3259"></a>
-<span class="sourceLineNo">3260</span>  /**<a name="line.3260"></a>
-<span class="sourceLineNo">3261</span>   * Set to false such that Id properties require explicit &lt;code&gt;@GeneratedValue&lt;/code&gt;<a name="line.3261"></a>
-<span class="sourceLineNo">3262</span>   * mapping before they are assigned Identity or Sequence generation based on platform.<a name="line.3262"></a>
-<span class="sourceLineNo">3263</span>   */<a name="line.3263"></a>
-<span class="sourceLineNo">3264</span>  public void setIdGeneratorAutomatic(boolean idGeneratorAutomatic) {<a name="line.3264"></a>
-<span class="sourceLineNo">3265</span>    this.idGeneratorAutomatic = idGeneratorAutomatic;<a name="line.3265"></a>
-<span class="sourceLineNo">3266</span>  }<a name="line.3266"></a>
-<span class="sourceLineNo">3267</span><a name="line.3267"></a>
-<span class="sourceLineNo">3268</span>  /**<a name="line.3268"></a>
-<span class="sourceLineNo">3269</span>   * Return true if query plan capture is enabled.<a name="line.3269"></a>
-<span class="sourceLineNo">3270</span>   */<a name="line.3270"></a>
-<span class="sourceLineNo">3271</span>  public boolean isCollectQueryPlans() {<a name="line.3271"></a>
-<span class="sourceLineNo">3272</span>    return collectQueryPlans;<a name="line.3272"></a>
-<span class="sourceLineNo">3273</span>  }<a name="line.3273"></a>
-<span class="sourceLineNo">3274</span><a name="line.3274"></a>
-<span class="sourceLineNo">3275</span>  /**<a name="line.3275"></a>
-<span class="sourceLineNo">3276</span>   * Set to true to enable query plan capture.<a name="line.3276"></a>
-<span class="sourceLineNo">3277</span>   */<a name="line.3277"></a>
-<span class="sourceLineNo">3278</span>  public void setCollectQueryPlans(boolean collectQueryPlans) {<a name="line.3278"></a>
-<span class="sourceLineNo">3279</span>    this.collectQueryPlans = collectQueryPlans;<a name="line.3279"></a>
-<span class="sourceLineNo">3280</span>  }<a name="line.3280"></a>
-<span class="sourceLineNo">3281</span><a name="line.3281"></a>
-<span class="sourceLineNo">3282</span>  public enum UuidVersion {<a name="line.3282"></a>
-<span class="sourceLineNo">3283</span>    VERSION4,<a name="line.3283"></a>
-<span class="sourceLineNo">3284</span>    VERSION1,<a name="line.3284"></a>
-<span class="sourceLineNo">3285</span>    VERSION1RND<a name="line.3285"></a>
-<span class="sourceLineNo">3286</span>  }<a name="line.3286"></a>
-<span class="sourceLineNo">3287</span>}<a name="line.3287"></a>
+<span class="sourceLineNo">3007</span>  private NamingConvention createNamingConvention(PropertiesWrapper properties, NamingConvention namingConvention) {<a name="line.3007"></a>
+<span class="sourceLineNo">3008</span>    NamingConvention nc = properties.createInstance(NamingConvention.class, "namingConvention", null);<a name="line.3008"></a>
+<span class="sourceLineNo">3009</span>    return (nc != null) ? nc : namingConvention;<a name="line.3009"></a>
+<span class="sourceLineNo">3010</span>  }<a name="line.3010"></a>
+<span class="sourceLineNo">3011</span><a name="line.3011"></a>
+<span class="sourceLineNo">3012</span>  /**<a name="line.3012"></a>
+<span class="sourceLineNo">3013</span>   * Build the list of classes from the comma delimited string.<a name="line.3013"></a>
+<span class="sourceLineNo">3014</span>   *<a name="line.3014"></a>
+<span class="sourceLineNo">3015</span>   * @param properties the properties<a name="line.3015"></a>
+<span class="sourceLineNo">3016</span>   * @return the classes<a name="line.3016"></a>
+<span class="sourceLineNo">3017</span>   */<a name="line.3017"></a>
+<span class="sourceLineNo">3018</span>  private List&lt;Class&lt;?&gt;&gt; getClasses(PropertiesWrapper properties) {<a name="line.3018"></a>
+<span class="sourceLineNo">3019</span><a name="line.3019"></a>
+<span class="sourceLineNo">3020</span>    String classNames = properties.get("classes", null);<a name="line.3020"></a>
+<span class="sourceLineNo">3021</span>    if (classNames == null) {<a name="line.3021"></a>
+<span class="sourceLineNo">3022</span>      return classes;<a name="line.3022"></a>
+<span class="sourceLineNo">3023</span>    }<a name="line.3023"></a>
+<span class="sourceLineNo">3024</span><a name="line.3024"></a>
+<span class="sourceLineNo">3025</span>    List&lt;Class&lt;?&gt;&gt; classes = new ArrayList&lt;&gt;();<a name="line.3025"></a>
+<span class="sourceLineNo">3026</span><a name="line.3026"></a>
+<span class="sourceLineNo">3027</span>    String[] split = StringHelper.splitNames(classNames);<a name="line.3027"></a>
+<span class="sourceLineNo">3028</span>    for (String cn : split) {<a name="line.3028"></a>
+<span class="sourceLineNo">3029</span>      if (!"class".equalsIgnoreCase(cn)) {<a name="line.3029"></a>
+<span class="sourceLineNo">3030</span>        try {<a name="line.3030"></a>
+<span class="sourceLineNo">3031</span>          classes.add(Class.forName(cn));<a name="line.3031"></a>
+<span class="sourceLineNo">3032</span>        } catch (ClassNotFoundException e) {<a name="line.3032"></a>
+<span class="sourceLineNo">3033</span>          String msg = "Error registering class [" + cn + "] from [" + classNames + "]";<a name="line.3033"></a>
+<span class="sourceLineNo">3034</span>          throw new RuntimeException(msg, e);<a name="line.3034"></a>
+<span class="sourceLineNo">3035</span>        }<a name="line.3035"></a>
+<span class="sourceLineNo">3036</span>      }<a name="line.3036"></a>
+<span class="sourceLineNo">3037</span>    }<a name="line.3037"></a>
+<span class="sourceLineNo">3038</span>    return classes;<a name="line.3038"></a>
+<span class="sourceLineNo">3039</span>  }<a name="line.3039"></a>
+<span class="sourceLineNo">3040</span><a name="line.3040"></a>
+<span class="sourceLineNo">3041</span>  private List&lt;String&gt; getSearchList(String searchNames, List&lt;String&gt; defaultValue) {<a name="line.3041"></a>
+<span class="sourceLineNo">3042</span><a name="line.3042"></a>
+<span class="sourceLineNo">3043</span>    if (searchNames != null) {<a name="line.3043"></a>
+<span class="sourceLineNo">3044</span>      String[] entries = StringHelper.splitNames(searchNames);<a name="line.3044"></a>
+<span class="sourceLineNo">3045</span><a name="line.3045"></a>
+<span class="sourceLineNo">3046</span>      List&lt;String&gt; hitList = new ArrayList&lt;&gt;(entries.length);<a name="line.3046"></a>
+<span class="sourceLineNo">3047</span>      Collections.addAll(hitList, entries);<a name="line.3047"></a>
+<span class="sourceLineNo">3048</span><a name="line.3048"></a>
+<span class="sourceLineNo">3049</span>      return hitList;<a name="line.3049"></a>
+<span class="sourceLineNo">3050</span>    } else {<a name="line.3050"></a>
+<span class="sourceLineNo">3051</span>      return defaultValue;<a name="line.3051"></a>
+<span class="sourceLineNo">3052</span>    }<a name="line.3052"></a>
+<span class="sourceLineNo">3053</span>  }<a name="line.3053"></a>
+<span class="sourceLineNo">3054</span><a name="line.3054"></a>
+<span class="sourceLineNo">3055</span>  /**<a name="line.3055"></a>
+<span class="sourceLineNo">3056</span>   * Return the PersistBatch mode to use for 'batchOnCascade' taking into account if the database<a name="line.3056"></a>
+<span class="sourceLineNo">3057</span>   * platform supports getGeneratedKeys in batch mode.<a name="line.3057"></a>
+<span class="sourceLineNo">3058</span>   */<a name="line.3058"></a>
+<span class="sourceLineNo">3059</span>  public PersistBatch appliedPersistBatchOnCascade() {<a name="line.3059"></a>
+<span class="sourceLineNo">3060</span><a name="line.3060"></a>
+<span class="sourceLineNo">3061</span>    if (persistBatchOnCascade == PersistBatch.INHERIT) {<a name="line.3061"></a>
+<span class="sourceLineNo">3062</span>      // use the platform default (ALL except SQL Server which has NONE)<a name="line.3062"></a>
+<span class="sourceLineNo">3063</span>      return databasePlatform.getPersistBatchOnCascade();<a name="line.3063"></a>
+<span class="sourceLineNo">3064</span>    }<a name="line.3064"></a>
+<span class="sourceLineNo">3065</span>    return persistBatchOnCascade;<a name="line.3065"></a>
+<span class="sourceLineNo">3066</span>  }<a name="line.3066"></a>
+<span class="sourceLineNo">3067</span><a name="line.3067"></a>
+<span class="sourceLineNo">3068</span>  /**<a name="line.3068"></a>
+<span class="sourceLineNo">3069</span>   * Return the Jackson ObjectMapper.<a name="line.3069"></a>
+<span class="sourceLineNo">3070</span>   * &lt;p&gt;<a name="line.3070"></a>
+<span class="sourceLineNo">3071</span>   * Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.<a name="line.3071"></a>
+<span class="sourceLineNo">3072</span>   * &lt;/p&gt;<a name="line.3072"></a>
+<span class="sourceLineNo">3073</span>   */<a name="line.3073"></a>
+<span class="sourceLineNo">3074</span>  public Object getObjectMapper() {<a name="line.3074"></a>
+<span class="sourceLineNo">3075</span>    return objectMapper;<a name="line.3075"></a>
+<span class="sourceLineNo">3076</span>  }<a name="line.3076"></a>
+<span class="sourceLineNo">3077</span><a name="line.3077"></a>
+<span class="sourceLineNo">3078</span>  /**<a name="line.3078"></a>
+<span class="sourceLineNo">3079</span>   * Set the Jackson ObjectMapper.<a name="line.3079"></a>
+<span class="sourceLineNo">3080</span>   * &lt;p&gt;<a name="line.3080"></a>
+<span class="sourceLineNo">3081</span>   * Note that this is not strongly typed as Jackson ObjectMapper is an optional dependency.<a name="line.3081"></a>
+<span class="sourceLineNo">3082</span>   * &lt;/p&gt;<a name="line.3082"></a>
+<span class="sourceLineNo">3083</span>   */<a name="line.3083"></a>
+<span class="sourceLineNo">3084</span>  public void setObjectMapper(Object objectMapper) {<a name="line.3084"></a>
+<span class="sourceLineNo">3085</span>    this.objectMapper = objectMapper;<a name="line.3085"></a>
+<span class="sourceLineNo">3086</span>  }<a name="line.3086"></a>
+<span class="sourceLineNo">3087</span><a name="line.3087"></a>
+<span class="sourceLineNo">3088</span>  /**<a name="line.3088"></a>
+<span class="sourceLineNo">3089</span>   * Return true if eq("someProperty", null) should to generate "1=1" rather than "is null" sql expression.<a name="line.3089"></a>
+<span class="sourceLineNo">3090</span>   */<a name="line.3090"></a>
+<span class="sourceLineNo">3091</span>  public boolean isExpressionEqualsWithNullAsNoop() {<a name="line.3091"></a>
+<span class="sourceLineNo">3092</span>    return expressionEqualsWithNullAsNoop;<a name="line.3092"></a>
+<span class="sourceLineNo">3093</span>  }<a name="line.3093"></a>
+<span class="sourceLineNo">3094</span><a name="line.3094"></a>
+<span class="sourceLineNo">3095</span>  /**<a name="line.3095"></a>
+<span class="sourceLineNo">3096</span>   * Set to true if you want eq("someProperty", null) to generate "1=1" rather than "is null" sql expression.<a name="line.3096"></a>
+<span class="sourceLineNo">3097</span>   * &lt;p&gt;<a name="line.3097"></a>
+<span class="sourceLineNo">3098</span>   * Setting this to true has the effect that eq(propertyName, value), ieq(propertyName, value) and<a name="line.3098"></a>
+<span class="sourceLineNo">3099</span>   * ne(propertyName, value) have no effect when the value is null. The expression factory adds a NoopExpression<a name="line.3099"></a>
+<span class="sourceLineNo">3100</span>   * which will add "1=1" into the SQL rather than "is null".<a name="line.3100"></a>
+<span class="sourceLineNo">3101</span>   * &lt;/p&gt;<a name="line.3101"></a>
+<span class="sourceLineNo">3102</span>   */<a name="line.3102"></a>
+<span class="sourceLineNo">3103</span>  public void setExpressionEqualsWithNullAsNoop(boolean expressionEqualsWithNullAsNoop) {<a name="line.3103"></a>
+<span class="sourceLineNo">3104</span>    this.expressionEqualsWithNullAsNoop = expressionEqualsWithNullAsNoop;<a name="line.3104"></a>
+<span class="sourceLineNo">3105</span>  }<a name="line.3105"></a>
+<span class="sourceLineNo">3106</span><a name="line.3106"></a>
+<span class="sourceLineNo">3107</span>  /**<a name="line.3107"></a>
+<span class="sourceLineNo">3108</span>   * Return true if native ILIKE expression should be used if supported by the database platform (e.g. Postgres).<a name="line.3108"></a>
+<span class="sourceLineNo">3109</span>   */<a name="line.3109"></a>
+<span class="sourceLineNo">3110</span>  public boolean isExpressionNativeIlike() {<a name="line.3110"></a>
+<span class="sourceLineNo">3111</span>    return expressionNativeIlike;<a name="line.3111"></a>
+<span class="sourceLineNo">3112</span>  }<a name="line.3112"></a>
+<span class="sourceLineNo">3113</span><a name="line.3113"></a>
+<span class="sourceLineNo">3114</span>  /**<a name="line.3114"></a>
+<span class="sourceLineNo">3115</span>   * Set to true to use native ILIKE expression if supported by the database platform (e.g. Postgres).<a name="line.3115"></a>
+<span class="sourceLineNo">3116</span>   */<a name="line.3116"></a>
+<span class="sourceLineNo">3117</span>  public void setExpressionNativeIlike(boolean expressionNativeIlike) {<a name="line.3117"></a>
+<span class="sourceLineNo">3118</span>    this.expressionNativeIlike = expressionNativeIlike;<a name="line.3118"></a>
+<span class="sourceLineNo">3119</span>  }<a name="line.3119"></a>
+<span class="sourceLineNo">3120</span><a name="line.3120"></a>
+<span class="sourceLineNo">3121</span>  /**<a name="line.3121"></a>
+<span class="sourceLineNo">3122</span>   * Return true if L2 cache is disabled.<a name="line.3122"></a>
+<span class="sourceLineNo">3123</span>   */<a name="line.3123"></a>
+<span class="sourceLineNo">3124</span>  public boolean isDisableL2Cache() {<a name="line.3124"></a>
+<span class="sourceLineNo">3125</span>    return disableL2Cache;<a name="line.3125"></a>
+<span class="sourceLineNo">3126</span>  }<a name="line.3126"></a>
+<span class="sourceLineNo">3127</span><a name="line.3127"></a>
+<span class="sourceLineNo">3128</span>  /**<a name="line.3128"></a>
+<span class="sourceLineNo">3129</span>   * Set to true to disable L2 caching. Typically useful in performance testing.<a name="line.3129"></a>
+<span class="sourceLineNo">3130</span>   */<a name="line.3130"></a>
+<span class="sourceLineNo">3131</span>  public void setDisableL2Cache(boolean disableL2Cache) {<a name="line.3131"></a>
+<span class="sourceLineNo">3132</span>    this.disableL2Cache = disableL2Cache;<a name="line.3132"></a>
+<span class="sourceLineNo">3133</span>  }<a name="line.3133"></a>
+<span class="sourceLineNo">3134</span><a name="line.3134"></a>
+<span class="sourceLineNo">3135</span>  /**<a name="line.3135"></a>
+<span class="sourceLineNo">3136</span>   * Returns if we use javax.validation.constraints.NotNull<a name="line.3136"></a>
+<span class="sourceLineNo">3137</span>   */<a name="line.3137"></a>
+<span class="sourceLineNo">3138</span>  public boolean isUseJavaxValidationNotNull() {<a name="line.3138"></a>
+<span class="sourceLineNo">3139</span>    return useJavaxValidationNotNull;<a name="line.3139"></a>
+<span class="sourceLineNo">3140</span>  }<a name="line.3140"></a>
+<span class="sourceLineNo">3141</span><a name="line.3141"></a>
+<span class="sourceLineNo">3142</span>  /**<a name="line.3142"></a>
+<span class="sourceLineNo">3143</span>   * Controls if Ebean should ignore &lt;code&gt;&amp;x64;javax.validation.contstraints.NotNull&lt;/code&gt;<a name="line.3143"></a>
+<span class="sourceLineNo">3144</span>   * with respect to generating a &lt;code&gt;NOT NULL&lt;/code&gt; column.<a name="line.3144"></a>
+<span class="sourceLineNo">3145</span>   * &lt;p&gt;<a name="line.3145"></a>
+<span class="sourceLineNo">3146</span>   * Normally when Ebean sees javax NotNull annotation it means that column is defined as NOT NULL.<a name="line.3146"></a>
+<span class="sourceLineNo">3147</span>   * Set this to &lt;code&gt;false&lt;/code&gt; and the javax NotNull annotation is effectively ignored (and<a name="line.3147"></a>
+<span class="sourceLineNo">3148</span>   * we instead use Ebean's own NotNull annotation or JPA Column(nullable=false) annotation.<a name="line.3148"></a>
+<span class="sourceLineNo">3149</span>   */<a name="line.3149"></a>
+<span class="sourceLineNo">3150</span>  public void setUseJavaxValidationNotNull(boolean useJavaxValidationNotNull) {<a name="line.3150"></a>
+<span class="sourceLineNo">3151</span>    this.useJavaxValidationNotNull = useJavaxValidationNotNull;<a name="line.3151"></a>
+<span class="sourceLineNo">3152</span>  }<a name="line.3152"></a>
+<span class="sourceLineNo">3153</span><a name="line.3153"></a>
+<span class="sourceLineNo">3154</span>  /**<a name="line.3154"></a>
+<span class="sourceLineNo">3155</span>   * Return true if L2 cache notification should run in the foreground.<a name="line.3155"></a>
+<span class="sourceLineNo">3156</span>   */<a name="line.3156"></a>
+<span class="sourceLineNo">3157</span>  public boolean isNotifyL2CacheInForeground() {<a name="line.3157"></a>
+<span class="sourceLineNo">3158</span>    return notifyL2CacheInForeground;<a name="line.3158"></a>
+<span class="sourceLineNo">3159</span>  }<a name="line.3159"></a>
+<span class="sourceLineNo">3160</span><a name="line.3160"></a>
+<span class="sourceLineNo">3161</span>  /**<a name="line.3161"></a>
+<span class="sourceLineNo">3162</span>   * Set this to true to run L2 cache notification in the foreground.<a name="line.3162"></a>
+<span class="sourceLineNo">3163</span>   * &lt;p&gt;<a name="line.3163"></a>
+<span class="sourceLineNo">3164</span>   * In general we don't want to do that as when we use a distributed cache (like Ignite, Hazelcast etc)<a name="line.3164"></a>
+<span class="sourceLineNo">3165</span>   * we are making network calls and we prefer to do this in background and not impact the response time<a name="line.3165"></a>
+<span class="sourceLineNo">3166</span>   * of the executing transaction.<a name="line.3166"></a>
+<span class="sourceLineNo">3167</span>   * &lt;/p&gt;<a name="line.3167"></a>
+<span class="sourceLineNo">3168</span>   */<a name="line.3168"></a>
+<span class="sourceLineNo">3169</span>  public void setNotifyL2CacheInForeground(boolean notifyL2CacheInForeground) {<a name="line.3169"></a>
+<span class="sourceLineNo">3170</span>    this.notifyL2CacheInForeground = notifyL2CacheInForeground;<a name="line.3170"></a>
+<span class="sourceLineNo">3171</span>  }<a name="line.3171"></a>
+<span class="sourceLineNo">3172</span><a name="line.3172"></a>
+<span class="sourceLineNo">3173</span>  /**<a name="line.3173"></a>
+<span class="sourceLineNo">3174</span>   * Return the query plan time to live.<a name="line.3174"></a>
+<span class="sourceLineNo">3175</span>   */<a name="line.3175"></a>
+<span class="sourceLineNo">3176</span>  public int getQueryPlanTTLSeconds() {<a name="line.3176"></a>
+<span class="sourceLineNo">3177</span>    return queryPlanTTLSeconds;<a name="line.3177"></a>
+<span class="sourceLineNo">3178</span>  }<a name="line.3178"></a>
+<span class="sourceLineNo">3179</span><a name="line.3179"></a>
+<span class="sourceLineNo">3180</span>  /**<a name="line.3180"></a>
+<span class="sourceLineNo">3181</span>   * Set the query plan time to live.<a name="line.3181"></a>
+<span class="sourceLineNo">3182</span>   */<a name="line.3182"></a>
+<span class="sourceLineNo">3183</span>  public void setQueryPlanTTLSeconds(int queryPlanTTLSeconds) {<a name="line.3183"></a>
+<span class="sourceLineNo">3184</span>    this.queryPlanTTLSeconds = queryPlanTTLSeconds;<a name="line.3184"></a>
+<span class="sourceLineNo">3185</span>  }<a name="line.3185"></a>
+<span class="sourceLineNo">3186</span><a name="line.3186"></a>
+<span class="sourceLineNo">3187</span>  /**<a name="line.3187"></a>
+<span class="sourceLineNo">3188</span>   * Run the DB migration against the DataSource.<a name="line.3188"></a>
+<span class="sourceLineNo">3189</span>   */<a name="line.3189"></a>
+<span class="sourceLineNo">3190</span>  public DataSource runDbMigration(DataSource dataSource) {<a name="line.3190"></a>
+<span class="sourceLineNo">3191</span>    if (migrationConfig.isRunMigration()) {<a name="line.3191"></a>
+<span class="sourceLineNo">3192</span>      MigrationRunner runner = migrationConfig.createRunner(getClassLoadConfig().getClassLoader(), properties);<a name="line.3192"></a>
+<span class="sourceLineNo">3193</span>      runner.run(dataSource);<a name="line.3193"></a>
+<span class="sourceLineNo">3194</span>    }<a name="line.3194"></a>
+<span class="sourceLineNo">3195</span>    return dataSource;<a name="line.3195"></a>
+<span class="sourceLineNo">3196</span>  }<a name="line.3196"></a>
+<span class="sourceLineNo">3197</span><a name="line.3197"></a>
+<span class="sourceLineNo">3198</span>  /**<a name="line.3198"></a>
+<span class="sourceLineNo">3199</span>   * Create a new PlatformConfig based of the one held but with overridden properties by reading<a name="line.3199"></a>
+<span class="sourceLineNo">3200</span>   * properties with the given path and prefix.<a name="line.3200"></a>
+<span class="sourceLineNo">3201</span>   * &lt;p&gt;<a name="line.3201"></a>
+<span class="sourceLineNo">3202</span>   * Typically used in Db Migration generation for many platform targets that might have different<a name="line.3202"></a>
+<span class="sourceLineNo">3203</span>   * configuration for IdType, UUID, quoted identifiers etc.<a name="line.3203"></a>
+<span class="sourceLineNo">3204</span>   * &lt;/p&gt;<a name="line.3204"></a>
+<span class="sourceLineNo">3205</span>   *<a name="line.3205"></a>
+<span class="sourceLineNo">3206</span>   * @param propertiesPath The properties path used for loading and setting properties<a name="line.3206"></a>
+<span class="sourceLineNo">3207</span>   * @param platformPrefix The prefix used for loading and setting properties<a name="line.3207"></a>
+<span class="sourceLineNo">3208</span>   * @return A copy of the PlatformConfig with overridden properties<a name="line.3208"></a>
+<span class="sourceLineNo">3209</span>   */<a name="line.3209"></a>
+<span class="sourceLineNo">3210</span>  public PlatformConfig newPlatformConfig(String propertiesPath, String platformPrefix) {<a name="line.3210"></a>
+<span class="sourceLineNo">3211</span>    if (properties == null) {<a name="line.3211"></a>
+<span class="sourceLineNo">3212</span>      properties = new Properties();<a name="line.3212"></a>
+<span class="sourceLineNo">3213</span>    }<a name="line.3213"></a>
+<span class="sourceLineNo">3214</span>    PropertiesWrapper p = new PropertiesWrapper(propertiesPath, platformPrefix, properties, classLoadConfig);<a name="line.3214"></a>
+<span class="sourceLineNo">3215</span>    PlatformConfig config = new PlatformConfig(platformConfig);<a name="line.3215"></a>
+<span class="sourceLineNo">3216</span>    config.loadSettings(p);<a name="line.3216"></a>
+<span class="sourceLineNo">3217</span>    return config;<a name="line.3217"></a>
+<span class="sourceLineNo">3218</span>  }<a name="line.3218"></a>
+<span class="sourceLineNo">3219</span><a name="line.3219"></a>
+<span class="sourceLineNo">3220</span>  /**<a name="line.3220"></a>
+<span class="sourceLineNo">3221</span>   * Add a mapping location to search for xml mapping via class path search.<a name="line.3221"></a>
+<span class="sourceLineNo">3222</span>   */<a name="line.3222"></a>
+<span class="sourceLineNo">3223</span>  public void addMappingLocation(String mappingLocation) {<a name="line.3223"></a>
+<span class="sourceLineNo">3224</span>    if (mappingLocations == null) {<a name="line.3224"></a>
+<span class="sourceLineNo">3225</span>      mappingLocations = new ArrayList&lt;&gt;();<a name="line.3225"></a>
+<span class="sourceLineNo">3226</span>    }<a name="line.3226"></a>
+<span class="sourceLineNo">3227</span>    mappingLocations.add(mappingLocation);<a name="line.3227"></a>
+<span class="sourceLineNo">3228</span>  }<a name="line.3228"></a>
+<span class="sourceLineNo">3229</span><a name="line.3229"></a>
+<span class="sourceLineNo">3230</span>  /**<a name="line.3230"></a>
+<span class="sourceLineNo">3231</span>   * Return mapping locations to search for xml mapping via class path search.<a name="line.3231"></a>
+<span class="sourceLineNo">3232</span>   */<a name="line.3232"></a>
+<span class="sourceLineNo">3233</span>  public List&lt;String&gt; getMappingLocations() {<a name="line.3233"></a>
+<span class="sourceLineNo">3234</span>    return mappingLocations;<a name="line.3234"></a>
+<span class="sourceLineNo">3235</span>  }<a name="line.3235"></a>
+<span class="sourceLineNo">3236</span><a name="line.3236"></a>
+<span class="sourceLineNo">3237</span>  /**<a name="line.3237"></a>
+<span class="sourceLineNo">3238</span>   * Set mapping locations to search for xml mapping via class path search.<a name="line.3238"></a>
+<span class="sourceLineNo">3239</span>   * &lt;p&gt;<a name="line.3239"></a>
+<span class="sourceLineNo">3240</span>   * This is only used if classes have not been explicitly specified.<a name="line.3240"></a>
+<span class="sourceLineNo">3241</span>   * &lt;/p&gt;<a name="line.3241"></a>
+<span class="sourceLineNo">3242</span>   */<a name="line.3242"></a>
+<span class="sourceLineNo">3243</span>  public void setMappingLocations(List&lt;String&gt; mappingLocations) {<a name="line.3243"></a>
+<span class="sourceLineNo">3244</span>    this.mappingLocations = mappingLocations;<a name="line.3244"></a>
+<span class="sourceLineNo">3245</span>  }<a name="line.3245"></a>
+<span class="sourceLineNo">3246</span><a name="line.3246"></a>
+<span class="sourceLineNo">3247</span>  /**<a name="line.3247"></a>
+<span class="sourceLineNo">3248</span>   * When false we need explicit &lt;code&gt;@GeneratedValue&lt;/code&gt; mapping to assign<a name="line.3248"></a>
+<span class="sourceLineNo">3249</span>   * Identity or Sequence generated values. When true Id properties are automatically<a name="line.3249"></a>
+<span class="sourceLineNo">3250</span>   * assigned Identity or Sequence without the GeneratedValue mapping.<a name="line.3250"></a>
+<span class="sourceLineNo">3251</span>   */<a name="line.3251"></a>
+<span class="sourceLineNo">3252</span>  public boolean isIdGeneratorAutomatic() {<a name="line.3252"></a>
+<span class="sourceLineNo">3253</span>    return idGeneratorAutomatic;<a name="line.3253"></a>
+<span class="sourceLineNo">3254</span>  }<a name="line.3254"></a>
+<span class="sourceLineNo">3255</span><a name="line.3255"></a>
+<span class="sourceLineNo">3256</span>  /**<a name="line.3256"></a>
+<span class="sourceLineNo">3257</span>   * Set to false such that Id properties require explicit &lt;code&gt;@GeneratedValue&lt;/code&gt;<a name="line.3257"></a>
+<span class="sourceLineNo">3258</span>   * mapping before they are assigned Identity or Sequence generation based on platform.<a name="line.3258"></a>
+<span class="sourceLineNo">3259</span>   */<a name="line.3259"></a>
+<span class="sourceLineNo">3260</span>  public void setIdGeneratorAutomatic(boolean idGeneratorAutomatic) {<a name="line.3260"></a>
+<span class="sourceLineNo">3261</span>    this.idGeneratorAutomatic = idGeneratorAutomatic;<a name="line.3261"></a>
+<span class="sourceLineNo">3262</span>  }<a name="line.3262"></a>
+<span class="sourceLineNo">3263</span><a name="line.3263"></a>
+<span class="sourceLineNo">3264</span>  /**<a name="line.3264"></a>
+<span class="sourceLineNo">3265</span>   * Return true if query plan capture is enabled.<a name="line.3265"></a>
+<span class="sourceLineNo">3266</span>   */<a name="line.3266"></a>
+<span class="sourceLineNo">3267</span>  public boolean isCollectQueryPlans() {<a name="line.3267"></a>
+<span class="sourceLineNo">3268</span>    return collectQueryPlans;<a name="line.3268"></a>
+<span class="sourceLineNo">3269</span>  }<a name="line.3269"></a>
+<span class="sourceLineNo">3270</span><a name="line.3270"></a>
+<span class="sourceLineNo">3271</span>  /**<a name="line.3271"></a>
+<span class="sourceLineNo">3272</span>   * Set to true to enable query plan capture.<a name="line.3272"></a>
+<span class="sourceLineNo">3273</span>   */<a name="line.3273"></a>
+<span class="sourceLineNo">3274</span>  public void setCollectQueryPlans(boolean collectQueryPlans) {<a name="line.3274"></a>
+<span class="sourceLineNo">3275</span>    this.collectQueryPlans = collectQueryPlans;<a name="line.3275"></a>
+<span class="sourceLineNo">3276</span>  }<a name="line.3276"></a>
+<span class="sourceLineNo">3277</span><a name="line.3277"></a>
+<span class="sourceLineNo">3278</span>  public enum UuidVersion {<a name="line.3278"></a>
+<span class="sourceLineNo">3279</span>    VERSION4,<a name="line.3279"></a>
+<span class="sourceLineNo">3280</span>    VERSION1,<a name="line.3280"></a>
+<span class="sourceLineNo">3281</span>    VERSION1RND<a name="line.3281"></a>
+<span class="sourceLineNo">3282</span>  }<a name="line.3282"></a>
+<span class="sourceLineNo">3283</span>}<a name="line.3283"></a>
 
 
 

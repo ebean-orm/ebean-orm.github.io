@@ -33,14 +33,14 @@
 <span class="sourceLineNo">025</span> * // get a list of entities (query execution statistics in this case)<a name="line.25"></a>
 <span class="sourceLineNo">026</span> *<a name="line.26"></a>
 <span class="sourceLineNo">027</span> * List&lt;MetaQueryStatistic&gt; list =<a name="line.27"></a>
-<span class="sourceLineNo">028</span> *     Ebean.find(MetaQueryStatistic.class).findList();<a name="line.28"></a>
+<span class="sourceLineNo">028</span> *     DB.find(MetaQueryStatistic.class).findList();<a name="line.28"></a>
 <span class="sourceLineNo">029</span> *<a name="line.29"></a>
 <span class="sourceLineNo">030</span> * long nowMinus24Hrs = System.currentTimeMillis() - 24 * (1000 * 60 * 60);<a name="line.30"></a>
 <span class="sourceLineNo">031</span> *<a name="line.31"></a>
 <span class="sourceLineNo">032</span> * // sort and filter the list returning a filtered list...<a name="line.32"></a>
 <span class="sourceLineNo">033</span> *<a name="line.33"></a>
 <span class="sourceLineNo">034</span> * List&lt;MetaQueryStatistic&gt; filteredList =<a name="line.34"></a>
-<span class="sourceLineNo">035</span> *     Ebean.filter(MetaQueryStatistic.class)<a name="line.35"></a>
+<span class="sourceLineNo">035</span> *     DB.filter(MetaQueryStatistic.class)<a name="line.35"></a>
 <span class="sourceLineNo">036</span> *         .sort("avgTimeMicros desc")<a name="line.36"></a>
 <span class="sourceLineNo">037</span> *         .gt("executionCount", 0)<a name="line.37"></a>
 <span class="sourceLineNo">038</span> *         .gt("lastQueryTime", nowMinus24Hrs)<a name="line.38"></a>
@@ -71,12 +71,12 @@
 <span class="sourceLineNo">063</span> * // get a list of entities (query execution statistics)<a name="line.63"></a>
 <span class="sourceLineNo">064</span> *<a name="line.64"></a>
 <span class="sourceLineNo">065</span> * List&lt;Order&gt; orders =<a name="line.65"></a>
-<span class="sourceLineNo">066</span> *     Ebean.find(Order.class).findList();<a name="line.66"></a>
+<span class="sourceLineNo">066</span> *     DB.find(Order.class).findList();<a name="line.66"></a>
 <span class="sourceLineNo">067</span> *<a name="line.67"></a>
 <span class="sourceLineNo">068</span> * // Apply a filter...<a name="line.68"></a>
 <span class="sourceLineNo">069</span> *<a name="line.69"></a>
 <span class="sourceLineNo">070</span> * List&lt;Order&gt; filteredOrders =<a name="line.70"></a>
-<span class="sourceLineNo">071</span> *     Ebean.filter(Order.class)<a name="line.71"></a>
+<span class="sourceLineNo">071</span> *     DB.filter(Order.class)<a name="line.71"></a>
 <span class="sourceLineNo">072</span> *         .startsWith("customer.name", "Rob")<a name="line.72"></a>
 <span class="sourceLineNo">073</span> *         .eq("customer.shippingAddress.city", "Auckland")<a name="line.73"></a>
 <span class="sourceLineNo">074</span> *         .filter(orders);<a name="line.74"></a>
