@@ -193,7 +193,7 @@
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain</span>
 
-<span class="kn">import</span> <span class="nn">io.ebean.Ebean</span>
+<span class="kn">import</span> <span class="nn">io.ebean.DB</span>
 <span class="kn">import</span> <span class="nn">org.junit.Test</span>
 
 <span class="kd">class</span> <span class="nc">CustomerTest</span>  <span class="o">{</span>
@@ -205,14 +205,14 @@
     <span class="n">customer</span><span class="o">.</span><span class="na">name</span>  <span class="o">=</span> <span class="s">&quot;Hello entity bean&quot;</span>
 
     <span class="c1">// insert</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
+    <span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
 
     <span class="c1">// update</span>
     <span class="n">customer</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">&quot;Goodbye&quot;</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
+    <span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
 
     <span class="c1">// delete the bean</span>
-    <span class="n">Ebean</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+    <span class="n">DB</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
