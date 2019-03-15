@@ -245,13 +245,15 @@
           </p>
         </div>
         <div class="point p2">
-          <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-<span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
-<span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
-<span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
-<span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
-<span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
-<span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+          <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
           <p>
