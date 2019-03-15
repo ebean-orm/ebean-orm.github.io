@@ -143,6 +143,25 @@
 </pre></div>
 </div>
 
+<h4>Create database</h4>
+<p>
+  We can programmatically create a Database instance using <a href="databasefactory">DatabaseFactory</a>
+  and <a href="databaseconfig">DatabaseConfig</a> or it can be created automatically from properties
+  file configuration (for testing we often use application-test.yaml and have the database instance created automatically).
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// configuration ...</span>
+<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">MyEntityBean</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="o">...</span>
+
+<span class="c1">// create database instance</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>
+  Refer to <a href="databasefactory">DatabaseFactory</a> for more details.
+</p>
+
 <p>&nbsp;</p>
 
 <h2 id="db" class="tg">DB (io.ebean.DB)</h2>
@@ -204,7 +223,7 @@
 <p>
   <code>io.ebean.EbeanServer</code> is the older original name for <code>io.ebean.Database</code>.
   They can be used interchangably. In time EbeanServer will be deprecated and code should migrate
-  to io.ebean.EbeanServer.
+  to use io.ebean.Database.
 </p>
 
 
@@ -216,7 +235,7 @@
 <p>
   <code>io.ebean.Ebean</code> is the older original name for <code>io.ebean.DB</code>.
   They can be used interchangably. In time use of Ebean will be deprecated and code should migrate
-  to io.ebean.DB.
+  to use io.ebean.DB.
 </p>
 
 

@@ -42,8 +42,24 @@ html, body {height: 100%;}
     background-image: url(/images/px_by_greg.png);
     padding:5px 10px 15px 10px;
 }
+h4 {
+  margin-top: 1.6em;
+}
 h1 a {
    color: #333;
+}
+.rbg-light {
+  background: #f3f3f3;
+  padding-bottom: 15px;
+  border-radius: 7px;
+}
+.rbg-index {
+  padding: 15px;
+}
+.rbg h5 {
+  padding-left: 10px;
+  margin: 3px;
+  color: #919191;
 }
 .locationBar h1 a, .locationBar h1 {
     font-size:20px;
