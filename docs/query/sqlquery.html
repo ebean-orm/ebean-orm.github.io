@@ -99,8 +99,7 @@
 <h5>Example findOne with SqlRow</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, when_active from customer where id = :id&quot;</span>
 
-<span class="n">SqlRow</span> <span class="n">row</span> <span class="o">=</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">SqlRow</span> <span class="n">row</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 
@@ -114,7 +113,7 @@
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, status from customer order by name desc&quot;</span><span class="o">;</span>
 
-<span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findEachRow</span><span class="o">((</span><span class="n">resultSet</span><span class="o">,</span> <span class="n">rowNum</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
 
     <span class="kt">long</span> <span class="n">id</span> <span class="o">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getLong</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
@@ -131,8 +130,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, when_active from customer where status = ?&quot;</span><span class="o">;</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">SqlRow</span><span class="o">&gt;</span> <span class="n">rows</span> <span class="o">=</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">SqlRow</span><span class="o">&gt;</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;NEW&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setFirstRow</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
@@ -169,7 +167,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, status from customer where name = ?&quot;</span><span class="o">;</span>
 
-<span class="n">CustDto</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">CustDto</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findOne</span><span class="o">(</span><span class="n">CUST_MAPPER</span><span class="o">);</span>
 </pre></div>

@@ -96,9 +96,8 @@ Execute find row count query in a background thread.
   timeout).
   </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">futureRowCount</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">futureRowCount</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
       <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">query</span><span class="o">()</span>
       <span class="o">.</span><span class="na">findFutureCount</span><span class="o">()</span>
 
 <span class="c1">// do other things</span>

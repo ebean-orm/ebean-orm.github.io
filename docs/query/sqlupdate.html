@@ -97,7 +97,7 @@
 <h5>Example: simple update</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;update audit_log set description = description where id = ?&quot;</span><span class="o">;</span>
 
-<span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="kt">int</span> <span class="n">row</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
   <span class="o">.</span><span class="na">execute</span><span class="o">();</span>
 </pre></div>
@@ -108,7 +108,7 @@
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;insert into e_person_online (email, online_status, when_updated) &quot;</span> <span class="o">+</span>
              <span class="s">&quot;values (:email, :online, current_time)&quot;</span><span class="o">;</span>
 
-<span class="n">SqlUpdate</span> <span class="n">sqlUpdate</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">SqlUpdate</span> <span class="n">sqlUpdate</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;email&quot;</span><span class="o">,</span> <span class="n">email</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;online&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
@@ -123,8 +123,7 @@
 <h5>Example: binding list</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;delete from customer where ref_id in (:ids)&quot;</span><span class="o">;</span>
 
-<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">()</span>
+<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">()</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;ids&quot;</span><span class="o">,</span> <span class="n">asList</span><span class="o">(</span><span class="mi">9991</span><span class="o">,</span> <span class="mi">9992</span><span class="o">,</span> <span class="mi">9993</span><span class="o">))</span>
   <span class="o">.</span><span class="na">execute</span><span class="o">();</span>
 </pre></div>
@@ -138,8 +137,7 @@
 <h5>Example: binding multiple lists</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;delete from customer where ref_id in (:ids) and name in (:names)&quot;</span><span class="o">;</span>
 
-<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;ids&quot;</span><span class="o">,</span> <span class="n">asList</span><span class="o">(</span><span class="mi">9991</span><span class="o">,</span> <span class="mi">9992</span><span class="o">,</span> <span class="mi">9993</span><span class="o">))</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;names&quot;</span><span class="o">,</span> <span class="n">asList</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">,</span> <span class="s">&quot;jim&quot;</span><span class="o">))</span>
     <span class="o">.</span><span class="na">execute</span><span class="o">();</span>
@@ -169,10 +167,9 @@
 <span class="s">WHERE id = t._id</span>
 <span class="s">&quot;&quot;&quot;</span>
 
-<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span>
-<span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
-<span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Expired promotions&quot;</span><span class="o">)</span>
-<span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+<span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Expired promotions&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">execute</span><span class="o">();</span>
 </pre></div>
 </div>
 
@@ -181,9 +178,9 @@
   We use <em>addBatch()</em> and <em>executeBatch()</em> to explicitly use JDBC batching.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;insert into audit_log (id, description, modified_description) values (?,?,?)&quot;</span><span class="o">;</span>
-<span class="n">SqlUpdate</span> <span class="n">insert</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+<span class="n">SqlUpdate</span> <span class="n">insert</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
 
-<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="n">insert</span><span class="o">.</span><span class="na">setNextParameter</span><span class="o">(</span><span class="mi">10000</span><span class="o">);</span>
   <span class="n">insert</span><span class="o">.</span><span class="na">setNextParameter</span><span class="o">(</span><span class="s">&quot;hello&quot;</span><span class="o">);</span>
@@ -219,7 +216,7 @@
 
 <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="s">&quot;foo@one.com&quot;</span><span class="o">;</span>
 
-<span class="n">Object</span> <span class="n">key</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">Object</span> <span class="n">key</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">email</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>
@@ -236,7 +233,7 @@
   <span class="s">&quot;insert into e_person_online (email, online_status, when_updated) values (?, ?, current_time) &quot;</span> <span class="o">+</span>
   <span class="s">&quot;on duplicate key update when_updated=current_time, online_status = ?&quot;</span><span class="o">;</span>
 
-<span class="n">Object</span> <span class="n">key</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">createSqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">Object</span> <span class="n">key</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlUpdate</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="n">email</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="kc">true</span><span class="o">)</span>

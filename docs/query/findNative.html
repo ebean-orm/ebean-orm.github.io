@@ -97,7 +97,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">;</span>
 
-<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
@@ -107,7 +107,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
@@ -122,7 +122,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select * from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
