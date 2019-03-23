@@ -122,8 +122,7 @@ There are some use cases where <a href='findEach'>findEach</a> and <a href='find
 <h3> Example Code </h3>
 
 Example with <code>try-finally</code>
- <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Query</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
    <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">);</span>
 
@@ -137,20 +136,21 @@ Example with <code>try-finally</code>
   <span class="c1">// close the underlying resources</span>
   <span class="n">it</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
 <span class="o">}</span>
+
+ 
 </pre></div>
 </div>
 
 Example with <code>try-with-resources</code>
  <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">QueryIterator</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findIterate</span><span class="o">())</span> <span class="o">{</span>
-      <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
-        <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-        <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
-        <span class="n">count</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
-      <span class="o">}</span>
+   <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+     <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+     <span class="n">customer</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+     <span class="n">count</span><span class="o">.</span><span class="na">incrementAndGet</span><span class="o">();</span>
+   <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
-
 
 
 

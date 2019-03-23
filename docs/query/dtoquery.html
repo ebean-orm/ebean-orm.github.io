@@ -107,7 +107,7 @@
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using positioned parameters</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="o">)</span>
+  <span class="n">database</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
@@ -116,7 +116,7 @@
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using named parameters</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = :name&quot;</span><span class="o">)</span>
+  <span class="n">database</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = :name&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
@@ -188,7 +188,7 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from o_customer where id &gt; :id order by id desc&quot;</span><span class="o">;</span>
 
-<span class="n">ebeanServer</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+<span class="n">database</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findEach</span><span class="o">(</span><span class="n">customer</span> <span class="o">-&gt;</span> <span class="o">{</span>
 

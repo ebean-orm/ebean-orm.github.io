@@ -231,7 +231,7 @@ List<|Customer> customers
 <p>
   Execute the query with <code>FOR UPDATE</code> that will hold a lock on the rows fetched.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
     <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
@@ -265,7 +265,7 @@ List<|Customer> customers
   to <code>QUERY</code> the object graph built will be fresh data from the database ignoring any existing
   bean that is in the [transaction] persistence context.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="c1">// when customer is loaded it then is referenced in the</span>
   <span class="c1">// transaction scoped persistence context (aka L1 cache)</span>

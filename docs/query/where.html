@@ -104,8 +104,7 @@
   The same query can be written without using query beans as:
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
-<span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
@@ -148,8 +147,7 @@
 </div>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
      <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;billingAddress.city&quot;</span><span class="o">,</span> <span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
@@ -194,8 +192,7 @@
 </pre></div>
 </div>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using standard query</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">()</span>
     <span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
     <span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;whenCreated&quot;</span><span class="o">,</span> <span class="n">lastWeek</span><span class="o">)</span>
@@ -264,8 +261,7 @@
 <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="k">is</span> <span class="k">null</span> <span class="k">or</span> <span class="n">t0</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">?</span> <span class="p">)</span>
 </pre></div>
 </div>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
-  <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
    <span class="o">.</span><span class="na">where</span><span class="o">()</span>
      <span class="o">.</span><span class="na">or</span><span class="o">()</span>
        <span class="o">.</span><span class="na">isNull</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>

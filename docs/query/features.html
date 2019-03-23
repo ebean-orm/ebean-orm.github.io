@@ -966,7 +966,7 @@ where id in (?,?,?,?,?)
 </p>
 
 <p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
 <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
 <span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
@@ -990,7 +990,7 @@ where id in (?,?,?,?,?)
     This method is functionally equivalent to findIterate() but instead of using an iterator uses
     the QueryEachWhileConsumer (SAM) interface which is better suited to use with Java8 closures.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
@@ -1046,7 +1046,7 @@ where id in (?,?,?,?,?)
 <span class="c1">// ... page size is 100</span>
 
 <span class="n">PagedList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pagedList</span>
-  <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">findPagedList</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">100</span><span class="o">);</span>
@@ -1139,7 +1139,7 @@ example: shows the use of FutureList:
   <p>
     You can programmatically use raw SQL like the following examples or put the Raw SQL and column
     mappings into ebean-orm.xml file and reference them as 'named queries' - see
-    ebeanServer.createNamedQuery().
+    database.createNamedQuery().
   </p>
 
   <p>You can use RawSql with ebean enhanced entity beans. You can fetch only the properties that are need

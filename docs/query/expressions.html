@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>findEach | Query | Ebean</title>
+  <title>Query Expressions | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / findEach</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/query/">Query</a> / Expressions</h1>
   </div>
 </div>
 
@@ -87,45 +87,75 @@
 
       
 
-<h2>findEach (process large queries, one bean at a time)</h2>
 
+<h4 id="convenience">Convenience expressions</h4>
 <p>
-This method is appropriate to process very large query results as the
-beans are consumed one at a time and do not need to be held in memory
-  (unlike <a href="/docs/query/findList">findList</a> <a href='/docs/query/findSet'>findSet</a> etc)
-</p>
-<p>
-  Note that <code>findEach</code> (and <a href="/docs/query/findEachWhile">findEachWhile</a> and <a href="/docs/query/findIterate">findIterate</a>) uses a "per graph"
-persistence context scope and adjusts jdbc fetch buffer size for large
-queries. As such it is better to use findList for small queries.
-</p>
-<p>
-Note that internally Ebean can inform the JDBC driver that it is expecting larger
-resultSet and specifically for <code>MySQL</code> this hint is required to stop it's JDBC driver
-from buffering the entire resultSet. As such, for smaller resultSets <a href="/docs/query/findList">findList()</a> is
-generally preferable.
-</p>
-<p>
-  Compared with <a href="/docs/query/findEachWhile">findEachWhile</a> this will always process all the beans where as
-  <a href="/docs/query/findEachWhile">findEachWhile</a> provides a way to stop processing the query result early before
-all the beans have been read.
-</p>
-<p>
-  This method is functionally equivalent to <a href="/docs/query/findIterate">findIterate()</a> but instead of using an
-  iterator uses the <code>Consumer<T></code> interface which is better suited to use with Java8 closures.
+  These are expressions that combine other simple expressions together.
+  We have them because they occur often enough in applications.
 </p>
 
-
- <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-
-     <span class="c1">// do something with customer</span>
-     <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
-   <span class="o">});</span>
- 
+<h3 id="inRange">inRange()</h3>
+<p>
+  <code>property >= value1 and property < value2</code>
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">inRange</span><span class="o">(</span><span class="n">today</span><span class="o">.</span><span class="na">minusDays</span><span class="o">(</span><span class="mi">7</span><span class="o">),</span> <span class="n">today</span><span class="o">)</span>
 </pre></div>
+</div>
+<p>
+  InRange expression is similar to BETWEEN except is "half open interval".
+  The property is <code>strictly less than</code> the top value rather than
+  being less than or equal to.
+</p>
+<p>
+  This makes inRange more practically useful to define intervals on things
+  like timestamps and dates etc.
+</p>
+
+<h3 id="inRangeWith">inRangeWith()</h3>
+<p>
+  <code>property <= ? and ( highProperty > ? or highProperty is null) </code>
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">.</span><span class="na field">startDate</span><span class="o">.</span><span class="na">inRangeWith</span><span class="o">(</span><span class="n">endDate</span><span class="o">,</span> <span class="n">asAt</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>
+  This is most commonly used for "effective dating" or an "effective range" where you
+  have 2 properties like startDate and endDate that form a range.
+</p>
+
+<h3 id="inOrEmpty">inOrEmpty()</h3>
+<p>
+  This is a "conditional IN" where the IN expression is only added if the collection
+  is not empty.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span> <span class="n">customerIds</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1">// only add the expression if the customerIds is not empty</span>
+<span class="o">.</span><span class="na field">customer</span><span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">inOrEmpty</span><span class="o">(</span><span class="n">customerIds</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>
+  The above will only add the IN expression if the customerIds collection is not null and not empty.
+</p>
+
+
+<h3 id="rawOrEmpty">rawOrEmpty()</h3>
+
+<p>
+  This is a "conditional raw expression" where the raw expression uses a collection
+  (like a raw subquery expression) and we only add the expression if the collection
+  is not empty.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1">// only add the expression if the names is not empty</span>
+<span class="o">.</span><span class="na">rawOrEmpty</span><span class="o">(</span><span class="s">&quot;customer.id in (select c.id from customer c where c.name in (?1))&quot;</span><span class="o">,</span> <span class="n">names</span><span class="o">)</span>
+</pre></div>
+</div>
+
+
+<div class="next pull-right">
+  <a href="/docs/query/orderBy" class="btn btn-info">Next: OrderBy</a>
 </div>
 
 
@@ -136,67 +166,58 @@ all the beans have been read.
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/query/exists">exists</a>
+  <a href="/docs/query/query-beans">Query beans</a>
+</li>
+<li >
+  <a href="/docs/query/where">Where</a>
+</li>
+<li >
+  <a href="/docs/query/orderBy">OrderBy</a>
+</li>
+<li >
+  <a href="/docs/query/select">Select</a>
+</li>
+<li >
+  <a href="/docs/query/fetch">Fetch</a>
+</li>
+<li >
+  <a href="/docs/query/fetchgroup">FetchGroup</a>
+</li>
+<li >
+  <a href="/docs/query/filterMany">FilterMany</a>
 </li>
 
 <li >
-  <a href="/docs/query/findOne">findOne</a>
+  <a href="/docs/query/aggregation">Aggregation</a>
 </li>
 <li >
-  <a href="/docs/query/findList">findList</a>
+  <a href="/docs/query/having">Having</a>
 </li>
 <li >
-  <a href="/docs/query/findCount">findCount</a>
+  <a href="/docs/query/findNative">Native Sql</a>
 </li>
 <li >
-  <a href="/docs/query/findNative">findNative</a>
-</li>
-<li >
-  <a href="/docs/query/findPagedList">findPagedList</a>
-</li>
-<li >
-  <a href="/docs/query/findMap">findMap</a>
-</li>
-<li >
-  <a href="/docs/query/findSet">findSet</a>
-</li>
-<li class="active">
-  <a href="/docs/query/findEach">findEach</a>
-</li>
-<li >
-  <a href="/docs/query/findEachWhile">findEachWhile</a>
-</li>
-<li >
-  <a href="/docs/query/findIterate">findIterate</a>
+  <a href="/docs/query/rawSql">RawSql</a>
 </li>
 
 <li >
-  <a href="/docs/query/findIds">findIds</a>
+  <a href="/docs/query/update">Update query</a>
 </li>
 <li >
-  <a href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+  <a href="/docs/query/delete">Delete query</a>
 </li>
 <li >
-  <a href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
-</li>
-
-<li >
-  <a href="/docs/query/findFutureCount">findFutureCount</a>
+  <a href="/docs/query/dtoquery">DtoQuery</a>
 </li>
 <li >
-  <a href="/docs/query/findFutureList">findFutureList</a>
+  <a href="/docs/query/sqlquery">SqlQuery</a>
 </li>
 <li >
-  <a href="/docs/query/findFutureIds">findFutureIds</a>
-</li>
-
-<li >
-  <a href="/docs/query/findVersions">findVersions</a>
+  <a href="/docs/query/sqlupdate">SqlUpdate</a>
 </li>
 <li >
-  <a href="/docs/query/findVersionsBetween">findVersionsBetween</a>
+  <a href="/docs/query/callablesql">CallableSql</a>
 </li>
-
         </ul>
       </nav>
     </div>
