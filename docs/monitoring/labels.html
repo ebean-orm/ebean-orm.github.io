@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / Monitoring</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/monitoring">Monitoring</a> / Labels</h1>
   </div>
 </div>
 
@@ -88,87 +88,16 @@
       
 
 
-<h2>Monitoring</h2>
+<h2>Labels</h2>
 <p>
-  Ebean collects metrics for transactions, queries and cache hits.
-  These metrics are then available to collect and report.
+
 </p>
-
-<h4>Dumping metrics</h4>
-<p>
-  The fast way to see what metrics are collected is to have them dumped
-  when the server is shutdown via <code>dumpMetricsOnShutdown</code>
-  (typically after running all the tests).
-</p>
-<p>
-  Example <code>application-test.yaml</code>
-</p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">dumpMetricsOnShutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-  <span class="l l-Scalar l-Scalar-Plain">dumpMetricsOptions</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">loc,sql,hash</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
-</pre></div>
-</div>
-
-<h4>Example output</h4>
-<p>
-  Below is small example output with options of <code>loc,sql,hash</code>.
-</p>
-<ul>
-  <li>loc - include profile location</li>
-  <li>hash - include the hash of the sql query</li>
-  <li>sql - include the sql for queries</li>
-</ul>
-
-<div class="syntax text"><div class="highlight"><pre><span></span>-- Dumping metrics for db --
-txn.main                                                  count:10       total:117459   mean:11745    max:32894
-
--- ORM queries --
-query:CustomerFinder.findByName                           count:1        total:4089     mean:4089     max:4089
-hash:8c314fa1f6dbecfcdd449ccd021c8980
-loc:CustomerFinder.findByName(CustomerFinder.kt:17)
-
-sql:select t0.id, t0.name from customer t0 where lower(t0.name) like ? escape&#39;|&#39;
-
-query:ProductFinder.findMapBySku                          count:1        total:2364     mean:2364     max:2364
-hash:aeda919cc69bea1026543d5307276eeb
-loc:ProductFinder.findMapBySku(ProductFinder.kt:12)
-
-sql:select t0.id, t0.sku, t0.name, t0.version, t0.when_created, t0.when_modified from product t0
-
-...
-</pre></div>
-</div>
-
-<h2>Metrics</h2>
-<p>
-  We can obtain the metrics via <em>MetaInfoManager</em>. When we call <em>collectMetrics()</em>
-  the non-empty metrics are returned and the metric counters are reset.
-</p>
-
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Collect the metrics</span>
-<span class="n">ServerMetrics</span> <span class="n">serverMetrics</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">getMetaInfoManager</span><span class="o">().</span><span class="na">collectMetrics</span><span class="o">();</span>
-
-<span class="c1">// Transactions, L2 cache, SQL updates and queries</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">MetaTimedMetric</span><span class="o">&gt;</span> <span class="n">timedMetrics</span> <span class="o">:</span> <span class="n">serverMetrics</span><span class="o">.</span><span class="na">getTimedMetrics</span><span class="o">()</span>
-
-<span class="c1">// ORM queries</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">MetaOrmQueryMetric</span><span class="o">&gt;</span> <span class="n">ormQueryMetrics</span> <span class="o">=</span> <span class="n">serverMetrics</span><span class="o">.</span><span class="na">getOrmQueryMetrics</span><span class="o">();</span>
-
-<span class="c1">// DTO queries</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">MetaQueryMetric</span><span class="o">&gt;</span> <span class="n">dtoQueryMetrics</span> <span class="o">=</span> <span class="n">serverMetrics</span><span class="o">.</span><span class="na">getDtoQueryMetrics</span><span class="o">();</span>
-</pre></div>
-</div>
 
 <div class="next pull-right">
-  <a href="labels" class="btn btn-info">Next: Labels</a>
+  <a href="profile-location" class="btn btn-info">Next: Profile Location</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/monitoring/index.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/monitoring/profile-location.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -178,10 +107,10 @@ sql:select t0.id, t0.sku, t0.name, t0.version, t0.when_created, t0.when_modified
     <div class="col-md-3" role="complementary">
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
-<li class="active">
+<li >
   <a href="/docs/monitoring">Metrics</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/monitoring/labels">Labels</a>
 </li>
 <li >
