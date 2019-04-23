@@ -56,17 +56,18 @@
     <div id="hero" class="col-md-8">
       <h1>Ebean ORM</h1>
       <h2>Persistence for Java & Kotlin</h2>
-      <h4><a class="bright-link" href="/docs/getting-started"><i class="fas fa-angle-right"></i> Getting started</a>
-      </h4>
-      <h4><a href="/docs"><i class="fas fa-angle-right"></i> Documentation</a></h4>
-      <h4><a href="https://github.com/ebean-orm"><i class="fas fa-angle-right"></i> Github</a></h4>
+      <div class="links">
+        <h4><a class="bright-link" href="/docs/getting-started"><i class="fas fa-angle-right"></i> Getting started</a></h4>
+        <h4><a href="/docs"><i class="fas fa-angle-right"></i> Documentation</a></h4>
+        <h4><a href="https://github.com/ebean-orm"><i class="fas fa-angle-right"></i> Github</a></h4>
+      </div>
     </div>
 
   </div>
 
   <div class="highlights">
-    <div class="inner">
-      <div class="point">
+    <div class="row inner">
+      <div class="col-md-4">
         <h2>Simple</h2>
         <p>
           Easy to use persistence with save() and delete(), bulk updates,
@@ -76,7 +77,7 @@
         </p>
       </div>
 
-      <div class="point">
+      <div class="col-md-4">
         <h2>Performant</h2>
         <p>
           Fast queries, batch persisting, bulk updates and deletes, great SQL.
@@ -86,7 +87,7 @@
         </p>
       </div>
 
-      <div class="point">
+      <div class="col-md-4">
         <h2>Flexible</h2>
         <p>
           Use SQL directly, Soft deletes, Auditing,
@@ -140,16 +141,16 @@
       <p>&nbsp;</p>
       <p>&nbsp;</p>
 
-      <div class="inner">
+      <div class="row inner">
         <h2 class="erk" style="text-align: left;">About Ebean</h2>
 
-        <div class="point p1">
+        <div class="col-md-4 p1">
           <h3>JPA Mapping</h3>
           <p>
             Ebean uses JPA mapping annotations.
           </p>
         </div>
-        <div class="point p2">
+        <div class="col-md-8 p2">
           <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
@@ -168,15 +169,15 @@
         </div>
       </div>
 
-      <div class="inner mtl">
-        <div class="point p1">
+      <div class="row inner mtl">
+        <div class="col-md-4 p1">
           <h3>Simple to use</h3>
           <p>
             Ebean provides a simple programming model that developers can
             understand and master quickly.
           </p>
         </div>
-        <div class="point p2">
+        <div class="col-md-8 p2">
           <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// insert ...</span>
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Joe&quot;</span><span class="o">);</span>
 <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
@@ -192,14 +193,14 @@
         </div>
       </div>
 
-      <div class="inner mtl">
-        <div class="point p1">
+      <div class="row inner mtl">
+        <div class="col-md-4 p1">
           <h3>Type safe queries</h3>
           <p>
             We can use Query beans to build queries in a type safe manner.
           </p>
         </div>
-        <div class="point p2">
+        <div class="col-md-8 p2">
           <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
 
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
