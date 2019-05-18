@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Introduction</title>
+  <title>Testing with SQL Server</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Docker</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / MySql</h1>
   </div>
 </div>
 
@@ -87,10 +87,58 @@
 
       
 
-<h2>Docker</h2>
+<h2>MySql</h2>
+
+<h3>Collation</h3>
+<p>
+  With MySql can (and probably should) specify the collation and character set we want the
+  database to use. In the example below we specify the collation as <code>utf8mb4_unicode_ci</code>.
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="l l-Scalar l-Scalar-Plain">mysql</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">collation</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4_unicode_ci</span>
+      <span class="l l-Scalar l-Scalar-Plain">characterSet</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4</span>
+</pre></div>
+</div>
+<p>
+  In the logs with logging DEBUG level for <code>io.ebean.docker</code> we can see:
+  <code>--character-set-server</code> and <code>--collation-server</code>
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
+... DEBUG io.ebean.docker.commands.Commands - docker run -d --name ut_mysql -p 4306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_cs
+</pre></div>
+</div>
+
+<h3>"default" - Collation</h3>
+<p>
+  We can specify the collation to be <code>default</code> and with that the collection will be left up
+  to the default that MySql would use.
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="l l-Scalar l-Scalar-Plain">mysql</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">8.0</span>
+      <span class="l l-Scalar l-Scalar-Plain">collation</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+</pre></div>
+</div>
+<p>
+  In the logs with logging DEBUG level for <code>io.ebean.docker</code> we can see:
+  <code>--character-set-server</code> and <code>--collation-server</code>
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
+... DEBUG io.ebean.docker.commands.Commands - docker run -d --name ut_mysql -p 4306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6
+</pre></div>
+</div>
 
 <div class="next pull-right">
-  <a href="/" class="btn btn-info">Next: DDL Generation</a>
+  <a href="/docs/testing/mocki" class="btn btn-info">Next: Mocki Ebean</a>
 </div>
 
 
@@ -113,7 +161,7 @@
 <li >
   <a href="/docs/testing/postgres">Postgres</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/mysql">MySql</a>
 </li>
 <li >
