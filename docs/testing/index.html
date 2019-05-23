@@ -87,8 +87,8 @@
 
       
 
-<h3><a id="quickstart">Testing Quickstart</a></h3>
-<h4>1. Add ebean-test-config as a test dependency</h4>
+<h2><a id="quickstart">Testing Quickstart</a></h2>
+<h3>1. Add ebean-test-config as a test dependency</h3>
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean.test<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-test-config<span class="nt">&lt;/artifactId&gt;</span>
@@ -99,8 +99,7 @@
 </div>
 
 
-
-<h4>2. Add application-test.yml</h4>
+<h3>2. Add application-test.yml</h3>
 <p>
   Add into <code>src/test/resources</code> a <code>application-test.yml</code> configuration file
   that we use for testing.
@@ -116,6 +115,23 @@
   We can modify this test configuration to control what DDL is executed (create-all.sql or migrations)
   and the database platform we want to test against (potentially using docker).
 </p>
+
+<h3>3. Add ~/.ebean/ignore-docker-shutdown</h3>
+<div class="syntax sh"><div class="highlight"><pre><span></span>mkdir ~/.ebean
+touch ~/.ebean/ignore-docker-shutdown
+</pre></div>
+</div>
+<p>
+  For running tests on CI servers we typically want to stop and remove the docker containers
+  when the tests have completed. However, for local development we want to keep the docker containers
+  running making it faster to run tests.
+</p>
+<p>
+  Adding a marker file <code>~/.ebean/ignore-docker-shutdown</code> means the docker containers
+  will stay running (which is good for local development).
+</p>
+
+<h2>ebean-test-config</h2>
 <p>
   ebean-test-config will take care of:
 </p>
@@ -325,13 +341,17 @@
 
 <h3><a id="shutdown">Container shutdown</a></h3>
 <p>
-  On developer machines we generally keep the docker container running. On a CI server we may want to stop the
-  docker container after running all the tests. To do this we set <code>shutdown</code> to either
-  <code>stop</code> (to just stop the container) or <code>remove</code> (to stop and remove the container).
+  On developer machines we generally keep the docker container running. We can do this by having a marker file
+  <code>~/.ebean/ignore-docker-shutdown</code>.
+</p>
+<p>
+  On CI servers we want the  docker containers to be stopped and removed at completion of tests. To do this we
+  set <code>shutdown</code> to either <code>remove</code> (to stop and remove the container) or <code>stop</code>
+  (to just stop the container).
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">stop</span>  <span class="c1"># stop | remove</span>
+    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">remove</span>  <span class="c1"># stop | remove</span>
     <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
     <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
     <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
