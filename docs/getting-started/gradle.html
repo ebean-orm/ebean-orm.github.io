@@ -94,34 +94,63 @@
 <h2>Gradle</h2>
 
 
-<h4>Buildscript dependency</h4>
+<h4>Add the Ebean plugin</h4>
 <p>
-  Add the <code>ebean-gradle-plugin</code> dependency to the <code>buildscript</code> section.
+  Add the <code>ebean</code> plugin that will perform enhancement during the gradle build.
 </p>
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">buildscript</span> <span class="o">{</span>
-  <span class="n">repositories</span> <span class="o">{</span>
-    <span class="n">mavenCentral</span><span class="o">()</span>
-  <span class="o">}</span>
-  <span class="n">dependencies</span> <span class="o">{</span>
-    <span class="n">classpath</span> <span class="s2">&quot;io.ebean:ebean-gradle-plugin:11.39.1&quot;</span>
-  <span class="o">}</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span><span class="o">(</span><span class="s1">&#39;idea&#39;</span><span class="o">)</span>
+    <span class="n">id</span><span class="o">(</span><span class="s1">&#39;java&#39;</span><span class="o">)</span>
+    <span class="n">id</span><span class="o">(</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">)</span> <span class="n">version</span> <span class="s1">&#39;11.41.1&#39;</span>
 <span class="o">}</span>
 </pre></div>
 </div>
 
 
-<h4>Apply plugin</h4>
+<h4>Add the Ebean dependencies</h4>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.41.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.41.1&#39;</span>
+
+    <span class="c1">// query bean generation</span>
+    <span class="n">annotationProcessor</span> <span class="s1">&#39;io.ebean:querybean-generator:11.41.1&#39;</span>
+
+    <span class="n">testImplementation</span> <span class="s1">&#39;io.ebean.test:ebean-test-config:11.41.1&#39;</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<ul>
+  <li>ebean-querybean - is to support type safe queries using query beans</li>
+  <li>querybean-generator - APT generation of the query beans</li>
+  <li>ebean-test-config - testing including using docker containers</li>
+</ul>
+
+<h2>Kotlin</h2>
 <p>
-  Add <code>'io.ebean'</code> to the apply plugin section like:
+  For Kotlin we change the <em>annotationProcessor</em> to <code>kapt</code> as we see below
+  and use the <code>kotlin-querybean-generator</code> which will generate the query beans as
+  Kotlin rather than Java.
 </p>
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;io.ebean&#39;</span>
+
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.41.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.41.1&#39;</span>
+
+    <span class="c1">// query bean generation</span>
+    <span class="n">kapt</span> <span class="s1">&#39;io.ebean:kotlin-querybean-generator:11.41.1&#39;</span>
+
+    <span class="n">testImplementation</span> <span class="s1">&#39;io.ebean.test:ebean-test-config:11.41.1&#39;</span>
+    <span class="o">...</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
-<h4>Add ebean section</h4>
+<h4>Option Ebean section</h4>
 <p>
-  Add a <code>ebean</code> section to control the debug level of the4) t enhancement. This is optional but generally a
-  good idea.
+  Add a <code>ebean</code> section to control the debug level of enhancement.
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">ebean</span> <span class="o">{</span>
   <span class="n">debugLevel</span> <span class="o">=</span> <span class="mi">1</span>
@@ -133,7 +162,7 @@
 <h4>Test output</h4>
 <p>
   Gradle by default suppresses output logging. If we want to see SQL, DDL, Transaction logging etc we
-  need to set <code>testLogging.showStandardStreams</code> = <code>true</code> in the test section like:
+  need to set <em>testLogging.showStandardStreams</em> = <code>true</code> in the test section like:
 </p>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">{</span>
   <span class="n">testLogging</span><span class="o">.</span><span class="na">showStandardStreams</span> <span class="o">=</span> <span class="kc">true</span>
@@ -141,11 +170,12 @@
 </pre></div>
 </div>
 
-<h2>Example project</h2>
-<p>
-  Have a look at the <a href="https://github.com/ebean-orm-examples/example-gradle-java">Example Gradle Java</a> for
-  a full example - it's <a href="https://github.com/ebean-orm-examples/example-gradle-java/blob/master/build.gradle">build.gradle</a>.
-</p>
+<h2>Example projects</h2>
+<ul>
+  <li><a href="https://github.com/ebean-orm-examples/example-gradle-java">Java gradle example</a></li>
+  <li><a href="https://github.com/ebean-orm-examples/example-gradle-kotlin">Kotlin gradle example</a></li>
+</ul>
+
 
 
 <h2>Test output</h2>
@@ -190,10 +220,10 @@ BUILD SUCCESSFUL in 1s
 </pre>
 
 <div class="next pull-right">
-  <a href="gradle-querybeans" class="btn btn-info">Next: Gradle Query beans</a>
+  <a href="cli-tool" class="btn btn-info">Next: CLI Tool</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/gradle-querybeans.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
 </p>
 
 
@@ -207,19 +237,10 @@ BUILD SUCCESSFUL in 1s
   <a href="/docs/getting-started#ide">IDE Plugin</a>
 </li>
 <li >
-  <a href="/docs/getting-started/dependencies">Dependencies</a>
-</li>
-<li >
   <a href="/docs/getting-started/maven">Maven</a>
-</li>
-<li >
-  <a href="/docs/getting-started/maven-querybeans">Maven Query beans</a>
 </li>
 <li class="active">
   <a href="/docs/getting-started/gradle">Gradle</a>
-</li>
-<li >
-  <a href="/docs/getting-started/gradle-querybeans">Gradle Query beans</a>
 </li>
 <li >
   <a href="/docs/getting-started/cli-tool">CLI Tool</a>

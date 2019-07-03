@@ -116,26 +116,62 @@
 
 
 
-<h4>Check installed maven version</h4>
+<h2>Examples</h2>
+<ul>
+  <li><a target="_blank" href="https://github.com/ebean-orm/examples/tree/master/base-example">Java maven example</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/examples/tree/master/example-maven-kotlin">Kotlin maven example</a></li>
+</ul>
 
-<div class="syntax sh"><div class="highlight"><pre><span></span>mvn -version
+<h2 id="dependencies">Dependencies</h2>
+<p>
+  Add the following dependencies:
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+
+<span class="c">&lt;!-- Optional: query bean support --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-querybean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+
+<span class="c">&lt;!-- Optional: query bean generation via APT --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+
+
+<span class="c">&lt;!-- Test dependencies including docker database containers --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
-
+<h4>ebean-test-config</h4>
 <p>
-  If your installed maven version is older than <code>3.5.3</code> then it might not support
-  maven tiles. If that is the case upgrade maven or use the
-  <a href="/docs/getting-started/maven-plugin">maven plugin</a> directly rather than the tile.
+  <em>ebean-test-config</em> should be added as a test dependency.
+  This configures Ebean for running tests including automatic use of docker
+  containers for Postgres, MySql, Oracle, SqlServer, Hana + support for H2 and SqlLite.
+</p>
+<p>
+  Refer to: <a href="/docs/testing">docs / testing</a>
 </p>
 
-<p>&nbsp;</p>
 
 <h2>Add maven tile</h2>
 <p>
-  Add the maven tile into the <code>build / plugins</code> section of the pom.xml.
-</p>
-<p>
-  This performs enhancement of the entity beans, @Transactional methods and query beans at build time.
+  Add the maven tile into the <code>build / plugins</code> section to perform build time enhancement
+  of the entity beans, @Transactional methods and query beans.
 </p>
 
 <!-- hardcoded-version enhancement -->
@@ -147,7 +183,7 @@
   <span class="nt">&lt;configuration&gt;</span>
     <span class="nt">&lt;tiles&gt;</span>
       <span class="c">&lt;!-- other tiles ... --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:7.4<span class="nt">&lt;/tile&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:11.41.1<span class="nt">&lt;/tile&gt;</span>
     <span class="nt">&lt;/tiles&gt;</span>
   <span class="nt">&lt;/configuration&gt;</span>
 <span class="nt">&lt;/plugin&gt;</span>
@@ -164,6 +200,83 @@
 <p>
   If you want to specify the maven enhancement plugin in 'normal' non-tile fashion see
   <a href="maven-plugin">maven plugin</a>.
+</p>
+
+
+<h4 id="jdbc-dep">JDBC Driver(s)</h4>
+<p>
+  Add the dependency for the JDBC Driver(s) you want to use.
+</p>
+
+<ul class="nav nav-tabs mytabs">
+  <li role="presentation" class="active"><a href="#h2">H2</a></li>
+  <li role="presentation"><a href="#postgres">Postgres</a></li>
+  <li role="presentation"><a href="#mysql">MySql</a></li>
+  <li role="presentation"><a href="#sqlserver">SQL Server</a></li>
+  <li role="presentation"><a href="#oracle">Oracle</a></li>
+</ul>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="h2">
+    ```text
+      com.h2database : h2 : 1.4.191
+    ```
+  </div>
+  <div role="tabpanel" class="tab-pane" id="postgres">
+    ```text
+    org.postgresql : postgresql : 42.2.2
+    ```
+  </div>
+  <div role="tabpanel" class="tab-pane" id="mysql">
+    ```text
+    mysql : mysql-connector-java : 8.0.11
+    ```
+  </div>
+  <div role="tabpanel" class="tab-pane" id="sqlserver">
+    ```text
+    com.microsoft.sqlserver : mssql-jdbc : 6.4.0.jre8
+    ```
+  </div>
+  <div role="tabpanel" class="tab-pane" id="oracle">
+    ```text
+    com.oracle.jdbc : ojdbc8 : 12.2.0.1
+    ```
+  </div>
+</div>
+
+
+<h3>Kotlin KAPT</h3>
+<p>
+  To generate Kotlin query ebeans add the <code>kotlin-kapt</code> maven tile.
+</p>
+<p>
+  This tile brings in the kotlin-maven-plugin with configuration for kotlin-querybean-generator
+  annotation processor. As such <code>remove</code> the kotlin-maven-plugin that will already
+  be in the pom.xml (as the tile will bring in one that is configured to run the annotation processor).
+</p>
+<p>
+  Add the maven tile into the <code>build / plugins</code> section of the pom.xml.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.12<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+  <span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;tiles&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:11.41.1<span class="nt">&lt;/tile&gt;</span> <span class="c">&lt;!-- ebean enhancement --&gt;</span>
+      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:kotlin-kapt:1.5<span class="nt">&lt;/tile&gt;</span> <span class="c">&lt;!-- kotlin compile with query bean generation --&gt;</span>
+      <span class="c">&lt;!-- other tiles ... --&gt;</span>
+    <span class="nt">&lt;/tiles&gt;</span>
+  <span class="nt">&lt;/configuration&gt;</span>
+<span class="nt">&lt;/plugin&gt;</span>
+</pre></div>
+</div>
+
+<h5>Example project</h5>
+<p>
+  <a href="https://github.com/ebean-orm-examples/example-kotlin/blob/master/pom.xml">Full example pom for Kotlin query bean generation</a>
 </p>
 
 

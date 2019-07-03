@@ -177,7 +177,7 @@
 <span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>11.39.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
@@ -186,41 +186,6 @@
 <h5>Example project</h5>
 <p>
   <a href="https://github.com/ebean-orm-examples/example-java8/blob/master/pom.xml">Full example pom with query bean generation</a>
-</p>
-
-
-<h3>Kotlin KAPT</h3>
-<p>
-  To generate Kotlin query ebeans add the <code>kotlin-kapt</code> maven tile.
-</p>
-<p>
-  This tile brings in the kotlin-maven-plugin with configuration for kotlin-querybean-generator
-  annotation processor. As such <code>remove</code> the kotlin-maven-plugin that will already
-  be in the pom.xml (as the tile will bring in one that is configured to run the annotation processor).
-</p>
-<p>
-  Add the maven tile into the <code>build / plugins</code> section of the pom.xml.
-</p>
-
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.12<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;tiles&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:7.4<span class="nt">&lt;/tile&gt;</span> <span class="c">&lt;!-- ebean enhancement --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:kotlin-kapt:1.5<span class="nt">&lt;/tile&gt;</span> <span class="c">&lt;!-- kotlin compile with query bean generation --&gt;</span>
-      <span class="c">&lt;!-- other tiles ... --&gt;</span>
-    <span class="nt">&lt;/tiles&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
-</div>
-
-<h5>Example project</h5>
-<p>
-  <a href="https://github.com/ebean-orm-examples/example-kotlin/blob/master/pom.xml">Full example pom for Kotlin query bean generation</a>
 </p>
 
 
