@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Testing with SQL Server</title>
+  <title>Introduction</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / SQL Server</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Platform</h1>
   </div>
 </div>
 
@@ -87,34 +87,132 @@
 
       
 
-<h2>SQL Server</h2>
-
+<h2>Platform</h2>
 <p>
-  With SQL Server we have to decide if we are going to use the <code>sqlserver17</code> or the default older one.
+  The following are the platforms supported and the default configuration used
+  for those platforms.
 </p>
-<h3>sqlserver17</h3>
-<p>
-  To setup to use sqlserver17 we should set the <code>databasePlatformName</code> to sqlserver17 at either the
-  `ebean.databasePlatformName` level or at `ebean.test.sqlserver.databasePlatformName` level.
-</p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>  <span class="c1">## only using sql server</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">sqlserver</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>         <span class="c1">## put here when testing multiple platforms</span>
-      <span class="c1">#collation: SQL_Latin1_General_CP1_CS_AS  ## use an explicit collation</span>
-      <span class="c1">#collation: default                       ## use the sql server default</span>
-</pre></div>
-</div>
+<table class="table">
+  <tr>
+    <th>Platform</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>h2</td>
+    <td>Run using in-memory H2 database.
+      <dl>
+        <dd><b>url:</b> jdbc:h2:mem:{databaseName}</dd>
+        <dd><b>driver:</b> org.h2.Driver</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>postgres</td>
+    <td>Run against Postgres docker DB.
+      <dl>
+        <dd><b>port:</b> 6432</dd>
+        <dd><b>password:</b> test</dd>
+        <dd><b>url:</b> jdbc:postgresql://localhost:{port}/{databaseName}</dd>
+        <dd><b>driver:</b> org.postgresql.Driver</dd>
+        <dd><b>image:</b> postgres:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>postgis</td>
+    <td>Run against Postgres Postgis docker DB.
+      <dl>
+        <dd><b>port:</b> 7432</dd>
+        <dd><b>password:</b> test</dd>
+        <dd><b>url:</b> jdbc:postgresql_lwgis://localhost:{port}/{databaseName}</dd>
+        <dd><b>driver:</b> org.postgis.DriverWrapperLW</dd>
+        <dd><b>image:</b> mdillon/postgis:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>mysql</td>
+    <td>Run against MySql docker DB.
+      <dl>
+        <dd><b>port:</b> 4306</dd>
+        <dd><b>password:</b> test</dd>
+        <dd><b>url:</b> jdbc:mysql://localhost:{port}/{databaseName}</dd>
+        <dd><b>driver:</b> com.mysql.jdbc.Driver</dd>
+        <dd><b>image:</b> mysql:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>sqlserver</td>
+    <td>Run against SqlServer docker DB with the following defaults.
+      <dl>
+        <dd><b>port:</b> 1433</dd>
+        <dd><b>password:</b> SqlS3rv#r</dd>
+        <dd><b>url:</b> jdbc:sqlserver://localhost:{port};databaseName={databaseName}</dd>
+        <dd><b>driver:</b> com.microsoft.sqlserver.jdbc.SQLServerDriver</dd>
+        <dd><b>image:</b> microsoft/mssql-server-linux:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>oracle</td>
+    <td>Run against Oracle docker DB.
+      <dl>
+        <dd><b>port:</b> 1521</dd>
+        <dd><b>password:</b> test</dd>
+        <dd><b>url:</b> jdbc:oracle:thin:@localhost:{port}:XE</dd>
+        <dd><b>driver:</b> oracle.jdbc.driver.OracleDriver</dd>
+        <dd><b>image:</b> oracleinanutshell/oracle-xe-11g:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>hana</td>
+    <td>Run against SAP Hana DB.
+      <dl>
+        <dd><b>port:</b> 39017</dd>
+        <dd><b>username:</b> SYSTEM</dd>
+        <dd><b>password:</b> HXEHana1</dd>
+        <dd><b>databaseName:</b> HXE</dd>
+        <dd><b>url:</b> jdbc:sap://localhost:{port}/?databaseName={databaseName}</dd>
+        <dd><b>driver:</b> com.sap.db.jdbc.Driver</dd>
+        <dd><b>image:</b> store/saplabs/hanaexpress:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+  <tr>
+    <td>clickhouse</td>
+    <td>Run against Clickhouse DB.
+      <dl>
+        <dd><b>port:</b> 8123</dd>
+        <dd><b>username: default</b></dd>
+        <dd><b>password:</b> (empty)</dd>
+        <dd><b>url:</b> jdbc:clickhouse://localhost:{port}/{databaseName}</dd>
+        <dd><b>driver:</b> ru.yandex.clickhouse.ClickHouseDriver</dd>
+        <dd><b>image:</b> yandex/clickhouse-server:{version}</dd>
+      </dl>
+    </td>
+  </tr>
+
+  <tr>
+    <td>sqlite</td>
+    <td>Run using Sqlite database.
+      <dl>
+        <dd><b>url:</b> jdbc:sqlite:{databaseName}</dd>
+        <dd><b>driver:</b> org.sqlite.JDBC</dd>
+        <dd><b>isolationlevel:</b> read_uncommitted</dd>
+      </dl>
+    </td>
+  </tr>
+</table>
 
 <div class="next pull-right">
-  <a href="/docs/testing/mocki" class="btn btn-info">Next: Mocki Ebean</a>
+  <a href="current-user-tenant" class="btn btn-info">Next: Current User & Tenant</a>
 </div>
-
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/testing/platform.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
 
 
     </div>
@@ -132,7 +230,7 @@
 <li >
   <a href="/docs/testing/docker">Docker</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/platform">Platform</a>
 </li>
 <li >
@@ -151,7 +249,7 @@
 <li >
   <a href="/docs/testing/mysql">MySql</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/testing/sqlserver">SQL Server</a>
 </li>
 <li >

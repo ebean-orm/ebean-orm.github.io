@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Testing with SQL Server</title>
+  <title>Introduction</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / SQL Server</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / DDL Mode</h1>
   </div>
 </div>
 
@@ -87,34 +87,52 @@
 
       
 
-<h2>SQL Server</h2>
-
+<h2><a id="ddlmode">DDL Mode</a></h2>
 <p>
-  With SQL Server we have to decide if we are going to use the <code>sqlserver17</code> or the default older one.
+  Most of the time we use <code>dropCreate</code> mode which means that the database will
+  be dropped and then re-created before we run all the tests.
 </p>
-<h3>sqlserver17</h3>
 <p>
-  To setup to use sqlserver17 we should set the <code>databasePlatformName</code> to sqlserver17 at either the
-  `ebean.databasePlatformName` level or at `ebean.test.sqlserver.databasePlatformName` level.
+  We use <em>migrationDropCreate</em> to test database migrations.
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>  <span class="c1">## only using sql server</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">sqlserver</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>         <span class="c1">## put here when testing multiple platforms</span>
-      <span class="c1">#collation: SQL_Latin1_General_CP1_CS_AS  ## use an explicit collation</span>
-      <span class="c1">#collation: default                       ## use the sql server default</span>
-</pre></div>
-</div>
+<table class="table">
+  <tr>
+    <th>Mode</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>dropCreate</td>
+    <td>Drop and then create all the tables etc. Most commonly used mode.</td>
+  </tr>
+  <tr>
+    <td>none</td>
+    <td>Do not run any DDL. Useful if we want to run 1 particular test without any DDL change.</td>
+  </tr>
+  <tr>
+    <td>migrationDropCreate</td>
+    <td>Run the DB migration but first delete the database first ensuring the migration runs against a new database.</td>
+  </tr>
+  <tr>
+    <td>migration</td>
+    <td>Run the DB migration. Good for testing migrations run as expected.</td>
+  </tr>
+  <tr>
+    <td>create</td>
+    <td>Run the create-all.sql DDL script but delete and recreate the database first.</td>
+  </tr>
+  <tr>
+    <td>createOnly</td>
+    <td>Run the create-all.sql DDL script but without recreating the database first.</td>
+  </tr>
+</table>
 
 <div class="next pull-right">
-  <a href="/docs/testing/mocki" class="btn btn-info">Next: Mocki Ebean</a>
+  <a href="docker" class="btn btn-info">Next: Docker</a>
 </div>
-
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/testing/ddl-mode.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
 
 
     </div>
@@ -126,7 +144,7 @@
 <li >
   <a href="/docs/testing">Ebean test</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/testing/ddl-mode">DDL Mode</a>
 </li>
 <li >
@@ -151,7 +169,7 @@
 <li >
   <a href="/docs/testing/mysql">MySql</a>
 </li>
-<li class="active">
+<li >
   <a href="/docs/testing/sqlserver">SQL Server</a>
 </li>
 <li >

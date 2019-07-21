@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Introduction</title>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/testing/">Testing</a> / Docker</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+<h2><a id="docker">Docker test containers</a></h2>
+<p>
+  Ebean provides docker test containers for Postgres, MySql, SqlServer, Oracle, Hana, Clickhouse, Redis
+  and ElasticSearch.
+</p>
+<p>
+  <em>ebean-test-docker</em> automatically manages the docker containers and sets them up ready for
+  running tests. As developers we just need to specify the platform (e.g. postgres) and Ebean
+  will do the rest:
+</p>
+<ul>
+  <li>Start a docker container(s)</li>
+  <li>Wait for the container to be ready</li>
+  <li>Create the database and user setting any permissions as necessary</li>
+  <li>When ready allow the tests to run</li>
+</ul>
+<p>
+  We can see/review what is occurring by increasing the logging for <code>io.ebean.docker</code>
+  to <code>TRACE</code>. When we do that we can see log messages like:
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>... Docker test container start and setup
+
+15:15:02.537 INFO  io.ebean.docker.commands.Commands - Container ut_postgres running with port:6432 db:test_ex user:test_ex mode:Create shutdown:
+15:15:02.538 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres pg_isready -h localhost -p 5432
+15:15:02.645 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select datname from pg_database
+15:15:02.753 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select rolname from pg_roles where rolname = &#39;test_ex&#39;
+15:15:02.871 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -c select 1 from pg_database where datname = &#39;test_ex&#39;
+15:15:02.960 DEBUG io.ebean.docker.commands.Commands - create database extensions hstore,pgcrypto
+15:15:02.960 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test_ex -c create extension if not exists hstore
+15:15:03.058 DEBUG io.ebean.docker.commands.Commands - docker exec -i ut_postgres psql -U postgres -d test_ex -c create extension if not exists pgcrypto
+15:15:03.143 DEBUG io.ebean.docker.commands.Commands - waitForConnectivity ut_postgres ...
+15:15:03.143 DEBUG io.ebean.docker.commands.Commands - checkConnectivity on ut_postgres ...
+15:15:03.190 DEBUG io.ebean.docker.commands.Commands - connectivity confirmed for ut_postgres
+15:15:03.190 DEBUG io.ebean.docker.commands.Commands - Container ut_postgres ready with port 6432
+
+...
+
+15:15:03.239 [main] INFO  o.a.datasource.pool.ConnectionPool - DataSourcePool [db] autoCommit[false] transIsolation[READ_COMMITTED] min[2] max[200]
+15:15:03.277 [main] INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:postgres
+
+
+... DDL Execution
+
+15:15:03.618 [main] INFO  io.ebean.DDL - Executing extra-dll - 0 statements
+15:15:03.618 [main] INFO  io.ebean.DDL - Executing db-drop-all.sql - 26 statements
+15:15:03.649 [main] DEBUG io.ebean.DDL - executing 1 of 26 alter table if exists address drop constraint if exists fk_address_country_code
+15:15:03.651 [main] DEBUG io.ebean.DDL - executing 2 of 26 drop index if exists ix_address_country_code
+...
+15:15:03.701 [main] INFO  io.ebean.DDL - Executing db-create-all.sql - 28 statements
+15:15:03.701 [main] DEBUG io.ebean.DDL - executing 1 of 28 create table address ( id                            bigserial not null, line1...
+15:15:03.709 [main] DEBUG io.ebean.DDL - executing 2 of 28 create table contact ( id                            bigserial not null, first_n...
+...
+15:15:03.841 [main] INFO  io.ebean.DDL - Executing extra-dll - 1 statements
+15:15:03.842 [main] DEBUG io.ebean.DDL - executing 1 of 1 create or replace view order_agg_vw as select d.order_id as id, d.order_id as or...
+</pre></div>
+</div>
+
+<h2><a id="startup">Container startup</a></h2>
+<p>
+  To startup the docker containers we hook into the Ebean lifecycle. This means that it will "just work" whether
+  the tests are run from the IDE, maven, gradle or any build tool. In prior iterations the startup of docker
+  containers was hooked specifically into the maven lifecycle but this proved to be less than ideal.
+</p>
+<p>
+  In general this is providing a similar experience to the one we have when using H2 database. That is, we bring up
+  the database (if needed), setup the database, user, roles etc (if needed) get it ready for testing by running DDL
+  ... and then run all tests.
+</p>
+
+<h2><a id="shutdown">Container shutdown</a></h2>
+<p>
+  On developer machines we generally keep the docker container running. We can do this by having a marker file
+  <code>~/.ebean/ignore-docker-shutdown</code>.
+</p>
+<p>
+  On CI servers we want the  docker containers to be stopped and removed at completion of tests. To do this we
+  set <code>shutdown</code> to either <code>remove</code> (to stop and remove the container) or <code>stop</code>
+  (to just stop the container).
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">remove</span>  <span class="c1"># stop | remove</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+
+<h2><a id="not-docker">Not using Docker</a></h2>
+<p>
+  If we don't want to start and run a Docker container but instead test against some other existing database we can
+  do that via setting <code>useDocker: false</code>.
+</p>
+<p>
+  The below configuration runs against an existing Postgres database. Typically when not using docker we need to
+  set the username, password and url to appropriate values.
+</p>
+<p>
+  When we are using  <code>useDocker: false</code> the database and user are expected to already exist.
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">useDocker</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>  <span class="c1">## DO NOT USE DOCKER</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+      <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+      <span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://localhost:5432/test</span>
+</pre></div>
+</div>
+
+<div class="next pull-right">
+  <a href="platform" class="btn btn-info">Next: Platform</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/testing/docker.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/testing">Ebean test</a>
+</li>
+<li >
+  <a href="/docs/testing/ddl-mode">DDL Mode</a>
+</li>
+<li class="active">
+  <a href="/docs/testing/docker">Docker</a>
+  <ul class="nav">
+    <li><a href="#startup">Startup</a></li>
+    <li><a href="#shutdown">Shutdown</a></li>
+    <li><a href="#not-docker">No Docker</a></li>
+  </ul>
+</li>
+<li >
+  <a href="/docs/testing/platform">Platform</a>
+</li>
+<li >
+  <a href="/docs/testing/current-user-tenant">Current User & Tenant</a>
+</li>
+
+<li >
+  <a href="/docs/testing/test-properties">Test properties</a>
+</li>
+<li >
+  <a href="/docs/testing/elasticsearch">ElasticSearch</a>
+</li>
+<li >
+  <a href="/docs/testing/postgres">Postgres</a>
+</li>
+<li >
+  <a href="/docs/testing/mysql">MySql</a>
+</li>
+<li >
+  <a href="/docs/testing/sqlserver">SQL Server</a>
+</li>
+<li >
+  <a href="/docs/testing/mocki">Mocki Ebean</a>
+</li>
+<li >
+  <a href="/docs/testing/script-runner">Script Runner</a>
+</li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
