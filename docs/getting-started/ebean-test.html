@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Getting started | Ebean</title>
+  <title>ebeaninit | Getting started | Ebean</title>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / <a href="/docs/getting-started/java-first-entity">Java</a> / Repository</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / Ebean test</h1>
   </div>
 </div>
 
@@ -90,90 +90,67 @@
   <p>Related: <a href="/docs/trouble-shooting">Trouble Shooting</a></p>
 </div>
 
+<h2>Ebean test</h2>
 
-<h2>Repository</h2>
-<p>
-  If we don't want to use <code>Model</code> and <code>Finder</code> then we typically use the
-  repository pattern. This means we create a repository for each entity bean type and we put
-  the "finder logic" and "persisting logic" on the repository.
-</p>
-<p>
-  Generally we will be using a DI container like <code>Spring</code> or <code>Guice</code>
-  and our repository classes will be singleton components with constructor injection taking
-  the EbeanServer instance (that we configure and create using ServerConfig and EbeanServerFactory).
-</p>
+<h3>Add ebean-test-config as a test dependency</h3>
 
-<h4>e.g. CustomerRepository</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.repository</span><span class="o">;</span>
+<ul class="nav nav-tabs mytabs">
+  <li role="presentation" class="active"><a href="#maven-tab">Maven</a></li>
+  <li role="presentation"><a href="#gradle-tab">Gradle</a></li>
+</ul>
 
-<span class="kn">import</span> <span class="nn">io.ebean.BeanRepository</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.Customer</span><span class="o">;</span>
-
-<span class="nd">@Singleton</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerRepository</span> <span class="kd">extends</span> <span class="n">BeanRepository</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">,</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="o">{</span>
-
-  <span class="nd">@Inject</span>
-  <span class="kd">public</span> <span class="nf">CustomerRepository</span><span class="o">(</span><span class="n">EbeanServer</span> <span class="n">server</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">server</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="c1">// ... add customer specific finders and persist logic</span>
-
-  <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="nf">findByName</span><span class="o">(</span><span class="n">String</span> <span class="n">nameStart</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">query</span><span class="o">().</span><span class="na">where</span><span class="o">()</span>
-           <span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="n">nameStart</span><span class="o">)</span>
-           <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
-  <span class="o">}</span>
-
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="maven-tab">
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean.test<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-test-config<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>11.41.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="gradle-tab">
+    <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="n">testImplementation</span> <span class="s1">&#39;io.ebean.test:ebean-test-config:11.41.1&#39;</span>
 <span class="o">}</span>
 </pre></div>
 </div>
+  </div>
+</div>
+
+
+<h3>Add application-test.yaml</h3>
 <p>
-  Typically we then <code>@Inject</code> the repository where we want to persist or fetch beans.
+  In <code>src/test/resources</code> add <code>application-test.yaml</code> configuration file
+  like the one below.
 </p>
-
-<h4>e.g. CustomerService</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
-
-<span class="nd">@Service</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderService</span> <span class="o">{</span>
-
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">OrderRepository</span> <span class="n">orderRepository</span><span class="o">;</span>
-
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">CustomerRepository</span> <span class="n">customerRepository</span><span class="o">;</span>
-
-  <span class="kd">private</span> <span class="kd">final</span> <span class="n">ProductRepository</span> <span class="n">productRepository</span><span class="o">;</span>
-
-  <span class="nd">@Inject</span>
-  <span class="kd">public</span> <span class="nf">OrderService</span><span class="o">(</span><span class="n">OrderRepository</span> <span class="n">orderRepository</span><span class="o">,</span>
-                      <span class="n">CustomerRepository</span> <span class="n">customerRepository</span><span class="o">,</span>
-                      <span class="n">ProductRepository</span> <span class="n">productRepository</span><span class="o">)</span> <span class="o">{</span>
-
-    <span class="k">this</span><span class="o">.</span><span class="na">orderRepository</span> <span class="o">=</span> <span class="n">orderRepository</span><span class="o">;</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">customerRepository</span> <span class="o">=</span> <span class="n">customerRepository</span><span class="o">;</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">productRepository</span> <span class="o">=</span> <span class="n">productRepository</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="o">...</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, mariadb, oracle, sqlserver, hana, clickhouse, sqlite</span>
+    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
+    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
 </pre></div>
 </div>
 <p>
-  The potential downside to using the repository pattern vs Model and Finder is that we
-  can sometimes see many repositories injected in some services. When we end up with many
-  dependencies for a single service this can make constructor injection less appealing.
+  We can change the <code>platform</code> to any of the supported platforms. Ebean test will automatically
+  manage a docker test container setting it up to run tests.
+  Refer to <a href="/docs/testing/platform">testing platforms</a> for more information.
 </p>
 <p>
-  With Model and Finder we tend to end up with simpler / easier code and arguably it is
-  just as easy to test and mock (using ebean-mocker).
+  We most often use <code>dropCreate</code> DDL mode during development.
+  Refer to <a href="/docs/testing/ddl-mode">testing DDL mode</a> for more information.
 </p>
 
 
 <div class="next pull-right">
-  <a href="java-next-steps" class="btn btn-info">Next: Next steps</a>
+  <a href="cli-tool" class="btn btn-info">Next: CLI Tool</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/java-repository.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
 </p>
+
 
 
 
@@ -191,7 +168,7 @@
 <li >
   <a href="/docs/getting-started/gradle">Gradle</a>
 </li>
-<li >
+<li class="active">
   <a href="/docs/getting-started/ebean-test">Ebean test</a>
 </li>
 <li >
