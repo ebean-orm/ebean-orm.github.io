@@ -101,7 +101,7 @@
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="o">{</span>
     <span class="n">id</span><span class="o">(</span><span class="s1">&#39;idea&#39;</span><span class="o">)</span>
     <span class="n">id</span><span class="o">(</span><span class="s1">&#39;java&#39;</span><span class="o">)</span>
-    <span class="n">id</span><span class="o">(</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">)</span> <span class="n">version</span> <span class="s1">&#39;11.41.1&#39;</span>
+    <span class="n">id</span><span class="o">(</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">)</span> <span class="n">version</span> <span class="s1">&#39;11.42.1&#39;</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -110,13 +110,13 @@
 <h4>Add the Ebean dependencies</h4>
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
     <span class="o">...</span>
-    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.41.1&#39;</span>
-    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.41.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.42.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.42.1&#39;</span>
 
     <span class="c1">// query bean generation</span>
-    <span class="n">annotationProcessor</span> <span class="s1">&#39;io.ebean:querybean-generator:11.41.1&#39;</span>
+    <span class="n">annotationProcessor</span> <span class="s1">&#39;io.ebean:querybean-generator:11.42.1&#39;</span>
 
-    <span class="n">testImplementation</span> <span class="s1">&#39;io.ebean.test:ebean-test-config:11.41.1&#39;</span>
+    <span class="n">testCompile</span> <span class="s1">&#39;io.ebean:ebean-test:11.42.1&#39;</span>
     <span class="o">...</span>
 <span class="o">}</span>
 </pre></div>
@@ -124,7 +124,7 @@
 <ul>
   <li>ebean-querybean - is to support type safe queries using query beans</li>
   <li>querybean-generator - APT generation of the query beans</li>
-  <li>ebean-test-config - testing including using docker containers</li>
+  <li>ebean-test - testing including using docker containers</li>
 </ul>
 
 <h2>Kotlin</h2>
@@ -136,13 +136,13 @@
 
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
     <span class="o">...</span>
-    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.41.1&#39;</span>
-    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.41.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean:11.42.1&#39;</span>
+    <span class="n">compile</span> <span class="s1">&#39;io.ebean:ebean-querybean:11.42.1&#39;</span>
 
     <span class="c1">// query bean generation</span>
-    <span class="n">kapt</span> <span class="s1">&#39;io.ebean:kotlin-querybean-generator:11.41.1&#39;</span>
+    <span class="n">kapt</span> <span class="s1">&#39;io.ebean:kotlin-querybean-generator:11.42.1&#39;</span>
 
-    <span class="n">testImplementation</span> <span class="s1">&#39;io.ebean.test:ebean-test-config:11.41.1&#39;</span>
+    <span class="n">testCompile</span> <span class="s1">&#39;io.ebean:ebean-test:11.42.1&#39;</span>
     <span class="o">...</span>
 <span class="o">}</span>
 </pre></div>
