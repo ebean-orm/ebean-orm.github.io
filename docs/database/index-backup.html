@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Introduction</title>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / Database</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+
+<h2>Database Platforms</h2>
+
+
+<table class="table">
+  <tr>
+    <th>Platform</th>
+    <th>Identity</th>
+    <th>DbArray</th>
+    <th>DbJson</th>
+    <th>UUID</th>
+    <th>History</th>
+  </tr>
+
+  <tr>
+    <td>H2</td>
+    <td>*Identity & Sequence</td>
+    <td>Partial</td>
+    <td>Simulated</td>
+    <td>Native</td>
+    <td>Triggers</td>
+  </tr>
+
+  <tr>
+    <td>Postgres</td>
+    <td>*Identity & Sequence</td>
+    <td>Full</td>
+    <td>Full</td>
+    <td>Native</td>
+    <td>Triggers</td>
+  </tr>
+
+  <tr>
+    <td>MySQL</td>
+    <td>Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td></td>
+    <td>Triggers</td>
+  </tr>
+
+  <tr>
+    <td>Oracle</td>
+    <td>*Sequence & Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td></td>
+    <td>Native</td>
+  </tr>
+
+  <tr>
+    <td>SQL Server 17</td>
+    <td>*Sequence & Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td>Native</td>
+    <td>Native</td>
+  </tr>
+
+  <tr>
+    <td>SQL Server 16</td>
+    <td>*Identity</td>
+    <td>Simulated</td>
+    <td>Full</td>
+    <td></td>
+    <td>Native</td>
+  </tr>
+
+  <tr>
+    <td>SQLite</td>
+    <td>*Identity</td>
+    <td>Partial</td>
+    <td>Simulated</td>
+    <td></td>
+    <td>None</td>
+  </tr>
+
+  <tr>
+    <td>DB2</td>
+    <td>*Identity & Sequence</td>
+    <td>None</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+</table>
+
+<h3><a href="/docs/database/postgres">Postgres</a></h3>
+
+<h5>Schema</h5>
+<p>
+  Often with Postgres we want to have the database objects created in a named schema rather than the
+  public schema. We can do this be setting:
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>ebean.dbSchema=myapp
+</pre></div>
+</div>
+<p>
+  When using a named schema with Postgres it is common that we connect using a DB user which is the same
+  as the schema such that the default <code>search path</code> finds the DB tables/objects and we do not
+  need to specify a custom search path (via the connection url etc).
+</p>
+
+<h5>Extensions</h5>
+<p>
+  We also often want to use extensions.  When testing using <a href="/docs/testing">ebean-test</a>
+  we can specify a list of extensions that we want to be installed as part of the test database setup
+  (via docker) - refer to <a href="/docs/testing/postgres">testing with Postgres</a>.
+</p>
+
+
+<div class="next pull-right">
+  <a href="/docs/testing/" class="btn btn-info">Next: Testing</a>
+</div>
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/database/postgres">Postgres</a>
+</li>
+<li >
+  <a href="/docs/database/sqlserver">SQL Server</a>
+</li>
+<li >
+  <a href="/docs/database/oracle">Oracle</a>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
