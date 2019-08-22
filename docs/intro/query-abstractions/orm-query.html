@@ -91,7 +91,7 @@
 
 <h2>ORM Query</h2>
 <p>
-  There are several forms of ORM query.
+  There are several forms of ORM query. For detailed information on queries goto <a href="/docs/query">docs / query</a>
 </p>
 
 <h3 id="pure">"Pure" ORM Query</h3>
@@ -109,8 +109,8 @@
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-  <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
@@ -122,9 +122,9 @@
 </div>
 <div class="code-kt">
   <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">rob</span> <span class="p">=</span>
-  <span class="n">new</span> <span class="n">QCustomer</span><span class="p">()</span>
-  <span class="p">.</span><span class="n field">name</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="s">&quot;Rob&quot;</span><span class="p">)</span>
-  <span class="p">.</span><span class="n">findOne</span><span class="p">()</span>
+  <span class="n">QCustomer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n field">name</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="s">&quot;Rob&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findOne</span><span class="p">()</span>
 
 <span class="k">val</span> <span class="py">customers</span> <span class="p">=</span>
   <span class="n">QCustomer</span><span class="p">()</span>
