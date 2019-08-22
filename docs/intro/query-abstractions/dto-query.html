@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>ebeaninit | Getting started | Ebean</title>
+  <title>DTO Query | Intro | Ebean</title>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -32,8 +32,8 @@
         <div class="collapse navbar-collapse">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li class="active"><a href="/docs/getting-started">Get Started</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Help</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
@@ -44,8 +44,8 @@
         <div class="mobile-nav">
 <ul class="nav navbar-nav pull-right nav-btn-rhs">
   <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li class="active"><a href="/docs/getting-started">Get Started</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
   <li ><a href="/support">Help</a></li>
   <li ><a href="/videos">Videos</a></li>
   <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
@@ -61,7 +61,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/getting-started/">Getting started</a> / ebean-test</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/intro">Introduction</a> / DTO Query</h1>
   </div>
 </div>
 
@@ -87,72 +87,64 @@
       </form>
 
       
-<div class="pull-right">
-  <p>Related: <a href="/docs/trouble-shooting">Trouble Shooting</a></p>
-</div>
 
-<h2>ebean-test</h2>
+
+
+<h2>DTO Query</h2>
 <p>
-  <em>ebean-test</em> is used to setup and configure Ebean for running tests.
+  We can specify the query as SQL and have that automatically mapped into DTO beans.
+</p>
+<p>
+  In typical recent applications around <code>10%</code> of queries were DTO queries.
 </p>
 
-<h3>1. Add ebean-test as a test dependency</h3>
-
-<ul class="nav nav-tabs mytabs">
-  <li role="presentation" class="active"><a href="#maven-tab">Maven</a></li>
-  <li role="presentation"><a href="#gradle-tab">Gradle</a></li>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
 </ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerDto</span> <span class="o">{</span>
 
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="maven-tab">
-    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-test<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>11.42.1<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-</div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="gradle-tab">
-    <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
-    <span class="o">...</span>
-    <span class="n">testCompile</span> <span class="s1">&#39;io.ebean:ebean-test:11.42.1&#39;</span>
+  <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="o">...</span> <span class="c1">// getters &amp; setters</span>
 <span class="o">}</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
+  <span class="n">DB</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+  
 </pre></div>
 </div>
-  </div>
 </div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomerDto</span> <span class="p">{</span>
 
+  <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
 
-<h3>2. Add application-test.yaml</h3>
-<p>
-  In <code>src/test/resources</code> add <code>application-test.yaml</code> configuration file
-  like the one below.
-</p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, mariadb, oracle, sqlserver, hana, clickhouse, sqlite</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+<span class="p">}</span>
+
+<span class="k">val</span> <span class="py">beans</span> <span class="p">=</span>
+  <span class="n">DB</span><span class="p">.</span><span class="n">findDto</span><span class="p">(</span><span class="n">CustomerDto</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">setParameter</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;Rob&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+
+  
 </pre></div>
 </div>
-<p>
-  We can change the <code>platform</code> to any of the supported platforms. Ebean test will automatically
-  manage a docker test container setting it up to run tests.
-  Refer to <a href="/docs/testing/platform">testing platforms</a> for more information.
-</p>
-<p>
-  We most often use <code>dropCreate</code> DDL mode during development.
-  Refer to <a href="/docs/testing/ddl-mode">testing DDL mode</a> for more information.
-</p>
+</div>
 
 <div class="next pull-right">
-  <a href="/docs/intro" class="btn btn-info">Next: Introduction</a>
+  <a href="sql-query" class="btn btn-info">Next: SQL Query</a>
 </div>
 <p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/ebean-test.html"><i class="fab fa-github"></i> Edit Page</a>
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/query-abstractions/dto-query.html"><i class="fab fa-github"></i> Edit Page</a>
 </p>
+
 
 
 
@@ -162,19 +154,19 @@
       <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
         <ul class="nav bs-docs-sidenav">
 <li >
-  <a href="/docs/getting-started#ide">IDE Plugin</a>
+  <a href="/docs/intro/query-abstractions">Query abstractions</a>
 </li>
 <li >
-  <a href="/docs/getting-started/cli-tool">CLI Tool</a>
-</li>
-<li >
-  <a href="/docs/getting-started/maven">Maven</a>
-</li>
-<li >
-  <a href="/docs/getting-started/gradle">Gradle</a>
+  <a href="/docs/intro/query-abstractions/orm-query">ORM queries</a>
 </li>
 <li class="active">
-  <a href="/docs/getting-started/ebean-test">ebean-test</a>
+  <a href="/docs/intro/query-abstractions/dto-query">DTO queries</a>
+</li>
+<li >
+  <a href="/docs/intro/query-abstractions/sql-query">SQL queries</a>
+</li>
+<li >
+  <a href="/docs/intro/query-abstractions/jdbc-query">JDBC</a>
 </li>
 
         </ul>

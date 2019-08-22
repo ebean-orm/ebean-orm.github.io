@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Logging | Intro | Ebean</title>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li class="active"><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/intro">Introduction</a> / Logging</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+
+
+<h2>Logging</h2>
+<p>
+  Ebean uses <a href="//www.slf4j.org/">SLF4J</a> for logging.
+</p>
+
+<h2 id="typical">Typical logback configuration</h2>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.DDL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- L2 logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- Testing with Docker containers --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.docker&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="ddl">DDL</h2>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.DDL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="sql">SQL</h2>
+<p>
+  During development it is expected that you include logging of
+  <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
+  These log the sql statements executed, bind values for statement execution.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- SQL and bind values --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SQL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="txn">Transaction</h2>
+<p>
+  During development it is expected that you include logging of
+  <code>io.ebean.SQL</code> and <code>io.ebean.TXN</code>.
+  These log the transaction demarcation.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Transaction Commit and Rollback events --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.TXN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="summary">Summary logging</h2>
+<p>
+  The summary logging of <code>io.ebean.SUM</code> is useful for showing lazy loading queries and how they relate
+  back to origin queries. This is useful when looking at more complex object graphs are
+  built. In tuning queries for N+1 etc.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Summary level details --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.SUM&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="l2">L2 Cache logging</h2>
+
+<p>The L2 cache events can be logged using the logger entries below.
+  This is useful when you are starting out using the L2 cache and looking
+  at the behaviour with L2 caching.
+</p>
+
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- L2 logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.QUERY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.BEAN&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.COLL&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.cache.NATKEY&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="elastic">Elastic logging</h2>
+<p>
+  Logging queries and updates to ElasticSearch.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Elastic logging --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ELA&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.ELQ&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.BULK&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="docker">Docker logging</h2>
+<p>
+  Logging of docker commands used to start test containers with <a href="/docs/testing">ebean-test</a>.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Docker commands for starting test containers  --&gt;</span>
+<span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">&quot;io.ebean.docker&quot;</span> <span class="na">level=</span><span class="s">&quot;TRACE&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+
+<div class="next pull-right">
+  <a href="/docs/query" class="btn btn-info">Next: Query</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/logging/index.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+<li >
+  <a href="/docs/intro/first-entity">First entity</a>
+</li>
+<li >
+  <a href="/docs/intro/query-abstractions">Query abstractions</a>
+</li>
+<li >
+  <a href="/docs/intro/api">Database & DB API</a>
+</li>
+<li class="active">
+  <a href="/docs/intro/logging">Logging</a>
+</li>
+<li >
+  <a href="/docs/intro/db-migrations">DB Migrations</a>
+</li>
+<li >
+  <a href="/docs/intro/limitations">Limitations</a>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
