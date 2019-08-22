@@ -110,12 +110,12 @@
   Ebean will then automatically maintain a natural key lookup cache and use this with queries that use
   the natural key properties in where expressions.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="n">naturalKey</span> <span class="o">=</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">naturalKey</span> <span class="o">=</span> <span class="s">&quot;email&quot;</span><span class="o">)</span>
 </pre></div>
 </div>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Multiple properties make up the unique natural key</span>
-<span class="nd">@Cache</span><span class="o">(</span><span class="n">naturalKey</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;store&quot;</span><span class="o">,</span><span class="s">&quot;sku&quot;</span><span class="o">})</span>
+<span class="nd">@Cache</span><span class="o">(</span><span class="nx">naturalKey</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;store&quot;</span><span class="o">,</span><span class="s">&quot;sku&quot;</span><span class="o">})</span>
 </pre></div>
 </div>`
 
@@ -127,7 +127,7 @@
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;country&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;country&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Country</span> <span class="o">{</span>
 </pre></div>
 </div>

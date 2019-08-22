@@ -121,14 +121,14 @@ save() or delete() to cascade.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
 
   <span class="o">...</span>
   <span class="nd">@ManyToOne</span> <span class="c1">// no cascading</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span> <span class="c1">// save and delete cascaded</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span> <span class="c1">// save and delete cascaded</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 	<span class="o">...</span>
 </pre></div>
@@ -175,14 +175,14 @@ there is no cascade atttribute and the default is to not cascade.</p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
   <span class="o">...</span>
 
   <span class="nd">@ManyToOne</span> <span class="c1">// no cascading</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>  <span class="c1">// save and delete cascaded</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>  <span class="c1">// save and delete cascaded</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -313,7 +313,7 @@ manage its "L2" cache as well as maintain Lucene text indexes.</p>
 </div>
 
 example using @Transactional
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="n">batchSize</span> <span class="o">=</span> <span class="mi">50</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="nx">batchSize</span> <span class="o">=</span> <span class="mi">50</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">goodStuff</span><span class="o">()</span> <span class="o">{</span>
 
     <span class="n">order</span><span class="o">.</span><span class="na">save</span><span class="o">()</span>

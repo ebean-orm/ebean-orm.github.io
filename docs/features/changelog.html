@@ -139,7 +139,7 @@
 <span class="cm">/**</span>
 <span class="cm"> * Only include updates if specific properties are changed.</span>
 <span class="cm"> */</span>
-<span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">updatesThatInclude</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="s">&quot;dateOfBirth&quot;</span><span class="o">})</span>
+<span class="nd">@ChangeLog</span><span class="o">(</span><span class="nx">updatesThatInclude</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">,</span><span class="s">&quot;dateOfBirth&quot;</span><span class="o">})</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
 <span class="o">...</span>
@@ -149,7 +149,7 @@
 <span class="cm"> * Override the default behaviour for inserts - INCLUDE, EXCLUDE or DEFAULT.</span>
 <span class="cm"> * In this case exclude inserts from the change log.</span>
 <span class="cm"> */</span>
-<span class="nd">@ChangeLog</span><span class="o">(</span><span class="n">inserts</span> <span class="o">=</span> <span class="n">ChangeLogInsertMode</span><span class="o">.</span><span class="na">EXCLUDE</span><span class="o">)</span>
+<span class="nd">@ChangeLog</span><span class="o">(</span><span class="nx">inserts</span> <span class="o">=</span> <span class="nx">ChangeLogInsertMode</span><span class="o">.</span><span class="na">EXCLUDE</span><span class="o">)</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
 <span class="o">...</span>

@@ -100,7 +100,7 @@
 <p>
   The example below enables query caching on the Customer entity bean.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="n">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
   <span class="o">...</span>
@@ -140,8 +140,8 @@
   and can be tuned using <code>@CacheQueryTuning</code>.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="n">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
-<span class="nd">@CacheQueryTuning</span><span class="o">(</span><span class="n">maxSecsToLive</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">enableQueryCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<span class="nd">@CacheQueryTuning</span><span class="o">(</span><span class="nx">maxSecsToLive</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span>  <span class="o">{</span>
 </pre></div>

@@ -110,7 +110,7 @@
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">CustomerFinder</span> <span class="n">find</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomerFinder</span><span class="o">();</span>
 
-  <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
+  <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
   <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
   <span class="o">...</span>
@@ -177,10 +177,10 @@
 
    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">CountryFinder</span> <span class="n">find</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CountryFinder</span><span class="o">();</span>
 
-   <span class="nd">@Id</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">2</span><span class="o">)</span>
+   <span class="nd">@Id</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">2</span><span class="o">)</span>
    <span class="kd">final</span> <span class="n">String</span> <span class="n">code</span><span class="o">;</span>
 
-   <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">60</span><span class="o">)</span>
+   <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">60</span><span class="o">)</span>
    <span class="kd">final</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
    <span class="c1">// enhancement will add a default constructor</span>
@@ -221,13 +221,13 @@
     The code and name properties are non-null / required (no ? after the type declaration).
   </p>
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;country&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;country&quot;</span><span class="o">)</span>
 <span class="kd">class</span> <span class="nf">Country</span> <span class="o">(</span>
 
-    <span class="nd">@Id</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">2</span><span class="o">)</span>
+    <span class="nd">@Id</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">2</span><span class="o">)</span>
     <span class="k">var</span> <span class="n">code</span><span class="o">:</span> <span class="n">String</span><span class="o">,</span> <span class="c1">// non-null type</span>
 
-    <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">60</span><span class="o">)</span>
+    <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">60</span><span class="o">)</span>
     <span class="k">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span>  <span class="c1">// non-null type</span>
 
 <span class="o">)</span> <span class="o">:</span> <span class="n">Model</span><span class="o">()</span> <span class="o">{</span>
@@ -263,10 +263,10 @@
     and must be passed when constructing a new customer instance.
   </p>
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="kd">class</span> <span class="nf">Customer</span><span class="o">(</span>
 
-  <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
+  <span class="nd">@NotNull</span> <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
   <span class="k">var</span> <span class="n">name</span><span class="o">:</span> <span class="n">String</span><span class="o">,</span>  <span class="c1">// non-null type</span>
 
   <span class="nd">@SoftDelete</span>
@@ -274,16 +274,16 @@
 
   <span class="k">var</span> <span class="n">registered</span><span class="o">:</span> <span class="n">Date</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span>
 
-  <span class="nd">@Size</span><span class="o">(</span><span class="n">max</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">)</span>
+  <span class="nd">@Size</span><span class="o">(</span><span class="nx">max</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">)</span>
   <span class="k">var</span> <span class="n">comments</span><span class="o">:</span> <span class="n">String</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span>
 
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">arrayOf</span><span class="o">(</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">))</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">arrayOf</span><span class="o">(</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">))</span>
   <span class="k">var</span> <span class="n">billingAddress</span><span class="o">:</span> <span class="n">Address</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span>
 
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">arrayOf</span><span class="o">(</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">))</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">arrayOf</span><span class="o">(</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">))</span>
   <span class="k">var</span> <span class="n">shippingAddress</span><span class="o">:</span> <span class="n">Address</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">,</span>
 
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="n">arrayOf</span><span class="o">(</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">))</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="nx">cascade</span> <span class="o">=</span> <span class="nx">arrayOf</span><span class="o">(</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">))</span>
   <span class="k">var</span> <span class="n">contacts</span><span class="o">:</span> <span class="n">MutableList</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">()</span>
 
 <span class="o">)</span> <span class="o">:</span> <span class="n">BaseModel</span><span class="o">()</span> <span class="o">{</span>

@@ -96,13 +96,13 @@
 <p>
   We can specify extensions that should be installed automatically via:
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
-    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">extensions</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">pgcrypto, hstore</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
+    <span class="nt">postgres</span><span class="p">:</span>
+      <span class="nt">extensions</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pgcrypto, hstore</span>
 </pre></div>
 </div>
 <p>
@@ -126,8 +126,8 @@
   <code>myapp</code> it is advisable to have the DB user/role match and be <code>myapp</code>.
 </p>
 <h5>application.yaml</h5>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">dbSchema</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>  <span class="c1">## use this schema for migrations and testing</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">dbSchema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>  <span class="c1">## use this schema for migrations and testing</span>
 </pre></div>
 </div>
 
@@ -144,14 +144,14 @@
   This will automatically download and run the container making live a little easier.
   Note the use of the Postgis specfic driver and url.
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">geometrySRID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>  <span class="c1"># If we don&#39;t want the default geometrySRID of 4326</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">geometrySRID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>  <span class="c1"># If we don&#39;t want the default geometrySRID of 4326</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
 </pre></div>
 </div>
 <p>
@@ -164,20 +164,20 @@
   <li>Uses <code>mdillon/postgis</code> docker image with Postgis installed</li>
 </ul>
 
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">geometrySRID</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">geometrySRID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">shutdown</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
-    <span class="l l-Scalar l-Scalar-Plain">postgres</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">containerName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
-      <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">mdillon/postgis</span>
-      <span class="l l-Scalar l-Scalar-Plain">extensions</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
-      <span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql_lwgis://127.0.0.1:7432/mygisapp</span>
-      <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgis.DriverWrapperLW</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mygisapp</span>
+    <span class="nt">postgres</span><span class="p">:</span>
+      <span class="nt">containerName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mdillon/postgis</span>
+      <span class="nt">extensions</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql_lwgis://127.0.0.1:7432/mygisapp</span>
+      <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgis.DriverWrapperLW</span>
 </pre></div>
 </div>
 

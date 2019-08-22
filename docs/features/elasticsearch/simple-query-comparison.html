@@ -304,19 +304,19 @@ ES mean: 14.0    std dev: 2.00    min:10   max:22
 
 <span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">class</span> <span class="nc">Order</span> <span class="o">:</span> <span class="n">BaseModel</span><span class="o">()</span> <span class="o">{</span>
 
   <span class="o">...</span>
 
   <span class="k">var</span> <span class="n">status</span><span class="o">:</span> <span class="n">Status</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">;</span>
 
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
   <span class="nd">@ManyToOne</span> <span class="nd">@NotNull</span>
   <span class="k">var</span> <span class="n">customer</span><span class="o">:</span> <span class="n">Customer</span><span class="o">?</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,product(id,sku,name)&quot;</span><span class="o">)</span>
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="n">cascade</span> <span class="o">=</span> <span class="n">arrayOf</span><span class="o">(</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">))</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;*,product(id,sku,name)&quot;</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span> <span class="o">=</span> <span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="nx">cascade</span> <span class="o">=</span> <span class="nx">arrayOf</span><span class="o">(</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">))</span>
   <span class="nd">@OrderBy</span><span class="o">(</span><span class="s">&quot;id asc&quot;</span><span class="o">)</span>
   <span class="k">var</span> <span class="n">details</span><span class="o">:</span> <span class="n">MutableList</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">();</span>
 </pre></div>

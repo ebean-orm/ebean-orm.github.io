@@ -108,7 +108,7 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">...</span>
 
   <span class="c1">// mappedBy referring to the other side of this relationship</span>
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
@@ -122,7 +122,7 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="o">...</span>
 
   <span class="c1">// the customer property referred to by @OneToMany(mappedBy=&quot;customer&quot;)</span>
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">optional</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
@@ -168,12 +168,12 @@
 </p>
 <h4>Order has details:</h4>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">...</span>
 
   <span class="c1">// we MUST have cascade persist here for this</span>
   <span class="c1">// unidirectional case (no @ManyToOne)</span>
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>

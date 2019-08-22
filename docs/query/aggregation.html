@@ -215,7 +215,7 @@
 </p>
 <h5>Example:</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
 
   <span class="o">...</span>
@@ -290,13 +290,13 @@
   Say we have an entity bean called <em>MachineUse</em> with:
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MachineUse</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
 
   <span class="nd">@Id</span>
   <span class="kd">private</span> <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
 
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
   <span class="kd">private</span> <span class="n">DMachine</span> <span class="n">machine</span><span class="o">;</span>
 
   <span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">;</span>
@@ -316,10 +316,10 @@
   We can create the aggregate bean for this as:
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@View</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
+<span class="nd">@View</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;machine_use&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MachineUseAggregate</span> <span class="o">{</span>
 
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
   <span class="kd">private</span> <span class="n">DMachine</span> <span class="n">machine</span><span class="o">;</span>              <span class="c1">// group by, fetch, fetchQuery on ...</span>
 
   <span class="kd">private</span> <span class="n">LocalDate</span> <span class="n">date</span><span class="o">;</span>                <span class="c1">// group by on ...</span>

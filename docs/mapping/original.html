@@ -202,7 +202,7 @@ using a Foreign Key constraint. A foreign key constraint has an "imported" side 
 The Customer entity bean...
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_customer&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;or_customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
   <span class="o">...</span>
   <span class="nd">@OneToMany</span>
@@ -213,7 +213,7 @@ The Customer entity bean...
 The Order entity bean...
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
   <span class="o">...</span>
   <span class="nd">@ManyToOne</span>
@@ -266,11 +266,11 @@ which Order it should go to?
 </p><p>
 "Turn on" cascade save on the @OneToMany side
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;or_order&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
   <span class="o">...</span>
   <span class="c1">// must cascade the save</span>
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderDetail</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -324,20 +324,20 @@ side of the relationship (meaning you don't specify any @JoinColumn etc on this 
 </p><p>
 If you don't have a mappedBy attribute (there is no matching property on the other related
 bean) then this is a Unidirectional relationship. In this case you can specify a
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@JoinColumn</span> <span class="k">if</span> <span class="n">you</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">override</span> <span class="n">the</span> <span class="n">join</span> <span class="n">column</span> <span class="n">information</span> <span class="n">from</span> <span class="n">the</span> <span class="k">default</span><span class="o">).</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@JoinColumn</span> <span class="k">if</span> <span class="nx">you</span> <span class="nx">wish</span> <span class="nx">to</span> <span class="nx">override</span> <span class="nx">the</span> <span class="nx">join</span> <span class="nx">column</span> <span class="nx">information</span> <span class="nx">from</span> <span class="nx">the</span> <span class="k">default</span><span class="o">).</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 
   <span class="c1">// unidirectional …</span>
   <span class="c1">// … can explicitly specify the join column if needed</span>
   <span class="nd">@OneToMany</span>
-  <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;pref_id&quot;</span><span class="o">)</span>
+  <span class="nd">@JoinColumn</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;pref_id&quot;</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Preference</span><span class="o">&gt;</span> <span class="n">preferences</span><span class="o">;</span>
 
   <span class="c1">// bi-directional</span>
   <span class="c1">// … join information always read from the other side</span>
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;userLogged&quot;</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;userLogged&quot;</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Bug</span><span class="o">&gt;</span> <span class="n">loggedBugs</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -390,17 +390,17 @@ inserting into and deleting from the intersection table.
 The way this works is that any additions or removables from the many list/set/map are
 noted. These become inserts into and deletes from the intersection table.
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
   <span class="o">...</span>
-  <span class="nd">@ManyToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@ManyToMany</span><span class="o">(</span><span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Role</span><span class="o">&gt;</span> <span class="n">roles</span><span class="o">;</span>
 
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_role&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;s_role&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Role</span> <span class="o">{</span>
   <span class="o">...</span>
-  <span class="nd">@ManyToMany</span><span class="o">(</span><span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@ManyToMany</span><span class="o">(</span><span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -513,12 +513,12 @@ dynamically determined by Ebean and you can put the $\{ta} in the select or join
 Example: The caseForm field using a SQL case expression
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
   <span class="nd">@Id</span>
   <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
 
-  <span class="nd">@Formula</span><span class="o">(</span><span class="n">select</span><span class="o">=</span><span class="s">&quot;(case when $\{ta}.id &gt; 4 then &#39;T&#39; else &#39;F&#39; end)&quot;</span><span class="o">)</span>
+  <span class="nd">@Formula</span><span class="o">(</span><span class="nx">select</span><span class="o">=</span><span class="s">&quot;(case when $\{ta}.id &gt; 4 then &#39;T&#39; else &#39;F&#39; end)&quot;</span><span class="o">)</span>
   <span class="kt">boolean</span> <span class="n">caseForm</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
@@ -531,7 +531,7 @@ Note in this deployment 'T' and 'F' are mapped to boolean values.
 
 <h4>A SQL Function</h4>
 <p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Formula</span><span class="o">(</span><span class="n">select</span><span class="o">=</span><span class="s">&quot;(select count(*) from f_topic _b where _b.user_id =$\{ta}.id)&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Formula</span><span class="o">(</span><span class="nx">select</span><span class="o">=</span><span class="s">&quot;(select count(*) from f_topic _b where _b.user_id =$\{ta}.id)&quot;</span><span class="o">)</span>
 <span class="kt">int</span> <span class="n">countAssiged</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -705,10 +705,10 @@ map into DB values or your DBA will be unhappy with long wasteful values.
 
 <h4>@EnumValue</h4>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">UserStatus</span> <span class="o">{</span>
-  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;D&quot;</span><span class="o">)</span> <span class="n">DELETED</span><span class="o">,</span>
-  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span> <span class="n">ACTIVE</span><span class="o">,</span>
-  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;I&quot;</span><span class="o">)</span> <span class="n">INACTIVE</span><span class="o">,</span>
-  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;N&quot;</span><span class="o">)</span> <span class="n">NEW</span>
+  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;D&quot;</span><span class="o">)</span> <span class="nx">DELETED</span><span class="o">,</span>
+  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span> <span class="nx">ACTIVE</span><span class="o">,</span>
+  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;I&quot;</span><span class="o">)</span> <span class="nx">INACTIVE</span><span class="o">,</span>
+  <span class="nd">@EnumValue</span><span class="o">(</span><span class="s">&quot;N&quot;</span><span class="o">)</span> <span class="nx">NEW</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -793,7 +793,7 @@ That's it.  Your code to query, insert, update and delete etc does not change an
 
 <span class="o">...</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;pm_patient&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;pm_patient&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Patient</span> <span class="o">{</span>
 
     <span class="nd">@Id</span>
@@ -804,7 +804,7 @@ That's it.  Your code to query, insert, update and delete etc does not change an
 
     <span class="c1">// use client side encryption (not db functions)</span>
     <span class="nd">@Lob</span>
-    <span class="nd">@Encrypted</span><span class="o">(</span><span class="n">dbEncryption</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
+    <span class="nd">@Encrypted</span><span class="o">(</span><span class="nx">dbEncryption</span><span class="o">=</span><span class="kc">false</span><span class="o">)</span>
     <span class="n">String</span> <span class="n">description</span><span class="o">;</span>
 
     <span class="nd">@Encrypted</span>

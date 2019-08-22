@@ -98,15 +98,15 @@
   To setup to use sqlserver17 we should set the <code>databasePlatformName</code> to sqlserver17 at either the
   `ebean.databasePlatformName` level or at `ebean.test.sqlserver.databasePlatformName` level.
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ebean</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>  <span class="c1">## only using sql server</span>
-  <span class="l l-Scalar l-Scalar-Plain">test</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">platform</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="l l-Scalar l-Scalar-Plain">ddlMode</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="l l-Scalar l-Scalar-Plain">dbName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">databasePlatformName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>  <span class="c1">## only using sql server</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">sqlserver</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">databasePlatformName</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>         <span class="c1">## put here when testing multiple platforms</span>
+    <span class="nt">sqlserver</span><span class="p">:</span>
+      <span class="nt">databasePlatformName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sqlserver17</span>         <span class="c1">## put here when testing multiple platforms</span>
       <span class="c1">#collation: SQL_Latin1_General_CP1_CS_AS  ## use an explicit collation</span>
       <span class="c1">#collation: default                       ## use the sql server default</span>
 </pre></div>

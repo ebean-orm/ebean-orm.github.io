@@ -171,7 +171,7 @@
   length of the varchar column definition.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// fallback to store in VARCHAR(800)</span>
-<span class="nd">@DbJson</span><span class="o">(</span><span class="n">length</span><span class="o">=</span><span class="mi">800</span><span class="o">)</span>
+<span class="nd">@DbJson</span><span class="o">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">800</span><span class="o">)</span>
 <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -179,7 +179,7 @@
   The storage can be explicitly defined using the <code>storage</code> attribute.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// explicitly store using BLOB</span>
-<span class="nd">@DbJson</span><span class="o">(</span><span class="n">storage</span> <span class="o">=</span> <span class="n">DbJsonType</span><span class="o">.</span><span class="na">BLOB</span><span class="o">)</span>
+<span class="nd">@DbJson</span><span class="o">(</span><span class="nx">storage</span> <span class="o">=</span> <span class="nx">DbJsonType</span><span class="o">.</span><span class="na">BLOB</span><span class="o">)</span>
 <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">content</span><span class="o">;</span>
 </pre></div>
 </div>

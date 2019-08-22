@@ -880,7 +880,7 @@ where id in (?,?,?,?,?)
 <span class="kn">import</span> <span class="nn">javax.persistence.NamedQuery</span><span class="o">;</span>
 
 <span class="o">...</span>
-<span class="nd">@NamedQueries</span><span class="o">(</span><span class="n">value</span><span class="o">={</span>
+<span class="nd">@NamedQueries</span><span class="o">(</span><span class="nx">value</span><span class="o">={</span>
   <span class="nd">@NamedQuery</span><span class="o">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s">&quot;bugsSummary&quot;</span><span class="o">,</span>
     <span class="n">query</span><span class="o">=</span><span class="s">&quot;find (name, email) fetch loggedBugs (title, status) where id=:id &quot;</span><span class="o">),</span>
@@ -889,7 +889,7 @@ where id in (?,?,?,?,?)
     <span class="n">query</span><span class="o">=</span><span class="s">&quot;fetch loggedBugs where loggedBugs.status = :bugStatusorder by name&quot;</span><span class="o">)</span>
   <span class="o">})</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;s_user&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 <span class="o">...</span>
 </pre></div>

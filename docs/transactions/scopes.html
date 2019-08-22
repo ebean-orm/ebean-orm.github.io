@@ -135,7 +135,7 @@
 <p>
   We can specify other transaction scopes on methods annotated with <code>@Transactional</code>.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">TxType</span><span class="o">.</span><span class="na">REQUIRES_NEW</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transactional</span><span class="o">(</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">TxType</span><span class="o">.</span><span class="na">REQUIRES_NEW</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doInner</span><span class="o">()</span> <span class="o">{</span>
   <span class="c1">// execute using a new transaction ...</span>
 

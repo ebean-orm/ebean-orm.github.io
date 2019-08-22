@@ -133,10 +133,10 @@
 </div>
 <div class="code-kt">
   <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">sql</span> <span class="p">=</span> <span class="s">&quot;&quot;&quot;</span>
-  <span class="n">select</span> <span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">when_activated</span>
-  <span class="n">from</span> <span class="n">customer</span>
-  <span class="k">where</span> <span class="n">name</span> <span class="n">like</span> <span class="p">?</span>
-<span class="s">&quot;&quot;&quot;.trimIndent()</span>
+<span class="s">  select id, name, when_activated</span>
+<span class="s">  from customer</span>
+<span class="s">  where name like ?</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">.</span><span class="n">trimIndent</span><span class="p">()</span>
 
 <span class="k">val</span> <span class="py">rows</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">sqlQuery</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
   <span class="p">.</span><span class="n">setParameter</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;Rob%&quot;</span><span class="p">)</span>

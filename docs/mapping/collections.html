@@ -118,13 +118,13 @@
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
   <span class="o">...</span>
 
   <span class="c1">// List is recommended for collection types</span>
 
-  <span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="n">cascade</span><span class="o">=</span><span class="n">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="nx">cascade</span><span class="o">=</span><span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
   <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
@@ -142,14 +142,14 @@
 <h3>List/Set initialisation is removed</h3>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// initialisation of the new ArrayList() is removed</span>
 
-<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;;</span>
 
 <span class="c1">// you can declare an un-initialised List if you wish</span>
 <span class="c1">// and there is no actual difference to an initialised one</span>
 <span class="c1">// because enhancement will always initialise it</span>
 
-<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -157,7 +157,7 @@
   In Kotlin we'd typically always want to define it as being not null:
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// kotlin: contacts type not nullable</span>
-<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span> <span class="o">=</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="k">var</span> <span class="n">contacts</span><span class="o">:</span> <span class="n">MutableList</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">ArrayList</span><span class="o">()</span>
 </pre></div>
 </div>
@@ -182,7 +182,7 @@
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// it &quot;looks&quot; like contacts could be null ...</span>
 
-<span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addContact</span><span class="o">(</span><span class="n">Contact</span> <span class="n">contact</span><span class="o">)</span> <span class="o">{</span>
@@ -199,7 +199,7 @@
   and replaces that with code that ensures the List/Set is initialised if required.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@OneToMany</span><span class="o">(</span><span class="n">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addContact</span><span class="o">(</span><span class="n">Contact</span> <span class="n">contact</span><span class="o">)</span> <span class="o">{</span>

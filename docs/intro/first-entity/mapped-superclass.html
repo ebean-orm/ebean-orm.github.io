@@ -151,19 +151,19 @@
 <span class="k">import</span> <span class="nn">javax.persistence.MappedSuperclass</span>
 <span class="k">import</span> <span class="nn">javax.persistence.Version</span>
 
-<span class="n">@MappedSuperclass</span>
+<span class="nd">@MappedSuperclass</span>
 <span class="k">open</span> <span class="k">class</span> <span class="nc">BaseDomain</span> <span class="p">:</span> <span class="n">Model</span><span class="p">()</span> <span class="p">{</span>
 
-  <span class="n">@Id</span>
+  <span class="nd">@Id</span>
   <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
 
-  <span class="n">@Version</span>
+  <span class="nd">@Version</span>
   <span class="k">var</span> <span class="py">version</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
 
-  <span class="n">@WhenModified</span>
+  <span class="nd">@WhenModified</span>
   <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenModified</span><span class="p">:</span> <span class="n">Instant</span>
 
-  <span class="n">@WhenCreated</span>
+  <span class="nd">@WhenCreated</span>
   <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenCreated</span><span class="p">:</span> <span class="n">Instant</span>
 
 <span class="p">}</span>
@@ -201,7 +201,7 @@
 
 <span class="k">import</span> <span class="nn">javax.persistence.Entity</span>
 
-<span class="n">@Entity</span>
+<span class="nd">@Entity</span>
 <span class="k">class</span> <span class="nc">Customer</span> <span class="p">:</span> <span class="n">BaseDomain</span><span class="p">()</span> <span class="p">{</span>
 
   <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>

@@ -125,10 +125,10 @@
 <span class="k">import</span> <span class="nn">javax.persistence.Entity</span>
 <span class="k">import</span> <span class="nn">javax.persistence.Id</span>
 
-<span class="n">@Entity</span>
+<span class="nd">@Entity</span>
 <span class="k">class</span> <span class="nc">Customer</span> <span class="p">{</span>
 
-  <span class="n">@Id</span>
+  <span class="nd">@Id</span>
   <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
 
   <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
@@ -186,7 +186,7 @@
 
 <span class="k">class</span> <span class="nc">CustomerTest</span>  <span class="p">{</span>
 
-  <span class="n">@Test</span>
+  <span class="nd">@Test</span>
   <span class="k">fun</span> <span class="nf">insert_update_delete</span><span class="p">()</span> <span class="p">{</span>
 
     <span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">Customer</span><span class="p">()</span>

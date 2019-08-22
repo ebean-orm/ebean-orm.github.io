@@ -117,7 +117,7 @@
   <span class="c1">// has &quot;mappedBy&quot; (like @OneToMany)</span>
   <span class="c1">// ... so we can think of this as the &quot;many&quot; side</span>
   <span class="c1">// ... with cardinality limited to &quot;at most 1&quot;</span>
-  <span class="nd">@OneToOne</span><span class="o">(</span><span class="n">mappedBy</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
+  <span class="nd">@OneToOne</span><span class="o">(</span><span class="nx">mappedBy</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
   <span class="n">Tire</span> <span class="n">tire</span><span class="o">;</span>
   <span class="o">...</span>
 </pre></div>
@@ -140,7 +140,7 @@
   <span class="c1">// ... means it maps to the foreign key</span>
   <span class="c1">// ... use @JoinColumn if needed</span>
   <span class="nd">@OneToOne</span>
-  <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
+  <span class="nd">@JoinColumn</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;wheel&quot;</span><span class="o">)</span>
   <span class="n">Wheel</span> <span class="n">wheel</span><span class="o">;</span>
 </pre></div>
 </div>

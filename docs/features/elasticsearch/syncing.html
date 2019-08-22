@@ -230,8 +230,8 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Contact</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
 
   <span class="o">...</span>
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">optional</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;id,name&quot;</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -239,12 +239,12 @@
   <h5>Customer embedded in Order</h5>
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DocStore</span>
 <span class="nd">@Entity</span>
-<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;orders&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
 
   <span class="o">...</span>
   <span class="nd">@NotNull</span> <span class="nd">@ManyToOne</span>
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;id,status,name,billingAddress(*,country(*)&quot;</span><span class="o">)</span>
   <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
 </pre></div>
 </div>
@@ -330,12 +330,12 @@
 <span class="nd">@Entity</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BasicDomain</span> <span class="o">{</span>
   <span class="o">...</span>
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">Address</span> <span class="n">billingAddress</span><span class="o">;</span>
 
-  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
-  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="n">cascade</span> <span class="o">=</span> <span class="n">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
+  <span class="nd">@DocEmbedded</span><span class="o">(</span><span class="nx">doc</span> <span class="o">=</span> <span class="s">&quot;*,country(*)&quot;</span><span class="o">)</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">ALL</span><span class="o">)</span>
   <span class="n">Address</span> <span class="n">shippingAddress</span><span class="o">;</span>
 </pre></div>
 </div>
