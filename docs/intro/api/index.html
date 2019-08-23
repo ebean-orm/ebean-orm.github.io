@@ -96,26 +96,27 @@
   The <a target="_blank" href="/apidoc/11/io/ebean/Database.html">Database API</a> provides almost all of the functionality including
   <code>queries</code>, <code>saving</code>, <code>deleting</code> and <code>transactions</code>.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
-<span class="n">Customer</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
-<span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">);</span>
+```java
+// persist ...
+Customer customer  = ...
+database.save(customer);
 
 
-<span class="c1">// fetch ...</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+// fetch ...
+List<|Customer> customers =
+  database.find(Customer.class)
+  .findList();
 
 
-<span class="c1">// transactions ...</span>
-<span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+// transactions ...
+try (Transaction transaction = database.beginTransaction()) {
 
-  <span class="c1">// fetch and persist beans etc ...</span>
+  // fetch and persist beans etc ...
 
-  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
-<span class="o">}</span>
-</pre></div>
-</div>
+  transaction.commit();
+}
+
+```
 <h4>javax.sql.DataSource</h4>
 <p>
   A Database instance has an JDBC DataSource associating it one to one to an actual database.
@@ -131,10 +132,10 @@
   instance is registered with <code>DB</code> and then can be obtained via <code>DB.getDefault()</code>.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain the &quot;default&quot; database</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
-</pre></div>
-</div>
+```java
+// obtain the "default" database
+Database database = DB.getDefault();
+```
 
 <h4>Named database</h4>
 <p>
@@ -142,10 +143,64 @@
   it's name via <code>DB.byName()</code>
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain a database by it&#39;s name</span>
-<span class="n">Database</span> <span class="n">hrDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
+```java
+// obtain a database by it's name
+Database hrDatabase = DB.byName("hr");
+```
+
+<h4>Model uses default database</h4>
+<p>
+  When our entity beans extend <a href="/docs/intro/first-entity/model">Model</a> and we use <em>save()</em>
+  that is actually using the default database.
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Roberto&quot;</span><span class="o">)</span>
+
+<span class="c1">// use the default database</span>
+<span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">()</span>
 </pre></div>
 </div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">Customer</span><span class="p">(</span><span class="s">&quot;Roberto&quot;</span><span class="p">)</span>
+
+<span class="c1">// use the default database</span>
+<span class="n">customer</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+<h4>Query beans use default database</h4>
+<p>
+  When we create a Query bean and execute the query that also is actually using the default database.
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use the default database</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// use the default database</span>
+<span class="k">val</span> <span class="py">customers</span> <span class="p">=</span> <span class="n">QCustomer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n field">status</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">Status</span><span class="p">.</span><span class="n">NEW</span><span class="p">)</span>
+    <span class="p">.</span><span class="n field">billingAddress</span><span class="p">.</span><span class="n field">city</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="s">&quot;Auckland&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
 
 <h4>Create database</h4>
 <p>

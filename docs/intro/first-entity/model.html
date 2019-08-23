@@ -128,7 +128,7 @@
 <span class="k">import</span> <span class="nn">javax.persistence.Id</span>
 
 <span class="nd">@Entity</span>
-<span class="k">class</span> <span class="nc">Customer</span> <span class="p">:</span> <span class="n">Model</span> <span class="p">{</span>
+<span class="k">class</span> <span class="nc">Customer</span> <span class="p">:</span> <span class="n">Model</span><span class="p">()</span> <span class="p">{</span>
 
   <span class="nd">@Id</span>
   <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
@@ -143,6 +143,10 @@
 
 <p>
   Now we can just <code>save()</code> and <code>delete()</code> them:
+</p>
+<p>
+  Note that it would be nice if we have a constructor that takes name. We will
+  do that shortly and that means we can make name a non-nullable property.
 </p>
 
 <h2>Model.save()</h2>
@@ -173,8 +177,8 @@
 </div>
 
 <p>
-  Note that <code>Model.save()</code> and <code>Model.delete()</code> use the <code>default database</code>.
-  We obtain the default database via <code>DB.getDefault()</code>.
+  Note that <code>save()</code> and <code>delete()</code> use the <code>default database</code>.
+  We obtain the default database via <a href="/docs/intro/api#db">DB.getDefault()</a>.
 </p>
 
 
