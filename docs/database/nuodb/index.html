@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Postgres | Ebean ORM</title>
+  <title>NuoDB | Ebean ORM</title>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -61,7 +61,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs/">Documentation</a> / <a href="/docs/database">Database</a> / Postgres</h1>
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/database">Database</a> / NuoDB</h1>
   </div>
 </div>
 
@@ -90,11 +90,11 @@
 
 
 
-<h2>Postgres</h2>
+<h2>NuoDB</h2>
 
 <h3>Testing</h3>
 <p>
-  To test against Postgres docker test container set the <em>platform</em> to <code>postgres</code> in
+  To test against NuoDB docker test container set the <em>platform</em> to <code>postgres</code> in
   <code>src/test/resources/application-test.yaml</code>
 </p>
 <p>
@@ -102,7 +102,7 @@
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
-  <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, nuodb ...</span>
+  <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nuodb</span> <span class="c1"># h2, nuodb, postgres, ...</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
 </pre></div>
@@ -127,32 +127,37 @@
 
 <h5>UUID</h5>
 <p>
-  UUID is mapped to native Postgres UUID type.
+  NuoDB does not have a native UUID type. Instead this will be mapped to database <em>binary(16)</em> or
+  <em>varchar(40)</em> based on the setting of PlatformConfig.DbUuid.
 </p>
-<h5>INET</h5>
-<p>
-  <em>java.net.InetAddress</em> and <em>io.ebean.types.Inet</em> are both automatically mapped to native
-  Postgres INET type. When using InetAddress we need to take care that it doesn't perform unwanted
-  DNS lookup validating addresses. <em>io.ebean.types.Inet</em> is a simple value type.
-</p>
+
 <h5>Array types</h5>
 <p>
-  We use <code>@DbArray</code> to map Lists or Sets of UUID, String, Enums, Number types.
-  These are mapped to Postgres array types like <em>uuid[], varchar[], integer[] ...</em>
+  NuoDB does not have array types and these types are instead simulated.
 </p>
-<h5>JSON / JSONB</h5>
 
-
+<h5>JSON</h5>
+<p>
+  Properties with <code>@DbJson</code> and <code>@DbJsonB</code> are mapped to database varchar or clob.
+</p>
 
 
 <h3>History support</h3>
+<p>
+  History support for NuoDB is provided by generating triggers and history table.
+</p>
 
-<h3>Partitioning</h3>
-
+<h3>Table Partitioning</h3>
+<p>
+  NuoDB supports table partitioning but this is not supported by Ebean yet (via <em>@DbPartition</em>).
+</p>
 
 <div class="next pull-right">
-  <a href="/docs/testing/" class="btn btn-info">Next: Testing</a>
+  <a href="/docs/testing" class="btn btn-info">Next: Testing</a>
 </div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/postgres/index.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
 
 
 
@@ -163,13 +168,7 @@
         <ul class="nav bs-docs-sidenav">
 
 <li >
-  <a href="/docs/database/postgres">Postgres</a>
-</li>
-<li >
-  <a href="/docs/database/sqlserver">SQL Server</a>
-</li>
-<li >
-  <a href="/docs/database/oracle">Oracle</a>
+  <a href="/docs/database/nuodb">NuoDB</a>
 </li>
 
         </ul>

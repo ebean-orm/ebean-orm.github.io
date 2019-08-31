@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta id="layout-head" />
+  <title>Postgres | Ebean ORM</title>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <link rel="shortcut icon" href="/images/favicon.ico" >
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div id="wrap">
+  <div id="header">
+    <div class="navbar" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img src="/images/lg5-21x100.png" height="35">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+        <div class="mobile-nav">
+<ul class="nav navbar-nav pull-right nav-btn-rhs">
+  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
+  <li ><a href="/docs">Docs</a></li>
+  <li ><a href="/docs/getting-started">Get Started</a></li>
+  <li ><a href="/support">Help</a></li>
+  <li ><a href="/videos">Videos</a></li>
+  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+  <li ><a href="/releases">Releases</a></li>
+  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+</ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="main">
+    
+<div class="jumbotron mini">
+  <div class="container">
+    <h1><a href="/docs/">Documentation</a> / <a href="/docs/database">Database</a> / Postgres</h1>
+  </div>
+</div>
+
+<div class="container doc-index bs-docs-container">
+
+  <div class="row">
+
+    <div class="col-md-9" role="main">
+
+      <form action="https://www.google.com/search" method="get">
+        <div class="page-inline-search" style="margin-bottom:8px;">
+          <div class="input-group">
+            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+            <input type="hidden" name="as_sitesearch" value="ebean.io">
+            <div class="input-group-btn">
+              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          <div class="search-results-inline-container" style="display: none;">
+            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+          </div>
+        </div>
+      </form>
+
+      
+
+
+
+<h2>Postgres</h2>
+
+<h3>Testing</h3>
+<p>
+  To test against Postgres docker test container set the <em>platform</em> to <code>postgres</code> in
+  <code>src/test/resources/application-test.yaml</code>
+</p>
+<p>
+  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+  <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, ...</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+<p>
+  That is all we need to do. Running tests via IDE, maven or gradle will all automatically setup
+  a docker test container for postgres including creating the database and user etc.
+</p>
+<p>
+  We generally run with <em>ddlMode</em> <code>dropCreate</code> which will drop and re-create
+  all the database tables prior to running all the tests.
+</p>
+<p>
+  Refer to <a href="/docs/logging">docs / logging</a> to see how to get logging for SQL, DDL and docker.
+</p>
+<p>
+  Note that DDL is generated into <em>maven target</em>, <em>gradle build</em> or current directory.
+  We see <code>db-create-all.sql</code> and <code>db-drop-all.sql</code> there.
+</p>
+
+<h3>Types</h3>
+
+<h5>UUID</h5>
+<p>
+  UUID is mapped to native Postgres UUID type.
+</p>
+
+<h5>INET</h5>
+<p>
+  <em>java.net.InetAddress</em> and <em>io.ebean.types.Inet</em> are both automatically mapped to native
+  Postgres INET type. When using InetAddress we need to take care that it doesn't perform unwanted
+  DNS lookup validating addresses. <em>io.ebean.types.Inet</em> is a simple value type.
+</p>
+
+<h5>Array types</h5>
+<p>
+  We use <code><a href="arraytype">@DbArray</a></code> to map Lists or Sets of UUID, String, Enums, Number types.
+  These are mapped to Postgres array types like <em>uuid[], varchar[], integer[] ...</em>
+</p>
+<p>
+  For more on <a href="arraytype">Postgres Array types</a>.
+</p>
+
+<h5>JSON / JSONB</h5>
+<p>
+  We can use <code>@DbJson</code> and <code>@DbJsonB</code> to map content to Postgres JSON or JSONB
+  types.
+</p>
+
+<h3>History support</h3>
+<p>
+  History support for Postgres is provided by generating triggers and history table.
+</p>
+
+<h3>Table Partitioning</h3>
+<p>
+  Postgres 10 added support for table partitioning. We use <code>@DbPartition</code> to define the
+  table should have range partitioning based on DAY, WEEK, MONTH or YEAR.
+</p>
+
+<div class="next pull-right">
+  <a href="/docs/testing" class="btn btn-info">Next: Testing</a>
+</div>
+<p class="edit-page">
+  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/postgres/index.html"><i class="fab fa-github"></i> Edit Page</a>
+</p>
+
+
+
+    </div>
+
+    <div class="col-md-3" role="complementary">
+      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+        <ul class="nav bs-docs-sidenav">
+
+<li >
+  <a href="/docs/database/postgres">Postgres</a>
+</li>
+<li >
+  <a href="/docs/database/postgres/arraytype">Array types</a>
+</li>
+
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+</div>
+
+
+  </div>
+</div>
+
+
+<footer id="footer">
+  <div class="doc-footer">
+    <ul class="doc-footer-links">
+      <li><a href="/">Ebean ORM</a></li>
+      <li> | </li>
+      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
+    </ul>
+  </div>
+</footer>
+
+  <script type="text/javascript">
+    var categoryNames = {};
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.min.js"></script>
+
+    <script src="/js/jquery.storageapi.min.js"></script>
+  <script src="/js/ebean-site.js"></script>
+  <script src="/js/extra.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75181644-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+</body>
+</html>
