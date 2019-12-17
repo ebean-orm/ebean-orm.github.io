@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta id="layout-head" />
-  <title>Introduction</title>
+  <title>Upgrading Ebean version</title>
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <link rel="shortcut icon" href="/images/favicon.ico" >
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -91,6 +91,17 @@
 <p>
   A summary of changes needed in migrating to a later version of Ebean.
 </p>
+
+<h2>Upgrading to 12.x from 11.x</h2>
+<ul>
+  <li>
+    #1826 Removed <code>@PrivateOwned</code>, migrate to orphanRemoval=true attribute on <code>@OneToMany</code>
+  </li>
+  <li>
+    #1824 Stateless updates - Removed update deleteMissingChildren option, instead always use orphanRemoval behaviour
+    change breaking-api
+  </li>
+</ul>
 
 <h2>Upgrading to 11.x from 10.x</h2>
 <ul>
