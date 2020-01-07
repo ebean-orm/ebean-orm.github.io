@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>findSet | Query | Ebean</title>
+  <title>Getting started | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <div class="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">findSet</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/getting-started/">getting started</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">intellij</span>
       </div>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -31,100 +31,34 @@
   <aside>
 <nav class="side">
   <ul>
-      <li class="nav0 ">
-    <a  href="/docs/getting-started">Getting started</a>
+      <li class="nav0 active">
+    <a class="active" href="/docs/getting-started">Getting started</a>
+  <ul>
+  <li class="nav1 active">
+    <a class="active" href="/docs/getting-started/intellij-idea">IntelliJ</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/eclipse-ide">Eclipse</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/cli-tool">CLI Tool</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/maven">Maven</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/gradle">Gradle</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/ebean-test">Test setup</a>
+  </li>
+  </ul>
   </li>
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
   </li>
-  <li class="nav0 active">
-    <a class="active" href="/docs">Documentation</a>
-      <ul>
-  <li class="nav1 active">
-    <a class="active" href="/docs/query">Query</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findOne">findOne</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findList">findList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findCount">findCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findNative">findNative</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li class="active">
-    <a class="active" href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEachWhile">findEachWhile</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findIds">findIds</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findFutureCount">findFutureCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureList">findFutureList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/persist">Persist</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/transactions">Transactions</a>
-  </li>
-        <li><a href="/docs/mapping">Mapping</a></li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl/ddl-create-all">DDL Generation</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl/dbmigration">DB Migration</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/logging">Logging</a>
-  </li>
-        <li><a href="/docs/testing">Testing</a></li>
-        <li><a href="/docs/tuning">Tuning</a></li>
-        <li><a href="/docs/features">Features</a></li>
-      </ul>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
   </li>
   <li class="nav0 ">
     <a  href="/support">Getting help</a>
@@ -161,8 +95,52 @@
   </div>
 </form>
     
-<h2>findSet</h2>
+<h2 id="idea">IntelliJ IDEA Plugin</h2>
+<p>
+  Ebean uses bytecode enhancement to provide <code>dirty checking</code> and <code>lazy loading</code>.
+  Install Ebean's IntelliJ plugin such that entity beans and transactional methods are enhanced
+  when run develop and run tests in the IDE.
+</p>
+<p>
+  Install the Plugin for IntelliJ IDEA or Eclipse IDE.
+</p>
 
+<div class="grid g2">
+  <div>
+    <p>
+      <b>File</b> > <b>Settings</b> > <b>Plugins</b> > <b>"Ebean 11"</b>
+    </p>
+    <p>Install Ebean 11 IDEA Plugin</p>
+  </div>
+  <div>
+    <img src="/images/scn-idea-plugin.png" width="450">
+  </div>
+</div>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<div class="grid g2">
+  <div>
+    <h4>Turn on plugin per project</h4>
+    <p>
+      The plugin is turned on and off per project. We need to turn it on for it to perform enhancement
+      on the current project.
+    </p>
+  </div>
+  <div>
+    <img src="/images/scn-idea-plugin-selected.png" width="450">
+  </div>
+</div>
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/getting-started/cli-tool"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="cli-tool" class="btn btn-info">Next: CLI Tool</a>
+    </p>
+  </nav>
 
   </article>
 </div>

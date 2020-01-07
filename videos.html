@@ -1,576 +1,540 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Ebean ORM - Java/Kotlin/JVM</title>
+  <title>Videos | Ebean</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-<div id="wrap">
-  <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li class="active"><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
-        <div class="mobile-nav">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li class="active"><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <div class="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">videos</span>
+      </div>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/11">API Javadoc</a>
+    </li>
+  <li class="nav0 active">
+    <a class="active" href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
   </div>
-  <div id="main">
+</form>
     
-<div class="jumbotron mini">
-  <div class="container">
-    <h1>Videos</h1>
-  </div>
-</div>
+<h2>Videos</h2>
 
-<div class="container row-space">
-  <h2>Architecture</h2>
-<div class="row">
-  <div class="col-md-4">
-    <div class="media ">
-  <div class="media-left">
+<h2>Architecture</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
     <div class="media-left">
-    <a href="https://youtu.be/ogx6hsLl95g">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/ogx6hsLl95g">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Sessionless ORM</h4>
+      How Ebean is architected to be a sessionless ORM
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Sessionless ORM</h4>
-  How Ebean is architected to be a sessionless ORM
   </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/taB58ZsSRKU">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">ElasticSearch</h4>
-  Why Ebean has ElasticSearch integration
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/Y18HsBkeLuk">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Persistence Context</h4>
-  An explanation of Ebean's Persistence Context and the various scopes that is supports.
-  </div>
-</div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/zpBJdtHT5tc">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">OLTP vs OLAP use cases</h4>
-  How Ebean fits in OLTP vs OLAP use cases, when to use manually supplied SQL
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/Ds9LeYDXFV8">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">SQL: Covering indexes and only fetching what we need</h4>
-  Optimisations available when we only fetch what we need from the Database
-  </div>
-</div>
-  </div>
-</div>
-
-
-  <hr/>
-  <h2>Enhancement</h2>
-<div class="row">
-  <div class="col-md-4">
+  <div>
   <div class="media ">
-  <div class="media-left">
     <div class="media-left">
-    <a href="https://youtu.be/q-SB_X_X-GU">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/taB58ZsSRKU">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">ElasticSearch</h4>
+      Why Ebean has ElasticSearch integration
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Maven enhancement</h4>
-  Enhancement of entity and query beans using the maven enhancement tile
   </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/o4kmglM48Vc">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">IntelliJ plugin</h4>
-  Enhancement using the IntelliJ IDEA plugin
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/_DWxNj-_orA">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Eclipse plugin</h4>
-  Enhancement using the Eclipse plugin
-  </div>
-</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/20dvi_oqVus">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Eclipse APT</h4>
-  Eclipse setup for Query bean generation (via Java annotation processor).
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/49vKdpbUl-0">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">IntelliJ debugger</h4>
-  Looks at Idea debugger setting that invokes lazy loading
-  </div>
-</div>
-  </div>
-</div>
-
-  <hr/>
-  <h2>DB Migration</h2>
-<div class="row">
-  <div class="col-md-4">
+  <div>
   <div class="media ">
-  <div class="media-left">
     <div class="media-left">
-    <a href="https://youtu.be/n7VXOFwM2og">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/Y18HsBkeLuk">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Persistence Context</h4>
+      An explanation of Ebean's Persistence Context and the various scopes that is supports.
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">DB Migration introduction</h4>
-  Introduction to DB migration
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/cxiacf0wmNk">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Repeatable migrations</h4>
-  Use of @View, extra-ddl.xml and repeatable migrations
-  </div>
-</div>
-  </div>
-</div>
-  <hr/>
-  <h2>Testing</h2>
-  <h4>ebean-mocker</h4>
-
-<div class="row">
-
-  <div class="col-md-4">
-    <div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/R6PBA_ONFIM">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Save capture</h4>
-  Capture save events and assert the beans that were saved and method calls that were invoked.
-  </div>
-</div>
   </div>
 
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/XfJTg8davuI">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Find by Id</h4>
-  Provide stub responses to find by id
-  </div>
-</div>
-  </div>
-
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/18hz_LRjXHA">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">SQL Capture</h4>
-  Use LoggedSql to capture SQL statements
-  </div>
-</div>
-  </div>
-
-</div>
-<!-- ./row -->
-<div class="row">
-
-  <div class="col-md-4">
+  <div>
   <div class="media ">
-  <div class="media-left">
     <div class="media-left">
-    <a href="https://youtu.be/1fjtz_hMw38">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/zpBJdtHT5tc">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">OLTP vs OLAP use cases</h4>
+      How Ebean fits in OLTP vs OLAP use cases, when to use manually supplied SQL
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Static Finder</h4>
-  Provide a test double when using Finders on static fields
   </div>
-</div>
-  </div>
-
-</div>
-<!-- ./row -->
-  <hr/>
-  <h2>Query</h2>
-<div class="row">
-  <div class="col-md-4">
+  <div>
   <div class="media ">
-  <div class="media-left">
     <div class="media-left">
-    <a href="https://youtu.be/Y18HsBkeLuk">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/Ds9LeYDXFV8">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">SQL: Covering indexes and only fetching what we need</h4>
+      Optimisations available when we only fetch what we need from the Database
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Persistence Context</h4>
-  Overview of the persistence context
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/NM5YjgBiG_Q">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">AutoTune</h4>
-  Automatic query tuning using profiling
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/VhMq270FmVg">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Query bean generation</h4>
-  Generate query beans using java annotation processor
-  </div>
-</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/-AWdW6LxKaA">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Lazy loading beyond the context</h4>
-  Ebean and EclipseLink do it, Hibernate throws LazyInitialisationException
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/Kp528zWlbqU">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Using query beans</h4>
-  Using query beans and how they work
-  </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/smAB0X0X_i4">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">Generate Finders</h4>
-  Using the codegen maven plugin to generate Finders
-  </div>
-</div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
-    <div class="media-left">
-    <a href="https://youtu.be/knUtH3I0WPM">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
-    </div>
-  </div>
-  <div class="media-body">
-    <h4 class="media-heading">FindCount & PagedList</h4>
-  How Ebean's findCount query works and how to use PagedList
-  </div>
-</div>
   </div>
 </div>
 
-
-
-  <hr/>
-  <h2>Persisting</h2>
-<div class="row">
-  <div class="col-md-4">
+<h2>Enhancement</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/q-SB_X_X-GU">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Maven enhancement</h4>
+      Enhancement of entity and query beans using the maven enhancement tile
+    </div>
+  </div>
+  </div>
+  <div>
   <div class="media ">
-  <div class="media-left">
     <div class="media-left">
-    <a href="https://youtu.be/RPOaJw8xiJo">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/o4kmglM48Vc">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">IntelliJ plugin</h4>
+      Enhancement using the IntelliJ IDEA plugin
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Persist Cascade</h4>
-  Save cascade statement ordering, reference beans and @OneToMany back references
   </div>
-</div>
-  </div>
-</div>
-
-
-
-
-  <hr/>
-  <h2>ElasticSearch</h2>
-<div class="row">
-  <div class="col-md-4">
-    <div class="media ">
-  <div class="media-left">
+  <div>
+  <div class="media ">
     <div class="media-left">
-    <a href="https://youtu.be/6CrFQxc52A8">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/_DWxNj-_orA">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Eclipse plugin</h4>
+      Enhancement using the Eclipse plugin
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Mapping introduction</h4>
-  Introduction to mapping with @DocCode, @DocSortable & @DocEmbedded
   </div>
-</div>
-  </div>
-</div>
 
-  <hr/>
-  <h2>@History / SQL2011</h2>
-<div class="row">
-  <div class="col-md-4">
-    <div class="media ">
-  <div class="media-left">
+  <div>
+  <div class="media ">
     <div class="media-left">
-    <a href="https://youtu.be/WxBDGQJelb0">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/20dvi_oqVus">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Eclipse APT</h4>
+      Eclipse setup for Query bean generation (via Java annotation processor).
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Introduction</h4>
-  Walk through the @History / SQL2011 support with Oracle and Postgres
   </div>
-</div>
-  </div>
-  <div class="col-md-4">
-<div class="media ">
-  <div class="media-left">
+  <div>
+  <div class="media ">
     <div class="media-left">
-    <a href="https://youtu.be/YOuElXoidxk">
-      <img src="/images/movies-64.png" width="64" height="64" >
-    </a>
+      <div class="media-left">
+          <a href="https://youtu.be/49vKdpbUl-0">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">IntelliJ debugger</h4>
+      Looks at Idea debugger setting that invokes lazy loading
     </div>
   </div>
-  <div class="media-body">
-    <h4 class="media-heading">Comparison to Hibernate Envers</h4>
-  Comparison with the approach taken by Hibernate Envers
-  </div>
-</div>
   </div>
 </div>
 
+<h2>DB Migration</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/n7VXOFwM2og">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">DB Migration introduction</h4>
+      Introduction to DB migration
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/cxiacf0wmNk">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Repeatable migrations</h4>
+      Use of @View, extra-ddl.xml and repeatable migrations
+    </div>
+  </div>
+  </div>
 </div>
 
+<h2>Testing</h2>
+<h4>ebean-mocker</h4>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/R6PBA_ONFIM">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Save capture</h4>
+      Capture save events and assert the beans that were saved and method calls that were invoked.
+    </div>
+  </div>
+  </div>
+
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/XfJTg8davuI">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Find by Id</h4>
+      Provide stub responses to find by id
+    </div>
+  </div>
+  </div>
+
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/18hz_LRjXHA">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">SQL Capture</h4>
+      Use LoggedSql to capture SQL statements
+    </div>
+  </div>
+  </div>
+</div>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/1fjtz_hMw38">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Static Finder</h4>
+      Provide a test double when using Finders on static fields
+    </div>
+  </div>
+  </div>
+</div>
+
+<h2>Query</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/Y18HsBkeLuk">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Persistence Context</h4>
+      Overview of the persistence context
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/NM5YjgBiG_Q">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">AutoTune</h4>
+      Automatic query tuning using profiling
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/VhMq270FmVg">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Query bean generation</h4>
+      Generate query beans using java annotation processor
+    </div>
+  </div>
+  </div>
+
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/-AWdW6LxKaA">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Lazy loading beyond the context</h4>
+      Ebean and EclipseLink do it, Hibernate throws LazyInitialisationException
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/Kp528zWlbqU">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Using query beans</h4>
+      Using query beans and how they work
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/smAB0X0X_i4">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Generate Finders</h4>
+      Using the codegen maven plugin to generate Finders
+    </div>
+  </div>
+  </div>
+
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/knUtH3I0WPM">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">FindCount & PagedList</h4>
+      How Ebean's findCount query works and how to use PagedList
+    </div>
+  </div>
   </div>
 </div>
 
 
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
+
+<h2>Persisting</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/RPOaJw8xiJo">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Persist Cascade</h4>
+      Save cascade statement ordering, reference beans and @OneToMany back references
+    </div>
   </div>
-</footer>
+  </div>
+</div>
 
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
 
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
+<h2>ElasticSearch</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/6CrFQxc52A8">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Mapping introduction</h4>
+      Introduction to mapping with @DocCode, @DocSortable & @DocEmbedded
+    </div>
+  </div>
+  </div>
+</div>
 
-  </script>
+<h2>@History / SQL2011</h2>
+<div class="grid g3">
+  <div>
+      <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/WxBDGQJelb0">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Introduction</h4>
+      Walk through the @History / SQL2011 support with Oracle and Postgres
+    </div>
+  </div>
+  </div>
+  <div>
+  <div class="media ">
+    <div class="media-left">
+      <div class="media-left">
+          <a href="https://youtu.be/YOuElXoidxk">
+            <img src="/images/movies-64.png" width="64" height="64" >
+          </a>
+      </div>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading">Comparison to Hibernate Envers</h4>
+      Comparison with the approach taken by Hibernate Envers
+    </div>
+  </div>
+  </div>
+</div>
 
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
 </body>
 </html>

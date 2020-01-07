@@ -1,99 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <title>Logging | Intro | Ebean</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-<div id="wrap">
-  <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
-        <div class="mobile-nav">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <div class="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">introduction</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">database & db</span>
+      </div>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs/intro">Introduction</a>
+  <ul>
+  <li class="nav1 ">
+    <a  href="/docs/intro/first-entity">First entity</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/queries">Queries</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/intro/api">Database & DB</a>
+      <ul class="nav nav-scroll">
+  <li >
+    <a  href="#database">Database</a>
+  </li>
+  <li >
+    <a  href="#db">DB</a>
+  </li>
+  <li >
+    <a  href="#config">DatabaseConfig</a>
+  </li>
+  <li >
+    <a  href="#factory">DatabaseFactory</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/limitations">Limitations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/trouble-shooting">Trouble shooting</a>
+  </li>
+  </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/11">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
   </div>
-  <div id="main">
+</form>
     
-<div class="jumbotron mini">
-  <div class="container">
-    <h1><a href="/docs/">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">API - DB & Database</span></h1>
-  </div>
-</div>
-
-<div class="container doc-index bs-docs-container">
-
-  <div class="row">
-
-    <div class="col-md-9" role="main">
-
-      <form action="https://www.google.com/search" method="get">
-        <div class="page-inline-search" style="margin-bottom:8px;">
-          <div class="input-group">
-            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-            <input type="hidden" name="as_sitesearch" value="ebean.io">
-            <div class="input-group-btn">
-              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-          </div>
-          <div class="search-results-inline-container" style="display: none;">
-            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
-          </div>
-        </div>
-      </form>
-
-      
-
-
-<h2>API - DB and Database</h2>
-
 <h2 id="database">Database</h2>
 <p>
-  The <a target="_blank" href="/apidoc/11/io/ebean/Database.html">Database API</a> provides almost all of the functionality including
-  <code>queries</code>, <code>saving</code>, <code>deleting</code> and <code>transactions</code>.
+  The <a target="_blank" href="/apidoc/11/io/ebean/Database.html">Database API</a> provides almost
+  all of the functionality including <code>queries</code>, <code>saving</code>,
+  <code>deleting</code> and <code>transactions</code>.
 </p>
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
@@ -118,7 +141,11 @@
 </pre></div>
 </div>
 </div>
-  
+<p>
+  When using Model, "Query beans" and <code>@Transactional</code> these under the hood are using
+  the <code>Database</code> API.
+</p>
+
 <h4>javax.sql.DataSource</h4>
 <p>
   A Database instance has an JDBC DataSource associating it one to one to an actual database.
@@ -228,7 +255,7 @@
 </pre></div>
 </div>
 </div>
-  
+
 <p>
   Refer to <a href="databasefactory">DatabaseFactory</a> for more details.
 </p>
@@ -315,83 +342,54 @@
   to use io.ebean.DB.
 </p>
 
-
-<div class="next pull-right">
-  <a href="/docs/intro" class="btn btn-info">Next: Introduction</a>
-</div>
-<p class="edit-page">
-  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/api/index.html"><i class="fab fa-github"></i> Edit Page</a>
+<h2 id="config">DatabaseConfig</h2>
+<p>
+  <code>io.ebean.DatabaseConfig</code> has the configuration used to create a Database instance.
 </p>
 
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
 
+<span class="c1">// set configuration options</span>
+<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
+<span class="o">...</span>
+<span class="c1">// and/or load configuration properties file</span>
+<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
 
-    </div>
-
-    <div class="col-md-3" role="complementary">
-      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
-        <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/intro/first-entity">First entity</a>
-</li>
-<li >
-  <a href="/docs/intro/query-abstractions">Query abstractions</a>
-</li>
-<li class="active">
-  <a href="/docs/intro/api">Database & DB API</a>
-</li>
-<li >
-  <a href="/docs/intro/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/intro/db-migrations">DB Migrations</a>
-</li>
-<li >
-  <a href="/docs/intro/limitations">Limitations</a>
-</li>
-
-        </ul>
-      </nav>
-    </div>
-  </div>
-
+<span class="c1">// create the Database instance</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+</pre></div>
 </div>
 
+<h2 id="factory">DatabaseFactory</h2>
+<p>
+  <code>io.ebean.DatabaseFactory</code> has the static factory method that
+  takes a DatabaseConfig creating a Database instance.
+</p>
 
-  </div>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// set configuration options</span>
+<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
+
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+</pre></div>
 </div>
 
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/api/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/intro/logging" class="btn btn-info">Next: Logging</a>
+    </p>
+  </nav>
 
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
-  </div>
-</footer>
 
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
+  </article>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
 </body>
 </html>

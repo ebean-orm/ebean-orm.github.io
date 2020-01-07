@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <div class="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/getting-started/">getting started</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">ebeaninit (CLI Tool)</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/getting-started/">getting started</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">cli tool - ebeaninit</span>
       </div>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -33,9 +33,12 @@
   <ul>
       <li class="nav0 active">
     <a class="active" href="/docs/getting-started">Getting started</a>
-      <ul>
+  <ul>
   <li class="nav1 ">
-    <a  href="/docs/getting-started/#ide">IDE Plugin</a>
+    <a  href="/docs/getting-started/intellij-idea">IntelliJ</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/getting-started/eclipse-ide">Eclipse</a>
   </li>
   <li class="nav1 active">
     <a class="active" href="/docs/getting-started/cli-tool">CLI Tool</a>
@@ -49,7 +52,7 @@
   <li class="nav1 ">
     <a  href="/docs/getting-started/ebean-test">Test setup</a>
   </li>
-      </ul>
+  </ul>
   </li>
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
@@ -57,6 +60,22 @@
   <li class="nav0 ">
     <a  href="/docs">Documentation</a>
   </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/11">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
   </ul>
 </nav>
   </aside>
@@ -76,13 +95,14 @@
   </div>
 </form>
     
-<h2>ebeaninit (CLI Tool)</h2>
+<h2>CLI Tool - ebeaninit</h2>
 <p>
   Ebean has a CLI tool that we use to: setup a project with configuration
 </p>
 <ul>
   <li>Setup configuration files</li>
   <li>Setup dependencies and plugins for Maven and Gradle</li>
+  <li>Add code to generate DB migrations</li>
   <li>Generate Finders for entities</li>
 </ul>
 
@@ -163,18 +183,18 @@ Try running CustomerTest ...
 Bye
 </pre></div>
 </div>
-<p class="pull-right">
-  <b>Next:</b>
-  <a class="btn btn-info" href="maven">Maven</a>
-  <a class="btn btn-info" href="gradle">Gradle</a>
-</p>
+
+<nav class="next">
+  <p class="next">
+    <b>Next:</b>
+    <a class="btn btn-info" href="maven">Maven</a>
+    <a class="btn btn-info" href="gradle">Gradle</a>
+  </p>
+</nav>
 
 
   </article>
 </div>
-<footer id="footer">
-  <div><p>In the footer</p></div>
-</footer>
 
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

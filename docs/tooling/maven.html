@@ -169,10 +169,10 @@
 </p>
 
 
-<h2>Add maven tile</h2>
+<h2 id="tile">Add maven tile</h2>
 <p>
   Add the maven tile into the <code>build / plugins</code> section to perform build time enhancement
-  of the entity beans, @Transactional methods and query beans.
+  of the entity beans, <code>@Transactional</code> methods and query beans.
 </p>
 
 <!-- hardcoded-version enhancement -->
@@ -208,43 +208,6 @@
 <p>
   Add the dependency for the JDBC Driver(s) you want to use.
 </p>
-
-<ul class="nav nav-tabs mytabs">
-  <li role="presentation" class="active"><a href="#h2">H2</a></li>
-  <li role="presentation"><a href="#postgres">Postgres</a></li>
-  <li role="presentation"><a href="#mysql">MySql</a></li>
-  <li role="presentation"><a href="#sqlserver">SQL Server</a></li>
-  <li role="presentation"><a href="#oracle">Oracle</a></li>
-</ul>
-
-<div class="tab-content">
-  <div role="tabpanel" class="tab-pane active" id="h2">
-    <div class="syntax text"><div class="highlight"><pre><span></span>com.h2database : h2 : 1.4.191
-</pre></div>
-</div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="postgres">
-    <div class="syntax text"><div class="highlight"><pre><span></span>org.postgresql : postgresql : 42.2.2
-</pre></div>
-</div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="mysql">
-    <div class="syntax text"><div class="highlight"><pre><span></span>mysql : mysql-connector-java : 8.0.11
-</pre></div>
-</div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="sqlserver">
-    <div class="syntax text"><div class="highlight"><pre><span></span>com.microsoft.sqlserver : mssql-jdbc : 6.4.0.jre8
-</pre></div>
-</div>
-  </div>
-  <div role="tabpanel" class="tab-pane" id="oracle">
-    <div class="syntax text"><div class="highlight"><pre><span></span>com.oracle.jdbc : ojdbc8 : 12.2.0.1
-</pre></div>
-</div>
-  </div>
-</div>
-
 
 <h3>Kotlin KAPT</h3>
 <p>
