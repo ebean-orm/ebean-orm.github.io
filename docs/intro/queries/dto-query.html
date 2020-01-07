@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>DTO Query | Intro | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/queries">Queries</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">DTO query</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs/intro">Introduction</a>
+  <ul>
+  <li class="nav1 ">
+    <a  href="/docs/intro/first-entity">First entity</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/intro/queries">Queries</a>
+      <ul>
+  <li >
+    <a  href="/docs/intro/queries/orm-query">ORM query</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/intro/queries/dto-query">DTO query</a>
+  </li>
+  <li >
+    <a  href="/docs/intro/queries/sql-query">SQL query</a>
+  </li>
+  <li >
+    <a  href="/docs/intro/queries/jdbc-query">JDBC query</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/api">Database & DB</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/limitations">Limitations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/trouble-shooting">Trouble shooting</a>
+  </li>
+  </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/11">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+<h2>DTO Query</h2>
+<p>
+  We can specify the query as SQL and have that automatically mapped into DTO beans.
+</p>
+<p>
+  In typical recent applications around <code>10%</code> of queries were DTO queries.
+</p>
+
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerDto</span> <span class="o">{</span>
+
+  <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="o">...</span> <span class="c1">// getters &amp; setters</span>
+<span class="o">}</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
+  <span class="n">DB</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomerDto</span> <span class="p">{</span>
+
+  <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Int</span> <span class="p">=</span> <span class="m">0</span>
+  <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="p">}</span>
+
+<span class="k">val</span> <span class="py">beans</span> <span class="p">=</span>
+  <span class="n">DB</span><span class="p">.</span><span class="n">findDto</span><span class="p">(</span><span class="n">CustomerDto</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="s">&quot;select id, name from customer where name = ?&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">setParameter</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;Rob&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+
+  
+</pre></div>
+</div>
+</div>
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/queries/dto-query.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="sql-query" class="btn btn-info">Next: SQL Query</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>

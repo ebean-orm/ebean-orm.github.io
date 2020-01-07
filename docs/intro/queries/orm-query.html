@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>ORM query | Intro | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/queries">Queries</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">ORM query</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs/intro">Introduction</a>
+  <ul>
+  <li class="nav1 ">
+    <a  href="/docs/intro/first-entity">First entity</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/intro/queries">Queries</a>
+      <ul>
+  <li class="active">
+    <a class="active" href="/docs/intro/queries/orm-query">ORM query</a>
+  </li>
+  <li >
+    <a  href="/docs/intro/queries/dto-query">DTO query</a>
+  </li>
+  <li >
+    <a  href="/docs/intro/queries/sql-query">SQL query</a>
+  </li>
+  <li >
+    <a  href="/docs/intro/queries/jdbc-query">JDBC query</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/api">Database & DB</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/limitations">Limitations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/trouble-shooting">Trouble shooting</a>
+  </li>
+  </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/11">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+<h2>ORM Query</h2>
+<p>
+  There are several forms of ORM query. For detailed information on queries goto <a href="/docs/query">docs / query</a>
+</p>
+<h3 id="pure">"Pure" ORM Query</h3>
+<p>
+  Below are examples of pure ORM queries. We specify no SQL functions explicitly and all the SQL is generated.
+</p>
+<p>
+  In typical recent applications around <code>85%</code> of queries were "pure" ORM queries.
+</p>
+
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Customer</span> <span class="n">rob</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">rob</span> <span class="p">=</span>
+  <span class="n">QCustomer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n field">name</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="s">&quot;Rob&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findOne</span><span class="p">()</span>
+
+<span class="k">val</span> <span class="py">customers</span> <span class="p">=</span>
+  <span class="n">QCustomer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n field">status</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">Status</span><span class="p">.</span><span class="n">NEW</span><span class="p">)</span>
+    <span class="p">.</span><span class="n field">billingAddress</span><span class="p">.</span><span class="n field">city</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="s">&quot;Auckland&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+<h3 id="sql-select">ORM Query with SQL in Select</h3>
+<p>
+  We can use SQL in the select clause. Some examples of this type of query are:
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using sql functions in the select clause</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;concat(lastName,&#39;, &#39;,firstName)&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+
+<span class="n">BigDecimal</span> <span class="n">routeDistance</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QTrip</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;ST_Distance(ST_StartPoint(route), ST_EndPoint(route))::BigDecimal&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">tripId</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttribute</span><span class="o">();</span>
+
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// using sql functions in the select clause</span>
+
+<span class="k">var</span> <span class="py">names</span><span class="p">:</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">String</span><span class="p">&gt;</span> <span class="p">=</span>
+  <span class="n">QContact</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">&quot;concat(lastName,&#39; &#39;,firstName)&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n field">lastName</span><span class="p">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findSingleAttributeList</span><span class="p">()</span>
+
+<span class="k">val</span> <span class="py">routeDistance</span><span class="p">:</span> <span class="n">BigDecimal</span> <span class="p">=</span>
+  <span class="n">QTrip</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">&quot;ST_Distance(ST_StartPoint(route), ST_EndPoint(route))::BigDecimal&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n field">id</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">tripId</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findSingleAttribute</span><span class="p">()</span>
+
+  
+</pre></div>
+</div>
+</div>
+
+<h3 id="sql-where">ORM Query with SQL in Where</h3>
+<p>
+  We can also use SQL in the where clause. Frequently this is for specifying sql sub-queries.
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// sql functions used in predicates</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="s">&quot;add_days(orderDate, 10) &lt; ?&quot;</span><span class="o">,</span> <span class="n">someDate</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+<span class="c1">// SQL sub-query - often easiest to specify the subquery in sql form</span>
+<span class="n">String</span> <span class="n">subQuery</span>
+    <span class="o">=</span> <span class="s">&quot;t0.customer_id in &quot;</span> <span class="o">+</span>
+      <span class="s">&quot;(select customer_id from customer_group where group_id = any(?::uuid[]))&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">raw</span><span class="o">(</span><span class="n">subQuery</span><span class="o">,</span> <span class="n">groupIds</span><span class="o">)</span>   <span class="c1">// use raw SQL in where clause</span>
+   <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// sql functions used in predicates</span>
+<span class="k">var</span> <span class="py">orders</span> <span class="p">=</span>
+  <span class="n">QOrder</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">raw</span><span class="p">(</span><span class="s">&quot;add_days(orderDate, 10) &lt; ?&quot;</span><span class="p">,</span> <span class="n">someDate</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+
+<span class="c1">// SQL sub-query - often easiest to specify the subquery in sql form</span>
+<span class="k">val</span> <span class="py">subQuery</span> <span class="p">=</span>
+    <span class="s">&quot;t0.customer_id in &quot;</span> <span class="p">+</span>
+    <span class="s">&quot;(select customer_id from customer_group where group_id = any(?::uuid[]))&quot;</span>
+
+<span class="k">var</span> <span class="py">orders</span> <span class="p">=</span>
+  <span class="n">QOrder</span><span class="p">()</span>
+   <span class="p">.</span><span class="n field">status</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">Status</span><span class="p">.</span><span class="n">NEW</span><span class="p">)</span>
+   <span class="p">.</span><span class="n">raw</span><span class="p">(</span><span class="n">subQuery</span><span class="p">,</span> <span class="n">groupIds</span><span class="p">)</span>   <span class="c1">// use raw SQL in where clause</span>
+   <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+
+  
+</pre></div>
+</div>
+</div>
+<p>
+  In typical recent applications around <code>5%</code> of queries were ORM queries with some SQL (mostly subqueries).
+</p>
+
+<h3 id="dto">ORM to DTO Query</h3>
+<p>
+  We can define an ORM query and then use <code>asDto</code> to turn it into a DTO query.
+  We are using the ORM to generate the SQL but then want that mapped directly into a DTO bean.
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// ContactDto is a plain bean with email and fullName properties</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">ContactDto</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;email, concat(lastName, &#39;, &#39;, firstName) as fullName&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
+      <span class="o">.</span><span class="na field">lastName</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">asDto</span><span class="o">(</span><span class="n">ContactDto</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// ContactDto is a plain bean with email and fullName properties</span>
+
+<span class="k">val</span> <span class="py">contacts</span> <span class="p">=</span>
+  <span class="n">new</span> <span class="n">QContact</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">&quot;email, concat(lastName, &#39;, &#39;, firstName) as fullName&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n field">lastName</span><span class="p">.</span><span class="n">startsWith</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">orderBy</span><span class="p">()</span>
+      <span class="p">.</span><span class="n field">lastName</span><span class="p">.</span><span class="n">asc</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">setMaxRows</span><span class="p">(</span><span class="m">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">asDto</span><span class="p">(</span><span class="n">ContactDto</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findList</span><span class="p">()</span>
+
+  
+</pre></div>
+</div>
+</div>
+
+<h3 id="native">SQL - aka find native</h3>
+<p>
+  We can also specify the query in SQL and have that automatically mapped to
+  entity beans (like this) or <a href="dto-query">DTO beans</a>.
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">;</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="p">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="p">;</span>
+
+<span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">findNative</span><span class="p">(</span><span class="n">Customer</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="n">sql</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">setParameter</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;Jo%&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">findOne</span><span class="p">()</span>
+
+  
+</pre></div>
+</div>
+</div>
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/queries/orm-query.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="dto-query" class="btn btn-info">Next: DTO Query</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>
