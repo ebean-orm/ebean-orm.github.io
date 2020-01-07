@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>findNative | Query | Ebean</title>
+  <title>Native SQL / findNative | Query | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <div class="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">findNative</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">docs</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">native sql</span>
       </div>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -43,65 +43,61 @@
   <li class="nav1 active">
     <a class="active" href="/docs/query">Query</a>
 <ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
+  <li >
+    <a  href="/docs/query/query-beans">Query beans</a>
   </li>
   <li >
-    <a  href="/docs/query/findOne">findOne</a>
+    <a  href="/docs/query/where">Where</a>
   </li>
   <li >
-    <a  href="/docs/query/findList">findList</a>
+    <a  href="/docs/query/expressions">Expressions</a>
   </li>
   <li >
-    <a  href="/docs/query/findCount">findCount</a>
+    <a  href="/docs/query/orderBy">OrderBy</a>
+  </li>
+  <li >
+    <a  href="/docs/query/select">Select</a>
+  </li>
+  <li >
+    <a  href="/docs/query/fetch">Fetch</a>
+  </li>
+  <li >
+    <a  href="/docs/query/fetchgroup">FetchGroup</a>
+  </li>
+  <li >
+    <a  href="/docs/query/filterMany">FilterMany</a>
+  </li>
+
+  <li >
+    <a  href="/docs/query/aggregation">Aggregation</a>
+  </li>
+  <li >
+    <a  href="/docs/query/having">Having</a>
   </li>
   <li class="active">
-    <a class="active" href="/docs/query/findNative">findNative</a>
+    <a class="active" href="/docs/query/native-sql">Native Sql</a>
   </li>
   <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEachWhile">findEachWhile</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
+    <a  href="/docs/query/rawSql">RawSql</a>
   </li>
 
   <li >
-    <a  href="/docs/query/findIds">findIds</a>
+    <a  href="/docs/query/update">Update query</a>
   </li>
   <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+    <a  href="/docs/query/delete">Delete query</a>
   </li>
   <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findFutureCount">findFutureCount</a>
+    <a  href="/docs/query/dtoquery">DtoQuery</a>
   </li>
   <li >
-    <a  href="/docs/query/findFutureList">findFutureList</a>
+    <a  href="/docs/query/sqlquery">SqlQuery</a>
   </li>
   <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
+    <a  href="/docs/query/sqlupdate">SqlUpdate</a>
   </li>
   <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
+    <a  href="/docs/query/callablesql">CallableSql</a>
   </li>
 </ul>
   </li>
@@ -140,7 +136,10 @@
   </div>
 </form>
     
-<h2>findNative</h2>
+<h2>Native SQL</h2>
+<p>
+  Native SQL is the same as <code>findNative</code>.
+</p>
 <p>
   With <code>findNative</code> we supply the SQL.  The SQL can contain positioned parameters with <code>?</code>
   or named parameters like <code>:foo</code>
@@ -248,6 +247,14 @@
   use <a href="/docs/query/rawSql">RawSql</a> with more explicit mapping of columns to properties.
 </p>
 
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/query/findNative"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/query/rawSql" class="btn btn-info">Next: RawSql</a>
+    </p>
+  </nav>
 
   </article>
 </div>

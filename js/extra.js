@@ -38,7 +38,6 @@ $(document).ready(function() {
 
         break;
       case 40: // DOWN
-        console.log('DOWN');
         e.preventDefault();
         for (let n = 0; n < 10; n++) { // Skip up to 10 links
           active.removeClass('active');
