@@ -62,7 +62,7 @@
   <li class="nav1 active">
     <a class="active" href="/docs/testing">Testing</a>
 <ul class="nav nav-scroll">
-  <li><a href="#third-age">Third age</a></li>
+  <li><a href="#third-age">Third age of testing</a></li>
   <li><a href="#ebean-test">ebean-test dependency</a></li>
   <li><a href="#ddlmode">DDL Mode</a></li>
   <li><a href="#docker">Docker test containers</a></li>
@@ -173,7 +173,8 @@
 </ul>
 <p>
   <code>ebean-test</code> is provided to make testing against docker test containers
-  as simple and good as using H2.
+  as simple and good as using H2. Developers new to a project can just <code>git clone</code>
+  and <code>mvn clean test</code> and it "just works" without any setup steps.
 </p>
 <p>
   For Postgres, MySql, SQL Server we can very successfully use docker test containers today.
@@ -181,12 +182,15 @@
   there can be some argument for staying with H2 for testing depending on the situation.
 </p>
 <p>
-  Rob Note: Personally I have had great results using ebean-test / docker test containers
+  Personally I have had great results using ebean-test / docker test containers
   over the last few years (largely Postgres). I highly recommend people look at this
   approach aiming for great test coverage, simpler test code and reduced variation between
   developer, CI and Production.
 </p>
-
+<p>
+  ebean-test also supports using <a href="#elasticsearch">ElasticSearch</a> and
+  <a href="#redis">Redis</a> containers.
+</p>
 
 <h2 id="ebean-test">ebean-test dependency</h2>
 
@@ -338,20 +342,30 @@ touch ~/.ebean/ignore-docker-shutdown
 
 <h2 id="container-startup">Container startup</h2>
 <p>
-  To startup the docker containers we hook into the Ebean lifecycle. This means that it will "just work" whether
-  the tests are run from the IDE, maven, gradle or any build tool. In prior iterations the startup of docker
-  containers was hooked specifically into the maven lifecycle but this proved to be less than ideal.
+  To startup the docker containers <code>ebean-test</code> hooks into the Ebean lifecycle.
+  This means that it will "just work" whether the tests are run from the IDE, maven, gradle or any build tool.
+  In prior iterations the startup of docker containers was hooked specifically into the maven lifecycle
+  but this proved to be less than ideal. This approach also avoids the need to modify test code.
 </p>
 <p>
-  In general this docker test container integration provides a similar experience to the one we have when using
-  H2 database. That is, we bring up the database (if needed), setup the database user, roles etc (if needed)
-  and get the database ready for testing by running DDL (typically drop and recreate tables etc)
+  This docker test container integration provides a similar developer experience to using H2 database.
+  That is, ebean-test brings up the database (if needed), sets up the database user, roles, schema etc
+  (if needed) and gets the database ready for testing by running DDL (typically drop and recreate tables etc)
   ... and then run all tests.
+</p>
+<p>
+  Developers new to a project can just <code>git clone</code> and <code>mvn clean test</code>
+  and it "just works" without any setup steps (as long as the developer machine has docker installed).
 </p>
 
 <h2 id="container-shutdown">Container shutdown</h2>
 <p>
-  On developer machines we generally keep the docker container running. We can do this by having a marker file
+  On developer machines we generally want to keep the docker container running such that running tests
+  is fast. For a developer running a single test via the IDE - most often this will just drop and
+  recreate tables as the container is already running closely matching the speed of using in-memory H2.
+</p>
+<p>
+  To keep docker containers running on developer machines we put a marker file at
   <code>~/.ebean/ignore-docker-shutdown</code>.
 </p>
 <p>
@@ -506,6 +520,54 @@ touch ~/.ebean/ignore-docker-shutdown
   Notice that, the path to the script should start with "/". Ebean will load the script as a
   resource using <code>this.getClass().getResource(PATH_TO_RESOURCE)</code> so the resource should be
   available in the class path.
+</p>
+
+<h2 id="elasticsearch">ElasticSearch</h2>
+<p>
+  With Ebean we can use ElasticSearch by itself without another database (Postgres etc) or we
+  can use ElasticSearch in conjunction with another [source of truth] database (Postgres etc).
+</p>
+<p>
+  To automatically start ElasticSearch as a docker container set <code>ebean.docstore</code>
+  properties like those below in application-test.yaml:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
+
+  <span class="nt">docstore</span><span class="p">:</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:9201</span>
+    <span class="nt">active</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">generateMapping</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">dropCreate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+    <span class="nt">elastic</span><span class="p">:</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.6.0</span>
+      <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
+</pre></div>
+</div>
+<p>
+  Goto <a href="/docs/database/elasticsearch">database / elasticsearch</a> for more details.
+</p>
+
+<h2 id="redis">Redis</h2>
+<p>
+  When we want to use Redis for L2 caching we can get <code>ebean-test</code> to automatically
+  start a redis docker test container. To do this add <code>ebean.test.redis=latest</code>
+  property like the example below:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">redis</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">latest</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+<p>
+  Goto <a href="/docs/database/redis">database / redis</a> for more details.
 </p>
 
   <nav class="next">

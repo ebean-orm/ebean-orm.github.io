@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>MySql | Ebean ORM</title>
+  <title>Redis - L2 cache | Ebean ORM</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">MySql</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Redis - L2 cache</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -71,8 +71,8 @@
   <li >
     <a  href="/docs/database/h2">H2</a>
   </li>
-  <li class="active">
-    <a class="active" href="/docs/database/mysql">MySql</a>
+  <li >
+    <a  href="/docs/database/mysql">MySql</a>
   </li>
   <li >
     <a  href="/docs/database/mariadb">MariaDB</a>
@@ -104,8 +104,8 @@
   <li >
     <a  href="/docs/database/elasticsearch">ElasticSearch</a>
   </li>
-  <li >
-    <a  href="/docs/database/redis">Redis</a>
+  <li class="active">
+    <a class="active" href="/docs/database/redis">Redis</a>
   </li>
 </ul>
   </li>
@@ -148,92 +148,87 @@
   </div>
 </form>
     
-<h2>MySql</h2>
-
-<h3>Testing</h3>
+<h2>Redis - L2 cache</h2>
 <p>
-  To test against MySQL docker test container set the <em>platform</em> to <code>mysql</code> in
-  <code>src/test/resources/application-test.yaml</code>
-</p>
-<p>
-  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
-</p>
-
-<h3>Collation</h3>
-<p>
-  With MySql can (and probably should) specify the collation and character set we want the
-  database to use. In the example below we specify the collation as <code>utf8mb4_unicode_ci</code>.
+  To use Redis for L2 caching set the <code>ebean.test.redis</code> property
+  to <code>latest</code> in application-test.yaml like the example below.
+  This will automatically start a redis docker container for use with L2 caching.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="nt">redis</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">latest</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver, sqlite</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4_unicode_ci</span>
-      <span class="nt">characterSet</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
 </pre></div>
 </div>
 
+<h2>ebean-redis dependency</h2>
 <p>
-  The above will use the following defaults:
+  Add <code>ebean-redis</code> as a dependency. ebean-redis will
+  automatically register itself with ebean as the L2 cache service.
 </p>
-<table class="compact w100">
-  <tr><th>username:</th><td>{databaseName}</td></tr>
-  <tr><th>password:</th><td>test</td></tr>
-  <tr><th>port:</th><td>4306</td></tr>
-  <tr><th>url:</th><td>jdbc:mysql://localhost:{port}/{databaseName}</td></tr>
-  <tr><th>driver:</th><td>com.mysql.jdbc.Driver</td></tr>
-  <tr><th>image:</th><td>mysql:{version}</td></tr>
-</table>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-redis<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>12.1.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h3>"default" - Collation</h3>
+
+<h2>configuration</h2>
 <p>
-  We can specify the collation to be <code>default</code> and with that the collection will be left up
-  to the default that MySql would use.
+  To configure the redis server to use in <code>main/resources/application.yaml</code>
+  we configure the following properties:
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8.0</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
-</pre></div>
-</div>
-<p>
-  In the logs with logging DEBUG level for <code>io.ebean.docker</code> we can see:
-  <code>--character-set-server</code> and <code>--collation-server</code>
-</p>
-<div class="syntax text"><div class="highlight"><pre><span></span>... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
-... DEBUG io.ebean.docker.commands.Commands - docker run -d --name ut_mysql -p 4306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6
+  <span class="nt">redis</span><span class="p">:</span>
+    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-server</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">99</span>
+    <span class="nt">minIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="nt">maxIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+    <span class="nt">maxTotal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+    <span class="nt">maxWaitMillis</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">300</span>
 </pre></div>
 </div>
 
-
-<h2 id="types">Types</h2>
-<h5>UUID</h5>
+<h2>@Cache</h2>
 <p>
-  UUID is not a native MySQL type and can be mapped to either BINARY(16) or VARCHAR(36).
+  Entity beans annotated with <code>@Cache</code> will now use redis for
+  caching.
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">enableQueryCache</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">nearCache</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">naturalKey</span> <span class="o">=</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">extends</span> <span class="n">EBase</span> <span class="o">{</span>
 
-<h5>JSON</h5>
-<p>
-  We can use <code>@DbJson</code> to map content.
-</p>
+  <span class="kd">public</span> <span class="kd">enum</span> <span class="n">Status</span> <span class="o">{</span>
+    <span class="n">NEW</span><span class="o">,</span>
+    <span class="n">ACTIVE</span><span class="o">,</span>
+    <span class="n">INACTIVE</span>
+  <span class="o">}</span>
 
-<h2 id="history">History support</h2>
-<p>
-  History support for MySQL is provided by generating triggers and history table.
-</p>
+  <span class="nd">@Index</span><span class="o">(</span><span class="nx">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+  <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
+  <span class="n">Status</span> <span class="n">status</span><span class="o">;</span>
+
+  <span class="n">LocalDate</span> <span class="n">localDate</span><span class="o">;</span>
+
+  <span class="n">String</span> <span class="n">notes</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">status</span> <span class="o">=</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/mysql/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/elasticsearch/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
       <a href="/docs/database/postgres" class="btn btn-info">Next: Postgres</a>

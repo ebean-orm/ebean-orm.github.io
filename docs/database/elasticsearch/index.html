@@ -104,6 +104,9 @@
   <li class="active">
     <a class="active" href="/docs/database/elasticsearch">ElasticSearch</a>
   </li>
+  <li >
+    <a  href="/docs/database/redis">Redis</a>
+  </li>
 </ul>
   </li>
         <li><a href="/docs/tuning">Tuning</a></li>
@@ -152,8 +155,6 @@
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
-<span class="c1">#    useDocker: false</span>
-<span class="c1">#    shutdown: stop # stop | remove</span>
     <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
@@ -175,9 +176,23 @@
 <div class="syntax text"><div class="highlight"><pre><span></span>21:57:06.587 INFO  io.ebean.docker.commands.Commands - Start container ut_elastic with port:9201
 </pre></div>
 </div>
+<p>
+  When using ElasticSearch by itself and not with another database leave out the <code>ebean.test.platform</code>
+  section like:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">docstore</span><span class="p">:</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:9201</span>
+    <span class="nt">active</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">generateMapping</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">dropCreate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 
-
-<h3><a id="options">Properties</a></h3>
+    <span class="nt">elastic</span><span class="p">:</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.6.0</span>
+      <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
+</pre></div>
+</div>
+<h3 id="options">Properties</h3>
 
 <table class="w100">
   <tr>
@@ -202,8 +217,7 @@
   </tr>
 </table>
 
-<p>&nbsp;</p>
-<p>
+<p class="mtm">
   For more <a href="/docs/features/elasticsearch">details on the ElasticSearch</a>.
 </p>
 
