@@ -179,32 +179,6 @@
 <span class="o">}</span>
 </pre></div>
 </div>
-<h3>ebean.mf</h3>
-<p>
-  For the <code>@Transactional</code> to work we need to make sure the <code>ebean.mf</code> manifest
-  file specifies the packages that contain the classes annotated with @Transactional such that they are enhanced.
-</p>
-<p>
-  The ebean.mf file is typically located in <code>src/main/resources/ebean.mf</code>.
-</p>
-
-<h3>Example ebean.mf</h3>
-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
-<span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
-<span class="na">querybean-packages</span><span class="o">:</span> <span class="s">none</span>
-</pre></div>
-</div>
-<p>
-  With the example above we are enhancing <code>@Transactional</code> methods for classes in <code>org.example</code>
-  and any sub-packages.
-</p>
-<p>
-  Reference: <a href="/docs/introduction/manifest">docs/introduction/manifest</a>
-</p>
-<p>
-  Note that the <a href="/docs/getting-started/cli-tool">CLI Command line tool</a> can generate the ebean.mf
-  file so look to use that if you like.
-</p>
 
 
 <div class="next pull-right">
