@@ -111,9 +111,9 @@
     
 <h2>Constructors</h2>
 <p>
-  We don't need a default constructor and this means we can give our entity beans a constructor
+  Ebean does not need a default constructor and this means we can give our entity bean a constructor
   that takes arguments. Typically the arguments are properties that should always be supplied
-  when creating a new bean of that type.
+  when creating a new bean of that type (and by implication are typically non-nullable).
 </p>
 
 <ul class="code nav nav-tabs mytabs">
@@ -127,6 +127,7 @@
   <span class="nd">@Id</span>
   <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
 
+  <span class="nd">@NotNull</span> <span class="nd">@Length</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
   <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
 
   <span class="kd">public</span> <span class="nf">Customer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
