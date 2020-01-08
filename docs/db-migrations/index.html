@@ -19,7 +19,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/ddl/">DDL</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">DB migrations</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">DB migrations</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -52,15 +52,28 @@
   </li>
         <li><a href="/docs/mapping">Mapping</a></li>
   <li class="nav1 ">
-    <a  href="/docs/ddl/ddl-create-all">DDL Generation</a>
+    <a  href="/docs/ddl-generation">DDL Generation</a>
   </li>
   <li class="nav1 active">
-    <a class="active" href="/docs/ddl/dbmigration">DB Migration</a>
+    <a class="active" href="/docs/db-migrations">DB Migrations</a>
+          <ul class="nav nav-scroll">
+  <li >
+    <a  href="#generate">Generate a Migration</a>
+  </li>
+  <li >
+    <a  href="#run">Run migrations</a>
+  </li>
+          </ul>
   </li>
   <li class="nav1 ">
     <a  href="/docs/logging">Logging</a>
   </li>
-        <li><a href="/docs/testing">Testing</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
         <li><a href="/docs/tuning">Tuning</a></li>
         <li><a href="/docs/features">Features</a></li>
       </ul>
@@ -101,60 +114,20 @@
 </form>
     
 <h2 id="db-migrations">DB Migrations</h2>
-
-<div class="grid g3">
-  <div>
-  <div class="media ">
-    <div class="media-left">
-      <div class="media-left">
-          <a href="https://youtu.be/n7VXOFwM2og">
-            <img src="/images/movies-64.png" width="64" height="64" >
-          </a>
-      </div>
-    </div>
-    <div class="media-body">
-      <h4 class="media-heading">DB Migration introduction</h4>
-      Introduction to DB migration
-    </div>
-  </div>
-  </div>
-  <div>
-  <div class="media ">
-    <div class="media-left">
-      <div class="media-left">
-          <a href="https://youtu.be/cxiacf0wmNk">
-            <img src="/images/movies-64.png" width="64" height="64" >
-          </a>
-      </div>
-    </div>
-    <div class="media-body">
-      <h4 class="media-heading">Repeatable migrations</h4>
-      Use of @View, extra-ddl.xml and repeatable migrations
-    </div>
-  </div>
-  </div>
-</div>
-
-<h2 id="overview">Overview</h2>
 <p>
-  DB Migration is a feature for generation of DDL from the entity bean model that supports determining the
-  <code>diff</code> from the prior version of the model and generating appropriate DDL changes based on
-  the model difference.
+  DB Migrations are DDL changes that are applied typically when the application is started.
 </p>
 <p>
-  You are expected to run the <code>diff</code> DDL using Ebean's own migration runner. Alternatively the migrations
-  can be run via <code>FlywayDb</code> or <code>LiquiBase</code>.
+  Ebean can generate the migrations for us by performing a <code>diff</code> on the model and
+  then generating database platform specific DDL for the change.
 </p>
 <p>
-  DB migration has 2 output files:
+  Ebean can also run the migrations (similar to FlywayDb).  It is recommended to use Ebean's built
+  in migration runner rather than <code>FlywayDb</code> or <code>LiquiBase</code>.
 </p>
-<ul>
-  <li><b>Migration model XML</b> - This has the logical diff of the model as an <code>apply</code> or <code>pendingDrops</code> change set</li>
-  <li><b>Apply SQL</b> - This is the DDL script of the apply changes</li>
-</ul>
 
 
-<h2 id="generate">How to generate a Migration</h2>
+<h2 id="generate">Generate a Migration</h2>
 <p>
   In <code>src/test/java</code> add code to generate migrations.
 </p>
@@ -181,14 +154,17 @@
 </pre></div>
 </div>
 <p>
-  To generate a migration we run this main method. We run this manually when we have completed some work and consider
-  it ready to be released. Running the generation starts the EbeanServer in offline mode, performs a DIFF of the
-  model and generates the migration script.
+  To generate a migration we run this main method.
+</p>
+<p>
+  We run this manually when we have completed some work and consider it ready to be released.
+  Running the generation starts the EbeanServer in offline mode, performs a DIFF of the
+  model and generates the migration DDL script.
 </p>
 
-<h2 id="run">How to run a Migration</h2>
+<h2 id="run">Running migrations</h2>
 <p>
-  To run the migration using the built in migration runner, set <code>ebean.migration.run</code> to true.
+  To get Ebean to run the DB migrations on startup set <code>ebean.migration.run</code> to true.
 </p>
 <h5>In application.yml</h5>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="c1">## run migrations when the EbeanServer starts</span>
@@ -198,7 +174,7 @@
 </pre></div>
 </div>
 <p>
-  With <code>ebean.migration.run=true</code> then when the EbeanServer starts it will look at the
+  With <code>ebean.migration.run=true</code> then when Ebean starts it will look at the
   migrations and run any that need to be run.  The migration runner will by default create a table
   called <code>db_migration</code> that holds the meta data about the migrations that have been run
   and inserts into this table when migrations are successfully executed.
@@ -206,7 +182,7 @@
 
 <nav class="next">
   <p class="next">
-    <a href="/docs/ddl/dbmigration-detail" class="btn btn-info">Next: DB Migration details</a>
+    <a href="/docs/db-migrations/detail" class="btn">Next: DB Migration details</a>
   </p>
 </nav>
 

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>MySql | Ebean ORM</title>
+  <title>PostGIS | Ebean ORM</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">MySql</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database/postgres">Postgres</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">PostGIS</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -65,11 +65,11 @@
   <li class="nav1 active">
     <a class="active" href="/docs/database">Database platforms</a>
 <ul class="nav nav-scroll">
-    <li >
-    <a  href="/docs/database/postgres">Postgres</a>
+    <li class="active">
+    <a class="active" href="/docs/database/postgres">Postgres</a>
   </li>
-  <li class="active">
-    <a class="active" href="/docs/database/mysql">MySql</a>
+  <li >
+    <a  href="/docs/database/mysql">MySql</a>
   </li>
   <li >
     <a  href="/docs/database/sqlserver">SQL Server</a>
@@ -121,95 +121,58 @@
   </div>
 </form>
     
-<h2>MySql</h2>
-
-<h3>Testing</h3>
+<h2 id="postgis">PostGIS</h2>
 <p>
-  To test against MySQL docker test container set the <em>platform</em> to <code>mysql</code> in
-  <code>src/test/resources/application-test.yaml</code>
+  Below is a test setup using the <code>mdillon/postgis</code> docker container that
+  has PostGIS extension installed.
 </p>
 <p>
-  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
-</p>
-
-<h3>Collation</h3>
-<p>
-  With MySql can (and probably should) specify the collation and character set we want the
-  database to use. In the example below we specify the collation as <code>utf8mb4_unicode_ci</code>.
+  This will automatically download and run the container making live a little easier.
+  Note the use of the Postgis specfic driver and url.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">geometrySRID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>  <span class="c1"># If we don&#39;t want the default geometrySRID of 4326</span>
+
   <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4_unicode_ci</span>
-      <span class="nt">characterSet</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_gisapp</span>
 </pre></div>
 </div>
-
 <p>
-  The above will use the following defaults:
+  The above <code>postgis</code> platform is equivalent to the setup below which uses:
 </p>
-<table class="compact">
-  <tr><th>username:</th><td>{databaseName}</td></tr>
-  <tr><th>password:</th><td>test</td></tr>
-  <tr><th>port:</th><td>4306</td></tr>
-  <tr><th>url:</th><td>jdbc:mysql://localhost:{port}/{databaseName}</td></tr>
-  <tr><th>driver:</th><td>com.mysql.jdbc.Driver</td></tr>
-  <tr><th>image:</th><td>mysql:{version}</td></tr>
-</table>
+<ul>
+  <li>Port <code>7432</code> by default (so as not to clash with local or non-gis postgres)</li>
+  <li>The <code>org.postgis.DriverWrapperLW</code> driver for binary encoded Geometry types</li>
+  <li>URL <code>postgresql_lwgis</code> in the connection url to use the LW driver </li>
+  <li>Uses <code>mdillon/postgis</code> docker image with PostGIS installed</li>
+</ul>
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h3>"default" - Collation</h3>
-<p>
-  We can specify the collation to be <code>default</code> and with that the collection will be left up
-  to the default that MySql would use.
-</p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">geometrySRID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>
+
   <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
+    <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8.0</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_gisapp</span>
+    <span class="nt">postgres</span><span class="p">:</span>
+      <span class="nt">containerName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mdillon/postgis</span>
+      <span class="nt">extensions</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
+      <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql_lwgis://127.0.0.1:7432/my_gisapp</span>
+      <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgis.DriverWrapperLW</span>
 </pre></div>
 </div>
-<p>
-  In the logs with logging DEBUG level for <code>io.ebean.docker</code> we can see:
-  <code>--character-set-server</code> and <code>--collation-server</code>
-</p>
-<div class="syntax text"><div class="highlight"><pre><span></span>... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
-... DEBUG io.ebean.docker.commands.Commands - docker run -d --name ut_mysql -p 4306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6
-</pre></div>
-</div>
-
-
-<h2 id="types">Types</h2>
-<h5>UUID</h5>
-<p>
-  UUID is not a native MySQL type and can be mapped to either BINARY(16) or VARCHAR(36).
-</p>
-
-<h5>JSON</h5>
-<p>
-  We can use <code>@DbJson</code> to map content.
-</p>
-
-<h2 id="history">History support</h2>
-<p>
-  History support for MySQL is provided by generating triggers and history table.
-</p>
-
 
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/mysql/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/postgres/postgis.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
-      <a href="/docs/testing" class="btn btn-info">Next: Testing</a>
+      <a href="/docs/database/mysql" class="btn btn-info">Next: MySql</a>
     </p>
   </nav>
 
