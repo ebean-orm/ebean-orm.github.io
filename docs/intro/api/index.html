@@ -114,9 +114,8 @@
     
 <h2 id="database">Database</h2>
 <p>
-  The <a target="_blank" href="/apidoc/11/io/ebean/Database.html">Database API</a> provides almost
-  all of the functionality including <code>queries</code>, <code>saving</code>,
-  <code>deleting</code> and <code>transactions</code>.
+  <code>io.ebean.Database</code> provides most of the functionality including
+  queries, saving, deleting and transactions.
 </p>
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
@@ -141,10 +140,7 @@
 </pre></div>
 </div>
 </div>
-<p>
-  When using Model, "Query beans" and <code>@Transactional</code> these under the hood are using
-  the <code>Database</code> API.
-</p>
+
 
 <h4>javax.sql.DataSource</h4>
 <p>
@@ -185,8 +181,8 @@
 
 <h4>Model uses default database</h4>
 <p>
-  When our entity beans extend <a href="/docs/intro/first-entity/model">Model</a> and we use <em>save()</em>
-  that is actually using the default database.
+  When our entity beans extend <a href="/docs/intro/first-entity/model">Model</a> and we
+  use <em>save()</em> that is actually using the default database.
 </p>
 <ul class="code nav nav-tabs mytabs">
   <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
@@ -239,8 +235,8 @@
 
 <h4>Create database</h4>
 <p>
-  We can programmatically create a Database instance using <a href="databasefactory">DatabaseFactory</a>
-  and <a href="databaseconfig">DatabaseConfig</a> or it can be created automatically from properties
+  We can programmatically create a Database instance using <a href="#factory">DatabaseFactory</a>
+  and <a href="#config">DatabaseConfig</a> or it can be created automatically from properties
   file configuration (for testing we often use application-test.yaml and have the database instance created automatically).
 </p>
 <div class="code-java">
@@ -257,7 +253,7 @@
 </div>
 
 <p>
-  Refer to <a href="databasefactory">DatabaseFactory</a> for more details.
+  Refer to <a href="#factory">DatabaseFactory</a> for more details.
 </p>
 
 <p>&nbsp;</p>
@@ -338,7 +334,7 @@
 </p>
 <p>
   <code>io.ebean.Ebean</code> is the older original name for <code>io.ebean.DB</code>.
-  They can be used interchangably. In time use of Ebean will be deprecated and code should migrate
+  They can be used interchangeably. In time use of Ebean will be deprecated and code should migrate
   to use io.ebean.DB.
 </p>
 
