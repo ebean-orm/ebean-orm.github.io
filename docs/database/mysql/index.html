@@ -64,12 +64,18 @@
   </li>
   <li class="nav1 active">
     <a class="active" href="/docs/database">Database platforms</a>
-<ul class="nav nav-scroll">
+<ul class="nav">
     <li >
     <a  href="/docs/database/postgres">Postgres</a>
   </li>
+  <li >
+    <a  href="/docs/database/h2">H2</a>
+  </li>
   <li class="active">
     <a class="active" href="/docs/database/mysql">MySql</a>
+  </li>
+  <li >
+    <a  href="/docs/database/mariadb">MariaDB</a>
   </li>
   <li >
     <a  href="/docs/database/sqlserver">SQL Server</a>
@@ -78,7 +84,25 @@
     <a  href="/docs/database/oracle">Oracle</a>
   </li>
   <li >
-    <a  href="/docs/database/h2">H2</a>
+    <a  href="/docs/database/db2">DB2</a>
+  </li>
+  <li >
+    <a  href="/docs/database/hana">SAP Hana</a>
+  </li>
+  <li >
+    <a  href="/docs/database/sqlite">Sqlite</a>
+  </li>
+  <li >
+    <a  href="/docs/database/clickhouse">ClickHouse</a>
+  </li>
+  <li >
+    <a  href="/docs/database/cockroach">Cockroach</a>
+  </li>
+  <li >
+    <a  href="/docs/database/nuodb">NuoDB</a>
+  </li>
+  <li >
+    <a  href="/docs/database/elasticsearch">ElasticSearch</a>
   </li>
 </ul>
   </li>
@@ -140,7 +164,7 @@
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
     <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
     <span class="nt">mysql</span><span class="p">:</span>
       <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4_unicode_ci</span>
@@ -151,7 +175,7 @@
 <p>
   The above will use the following defaults:
 </p>
-<table class="compact">
+<table class="compact w100">
   <tr><th>username:</th><td>{databaseName}</td></tr>
   <tr><th>password:</th><td>test</td></tr>
   <tr><th>port:</th><td>4306</td></tr>
@@ -170,7 +194,7 @@
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
     <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
     <span class="nt">mysql</span><span class="p">:</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8.0</span>
@@ -209,7 +233,7 @@
       <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/mysql/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
-      <a href="/docs/testing" class="btn btn-info">Next: Testing</a>
+      <a href="/docs/database/postgres" class="btn btn-info">Next: Postgres</a>
     </p>
   </nav>
 

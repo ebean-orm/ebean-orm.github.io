@@ -64,12 +64,18 @@
   </li>
   <li class="nav1 active">
     <a class="active" href="/docs/database">Database platforms</a>
-<ul class="nav nav-scroll">
+<ul class="nav">
     <li class="active">
     <a class="active" href="/docs/database/postgres">Postgres</a>
   </li>
   <li >
+    <a  href="/docs/database/h2">H2</a>
+  </li>
+  <li >
     <a  href="/docs/database/mysql">MySql</a>
+  </li>
+  <li >
+    <a  href="/docs/database/mariadb">MariaDB</a>
   </li>
   <li >
     <a  href="/docs/database/sqlserver">SQL Server</a>
@@ -78,7 +84,25 @@
     <a  href="/docs/database/oracle">Oracle</a>
   </li>
   <li >
-    <a  href="/docs/database/h2">H2</a>
+    <a  href="/docs/database/db2">DB2</a>
+  </li>
+  <li >
+    <a  href="/docs/database/hana">SAP Hana</a>
+  </li>
+  <li >
+    <a  href="/docs/database/sqlite">Sqlite</a>
+  </li>
+  <li >
+    <a  href="/docs/database/clickhouse">ClickHouse</a>
+  </li>
+  <li >
+    <a  href="/docs/database/cockroach">Cockroach</a>
+  </li>
+  <li >
+    <a  href="/docs/database/nuodb">NuoDB</a>
+  </li>
+  <li >
+    <a  href="/docs/database/elasticsearch">ElasticSearch</a>
   </li>
 </ul>
   </li>
@@ -136,19 +160,22 @@
   <span class="nt">test</span><span class="p">:</span>
     <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
     <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_gisapp</span>
 </pre></div>
 </div>
 <p>
   The above <code>postgis</code> platform is equivalent to the setup below which uses:
 </p>
-<ul>
-  <li>Port <code>7432</code> by default (so as not to clash with local or non-gis postgres)</li>
-  <li>The <code>org.postgis.DriverWrapperLW</code> driver for binary encoded Geometry types</li>
-  <li>URL <code>postgresql_lwgis</code> in the connection url to use the LW driver </li>
-  <li>Uses <code>mdillon/postgis</code> docker image with PostGIS installed</li>
-</ul>
+<table class="compact w100">
+  <tr><th>username:</th><td>{databaseName}</td></tr>
+  <tr><th>password:</th><td>test</td></tr>
+  <tr><th>port:</th><td>7432</td></tr>
+  <tr><th>url:</th><td>jdbc:postgresql_lwgis://localhost:{port}/{databaseName}</td></tr>
+  <tr><th>driver:</th><td>org.postgis.DriverWrapperLW</td></tr>
+  <tr><th>image:</th><td>mdillon/postgis:{version}</td></tr>
+</table>
+
 
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">geometrySRID</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4674</span>
@@ -156,7 +183,7 @@
   <span class="nt">test</span><span class="p">:</span>
     <span class="nt">shutdown</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">none</span> <span class="c1"># stop | remove | none</span>
     <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | create | migration | createOnly | migrationDropCreate</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_gisapp</span>
     <span class="nt">postgres</span><span class="p">:</span>
       <span class="nt">containerName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgis</span>

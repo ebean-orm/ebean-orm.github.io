@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>NuoDB | Ebean ORM</title>
+  <title>ElasticSearch | Ebean ORM</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">NuoDB</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">ElasticSearch</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -98,11 +98,11 @@
   <li >
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
-  <li class="active">
-    <a class="active" href="/docs/database/nuodb">NuoDB</a>
-  </li>
   <li >
-    <a  href="/docs/database/elasticsearch">ElasticSearch</a>
+    <a  href="/docs/database/nuodb">NuoDB</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/database/elasticsearch">ElasticSearch</a>
   </li>
 </ul>
   </li>
@@ -145,57 +145,71 @@
   </div>
 </form>
     
-<h2>NuoDB</h2>
-
-<h3>Testing</h3>
+<h2>ElasticSearch</h2>
 <p>
-  To test against NuoDB docker test container set the <em>platform</em> to <code>postgres</code> in
-  <code>src/test/resources/application-test.yaml</code>
-</p>
-<p>
-  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
+  To test against ElasticSearch we can set the <code>elastic version</code> property like
+  the example below which will then start Elastic as a docker container automatically.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
-  <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nuodb</span> <span class="c1"># h2, nuodb, postgres, ...</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+<span class="c1">#    useDocker: false</span>
+<span class="c1">#    shutdown: stop # stop | remove</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myapp</span>
+
+  <span class="nt">docstore</span><span class="p">:</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:9201</span>
+    <span class="nt">active</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">generateMapping</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">dropCreate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+    <span class="nt">elastic</span><span class="p">:</span>
+      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.6.0</span>
+      <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
+</pre></div>
+</div>
+<p>
+  In terms of logging we can see:
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>21:57:06.587 INFO  io.ebean.docker.commands.Commands - Start container ut_elastic with port:9201
 </pre></div>
 </div>
 
 
-<h2 id="types">Types</h2>
+<h3><a id="options">Properties</a></h3>
 
-<h5>UUID</h5>
+<table class="w100">
+  <tr>
+    <th>Property</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ebean.docstore.active</td>
+    <td>Set to true to enable docstore use</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.url</td>
+    <td>URL that ElasticSearch is expected to be using</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.generateMapping</td>
+    <td>When true generate the index mapping</td>
+  </tr>
+  <tr>
+    <td>ebean.docstore.dropCreate</td>
+    <td>When true drop the indexes and recreate them</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
 <p>
-  NuoDB does not have a native UUID type. Instead this will be mapped to database <em>binary(16)</em> or
-  <em>varchar(40)</em> based on the setting of PlatformConfig.DbUuid.
-</p>
-
-<h5>Array types</h5>
-<p>
-  NuoDB does not have array types and these types are instead simulated.
-</p>
-
-<h5>JSON</h5>
-<p>
-  Properties with <code>@DbJson</code> and <code>@DbJsonB</code> are mapped to database varchar or clob.
-</p>
-
-
-<h2 id="history">History support</h2>
-<p>
-  History support for NuoDB is provided by generating triggers and history table.
-</p>
-
-<h2 id="partitioning">Table Partitioning</h2>
-<p>
-  NuoDB supports table partitioning but this is not supported by Ebean yet (via <em>@DbPartition</em>).
+  For more <a href="/docs/features/elasticsearch">details on the ElasticSearch</a>.
 </p>
 
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/nuodb/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/elasticsearch/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
       <a href="/docs/database/postgres" class="btn btn-info">Next: Postgres</a>
