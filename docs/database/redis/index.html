@@ -150,9 +150,23 @@
     
 <h2>Redis - L2 cache</h2>
 <p>
-  To use Redis for L2 caching set the <code>ebean.test.redis</code> property
-  to <code>latest</code> in application-test.yaml like the example below.
-  This will automatically start a redis docker container for use with L2 caching.
+  Configure the redis server to use by setting <code>ebean.redis</code> properties
+  in <code>main/resources/application.yaml</code> like the following:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">redis</span><span class="p">:</span>
+    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-server</span>
+    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">99</span>
+    <span class="nt">minIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="nt">maxIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+    <span class="nt">maxTotal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
+    <span class="nt">maxWaitMillis</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">300</span>
+</pre></div>
+</div>
+<p>
+  For testing purposes set <code>ebean.test.redis</code> property
+  to <code>latest</code> in in <code>test/resources/application-test.yaml</code>.
+  This will get ebean-test to automatically start a redis docker container for use with L2 caching.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
@@ -165,7 +179,7 @@
 
 <h2>ebean-redis dependency</h2>
 <p>
-  Add <code>ebean-redis</code> as a dependency. ebean-redis will
+  Add <code>ebean-redis</code> as a dependency. This will
   automatically register itself with ebean as the L2 cache service.
 </p>
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
@@ -177,26 +191,9 @@
 </div>
 
 
-<h2>configuration</h2>
-<p>
-  To configure the redis server to use in <code>main/resources/application.yaml</code>
-  we configure the following properties:
-</p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">redis</span><span class="p">:</span>
-    <span class="nt">server</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test-server</span>
-    <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">99</span>
-    <span class="nt">minIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
-    <span class="nt">maxIdle</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
-    <span class="nt">maxTotal</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">20</span>
-    <span class="nt">maxWaitMillis</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">300</span>
-</pre></div>
-</div>
-
 <h2>@Cache</h2>
 <p>
-  Entity beans annotated with <code>@Cache</code> will now use redis for
-  caching.
+  Entity beans annotated with <code>@Cache</code> will now use redis for L2 caching.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">enableQueryCache</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">nearCache</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">naturalKey</span> <span class="o">=</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
 <span class="nd">@Entity</span>

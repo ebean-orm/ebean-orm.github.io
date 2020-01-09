@@ -150,8 +150,13 @@
     
 <h2>ElasticSearch</h2>
 <p>
-  To test against ElasticSearch we can set the <code>elastic version</code> property like
-  the example below which will then start Elastic as a docker container automatically.
+  To use ElasticSearch as Ebean's document store we need to add configuration
+  for <code>ebean.docstore</code> properties like the example below:
+</p>
+<p>
+  To test using a ElasticSearch docker container we set <code>ebean.docstore.elastic.version</code>
+  property like the example below. ebean-test will then ensure that ElasticSearch is running
+  as a docker container.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
@@ -165,7 +170,7 @@
     <span class="nt">generateMapping</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
     <span class="nt">dropCreate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
 
-    <span class="nt">elastic</span><span class="p">:</span>
+    <span class="nt">elastic</span><span class="p">:</span> <span class="c1"># For testing using docker container</span>
       <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.6.0</span>
       <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
 </pre></div>
@@ -192,7 +197,20 @@
       <span class="nt">port</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9201</span>
 </pre></div>
 </div>
-<h3 id="options">Properties</h3>
+<h2 id="ebean-elastic">ebean-elastic dependency</h2>
+<p>
+  Add <code>ebean-elastic</code> as a dependency.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-elastic<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>12.1.1<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+
+<h2 id="properties">Configuration properties</h2>
 
 <table class="w100">
   <tr>
@@ -226,7 +244,7 @@
       <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/elasticsearch/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
-      <a href="/docs/database/postgres" class="btn btn-info">Next: Postgres</a>
+      <a href="/docs/database/redis" class="btn btn-info">Next: Redis</a>
     </p>
   </nav>
 
