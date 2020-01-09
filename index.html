@@ -1,72 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Ebean ORM - Java/Kotlin/JVM</title>
+  <title>Ebean ORM for Java & Kotlin</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-  <div id="wrap">
-    <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav pull-right nav-btn-rhs">
-            <li class="active"><a href="/"><span class="fas fa-home"></span>  Home</a></li>
-            <li ><a href="/docs">Docs</a></li>
-            <li ><a href="/docs/getting-started">Get Started</a></li>
-            <li ><a href="/support">Help</a></li>
-            <li ><a href="/videos">Videos</a></li>
-            <li ><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
-            <li ><a href="/releases">Releases</a></li>
-            <li ><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+<!--      <h1 id="breadcrumb">-->
+<!--        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;-->
+<!--      </h1>-->
+      <ul>
+        <li><a href="/"><span class="fas fa-home"></span>  Home</a></li>
+        <li><a href="/docs">Docs</a></li>
+        <li><a href="/docs/getting-started">Get Started</a></li>
+        <li><a href="/support">Help</a></li>
+        <li><a href="/videos">Videos</a></li>
+        <li><a target="_blank" href="/apidoc/11">ApiDocs</a></li>
+        <li><a href="/releases">Releases</a></li>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+
+<article id="home-article">
+  <div id="hero">
+    <h1><img src="/images/logo-200.png" width="120"> Ebean ORM</h1>
+    <h2>Persistence for Java & Kotlin</h2>
+    <div class="links">
+      <h4><a class="bright-link" href="/docs/getting-started"><i class="fas fa-angle-right"></i> Getting started</a></h4>
+      <h4><a href="/docs"><i class="fas fa-angle-right"></i> Documentation</a></h4>
+      <h4><a href="https://github.com/ebean-orm"><i class="fas fa-angle-right"></i> Github</a></h4>
     </div>
 
-  </div>
-  <div id="main">
-
-<div class="container mtl">
-
-  <div class="row">
-    <div class="col-md-4 hidden-sm hidden-xs">
-      <img src="/images/logo-200.png" width="120" align="right">
-    </div>
-    <div id="hero" class="col-md-8 col-sm-12 col-xs-12">
-      <h1>Ebean ORM</h1>
-      <h2>Persistence for Java & Kotlin</h2>
-      <div class="links">
-        <h4><a class="bright-link" href="/docs/getting-started"><i class="fas fa-angle-right"></i> Getting started</a></h4>
-        <h4><a href="/docs"><i class="fas fa-angle-right"></i> Documentation</a></h4>
-        <h4><a href="https://github.com/ebean-orm"><i class="fas fa-angle-right"></i> Github</a></h4>
-      </div>
-    </div>
-  </div>
-  <div class="">
-
-    <div class="highlights">
-      <div class="inner">
-        <h4><a href="/sponsors">sponsors</a></h4>
+    <div id="sponsors">
+      <h4 class="mtx"><a href="/sponsors">sponsors</a></h4>
 <a href="https://www.foconis.de/"><img src="/images/sponsor_foconis_logo.png"></a>
 
 <span class="sponsor-space">&nbsp;</span>
@@ -77,176 +57,162 @@
 
 <span class="sponsor-space">&nbsp;</span>
 <a href="https://www.timerbee.de/"><img width="190" src="/images/logo-timerbee.png"></a>
-      </div>
-    </div>
-
-    <div class="row inner">
-      <div class="col-md-4">
-        <h3>Databases supported</h3>
-        <p>
-          H2, <a href="/docs/database/postgres">Postgres</a>, <a href="/docs/database/mysql">MySql</a>,
-          <a href="/docs/database/nuodb">NuoDB</a>,
-          PostGIS, MariaDB, SQL Server, Oracle, Hana, CockroachDB, Clickhouse, Sqlite.
-        </p>
-      </div>
-
-      <div class="col-md-4">
-        <h3>Multiple abstraction levels</h3>
-        <p>
-          Ebean provides multiple levels of query abstraction.
-        </p>
-        <ul>
-          <li><a href="/docs/intro/queries/orm-query">ORM Queries, mixed with SQL</a></li>
-          <li><a href="/docs/intro/queries/dto-query">DTO Queries</a></li>
-          <li><a href="/docs/intro/queries/sql-query">SqlQuery and JDBC</a></li>
-        </ul>
-        <p>
-          Work at the highest level of abstraction and drop down levels as needed.
-        </p>
-      </div>
-
-      <div class="col-md-4">
-        <h3>Benefits of ORM</h3>
-        <ul>
-          <li>Automatically avoid N+1</li>
-          <li>L2 caching to reduce database load</li>
-          <li>Queries mixing database and L2 cache</li>
-          <li>Automatically tune ORM queries</li>
-          <li>Elasticsearch for search or L3 cache.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="row inner">
-      <div class="col-md-4">
-        <h3>Docker test containers</h3>
-        <p>
-          <a href="/docs/testing">Docker test containers</a> for all the supported databases.
-        </p>
-        <p>
-          Get 100% test coverage on all the features of the database we use.
-        </p>
-      </div>
-      <div class="col-md-4">
-        <h3>Database migrations</h3>
-        <p>
-          Built in DB migration <a href="/docs/intro/db-migrations">generation</a>
-          and <a href="/docs/intro/db-migrations">running</a>.
-        </p>
-        <p>
-          Support for "rebase" migrations as well as repeatable, init and 'normal' migrations.
-        </p>
-      </div>
-
-      <div class="col-md-4">
-        <h3>Type safe queries</h3>
-        <p>
-          We can build queries using <a href="/docs/query/query-beans">type safe query beans</a>.
-        <p>
-        <p>
-          IDE auto-complete when writing queries, compile time checking and it's FUN.
-        </p>
-      </div>
-
-    </div>
-
-
-    <div class="row inner">
-      <div class="col-md-4">
-        <h3>Automated query tuning</h3>
-        <p>
-          For ORM queries Ebean can profile the object graph being used and either
-          <a href="/docs/query/background/autotune">automatically tune the query</a>.
-        </p>
-      </div>
-
-      <div class="col-md-4">
-        <h3>Awesome SQL</h3>
-        <p>
-          Ebean produces SQL that you would hand craft yourself.
-        </p>
-        <p>
-          Use great SQL, never generate SQL cartesian product, always honor relational limit/offset.
-        </p>
-      </div>
-
-      <div class="col-md-4">
-        <h3>Performance isn't optional</h3>
-        <p>
-          <a href="/docs/query/fetchgroup">Optimise queries</a> to only fetch what we need (partial objects).
-        </p>
-        <p>
-          Automatically avoid N+1 via a smart load context.
-        </p>
-      </div>
-    </div>
-
-  </div>
-  <div class="highlights">
-    <div class="inner">
-      <h4><a href="/sponsors">silver sponsors</a></h4>
-
-      <span class="avatar-gap"></span>
-      <div class="avatar-circle">
-        <span class="initials">MH</span>
-      </div>
-      <span class="avatar-name">Maximilian Holtzberg</span>
-
-      <span class="avatar-gap"></span>
-      <div class="avatar-circle">
-        <span class="initials">SH</span>
-      </div>
-      <span class="avatar-name">Szabolcs Hubai</span>
-
-      <span class="avatar-gap"></span>
-      <div class="avatar-circle">
-        <span class="initials small">AMAH</span>
-      </div>
-      <span class="avatar-name">Al-Mothafar Al-Hasan</span>
-
     </div>
   </div>
 
-
-</div>
-
-<div class="erkbg mtl">
-  <div class="container">
-
-    <div class="highlights">
-
-      <div class="inner">
-        <h2 class="erk" style="text-align: left;">Search documentation</h2>
-        <div id="nav-search"><form action="https://www.google.com/search" method="get" class="inline-form">
-  <div class="page-inline-search" style="margin-bottom:8px;">
+  <section class="mtx">
+    <h3>Search documentation</h3>
+    <div id="nav-search">
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
     <div class="input-group">
-      <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-      <input type="hidden" name="as_sitesearch" value="ebean.io">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
       <div class="input-group-btn">
-        <button class="btn btn-default form-control" type="submit"><i class="fas fa-search"></i></button>
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-    <div class="search-results-inline-container" style="display: none;">
+    <div id="page-search-results" style="display: none;">
       <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
     </div>
   </div>
 </form>
-</div>
-      </div>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
+    </div>
+  </section>
 
-      <div class="row inner">
-        <h2 class="erk" style="text-align: left;">About Ebean</h2>
+  <section class="grid g3 mtx">
+    <div class="col-md-4">
+      <h3>Databases supported</h3>
+      <p>
+        H2, <a href="/docs/database/postgres">Postgres</a>, <a href="/docs/database/mysql">MySql</a>,
+        <a href="/docs/database/nuodb">NuoDB</a>,
+        PostGIS, MariaDB, SQL Server, Oracle, Hana, CockroachDB, Clickhouse, Sqlite.
+      </p>
+    </div>
 
-        <div class="col-md-4 p1">
-          <h3>JPA Mapping</h3>
-          <p>
-            Ebean uses JPA mapping annotations.
-          </p>
-        </div>
-        <div class="col-md-8 p2">
-          <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+    <div class="col-md-4">
+      <h3>Multiple abstraction levels</h3>
+      <p>
+        Ebean provides multiple levels of query abstraction.
+      </p>
+      <ul>
+        <li><a href="/docs/intro/queries/orm-query">ORM Queries, mixed with SQL</a></li>
+        <li><a href="/docs/intro/queries/dto-query">DTO Queries</a></li>
+        <li><a href="/docs/intro/queries/sql-query">SqlQuery and JDBC</a></li>
+      </ul>
+      <p>
+        Work at the highest level of abstraction and drop down levels as needed.
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Benefits of ORM</h3>
+      <ul>
+        <li>Automatically avoid N+1</li>
+        <li>L2 caching to reduce database load</li>
+        <li>Queries mixing database and L2 cache</li>
+        <li>Automatically tune ORM queries</li>
+        <li>Elasticsearch for search or L3 cache.</li>
+      </ul>
+    </div>
+
+
+    <div class="col-md-4">
+      <h3>Docker test containers</h3>
+      <p>
+        <a href="/docs/testing">Docker test containers</a> for all the supported databases.
+      </p>
+      <p>
+        Get 100% test coverage on all the features of the database we use.
+      </p>
+    </div>
+    <div class="col-md-4">
+      <h3>Database migrations</h3>
+      <p>
+        Built in DB migration <a href="/docs/intro/db-migrations">generation</a>
+        and <a href="/docs/intro/db-migrations">running</a>.
+      </p>
+      <p>
+        Support for "rebase" migrations as well as repeatable, init and 'normal' migrations.
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Type safe queries</h3>
+      <p>
+        We can build queries using <a href="/docs/query/query-beans">type safe query beans</a>.
+      <p>
+      <p>
+        IDE auto-complete when writing queries, compile time checking and it's FUN.
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Automated query tuning</h3>
+      <p>
+        For ORM queries Ebean can profile the object graph being used and either
+        <a href="/docs/query/background/autotune">automatically tune the query</a>.
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Awesome SQL</h3>
+      <p>
+        Ebean produces SQL that you would hand craft yourself.
+      </p>
+      <p>
+        Use great SQL, never generate SQL cartesian product, always honor relational limit/offset.
+      </p>
+    </div>
+
+    <div class="col-md-4">
+      <h3>Performance isn't optional</h3>
+      <p>
+        <a href="/docs/query/fetchgroup">Optimise queries</a> to only fetch what we need (partial objects).
+      </p>
+      <p>
+        Automatically avoid N+1 via a smart load context.
+      </p>
+    </div>
+
+  </section>
+
+
+  <section class="mtx" style="text-align: center;">
+    <h4><a href="/sponsors">silver sponsors</a></h4>
+
+    <span class="avatar-gap"></span>
+    <div class="avatar-circle">
+      <span class="initials">MH</span>
+    </div>
+    <span class="avatar-name">Maximilian Holtzberg</span>
+
+    <span class="avatar-gap"></span>
+    <div class="avatar-circle">
+      <span class="initials">SH</span>
+    </div>
+    <span class="avatar-name">Szabolcs Hubai</span>
+
+    <span class="avatar-gap"></span>
+    <div class="avatar-circle">
+      <span class="initials small">AMAH</span>
+    </div>
+    <span class="avatar-name">Al-Mothafar Al-Hasan</span>
+  </section>
+
+
+  <p class="mtx">&nbsp;</p>
+  <h2>About Ebean</h2>
+
+  <section class="grid g2 summary">
+    <aside>
+      <h3>JPA Mapping</h3>
+      <p>
+        Ebean uses JPA mapping annotations.
+      </p>
+    </aside>
+    <div>
+      <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;customer&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
 
@@ -261,19 +227,17 @@
   <span class="o">...</span>
 </pre></div>
 </div>
-        </div>
-      </div>
+    </div>
 
-      <div class="row inner mtl">
-        <div class="col-md-4 p1">
-          <h3>Simple to use</h3>
-          <p>
-            Ebean provides a simple programming model that developers can
-            understand and master quickly.
-          </p>
-        </div>
-        <div class="col-md-8 p2">
-          <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// insert ...</span>
+    <aside>
+      <h3>Simple to use</h3>
+      <p>
+        Ebean provides a simple programming model that developers can
+        understand and master quickly.
+      </p>
+    </aside>
+    <div>
+      <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// insert ...</span>
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Joe&quot;</span><span class="o">);</span>
 <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 
@@ -285,18 +249,15 @@
 <span class="n">customer</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 </pre></div>
 </div>
-        </div>
-      </div>
-
-      <div class="row inner mtl">
-        <div class="col-md-4 p1">
-          <h3>Type safe queries</h3>
-          <p>
-            We can use Query beans to build queries in a type safe manner.
-          </p>
-        </div>
-        <div class="col-md-8 p2">
-          <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+    </div>
+    <aside>
+      <h3>Type safe queries</h3>
+      <p>
+        We can use Query beans to build queries in a type safe manner.
+      </p>
+    </aside>
+    <div>
+      <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
 
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
     <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
@@ -307,125 +268,19 @@
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-          <p>
-            more details on <a href="/docs/query/"> queries</a>
-          </p>
-        </div>
-      </div>
 
     </div>
 
-  </div>
-</div>
+  </section>
+
+</article>
 
 
-<div class="container">
 
-  <div class="highlights">
-
-    <div class="inner mtl">
-      <h2 class="erk" style="text-align: left">Getting started</h2>
-      <div class="point p1">
-        <h3>Getting started</h3>
-        <h5><a href="/docs/getting-started">Getting started</a></h5>
-        <h5><a href="/docs/getting-started/maven">Maven</a></h5>
-        <h5><a href="/docs/getting-started/gradle">Gradle</a></h5>
-      </div>
-
-      <div class="point p1">
-        <h3>Examples</h3>
-        <h5><a href="/docs/examples">Minimal</a></h5>
-        <h5><a href="/docs/examples">Maven and Gradle</a></h5>
-        <h5><a href="/docs/examples">Multi-tenancy</a></h5>
-        <h5><a href="/docs/examples">Elastic Search</a></h5>
-      </div>
-      <div class="point p1">
-        <h3>Features</h3>
-        <h5><a href="/docs/examples">Multi-tenancy</a></h5>
-        <h5><a href="/docs/examples">Elastic Search</a></h5>
-        <h5><a href="/docs/examples">SQL 2011 History</a></h5>
-        <h5><a href="/docs/examples">Draftable</a></h5>
-        <h5><a href="/docs/examples">Postgres GIS</a></h5>
-      </div>
-    </div>
-
-  </div>
 
 </div>
-
-<div class="container mtl">
-  <div class="highlights">
-    <div class="inner">
-      <h4 class="text-left">Testimonials:</h4>
-      <div class="point p1 testimonial">
-        <p>
-          After struggling with what I'd call surprising behavior of a JPA implementation,
-          I discovered Ebean. Time and time again I found that Ebean simply works the way
-          I expect it to. Love it!
-        </p>
-        <p>
-          Daryl Stultz <br/>
-          OpenTempo, Inc.
-        </p>
-
-      </div>
-      <div class="point p1">
-
-      </div>
-      <div class="point p1">
-
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-9">
-    </div>
-
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-    </div>
-  </div>
-
-</div>
-
-
-  </div>
-</div>
-
-
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
-  </div>
-</footer>
-
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-
-  </body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
 </html>
