@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.ArrayList;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.Collections;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.List;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Holds a list of value object pairs.</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * &lt;p&gt;</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * This feature is to enable use of L2 cache with complex natural keys with findList() queries in cases where the</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * IN clause is not a single property but instead a pair of properties.</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * These queries can have predicates that can be translated into a list of complex natural keys such that the L2</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * cache can be hit with these keys to obtain some or all of the beans from L2 cache rather than the DB.</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">018</span><a id="line.18"> *</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *   // where a bean is annotated with a complex</a>
+<span class="sourceLineNo">020</span><a id="line.20"> *   // natural key made of several properties</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *   @Cache(naturalKey = {"store","code","sku"})</a>
+<span class="sourceLineNo">022</span><a id="line.22"> *</a>
+<span class="sourceLineNo">023</span><a id="line.23"> *</a>
+<span class="sourceLineNo">024</span><a id="line.24"> *   Pairs pairs = new Pairs("sku", "code");</a>
+<span class="sourceLineNo">025</span><a id="line.25"> *   pairs.add("sj2", 1000);</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *   pairs.add("sj2", 1001);</a>
+<span class="sourceLineNo">027</span><a id="line.27"> *   pairs.add("pf3", 1000);</a>
+<span class="sourceLineNo">028</span><a id="line.28"> *</a>
+<span class="sourceLineNo">029</span><a id="line.29"> *   List&lt;OCachedNatKeyBean3&gt; list = DB.find(OCachedNatKeyBean3.class)</a>
+<span class="sourceLineNo">030</span><a id="line.30"> *   .where()</a>
+<span class="sourceLineNo">031</span><a id="line.31"> *   .eq("store", "def")</a>
+<span class="sourceLineNo">032</span><a id="line.32"> *   .inPairs(pairs)       // IN clause with 'pairs' of values</a>
+<span class="sourceLineNo">033</span><a id="line.33"> *   .orderBy("sku desc")</a>
+<span class="sourceLineNo">034</span><a id="line.34"> *</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *   // query expressions cover the natural key properties</a>
+<span class="sourceLineNo">036</span><a id="line.36"> *   // so we can choose to hit the L2 bean cache if we want</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *   .setUseCache(true)</a>
+<span class="sourceLineNo">038</span><a id="line.38"> *   .findList();</a>
+<span class="sourceLineNo">039</span><a id="line.39"> *</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * &lt;h3&gt;Important implementation Note&lt;/h3&gt;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;p&gt;</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * When binding many pairs of values we want to be able to utilise a DB index (as this type of query usually means the</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * pairs are a unique key/index or part of a unique key/index and highly selective). Currently we know we can do this</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * on any DB that supports expression/formula based indexes.</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * using a DB string concatenation formula</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * &lt;p&gt;</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * This means, the implementation converts the list of pairs into a list of strings via concatenation and we use a</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * DB concatenation formula to match. We see SQL like:</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * &lt;pre&gt;{@code sql</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *</a>
+<span class="sourceLineNo">054</span><a id="line.54"> *   ...</a>
+<span class="sourceLineNo">055</span><a id="line.55"> *   where t0.store = ?  and (t0.sku||'-'||t0.code) in (?, ? )</a>
+<span class="sourceLineNo">056</span><a id="line.56"> *</a>
+<span class="sourceLineNo">057</span><a id="line.57"> *   // bind values like: "sj2-1000", "pf3-1000"</a>
+<span class="sourceLineNo">058</span><a id="line.58"> *</a>
+<span class="sourceLineNo">059</span><a id="line.59"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * &lt;p&gt;</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * We often create a DB expression index to match the DB concat formula like:</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * &lt;pre&gt;{@code sql</a>
+<span class="sourceLineNo">064</span><a id="line.64"> *</a>
+<span class="sourceLineNo">065</span><a id="line.65"> *   create index ix_name on table_name ((sku || '-' || code));</a>
+<span class="sourceLineNo">066</span><a id="line.66"> *</a>
+<span class="sourceLineNo">067</span><a id="line.67"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">068</span><a id="line.68"> */</a>
+<span class="sourceLineNo">069</span><a id="line.69">public class Pairs {</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  private final String property0;</a>
+<span class="sourceLineNo">072</span><a id="line.72">  private final String property1;</a>
+<span class="sourceLineNo">073</span><a id="line.73"></a>
+<span class="sourceLineNo">074</span><a id="line.74">  private final List&lt;Entry&gt; entries = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">  /**</a>
+<span class="sourceLineNo">077</span><a id="line.77">   * Character between the values when combined via DB varchar concatenation.</a>
+<span class="sourceLineNo">078</span><a id="line.78">   */</a>
+<span class="sourceLineNo">079</span><a id="line.79">  private String concatSeparator = "-";</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">  /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">   * Optional suffix added to DB varchar concatenation formula.</a>
+<span class="sourceLineNo">083</span><a id="line.83">   */</a>
+<span class="sourceLineNo">084</span><a id="line.84">  private String concatSuffix;</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">  /**</a>
+<span class="sourceLineNo">087</span><a id="line.87">   * Create with 2 property names.</a>
+<span class="sourceLineNo">088</span><a id="line.88">   *</a>
+<span class="sourceLineNo">089</span><a id="line.89">   * @param property0 The property of the first value</a>
+<span class="sourceLineNo">090</span><a id="line.90">   * @param property1 The property of the second value</a>
+<span class="sourceLineNo">091</span><a id="line.91">   */</a>
+<span class="sourceLineNo">092</span><a id="line.92">  public Pairs(String property0, String property1) {</a>
+<span class="sourceLineNo">093</span><a id="line.93">    this.property0 = property0;</a>
+<span class="sourceLineNo">094</span><a id="line.94">    this.property1 = property1;</a>
+<span class="sourceLineNo">095</span><a id="line.95">  }</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">  /**</a>
+<span class="sourceLineNo">098</span><a id="line.98">   * Add a pair of value objects.</a>
+<span class="sourceLineNo">099</span><a id="line.99">   * &lt;p&gt;</a>
+<span class="sourceLineNo">100</span><a id="line.100">   * Both values are expected to be immutable with equals and hashCode implementations.</a>
+<span class="sourceLineNo">101</span><a id="line.101">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">102</span><a id="line.102">   *</a>
+<span class="sourceLineNo">103</span><a id="line.103">   * @param a Value of the first property</a>
+<span class="sourceLineNo">104</span><a id="line.104">   * @param b Value of the second property</a>
+<span class="sourceLineNo">105</span><a id="line.105">   */</a>
+<span class="sourceLineNo">106</span><a id="line.106">  public Pairs add(Object a, Object b) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">    entries.add(new Entry(a, b));</a>
+<span class="sourceLineNo">108</span><a id="line.108">    return this;</a>
+<span class="sourceLineNo">109</span><a id="line.109">  }</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">  /**</a>
+<span class="sourceLineNo">112</span><a id="line.112">   * Return the first property name.</a>
+<span class="sourceLineNo">113</span><a id="line.113">   */</a>
+<span class="sourceLineNo">114</span><a id="line.114">  public String getProperty0() {</a>
+<span class="sourceLineNo">115</span><a id="line.115">    return property0;</a>
+<span class="sourceLineNo">116</span><a id="line.116">  }</a>
+<span class="sourceLineNo">117</span><a id="line.117"></a>
+<span class="sourceLineNo">118</span><a id="line.118">  /**</a>
+<span class="sourceLineNo">119</span><a id="line.119">   * Return the second property name.</a>
+<span class="sourceLineNo">120</span><a id="line.120">   */</a>
+<span class="sourceLineNo">121</span><a id="line.121">  public String getProperty1() {</a>
+<span class="sourceLineNo">122</span><a id="line.122">    return property1;</a>
+<span class="sourceLineNo">123</span><a id="line.123">  }</a>
+<span class="sourceLineNo">124</span><a id="line.124"></a>
+<span class="sourceLineNo">125</span><a id="line.125">  /**</a>
+<span class="sourceLineNo">126</span><a id="line.126">   * Return all the value pairs.</a>
+<span class="sourceLineNo">127</span><a id="line.127">   */</a>
+<span class="sourceLineNo">128</span><a id="line.128">  public List&lt;Entry&gt; getEntries() {</a>
+<span class="sourceLineNo">129</span><a id="line.129">    return Collections.unmodifiableList(entries);</a>
+<span class="sourceLineNo">130</span><a id="line.130">  }</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">  /**</a>
+<span class="sourceLineNo">133</span><a id="line.133">   * Return the separator character used with DB varchar concatenation to combine the 2 values.</a>
+<span class="sourceLineNo">134</span><a id="line.134">   */</a>
+<span class="sourceLineNo">135</span><a id="line.135">  public String getConcatSeparator() {</a>
+<span class="sourceLineNo">136</span><a id="line.136">    return concatSeparator;</a>
+<span class="sourceLineNo">137</span><a id="line.137">  }</a>
+<span class="sourceLineNo">138</span><a id="line.138"></a>
+<span class="sourceLineNo">139</span><a id="line.139">  /**</a>
+<span class="sourceLineNo">140</span><a id="line.140">   * Set the separator character used with DB varchar concatenation to combine the 2 values.</a>
+<span class="sourceLineNo">141</span><a id="line.141">   */</a>
+<span class="sourceLineNo">142</span><a id="line.142">  public Pairs setConcatSeparator(String concatSeparator) {</a>
+<span class="sourceLineNo">143</span><a id="line.143">    this.concatSeparator = concatSeparator;</a>
+<span class="sourceLineNo">144</span><a id="line.144">    return this;</a>
+<span class="sourceLineNo">145</span><a id="line.145">  }</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">  /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">   * Return  a suffix used with DB varchar concatenation to combine the 2 values.</a>
+<span class="sourceLineNo">149</span><a id="line.149">   */</a>
+<span class="sourceLineNo">150</span><a id="line.150">  public String getConcatSuffix() {</a>
+<span class="sourceLineNo">151</span><a id="line.151">    return concatSuffix;</a>
+<span class="sourceLineNo">152</span><a id="line.152">  }</a>
+<span class="sourceLineNo">153</span><a id="line.153"></a>
+<span class="sourceLineNo">154</span><a id="line.154">  /**</a>
+<span class="sourceLineNo">155</span><a id="line.155">   * Add a suffix used with DB varchar concatenation to combine the 2 values.</a>
+<span class="sourceLineNo">156</span><a id="line.156">   */</a>
+<span class="sourceLineNo">157</span><a id="line.157">  public Pairs setConcatSuffix(String concatSuffix) {</a>
+<span class="sourceLineNo">158</span><a id="line.158">    this.concatSuffix = concatSuffix;</a>
+<span class="sourceLineNo">159</span><a id="line.159">    return this;</a>
+<span class="sourceLineNo">160</span><a id="line.160">  }</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">  @Override</a>
+<span class="sourceLineNo">163</span><a id="line.163">  public String toString() {</a>
+<span class="sourceLineNo">164</span><a id="line.164">    return "p0:" + property0 + " p1:" + property1 + " entries:" + entries;</a>
+<span class="sourceLineNo">165</span><a id="line.165">  }</a>
+<span class="sourceLineNo">166</span><a id="line.166"></a>
+<span class="sourceLineNo">167</span><a id="line.167">  /**</a>
+<span class="sourceLineNo">168</span><a id="line.168">   * A pair of 2 value objects.</a>
+<span class="sourceLineNo">169</span><a id="line.169">   * &lt;p&gt;</a>
+<span class="sourceLineNo">170</span><a id="line.170">   * Used to support inPairs() expression.</a>
+<span class="sourceLineNo">171</span><a id="line.171">   */</a>
+<span class="sourceLineNo">172</span><a id="line.172">  public static class Entry {</a>
+<span class="sourceLineNo">173</span><a id="line.173"></a>
+<span class="sourceLineNo">174</span><a id="line.174">    private final Object a;</a>
+<span class="sourceLineNo">175</span><a id="line.175">    private final Object b;</a>
+<span class="sourceLineNo">176</span><a id="line.176"></a>
+<span class="sourceLineNo">177</span><a id="line.177">    /**</a>
+<span class="sourceLineNo">178</span><a id="line.178">     * Create with values for property0 and property1 respectively.</a>
+<span class="sourceLineNo">179</span><a id="line.179">     *</a>
+<span class="sourceLineNo">180</span><a id="line.180">     * @param a Value of the first property</a>
+<span class="sourceLineNo">181</span><a id="line.181">     * @param b Value of the second property</a>
+<span class="sourceLineNo">182</span><a id="line.182">     */</a>
+<span class="sourceLineNo">183</span><a id="line.183">    public Entry(Object a, Object b) {</a>
+<span class="sourceLineNo">184</span><a id="line.184">      this.a = a;</a>
+<span class="sourceLineNo">185</span><a id="line.185">      this.b = b;</a>
+<span class="sourceLineNo">186</span><a id="line.186">    }</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">    @Override</a>
+<span class="sourceLineNo">189</span><a id="line.189">    public String toString() {</a>
+<span class="sourceLineNo">190</span><a id="line.190">      return "{" + a + "," + b + "}";</a>
+<span class="sourceLineNo">191</span><a id="line.191">    }</a>
+<span class="sourceLineNo">192</span><a id="line.192"></a>
+<span class="sourceLineNo">193</span><a id="line.193">    /**</a>
+<span class="sourceLineNo">194</span><a id="line.194">     * Return the value for the first property.</a>
+<span class="sourceLineNo">195</span><a id="line.195">     */</a>
+<span class="sourceLineNo">196</span><a id="line.196">    public Object getA() {</a>
+<span class="sourceLineNo">197</span><a id="line.197">      return a;</a>
+<span class="sourceLineNo">198</span><a id="line.198">    }</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">    /**</a>
+<span class="sourceLineNo">201</span><a id="line.201">     * Return the value for the second property.</a>
+<span class="sourceLineNo">202</span><a id="line.202">     */</a>
+<span class="sourceLineNo">203</span><a id="line.203">    public Object getB() {</a>
+<span class="sourceLineNo">204</span><a id="line.204">      return b;</a>
+<span class="sourceLineNo">205</span><a id="line.205">    }</a>
+<span class="sourceLineNo">206</span><a id="line.206"></a>
+<span class="sourceLineNo">207</span><a id="line.207">    @Override</a>
+<span class="sourceLineNo">208</span><a id="line.208">    public boolean equals(Object o) {</a>
+<span class="sourceLineNo">209</span><a id="line.209">      if (this == o) return true;</a>
+<span class="sourceLineNo">210</span><a id="line.210">      if (o == null || getClass() != o.getClass()) return false;</a>
+<span class="sourceLineNo">211</span><a id="line.211"></a>
+<span class="sourceLineNo">212</span><a id="line.212">      Entry that = (Entry) o;</a>
+<span class="sourceLineNo">213</span><a id="line.213">      return a.equals(that.a) &amp;&amp; b.equals(that.b);</a>
+<span class="sourceLineNo">214</span><a id="line.214">    }</a>
+<span class="sourceLineNo">215</span><a id="line.215"></a>
+<span class="sourceLineNo">216</span><a id="line.216">    @Override</a>
+<span class="sourceLineNo">217</span><a id="line.217">    public int hashCode() {</a>
+<span class="sourceLineNo">218</span><a id="line.218">      int result = a.hashCode();</a>
+<span class="sourceLineNo">219</span><a id="line.219">      result = 92821 * result + b.hashCode();</a>
+<span class="sourceLineNo">220</span><a id="line.220">      return result;</a>
+<span class="sourceLineNo">221</span><a id="line.221">    }</a>
+<span class="sourceLineNo">222</span><a id="line.222">  }</a>
+<span class="sourceLineNo">223</span><a id="line.223">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

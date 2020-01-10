@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.meta;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Request used to capture query plans.</a>
+<span class="sourceLineNo">005</span><a id="line.5"> */</a>
+<span class="sourceLineNo">006</span><a id="line.6">public class QueryPlanRequest {</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">  private long since;</a>
+<span class="sourceLineNo">009</span><a id="line.9"></a>
+<span class="sourceLineNo">010</span><a id="line.10">  private int maxCount;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">  private long maxTimeMillis;</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">  /**</a>
+<span class="sourceLineNo">015</span><a id="line.15">   * Return the epoch time in millis for minimum bind capture time.</a>
+<span class="sourceLineNo">016</span><a id="line.16">   * &lt;p&gt;</a>
+<span class="sourceLineNo">017</span><a id="line.17">   * When set this ensures that the bind values used to get the query plan</a>
+<span class="sourceLineNo">018</span><a id="line.18">   * have been around for a while (e.g. 5 mins) and so reasonably represent</a>
+<span class="sourceLineNo">019</span><a id="line.19">   * bind values that match the slowest execution for this query plan.</a>
+<span class="sourceLineNo">020</span><a id="line.20">   */</a>
+<span class="sourceLineNo">021</span><a id="line.21">  public long getSince() {</a>
+<span class="sourceLineNo">022</span><a id="line.22">    return since;</a>
+<span class="sourceLineNo">023</span><a id="line.23">  }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * Set the epoch time (e.g. 5 mins ago) such that the query bind values</a>
+<span class="sourceLineNo">027</span><a id="line.27">   * reasonably represent bind values that match the slowest execution for this query plan.</a>
+<span class="sourceLineNo">028</span><a id="line.28">   *</a>
+<span class="sourceLineNo">029</span><a id="line.29">   * @param since The minimum age of the bind values capture.</a>
+<span class="sourceLineNo">030</span><a id="line.30">   */</a>
+<span class="sourceLineNo">031</span><a id="line.31">  public void setSince(long since) {</a>
+<span class="sourceLineNo">032</span><a id="line.32">    this.since = since;</a>
+<span class="sourceLineNo">033</span><a id="line.33">  }</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">  /**</a>
+<span class="sourceLineNo">036</span><a id="line.36">   * Return the maximum number of plans to capture.</a>
+<span class="sourceLineNo">037</span><a id="line.37">   */</a>
+<span class="sourceLineNo">038</span><a id="line.38">  public int getMaxCount() {</a>
+<span class="sourceLineNo">039</span><a id="line.39">    return maxCount;</a>
+<span class="sourceLineNo">040</span><a id="line.40">  }</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">  /**</a>
+<span class="sourceLineNo">043</span><a id="line.43">   * Set the maximum number of plans to capture.</a>
+<span class="sourceLineNo">044</span><a id="line.44">   */</a>
+<span class="sourceLineNo">045</span><a id="line.45">  public void setMaxCount(int maxCount) {</a>
+<span class="sourceLineNo">046</span><a id="line.46">    this.maxCount = maxCount;</a>
+<span class="sourceLineNo">047</span><a id="line.47">  }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">  /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">   * Return the maximum amount of time we want to use to capture plans.</a>
+<span class="sourceLineNo">051</span><a id="line.51">   * &lt;p&gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52">   * Query plan collection will stop once this time is exceeded.</a>
+<span class="sourceLineNo">053</span><a id="line.53">   */</a>
+<span class="sourceLineNo">054</span><a id="line.54">  public long getMaxTimeMillis() {</a>
+<span class="sourceLineNo">055</span><a id="line.55">    return maxTimeMillis;</a>
+<span class="sourceLineNo">056</span><a id="line.56">  }</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">  /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">   * Set the maximum amount of time we want to use to capture plans.</a>
+<span class="sourceLineNo">060</span><a id="line.60">   * &lt;p&gt;</a>
+<span class="sourceLineNo">061</span><a id="line.61">   * Query plan collection will stop once this time is exceeded.</a>
+<span class="sourceLineNo">062</span><a id="line.62">   */</a>
+<span class="sourceLineNo">063</span><a id="line.63">  public void setMaxTimeMillis(long maxTimeMillis) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">    this.maxTimeMillis = maxTimeMillis;</a>
+<span class="sourceLineNo">065</span><a id="line.65">  }</a>
+<span class="sourceLineNo">066</span><a id="line.66">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

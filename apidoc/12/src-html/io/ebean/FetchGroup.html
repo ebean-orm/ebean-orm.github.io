@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.service.SpiFetchGroupQuery;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import javax.annotation.Nonnull;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Defines what part of the object graph to load (select and fetch clauses).</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * &lt;p&gt;</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * Using a FetchGroup effectively sets the select() and fetch() clauses for a query. It is alternative</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * to specifying the select() and fetch() clauses on the query allowing for more re-use of "what to load"</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * that can be defined separately from the query and combined with other FetchGroups.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * &lt;h3&gt;Select example&lt;/h3&gt;</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">017</span><a id="line.17"> *</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * FetchGroup&lt;Customer&gt; fetchGroup = FetchGroup.of(Customer.class, "name, status");</a>
+<span class="sourceLineNo">019</span><a id="line.19"> *</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * Customer.query()</a>
+<span class="sourceLineNo">021</span><a id="line.21"> *   .select(fetchGroup)</a>
+<span class="sourceLineNo">022</span><a id="line.22"> *   .findList();</a>
+<span class="sourceLineNo">023</span><a id="line.23"> *</a>
+<span class="sourceLineNo">024</span><a id="line.24"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">025</span><a id="line.25"> *</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * &lt;h3&gt;Select and fetch example&lt;/h3&gt;</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">028</span><a id="line.28"> *</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * FetchGroup&lt;Customer&gt; fetchGroup = FetchGroup.of(Customer.class)</a>
+<span class="sourceLineNo">030</span><a id="line.30"> *   .select("name, status")</a>
+<span class="sourceLineNo">031</span><a id="line.31"> *   .fetch("contacts", "firstName, lastName, email")</a>
+<span class="sourceLineNo">032</span><a id="line.32"> *   .build();</a>
+<span class="sourceLineNo">033</span><a id="line.33"> *</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * Customer.query()</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *   .select(fetchGroup)</a>
+<span class="sourceLineNo">036</span><a id="line.36"> *   .findList();</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> *</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * &lt;h3&gt;Combining FetchGroups&lt;/h3&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * &lt;p&gt;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> *   FetchGroups can be combined together to form another FetchGroup.</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">045</span><a id="line.45"> *</a>
+<span class="sourceLineNo">046</span><a id="line.46"> *  FetchGroup&lt;Address&gt; FG_ADDRESS = FetchGroup.of(Address.class)</a>
+<span class="sourceLineNo">047</span><a id="line.47"> *    .select("line1, line2, city")</a>
+<span class="sourceLineNo">048</span><a id="line.48"> *    .fetch("country", "name")</a>
+<span class="sourceLineNo">049</span><a id="line.49"> *    .build();</a>
+<span class="sourceLineNo">050</span><a id="line.50"> *</a>
+<span class="sourceLineNo">051</span><a id="line.51"> *  FetchGroup&lt;Customer&gt; FG_CUSTOMER = FetchGroup.of(Customer.class)</a>
+<span class="sourceLineNo">052</span><a id="line.52"> *    .select("name, version")</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *    .fetch("billingAddress", FG_ADDRESS)</a>
+<span class="sourceLineNo">054</span><a id="line.54"> *    .build();</a>
+<span class="sourceLineNo">055</span><a id="line.55"> *</a>
+<span class="sourceLineNo">056</span><a id="line.56"> *</a>
+<span class="sourceLineNo">057</span><a id="line.57"> *  Customer.query()</a>
+<span class="sourceLineNo">058</span><a id="line.58"> *    .select(FG_CUSTOMER)</a>
+<span class="sourceLineNo">059</span><a id="line.59"> *    .findList();</a>
+<span class="sourceLineNo">060</span><a id="line.60"> *</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">062</span><a id="line.62"> *</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * @param &lt;T&gt; The bean type the Fetch group can be applied to</a>
+<span class="sourceLineNo">064</span><a id="line.64"> */</a>
+<span class="sourceLineNo">065</span><a id="line.65">public interface FetchGroup&lt;T&gt; {</a>
+<span class="sourceLineNo">066</span><a id="line.66"></a>
+<span class="sourceLineNo">067</span><a id="line.67">  /**</a>
+<span class="sourceLineNo">068</span><a id="line.68">   * Return the FetchGroup with the given select clause.</a>
+<span class="sourceLineNo">069</span><a id="line.69">   * &lt;p&gt;</a>
+<span class="sourceLineNo">070</span><a id="line.70">   *   We use this for simple FetchGroup that only select() properties and do not have additional fetch() clause.</a>
+<span class="sourceLineNo">071</span><a id="line.71">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">072</span><a id="line.72">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">073</span><a id="line.73">   *</a>
+<span class="sourceLineNo">074</span><a id="line.74">   * FetchGroup&lt;Customer&gt; fetchGroup = FetchGroup.of(Customer.class, "name, status");</a>
+<span class="sourceLineNo">075</span><a id="line.75">   *</a>
+<span class="sourceLineNo">076</span><a id="line.76">   * Customer.query()</a>
+<span class="sourceLineNo">077</span><a id="line.77">   *   .select(fetchGroup)</a>
+<span class="sourceLineNo">078</span><a id="line.78">   *   .findList();</a>
+<span class="sourceLineNo">079</span><a id="line.79">   *</a>
+<span class="sourceLineNo">080</span><a id="line.80">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">081</span><a id="line.81">   *</a>
+<span class="sourceLineNo">082</span><a id="line.82">   * @param select The select clause of the FetchGroup</a>
+<span class="sourceLineNo">083</span><a id="line.83">   *</a>
+<span class="sourceLineNo">084</span><a id="line.84">   * @return The FetchGroup with the given select clause</a>
+<span class="sourceLineNo">085</span><a id="line.85">   */</a>
+<span class="sourceLineNo">086</span><a id="line.86">  @Nonnull</a>
+<span class="sourceLineNo">087</span><a id="line.87">  static &lt;T&gt; FetchGroup&lt;T&gt; of(Class&lt;T&gt; cls, String select) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">    return XServiceProvider.fetchGroupOf(cls, select);</a>
+<span class="sourceLineNo">089</span><a id="line.89">  }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">  /**</a>
+<span class="sourceLineNo">092</span><a id="line.92">   * Return the FetchGroupBuilder with the given select clause that we can add fetch clauses to.</a>
+<span class="sourceLineNo">093</span><a id="line.93">   * &lt;p&gt;</a>
+<span class="sourceLineNo">094</span><a id="line.94">   * We chain select() with one or more fetch() clauses to define the object graph to load.</a>
+<span class="sourceLineNo">095</span><a id="line.95">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">096</span><a id="line.96">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">097</span><a id="line.97">   *</a>
+<span class="sourceLineNo">098</span><a id="line.98">   * FetchGroup&lt;Customer&gt; fetchGroup = FetchGroup.of(Customer.class)</a>
+<span class="sourceLineNo">099</span><a id="line.99">   *   .select("name, status")</a>
+<span class="sourceLineNo">100</span><a id="line.100">   *   .fetch("contacts", "firstName, lastName, email")</a>
+<span class="sourceLineNo">101</span><a id="line.101">   *   .build();</a>
+<span class="sourceLineNo">102</span><a id="line.102">   *</a>
+<span class="sourceLineNo">103</span><a id="line.103">   * Customer.query()</a>
+<span class="sourceLineNo">104</span><a id="line.104">   *   .select(fetchGroup)</a>
+<span class="sourceLineNo">105</span><a id="line.105">   *   .findList();</a>
+<span class="sourceLineNo">106</span><a id="line.106">   *</a>
+<span class="sourceLineNo">107</span><a id="line.107">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">108</span><a id="line.108">   *</a>
+<span class="sourceLineNo">109</span><a id="line.109">   * @return The FetchGroupBuilder with the given select clause which we will add fetch clauses to</a>
+<span class="sourceLineNo">110</span><a id="line.110">   */</a>
+<span class="sourceLineNo">111</span><a id="line.111">  @Nonnull</a>
+<span class="sourceLineNo">112</span><a id="line.112">  static &lt;T&gt; FetchGroupBuilder&lt;T&gt; of(Class&lt;T&gt; cls) {</a>
+<span class="sourceLineNo">113</span><a id="line.113">    return XServiceProvider.fetchGroupOf(cls);</a>
+<span class="sourceLineNo">114</span><a id="line.114">  }</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">  /**</a>
+<span class="sourceLineNo">117</span><a id="line.117">   * Return a query to be used by query beans for constructing FetchGroup.</a>
+<span class="sourceLineNo">118</span><a id="line.118">   */</a>
+<span class="sourceLineNo">119</span><a id="line.119">  static &lt;T&gt; SpiFetchGroupQuery&lt;T&gt; queryFor(Class&lt;T&gt; beanType) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">    return XServiceProvider.fetchGroupQueryFor(beanType);</a>
+<span class="sourceLineNo">121</span><a id="line.121">  }</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

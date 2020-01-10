@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.config;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/**</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Used to normalise table and column names which means stripping out</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * quoted identifier characters and any catalog or schema prefix.</a>
+<span class="sourceLineNo">006</span><a id="line.6"> */</a>
+<span class="sourceLineNo">007</span><a id="line.7">public class DbConstraintNormalise {</a>
+<span class="sourceLineNo">008</span><a id="line.8"></a>
+<span class="sourceLineNo">009</span><a id="line.9">  protected final String[] quotedIdentifiers;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">  protected final boolean lowerCaseTables;</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">  protected final boolean lowerCaseColumns;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">  public DbConstraintNormalise() {</a>
+<span class="sourceLineNo">016</span><a id="line.16">    this(true, true);</a>
+<span class="sourceLineNo">017</span><a id="line.17">  }</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">  public DbConstraintNormalise(boolean lowerCaseTables, boolean lowerCaseColumns) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">    this.lowerCaseTables = lowerCaseTables;</a>
+<span class="sourceLineNo">021</span><a id="line.21">    this.lowerCaseColumns = lowerCaseColumns;</a>
+<span class="sourceLineNo">022</span><a id="line.22">    this.quotedIdentifiers = new String[]{"\"", "'", "[", "]", "`"};</a>
+<span class="sourceLineNo">023</span><a id="line.23">  }</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * Normalise the table name by trimming catalog and schema and removing any</a>
+<span class="sourceLineNo">027</span><a id="line.27">   * quoted identifier characters (",',[,] etc).</a>
+<span class="sourceLineNo">028</span><a id="line.28">   */</a>
+<span class="sourceLineNo">029</span><a id="line.29">  public String normaliseTable(String tableName) {</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">    tableName = trimQuotes(tableName);</a>
+<span class="sourceLineNo">032</span><a id="line.32">    int lastPeriod = tableName.lastIndexOf('.');</a>
+<span class="sourceLineNo">033</span><a id="line.33">    if (lastPeriod &gt; -1) {</a>
+<span class="sourceLineNo">034</span><a id="line.34">      // trim off catalog and schema prefix</a>
+<span class="sourceLineNo">035</span><a id="line.35">      tableName = tableName.substring(lastPeriod + 1);</a>
+<span class="sourceLineNo">036</span><a id="line.36">    }</a>
+<span class="sourceLineNo">037</span><a id="line.37">    if (lowerCaseTables) {</a>
+<span class="sourceLineNo">038</span><a id="line.38">      tableName = tableName.toLowerCase();</a>
+<span class="sourceLineNo">039</span><a id="line.39">    }</a>
+<span class="sourceLineNo">040</span><a id="line.40">    return tableName;</a>
+<span class="sourceLineNo">041</span><a id="line.41">  }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">  /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">   * Normalise the column name by removing any quoted identifier characters.</a>
+<span class="sourceLineNo">045</span><a id="line.45">   */</a>
+<span class="sourceLineNo">046</span><a id="line.46">  public String normaliseColumn(String columnName) {</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">    columnName = trimQuotes(columnName);</a>
+<span class="sourceLineNo">049</span><a id="line.49">    if (lowerCaseColumns) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">      columnName = columnName.toLowerCase();</a>
+<span class="sourceLineNo">051</span><a id="line.51">    }</a>
+<span class="sourceLineNo">052</span><a id="line.52">    return columnName;</a>
+<span class="sourceLineNo">053</span><a id="line.53">  }</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">  /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">   * Lower case the table name checking for quoted identifiers.</a>
+<span class="sourceLineNo">057</span><a id="line.57">   */</a>
+<span class="sourceLineNo">058</span><a id="line.58">  public String lowerTableName(String tableName) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">    if (lowerCaseTables &amp;&amp; notQuoted(tableName)) {</a>
+<span class="sourceLineNo">060</span><a id="line.60">      return tableName.toLowerCase();</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62">    return tableName;</a>
+<span class="sourceLineNo">063</span><a id="line.63">  }</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">  /**</a>
+<span class="sourceLineNo">066</span><a id="line.66">   * Lower case the column name checking for quoted identifiers.</a>
+<span class="sourceLineNo">067</span><a id="line.67">   */</a>
+<span class="sourceLineNo">068</span><a id="line.68">  public String lowerColumnName(String name) {</a>
+<span class="sourceLineNo">069</span><a id="line.69">    if (lowerCaseColumns &amp;&amp; notQuoted(name)) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">      return name.toLowerCase();</a>
+<span class="sourceLineNo">071</span><a id="line.71">    }</a>
+<span class="sourceLineNo">072</span><a id="line.72">    return name;</a>
+<span class="sourceLineNo">073</span><a id="line.73">  }</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">  /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">   * Trim off the platform quoted identifier quotes like [ ' and ".</a>
+<span class="sourceLineNo">077</span><a id="line.77">   */</a>
+<span class="sourceLineNo">078</span><a id="line.78">  public boolean notQuoted(String tableName) {</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    // remove quoted identifier characters</a>
+<span class="sourceLineNo">081</span><a id="line.81">    for (String quotedIdentifier : quotedIdentifiers) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">      if (tableName.contains(quotedIdentifier)) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">        return false;</a>
+<span class="sourceLineNo">084</span><a id="line.84">      }</a>
+<span class="sourceLineNo">085</span><a id="line.85">    }</a>
+<span class="sourceLineNo">086</span><a id="line.86">    return true;</a>
+<span class="sourceLineNo">087</span><a id="line.87">  }</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">  /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">   * Trim off the platform quoted identifier quotes like [ ' and ".</a>
+<span class="sourceLineNo">091</span><a id="line.91">   */</a>
+<span class="sourceLineNo">092</span><a id="line.92">  public String trimQuotes(String tableName) {</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">    if (tableName == null) {</a>
+<span class="sourceLineNo">095</span><a id="line.95">      return "";</a>
+<span class="sourceLineNo">096</span><a id="line.96">    }</a>
+<span class="sourceLineNo">097</span><a id="line.97">    // remove quoted identifier characters</a>
+<span class="sourceLineNo">098</span><a id="line.98">    for (String quotedIdentifier : quotedIdentifiers) {</a>
+<span class="sourceLineNo">099</span><a id="line.99">      tableName = tableName.replace(quotedIdentifier, "");</a>
+<span class="sourceLineNo">100</span><a id="line.100">    }</a>
+<span class="sourceLineNo">101</span><a id="line.101">    return tableName;</a>
+<span class="sourceLineNo">102</span><a id="line.102">  }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

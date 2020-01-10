@@ -1,0 +1,581 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.config;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.EbeanVersion;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import io.ebean.annotation.Platform;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import io.ebean.migration.MigrationConfig;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import io.ebean.migration.MigrationRunner;</a>
+<span class="sourceLineNo">007</span><a id="line.7">import io.ebean.util.StringHelper;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import org.slf4j.Logger;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import org.slf4j.LoggerFactory;</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.time.ZonedDateTime;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.time.format.DateTimeFormatter;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.Map;</a>
+<span class="sourceLineNo">014</span><a id="line.14">import java.util.Properties;</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">/**</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * Configuration for the DB migration processing.</a>
+<span class="sourceLineNo">018</span><a id="line.18"> */</a>
+<span class="sourceLineNo">019</span><a id="line.19">public class DbMigrationConfig {</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">  protected static final Logger logger = LoggerFactory.getLogger(DbMigrationConfig.class);</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">  protected MigrationConfig runnerConfig = new MigrationConfig();</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">  /**</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * The database platform to generate migration DDL for.</a>
+<span class="sourceLineNo">027</span><a id="line.27">   */</a>
+<span class="sourceLineNo">028</span><a id="line.28">  protected Platform platform;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">  /**</a>
+<span class="sourceLineNo">031</span><a id="line.31">   * Resource path for the migration xml and sql.</a>
+<span class="sourceLineNo">032</span><a id="line.32">   */</a>
+<span class="sourceLineNo">033</span><a id="line.33">  protected String migrationPath = "dbmigration";</a>
+<span class="sourceLineNo">034</span><a id="line.34"></a>
+<span class="sourceLineNo">035</span><a id="line.35">  protected String migrationInitPath = "dbinit";</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">  /**</a>
+<span class="sourceLineNo">038</span><a id="line.38">   * Subdirectory the model xml files go into.</a>
+<span class="sourceLineNo">039</span><a id="line.39">   */</a>
+<span class="sourceLineNo">040</span><a id="line.40">  protected String modelPath = "model";</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">  protected String applySuffix = ".sql";</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">  /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">   * Set this to "V" to be compatible with FlywayDB.</a>
+<span class="sourceLineNo">046</span><a id="line.46">   */</a>
+<span class="sourceLineNo">047</span><a id="line.47">  protected String applyPrefix = "";</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">  protected String modelSuffix = ".model.xml";</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">  /**</a>
+<span class="sourceLineNo">052</span><a id="line.52">   * For running migration the DB table that holds migration execution status.</a>
+<span class="sourceLineNo">053</span><a id="line.53">   */</a>
+<span class="sourceLineNo">054</span><a id="line.54">  protected String metaTable = "db_migration";</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">  /**</a>
+<span class="sourceLineNo">057</span><a id="line.57">   * Flag set to true means to run any outstanding migrations on startup.</a>
+<span class="sourceLineNo">058</span><a id="line.58">   */</a>
+<span class="sourceLineNo">059</span><a id="line.59">  protected boolean runMigration;</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">  /**</a>
+<span class="sourceLineNo">062</span><a id="line.62">   * Comma and equals delimited key/value placeholders to replace in DDL scripts.</a>
+<span class="sourceLineNo">063</span><a id="line.63">   */</a>
+<span class="sourceLineNo">064</span><a id="line.64">  protected String runPlaceholders;</a>
+<span class="sourceLineNo">065</span><a id="line.65"></a>
+<span class="sourceLineNo">066</span><a id="line.66">  /**</a>
+<span class="sourceLineNo">067</span><a id="line.67">   * Map of key/value placeholders to replace in DDL scripts.</a>
+<span class="sourceLineNo">068</span><a id="line.68">   */</a>
+<span class="sourceLineNo">069</span><a id="line.69">  protected Map&lt;String, String&gt; runPlaceholderMap;</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  /**</a>
+<span class="sourceLineNo">072</span><a id="line.72">   * DB schema used for the migration (and testing).</a>
+<span class="sourceLineNo">073</span><a id="line.73">   */</a>
+<span class="sourceLineNo">074</span><a id="line.74">  protected String dbSchema;</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">  /**</a>
+<span class="sourceLineNo">077</span><a id="line.77">   * Set to true if we consider this the 'default schema' (Postgres schema that matches DB username)</a>
+<span class="sourceLineNo">078</span><a id="line.78">   */</a>
+<span class="sourceLineNo">079</span><a id="line.79">  protected boolean defaultDbSchema;</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">  /**</a>
+<span class="sourceLineNo">082</span><a id="line.82">   * DB user used to run the DB migration.</a>
+<span class="sourceLineNo">083</span><a id="line.83">   */</a>
+<span class="sourceLineNo">084</span><a id="line.84">  protected String dbUsername;</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">  /**</a>
+<span class="sourceLineNo">087</span><a id="line.87">   * DB password used to run the DB migration.</a>
+<span class="sourceLineNo">088</span><a id="line.88">   */</a>
+<span class="sourceLineNo">089</span><a id="line.89">  protected String dbPassword;</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">  protected String patchInsertOn;</a>
+<span class="sourceLineNo">092</span><a id="line.92"></a>
+<span class="sourceLineNo">093</span><a id="line.93">  protected String patchResetChecksumOn;</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">  /**</a>
+<span class="sourceLineNo">096</span><a id="line.96">   * Mode used to check non-null columns added via migration have a default value specified etc.</a>
+<span class="sourceLineNo">097</span><a id="line.97">   */</a>
+<span class="sourceLineNo">098</span><a id="line.98">  protected boolean strictMode = true;</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">  /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">   * Contains the DDL-header information.</a>
+<span class="sourceLineNo">102</span><a id="line.102">   */</a>
+<span class="sourceLineNo">103</span><a id="line.103">  protected String ddlHeader;</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">  /**</a>
+<span class="sourceLineNo">106</span><a id="line.106">   * Return the DB platform to generate migration DDL for.</a>
+<span class="sourceLineNo">107</span><a id="line.107">   * &lt;p&gt;</a>
+<span class="sourceLineNo">108</span><a id="line.108">   * We typically need to explicitly specify this as migration can often be generated</a>
+<span class="sourceLineNo">109</span><a id="line.109">   * when running against H2.</a>
+<span class="sourceLineNo">110</span><a id="line.110">   */</a>
+<span class="sourceLineNo">111</span><a id="line.111">  public Platform getPlatform() {</a>
+<span class="sourceLineNo">112</span><a id="line.112">    return platform;</a>
+<span class="sourceLineNo">113</span><a id="line.113">  }</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">  /**</a>
+<span class="sourceLineNo">116</span><a id="line.116">   * Set the DB platform to generate migration DDL for.</a>
+<span class="sourceLineNo">117</span><a id="line.117">   */</a>
+<span class="sourceLineNo">118</span><a id="line.118">  public void setPlatform(Platform platform) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">    this.platform = platform;</a>
+<span class="sourceLineNo">120</span><a id="line.120">  }</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">  /**</a>
+<span class="sourceLineNo">123</span><a id="line.123">   * Return the path for normal migrations or dbinit migrations.</a>
+<span class="sourceLineNo">124</span><a id="line.124">   *</a>
+<span class="sourceLineNo">125</span><a id="line.125">   * @param dbinitMigration When true return the path for dbinit migrations.</a>
+<span class="sourceLineNo">126</span><a id="line.126">   */</a>
+<span class="sourceLineNo">127</span><a id="line.127">  public String getMigrationPath(boolean dbinitMigration) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">    return dbinitMigration ? migrationInitPath : migrationPath;</a>
+<span class="sourceLineNo">129</span><a id="line.129">  }</a>
+<span class="sourceLineNo">130</span><a id="line.130"></a>
+<span class="sourceLineNo">131</span><a id="line.131">  /**</a>
+<span class="sourceLineNo">132</span><a id="line.132">   * Return the resource path for db migrations.</a>
+<span class="sourceLineNo">133</span><a id="line.133">   */</a>
+<span class="sourceLineNo">134</span><a id="line.134">  public String getMigrationPath() {</a>
+<span class="sourceLineNo">135</span><a id="line.135">    return migrationPath;</a>
+<span class="sourceLineNo">136</span><a id="line.136">  }</a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">  /**</a>
+<span class="sourceLineNo">139</span><a id="line.139">   * Set the resource path for db migrations.</a>
+<span class="sourceLineNo">140</span><a id="line.140">   * &lt;p&gt;</a>
+<span class="sourceLineNo">141</span><a id="line.141">   * The default of "dbmigration" is reasonable in most cases. You may look to set this</a>
+<span class="sourceLineNo">142</span><a id="line.142">   * to be something like "dbmigration/myapp" where myapp gives it a unique resource path</a>
+<span class="sourceLineNo">143</span><a id="line.143">   * in the case there are multiple Database applications in the single classpath.</a>
+<span class="sourceLineNo">144</span><a id="line.144">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">145</span><a id="line.145">   */</a>
+<span class="sourceLineNo">146</span><a id="line.146">  public void setMigrationPath(String migrationPath) {</a>
+<span class="sourceLineNo">147</span><a id="line.147">    this.migrationPath = migrationPath;</a>
+<span class="sourceLineNo">148</span><a id="line.148">  }</a>
+<span class="sourceLineNo">149</span><a id="line.149"></a>
+<span class="sourceLineNo">150</span><a id="line.150">  /**</a>
+<span class="sourceLineNo">151</span><a id="line.151">   * Return the relative path for the model files (defaults to model).</a>
+<span class="sourceLineNo">152</span><a id="line.152">   */</a>
+<span class="sourceLineNo">153</span><a id="line.153">  public String getModelPath() {</a>
+<span class="sourceLineNo">154</span><a id="line.154">    return modelPath;</a>
+<span class="sourceLineNo">155</span><a id="line.155">  }</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">  /**</a>
+<span class="sourceLineNo">158</span><a id="line.158">   * Set the relative path for the model files.</a>
+<span class="sourceLineNo">159</span><a id="line.159">   */</a>
+<span class="sourceLineNo">160</span><a id="line.160">  public void setModelPath(String modelPath) {</a>
+<span class="sourceLineNo">161</span><a id="line.161">    this.modelPath = modelPath;</a>
+<span class="sourceLineNo">162</span><a id="line.162">  }</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">  /**</a>
+<span class="sourceLineNo">165</span><a id="line.165">   * Return the model suffix (defaults to model.xml)</a>
+<span class="sourceLineNo">166</span><a id="line.166">   */</a>
+<span class="sourceLineNo">167</span><a id="line.167">  public String getModelSuffix() {</a>
+<span class="sourceLineNo">168</span><a id="line.168">    return modelSuffix;</a>
+<span class="sourceLineNo">169</span><a id="line.169">  }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">  /**</a>
+<span class="sourceLineNo">172</span><a id="line.172">   * Set the model suffix.</a>
+<span class="sourceLineNo">173</span><a id="line.173">   */</a>
+<span class="sourceLineNo">174</span><a id="line.174">  public void setModelSuffix(String modelSuffix) {</a>
+<span class="sourceLineNo">175</span><a id="line.175">    this.modelSuffix = modelSuffix;</a>
+<span class="sourceLineNo">176</span><a id="line.176">  }</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">  /**</a>
+<span class="sourceLineNo">179</span><a id="line.179">   * Return the apply script suffix (defaults to sql).</a>
+<span class="sourceLineNo">180</span><a id="line.180">   */</a>
+<span class="sourceLineNo">181</span><a id="line.181">  public String getApplySuffix() {</a>
+<span class="sourceLineNo">182</span><a id="line.182">    return applySuffix;</a>
+<span class="sourceLineNo">183</span><a id="line.183">  }</a>
+<span class="sourceLineNo">184</span><a id="line.184"></a>
+<span class="sourceLineNo">185</span><a id="line.185">  /**</a>
+<span class="sourceLineNo">186</span><a id="line.186">   * Set the apply script suffix (defaults to sql).</a>
+<span class="sourceLineNo">187</span><a id="line.187">   */</a>
+<span class="sourceLineNo">188</span><a id="line.188">  public void setApplySuffix(String applySuffix) {</a>
+<span class="sourceLineNo">189</span><a id="line.189">    this.applySuffix = applySuffix;</a>
+<span class="sourceLineNo">190</span><a id="line.190">  }</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">  /**</a>
+<span class="sourceLineNo">193</span><a id="line.193">   * Return the apply prefix.</a>
+<span class="sourceLineNo">194</span><a id="line.194">   */</a>
+<span class="sourceLineNo">195</span><a id="line.195">  public String getApplyPrefix() {</a>
+<span class="sourceLineNo">196</span><a id="line.196">    return applyPrefix;</a>
+<span class="sourceLineNo">197</span><a id="line.197">  }</a>
+<span class="sourceLineNo">198</span><a id="line.198"></a>
+<span class="sourceLineNo">199</span><a id="line.199">  /**</a>
+<span class="sourceLineNo">200</span><a id="line.200">   * Set the apply prefix. This might be set to "V" for use with FlywayDB.</a>
+<span class="sourceLineNo">201</span><a id="line.201">   */</a>
+<span class="sourceLineNo">202</span><a id="line.202">  public void setApplyPrefix(String applyPrefix) {</a>
+<span class="sourceLineNo">203</span><a id="line.203">    this.applyPrefix = applyPrefix;</a>
+<span class="sourceLineNo">204</span><a id="line.204">  }</a>
+<span class="sourceLineNo">205</span><a id="line.205"></a>
+<span class="sourceLineNo">206</span><a id="line.206">  /**</a>
+<span class="sourceLineNo">207</span><a id="line.207">   * Return the table name that holds the migration run details</a>
+<span class="sourceLineNo">208</span><a id="line.208">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">209</span><a id="line.209">   */</a>
+<span class="sourceLineNo">210</span><a id="line.210">  public String getMetaTable() {</a>
+<span class="sourceLineNo">211</span><a id="line.211">    return metaTable;</a>
+<span class="sourceLineNo">212</span><a id="line.212">  }</a>
+<span class="sourceLineNo">213</span><a id="line.213"></a>
+<span class="sourceLineNo">214</span><a id="line.214">  /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">   * Set the table name that holds the migration run details</a>
+<span class="sourceLineNo">216</span><a id="line.216">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">217</span><a id="line.217">   */</a>
+<span class="sourceLineNo">218</span><a id="line.218">  public void setMetaTable(String metaTable) {</a>
+<span class="sourceLineNo">219</span><a id="line.219">    this.metaTable = metaTable;</a>
+<span class="sourceLineNo">220</span><a id="line.220">  }</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">  /**</a>
+<span class="sourceLineNo">223</span><a id="line.223">   * Return a comma and equals delimited placeholders that are substituted in SQL scripts when running migration</a>
+<span class="sourceLineNo">224</span><a id="line.224">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">225</span><a id="line.225">   */</a>
+<span class="sourceLineNo">226</span><a id="line.226">  public String getRunPlaceholders() {</a>
+<span class="sourceLineNo">227</span><a id="line.227">    // environment properties take precedence</a>
+<span class="sourceLineNo">228</span><a id="line.228">    String placeholders = readEnvironment("ddl.migration.placeholders");</a>
+<span class="sourceLineNo">229</span><a id="line.229">    if (placeholders != null) {</a>
+<span class="sourceLineNo">230</span><a id="line.230">      return placeholders;</a>
+<span class="sourceLineNo">231</span><a id="line.231">    }</a>
+<span class="sourceLineNo">232</span><a id="line.232">    return runPlaceholders;</a>
+<span class="sourceLineNo">233</span><a id="line.233">  }</a>
+<span class="sourceLineNo">234</span><a id="line.234"></a>
+<span class="sourceLineNo">235</span><a id="line.235">  /**</a>
+<span class="sourceLineNo">236</span><a id="line.236">   * Set a comma and equals delimited placeholders that are substituted in SQL scripts when running migration</a>
+<span class="sourceLineNo">237</span><a id="line.237">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">238</span><a id="line.238">   */</a>
+<span class="sourceLineNo">239</span><a id="line.239">  public void setRunPlaceholders(String runPlaceholders) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">    this.runPlaceholders = runPlaceholders;</a>
+<span class="sourceLineNo">241</span><a id="line.241">  }</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">  /**</a>
+<span class="sourceLineNo">244</span><a id="line.244">   * Return a map of placeholder values that are substituted in SQL scripts when running migration</a>
+<span class="sourceLineNo">245</span><a id="line.245">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">246</span><a id="line.246">   */</a>
+<span class="sourceLineNo">247</span><a id="line.247">  public Map&lt;String, String&gt; getRunPlaceholderMap() {</a>
+<span class="sourceLineNo">248</span><a id="line.248">    return runPlaceholderMap;</a>
+<span class="sourceLineNo">249</span><a id="line.249">  }</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">  /**</a>
+<span class="sourceLineNo">252</span><a id="line.252">   * Set a map of placeholder values that are substituted when running migration</a>
+<span class="sourceLineNo">253</span><a id="line.253">   * (used by DB Migration runner only).</a>
+<span class="sourceLineNo">254</span><a id="line.254">   */</a>
+<span class="sourceLineNo">255</span><a id="line.255">  public void setRunPlaceholderMap(Map&lt;String, String&gt; runPlaceholderMap) {</a>
+<span class="sourceLineNo">256</span><a id="line.256">    this.runPlaceholderMap = runPlaceholderMap;</a>
+<span class="sourceLineNo">257</span><a id="line.257">  }</a>
+<span class="sourceLineNo">258</span><a id="line.258"></a>
+<span class="sourceLineNo">259</span><a id="line.259">  /**</a>
+<span class="sourceLineNo">260</span><a id="line.260">   * Return true if the DB migration should be run on startup.</a>
+<span class="sourceLineNo">261</span><a id="line.261">   */</a>
+<span class="sourceLineNo">262</span><a id="line.262">  public boolean isRunMigration() {</a>
+<span class="sourceLineNo">263</span><a id="line.263">    // environment properties take precedence</a>
+<span class="sourceLineNo">264</span><a id="line.264">    String run = readEnvironment("ddl.migration.run");</a>
+<span class="sourceLineNo">265</span><a id="line.265">    if (run != null) {</a>
+<span class="sourceLineNo">266</span><a id="line.266">      return "true".equalsIgnoreCase(run.trim());</a>
+<span class="sourceLineNo">267</span><a id="line.267">    }</a>
+<span class="sourceLineNo">268</span><a id="line.268">    return runMigration;</a>
+<span class="sourceLineNo">269</span><a id="line.269">  }</a>
+<span class="sourceLineNo">270</span><a id="line.270"></a>
+<span class="sourceLineNo">271</span><a id="line.271">  /**</a>
+<span class="sourceLineNo">272</span><a id="line.272">   * Set to true to run the DB migration on startup.</a>
+<span class="sourceLineNo">273</span><a id="line.273">   */</a>
+<span class="sourceLineNo">274</span><a id="line.274">  public void setRunMigration(boolean runMigration) {</a>
+<span class="sourceLineNo">275</span><a id="line.275">    this.runMigration = runMigration;</a>
+<span class="sourceLineNo">276</span><a id="line.276">  }</a>
+<span class="sourceLineNo">277</span><a id="line.277"></a>
+<span class="sourceLineNo">278</span><a id="line.278">  /**</a>
+<span class="sourceLineNo">279</span><a id="line.279">   * Return the DB username to use for running DB migrations.</a>
+<span class="sourceLineNo">280</span><a id="line.280">   */</a>
+<span class="sourceLineNo">281</span><a id="line.281">  public String getDbUsername() {</a>
+<span class="sourceLineNo">282</span><a id="line.282">    // environment properties take precedence</a>
+<span class="sourceLineNo">283</span><a id="line.283">    String user = readEnvironment("ddl.migration.user");</a>
+<span class="sourceLineNo">284</span><a id="line.284">    if (user != null) {</a>
+<span class="sourceLineNo">285</span><a id="line.285">      return user;</a>
+<span class="sourceLineNo">286</span><a id="line.286">    }</a>
+<span class="sourceLineNo">287</span><a id="line.287">    return dbUsername;</a>
+<span class="sourceLineNo">288</span><a id="line.288">  }</a>
+<span class="sourceLineNo">289</span><a id="line.289"></a>
+<span class="sourceLineNo">290</span><a id="line.290">  /**</a>
+<span class="sourceLineNo">291</span><a id="line.291">   * Set the DB username to use for running DB migrations.</a>
+<span class="sourceLineNo">292</span><a id="line.292">   */</a>
+<span class="sourceLineNo">293</span><a id="line.293">  public void setDbUsername(String dbUsername) {</a>
+<span class="sourceLineNo">294</span><a id="line.294">    this.dbUsername = dbUsername;</a>
+<span class="sourceLineNo">295</span><a id="line.295">  }</a>
+<span class="sourceLineNo">296</span><a id="line.296"></a>
+<span class="sourceLineNo">297</span><a id="line.297">  /**</a>
+<span class="sourceLineNo">298</span><a id="line.298">   * Return the DB password to use for running DB migrations.</a>
+<span class="sourceLineNo">299</span><a id="line.299">   */</a>
+<span class="sourceLineNo">300</span><a id="line.300">  public String getDbPassword() {</a>
+<span class="sourceLineNo">301</span><a id="line.301">    String user = readEnvironment("ddl.migration.password");</a>
+<span class="sourceLineNo">302</span><a id="line.302">    if (user != null) {</a>
+<span class="sourceLineNo">303</span><a id="line.303">      return user;</a>
+<span class="sourceLineNo">304</span><a id="line.304">    }</a>
+<span class="sourceLineNo">305</span><a id="line.305">    return dbPassword;</a>
+<span class="sourceLineNo">306</span><a id="line.306">  }</a>
+<span class="sourceLineNo">307</span><a id="line.307"></a>
+<span class="sourceLineNo">308</span><a id="line.308">  /**</a>
+<span class="sourceLineNo">309</span><a id="line.309">   * Set the DB password to use for running DB migrations.</a>
+<span class="sourceLineNo">310</span><a id="line.310">   */</a>
+<span class="sourceLineNo">311</span><a id="line.311">  public void setDbPassword(String dbPassword) {</a>
+<span class="sourceLineNo">312</span><a id="line.312">    this.dbPassword = dbPassword;</a>
+<span class="sourceLineNo">313</span><a id="line.313">  }</a>
+<span class="sourceLineNo">314</span><a id="line.314"></a>
+<span class="sourceLineNo">315</span><a id="line.315">  /**</a>
+<span class="sourceLineNo">316</span><a id="line.316">   * Return the DB schema to use (for migration, testing etc).</a>
+<span class="sourceLineNo">317</span><a id="line.317">   */</a>
+<span class="sourceLineNo">318</span><a id="line.318">  public String getDbSchema() {</a>
+<span class="sourceLineNo">319</span><a id="line.319">    String schema = readEnvironment("ddl.migration.schema");</a>
+<span class="sourceLineNo">320</span><a id="line.320">    if (schema != null) {</a>
+<span class="sourceLineNo">321</span><a id="line.321">      return schema;</a>
+<span class="sourceLineNo">322</span><a id="line.322">    }</a>
+<span class="sourceLineNo">323</span><a id="line.323">    return dbSchema;</a>
+<span class="sourceLineNo">324</span><a id="line.324">  }</a>
+<span class="sourceLineNo">325</span><a id="line.325"></a>
+<span class="sourceLineNo">326</span><a id="line.326">  /**</a>
+<span class="sourceLineNo">327</span><a id="line.327">   * Set the Db schema to use.</a>
+<span class="sourceLineNo">328</span><a id="line.328">   */</a>
+<span class="sourceLineNo">329</span><a id="line.329">  public void setDbSchema(String dbSchema) {</a>
+<span class="sourceLineNo">330</span><a id="line.330">    this.dbSchema = dbSchema;</a>
+<span class="sourceLineNo">331</span><a id="line.331">  }</a>
+<span class="sourceLineNo">332</span><a id="line.332"></a>
+<span class="sourceLineNo">333</span><a id="line.333">  /**</a>
+<span class="sourceLineNo">334</span><a id="line.334">   * Set the Db schema if it hasn't already been defined.</a>
+<span class="sourceLineNo">335</span><a id="line.335">   */</a>
+<span class="sourceLineNo">336</span><a id="line.336">  public void setDefaultDbSchema(String dbSchema) {</a>
+<span class="sourceLineNo">337</span><a id="line.337">    this.defaultDbSchema = true;</a>
+<span class="sourceLineNo">338</span><a id="line.338">    this.dbSchema = dbSchema;</a>
+<span class="sourceLineNo">339</span><a id="line.339">  }</a>
+<span class="sourceLineNo">340</span><a id="line.340"></a>
+<span class="sourceLineNo">341</span><a id="line.341">  /**</a>
+<span class="sourceLineNo">342</span><a id="line.342">   * Return true if this is considered the default DB schema (Postgres schema matching DB username).</a>
+<span class="sourceLineNo">343</span><a id="line.343">   */</a>
+<span class="sourceLineNo">344</span><a id="line.344">  public boolean isDefaultDbSchema() {</a>
+<span class="sourceLineNo">345</span><a id="line.345">    return defaultDbSchema;</a>
+<span class="sourceLineNo">346</span><a id="line.346">  }</a>
+<span class="sourceLineNo">347</span><a id="line.347"></a>
+<span class="sourceLineNo">348</span><a id="line.348">  /**</a>
+<span class="sourceLineNo">349</span><a id="line.349">   * Return migration versions that should be added to history without running.</a>
+<span class="sourceLineNo">350</span><a id="line.350">   */</a>
+<span class="sourceLineNo">351</span><a id="line.351">  public String getPatchInsertOn() {</a>
+<span class="sourceLineNo">352</span><a id="line.352">    return patchInsertOn;</a>
+<span class="sourceLineNo">353</span><a id="line.353">  }</a>
+<span class="sourceLineNo">354</span><a id="line.354"></a>
+<span class="sourceLineNo">355</span><a id="line.355">  /**</a>
+<span class="sourceLineNo">356</span><a id="line.356">   * Set migration versions that should be added to history without running.</a>
+<span class="sourceLineNo">357</span><a id="line.357">   * &lt;p&gt;</a>
+<span class="sourceLineNo">358</span><a id="line.358">   * Value can be a string containing comma delimited list of version numbers.</a>
+<span class="sourceLineNo">359</span><a id="line.359">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">360</span><a id="line.360">   */</a>
+<span class="sourceLineNo">361</span><a id="line.361">  public void setPatchInsertOn(String patchInsertOn) {</a>
+<span class="sourceLineNo">362</span><a id="line.362">    this.patchInsertOn = patchInsertOn;</a>
+<span class="sourceLineNo">363</span><a id="line.363">  }</a>
+<span class="sourceLineNo">364</span><a id="line.364"></a>
+<span class="sourceLineNo">365</span><a id="line.365">  /**</a>
+<span class="sourceLineNo">366</span><a id="line.366">   * Return migration versions that should have their checksum reset and not run.</a>
+<span class="sourceLineNo">367</span><a id="line.367">   */</a>
+<span class="sourceLineNo">368</span><a id="line.368">  public String getPatchResetChecksumOn() {</a>
+<span class="sourceLineNo">369</span><a id="line.369">    return patchResetChecksumOn;</a>
+<span class="sourceLineNo">370</span><a id="line.370">  }</a>
+<span class="sourceLineNo">371</span><a id="line.371"></a>
+<span class="sourceLineNo">372</span><a id="line.372">  /**</a>
+<span class="sourceLineNo">373</span><a id="line.373">   * Returns a DDL header prepend for each DDL. E.g. for copyright headers</a>
+<span class="sourceLineNo">374</span><a id="line.374">   * You can use placeholders like ${version} or ${timestamp} in properties file.</a>
+<span class="sourceLineNo">375</span><a id="line.375">   */</a>
+<span class="sourceLineNo">376</span><a id="line.376">  public String getDdlHeader() {</a>
+<span class="sourceLineNo">377</span><a id="line.377">    if (ddlHeader != null &amp;&amp; !ddlHeader.isEmpty()) {</a>
+<span class="sourceLineNo">378</span><a id="line.378">      ddlHeader = StringHelper.replaceString(ddlHeader, "${version}", EbeanVersion.getVersion());</a>
+<span class="sourceLineNo">379</span><a id="line.379">      ddlHeader = StringHelper.replaceString(ddlHeader, "${timestamp}", ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT ));</a>
+<span class="sourceLineNo">380</span><a id="line.380">    }</a>
+<span class="sourceLineNo">381</span><a id="line.381">    return ddlHeader;</a>
+<span class="sourceLineNo">382</span><a id="line.382">  }</a>
+<span class="sourceLineNo">383</span><a id="line.383"></a>
+<span class="sourceLineNo">384</span><a id="line.384">  /**</a>
+<span class="sourceLineNo">385</span><a id="line.385">   * Set the header prepended to the DDL.</a>
+<span class="sourceLineNo">386</span><a id="line.386">   */</a>
+<span class="sourceLineNo">387</span><a id="line.387">  public void setDdlHeader(String ddlHeader) {</a>
+<span class="sourceLineNo">388</span><a id="line.388">    this.ddlHeader = ddlHeader;</a>
+<span class="sourceLineNo">389</span><a id="line.389">  }</a>
+<span class="sourceLineNo">390</span><a id="line.390"></a>
+<span class="sourceLineNo">391</span><a id="line.391">  /**</a>
+<span class="sourceLineNo">392</span><a id="line.392">   * Set migration versions that should have their checksum reset and not run.</a>
+<span class="sourceLineNo">393</span><a id="line.393">   * &lt;p&gt;</a>
+<span class="sourceLineNo">394</span><a id="line.394">   * Value can be a string containing comma delimited list of version numbers.</a>
+<span class="sourceLineNo">395</span><a id="line.395">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">396</span><a id="line.396">   */</a>
+<span class="sourceLineNo">397</span><a id="line.397">  public void setPatchResetChecksumOn(String patchResetChecksumOn) {</a>
+<span class="sourceLineNo">398</span><a id="line.398">    this.patchResetChecksumOn = patchResetChecksumOn;</a>
+<span class="sourceLineNo">399</span><a id="line.399">  }</a>
+<span class="sourceLineNo">400</span><a id="line.400"></a>
+<span class="sourceLineNo">401</span><a id="line.401">  /**</a>
+<span class="sourceLineNo">402</span><a id="line.402">   * Return true if strict mode is used which includes a check that non-null columns have a default value.</a>
+<span class="sourceLineNo">403</span><a id="line.403">   */</a>
+<span class="sourceLineNo">404</span><a id="line.404">  public boolean isStrictMode() {</a>
+<span class="sourceLineNo">405</span><a id="line.405">    String envValue = readEnvironment("ddl.migration.strictMode");</a>
+<span class="sourceLineNo">406</span><a id="line.406">    if (!isEmpty(envValue)) {</a>
+<span class="sourceLineNo">407</span><a id="line.407">      return Boolean.parseBoolean(envValue.trim());</a>
+<span class="sourceLineNo">408</span><a id="line.408">    }</a>
+<span class="sourceLineNo">409</span><a id="line.409">    return strictMode;</a>
+<span class="sourceLineNo">410</span><a id="line.410">  }</a>
+<span class="sourceLineNo">411</span><a id="line.411"></a>
+<span class="sourceLineNo">412</span><a id="line.412">  /**</a>
+<span class="sourceLineNo">413</span><a id="line.413">   * Set to false to turn off strict mode allowing non-null columns to not have a default value.</a>
+<span class="sourceLineNo">414</span><a id="line.414">   */</a>
+<span class="sourceLineNo">415</span><a id="line.415">  public void setStrictMode(boolean strictMode) {</a>
+<span class="sourceLineNo">416</span><a id="line.416">    this.strictMode = strictMode;</a>
+<span class="sourceLineNo">417</span><a id="line.417">  }</a>
+<span class="sourceLineNo">418</span><a id="line.418"></a>
+<span class="sourceLineNo">419</span><a id="line.419">  /**</a>
+<span class="sourceLineNo">420</span><a id="line.420">   * Return the underlying migration runner configuration allowing for more advanced settings.</a>
+<span class="sourceLineNo">421</span><a id="line.421">   */</a>
+<span class="sourceLineNo">422</span><a id="line.422">  public MigrationConfig getRunnerConfig() {</a>
+<span class="sourceLineNo">423</span><a id="line.423">    return runnerConfig;</a>
+<span class="sourceLineNo">424</span><a id="line.424">  }</a>
+<span class="sourceLineNo">425</span><a id="line.425"></a>
+<span class="sourceLineNo">426</span><a id="line.426">  /**</a>
+<span class="sourceLineNo">427</span><a id="line.427">   * Load the settings from the PropertiesWrapper.</a>
+<span class="sourceLineNo">428</span><a id="line.428">   */</a>
+<span class="sourceLineNo">429</span><a id="line.429">  public void loadSettings(PropertiesWrapper properties, String serverName) {</a>
+<span class="sourceLineNo">430</span><a id="line.430"></a>
+<span class="sourceLineNo">431</span><a id="line.431">    migrationPath = properties.get("migration.migrationPath", migrationPath);</a>
+<span class="sourceLineNo">432</span><a id="line.432">    migrationInitPath = properties.get("migration.migrationInitPath", migrationInitPath);</a>
+<span class="sourceLineNo">433</span><a id="line.433">    modelPath = properties.get("migration.modelPath", modelPath);</a>
+<span class="sourceLineNo">434</span><a id="line.434">    applyPrefix = properties.get("migration.applyPrefix", applyPrefix);</a>
+<span class="sourceLineNo">435</span><a id="line.435">    applySuffix = properties.get("migration.applySuffix", applySuffix);</a>
+<span class="sourceLineNo">436</span><a id="line.436">    modelSuffix = properties.get("migration.modelSuffix", modelSuffix);</a>
+<span class="sourceLineNo">437</span><a id="line.437"></a>
+<span class="sourceLineNo">438</span><a id="line.438">    platform = properties.getEnum(Platform.class, "migration.platform", platform);</a>
+<span class="sourceLineNo">439</span><a id="line.439">    patchInsertOn = properties.get("migration.patchInsertOn", patchInsertOn);</a>
+<span class="sourceLineNo">440</span><a id="line.440">    patchResetChecksumOn = properties.get("migration.patchResetChecksumOn", patchResetChecksumOn);</a>
+<span class="sourceLineNo">441</span><a id="line.441"></a>
+<span class="sourceLineNo">442</span><a id="line.442">    runMigration = properties.getBoolean("migration.run", runMigration);</a>
+<span class="sourceLineNo">443</span><a id="line.443">    metaTable = properties.get("migration.metaTable", metaTable);</a>
+<span class="sourceLineNo">444</span><a id="line.444">    runPlaceholders = properties.get("migration.placeholders", runPlaceholders);</a>
+<span class="sourceLineNo">445</span><a id="line.445">    dbSchema = properties.get("migration.dbSchema", dbSchema);</a>
+<span class="sourceLineNo">446</span><a id="line.446"></a>
+<span class="sourceLineNo">447</span><a id="line.447">    //Do not set user and pass from "datasource.db.username"</a>
+<span class="sourceLineNo">448</span><a id="line.448">    //There is a null test in MigrationRunner::getConnection to handle this</a>
+<span class="sourceLineNo">449</span><a id="line.449">    //String adminUser = properties.get("datasource." + serverName + ".username", dbUsername);</a>
+<span class="sourceLineNo">450</span><a id="line.450">    String adminUser = properties.get("datasource." + serverName + ".adminusername", dbUsername);</a>
+<span class="sourceLineNo">451</span><a id="line.451">    dbUsername = properties.get("migration.dbusername", adminUser);</a>
+<span class="sourceLineNo">452</span><a id="line.452"></a>
+<span class="sourceLineNo">453</span><a id="line.453">    //String adminPwd = properties.get("datasource." + serverName + ".password", dbPassword);</a>
+<span class="sourceLineNo">454</span><a id="line.454">    String adminPwd = properties.get("datasource." + serverName + ".adminpassword", dbPassword);</a>
+<span class="sourceLineNo">455</span><a id="line.455">    dbPassword = properties.get("migration.dbpassword", adminPwd);</a>
+<span class="sourceLineNo">456</span><a id="line.456">    ddlHeader = properties.get("ddl.header", ddlHeader);</a>
+<span class="sourceLineNo">457</span><a id="line.457">  }</a>
+<span class="sourceLineNo">458</span><a id="line.458"></a>
+<span class="sourceLineNo">459</span><a id="line.459">  /**</a>
+<span class="sourceLineNo">460</span><a id="line.460">   * Return the system or environment property.</a>
+<span class="sourceLineNo">461</span><a id="line.461">   */</a>
+<span class="sourceLineNo">462</span><a id="line.462">  protected String readEnvironment(String key) {</a>
+<span class="sourceLineNo">463</span><a id="line.463"></a>
+<span class="sourceLineNo">464</span><a id="line.464">    String val = System.getProperty(key);</a>
+<span class="sourceLineNo">465</span><a id="line.465">    if (val == null) {</a>
+<span class="sourceLineNo">466</span><a id="line.466">      val = System.getenv(key);</a>
+<span class="sourceLineNo">467</span><a id="line.467">    }</a>
+<span class="sourceLineNo">468</span><a id="line.468">    return val;</a>
+<span class="sourceLineNo">469</span><a id="line.469">  }</a>
+<span class="sourceLineNo">470</span><a id="line.470"></a>
+<span class="sourceLineNo">471</span><a id="line.471">  /**</a>
+<span class="sourceLineNo">472</span><a id="line.472">   * Return true if the string is null or empty.</a>
+<span class="sourceLineNo">473</span><a id="line.473">   */</a>
+<span class="sourceLineNo">474</span><a id="line.474">  protected boolean isEmpty(String val) {</a>
+<span class="sourceLineNo">475</span><a id="line.475">    return val == null || val.trim().isEmpty();</a>
+<span class="sourceLineNo">476</span><a id="line.476">  }</a>
+<span class="sourceLineNo">477</span><a id="line.477"></a>
+<span class="sourceLineNo">478</span><a id="line.478">  /**</a>
+<span class="sourceLineNo">479</span><a id="line.479">   * Create the MigrationRunner to run migrations if necessary.</a>
+<span class="sourceLineNo">480</span><a id="line.480">   */</a>
+<span class="sourceLineNo">481</span><a id="line.481">  public MigrationRunner createRunner(ClassLoader classLoader, Properties properties) {</a>
+<span class="sourceLineNo">482</span><a id="line.482"></a>
+<span class="sourceLineNo">483</span><a id="line.483">    runnerConfig.setMetaTable(metaTable);</a>
+<span class="sourceLineNo">484</span><a id="line.484">    runnerConfig.setApplySuffix(applySuffix);</a>
+<span class="sourceLineNo">485</span><a id="line.485">    runnerConfig.setMigrationPath(migrationPath);</a>
+<span class="sourceLineNo">486</span><a id="line.486">    runnerConfig.setMigrationInitPath(migrationInitPath);</a>
+<span class="sourceLineNo">487</span><a id="line.487">    runnerConfig.setRunPlaceholderMap(runPlaceholderMap);</a>
+<span class="sourceLineNo">488</span><a id="line.488">    runnerConfig.setRunPlaceholders(runPlaceholders);</a>
+<span class="sourceLineNo">489</span><a id="line.489">    runnerConfig.setDbUsername(getDbUsername());</a>
+<span class="sourceLineNo">490</span><a id="line.490">    runnerConfig.setDbPassword(getDbPassword());</a>
+<span class="sourceLineNo">491</span><a id="line.491">    runnerConfig.setDbSchema(getDbSchema());</a>
+<span class="sourceLineNo">492</span><a id="line.492">    if (defaultDbSchema) {</a>
+<span class="sourceLineNo">493</span><a id="line.493">      runnerConfig.setSetCurrentSchema(false);</a>
+<span class="sourceLineNo">494</span><a id="line.494">    }</a>
+<span class="sourceLineNo">495</span><a id="line.495">    runnerConfig.setClassLoader(classLoader);</a>
+<span class="sourceLineNo">496</span><a id="line.496">    if (patchInsertOn != null) {</a>
+<span class="sourceLineNo">497</span><a id="line.497">      runnerConfig.setPatchInsertOn(patchInsertOn);</a>
+<span class="sourceLineNo">498</span><a id="line.498">    }</a>
+<span class="sourceLineNo">499</span><a id="line.499">    if (patchResetChecksumOn != null) {</a>
+<span class="sourceLineNo">500</span><a id="line.500">      runnerConfig.setPatchResetChecksumOn(patchResetChecksumOn);</a>
+<span class="sourceLineNo">501</span><a id="line.501">    }</a>
+<span class="sourceLineNo">502</span><a id="line.502">    if (properties != null) {</a>
+<span class="sourceLineNo">503</span><a id="line.503">      runnerConfig.load(properties);</a>
+<span class="sourceLineNo">504</span><a id="line.504">    }</a>
+<span class="sourceLineNo">505</span><a id="line.505">    return new MigrationRunner(runnerConfig);</a>
+<span class="sourceLineNo">506</span><a id="line.506">  }</a>
+<span class="sourceLineNo">507</span><a id="line.507">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

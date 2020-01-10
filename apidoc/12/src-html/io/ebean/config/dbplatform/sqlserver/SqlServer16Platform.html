@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.config.dbplatform.sqlserver;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.annotation.Platform;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import io.ebean.config.dbplatform.DbPlatformType;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import io.ebean.config.dbplatform.DbType;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import io.ebean.config.dbplatform.IdType;</a>
+<span class="sourceLineNo">007</span><a id="line.7"></a>
+<span class="sourceLineNo">008</span><a id="line.8">/**</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * Microsoft SQL Server platform that has non-UTF8 types (char, varchar, text) and default to Identity rather than Sequence.</a>
+<span class="sourceLineNo">010</span><a id="line.10"> */</a>
+<span class="sourceLineNo">011</span><a id="line.11">public class SqlServer16Platform extends SqlServerBasePlatform {</a>
+<span class="sourceLineNo">012</span><a id="line.12"></a>
+<span class="sourceLineNo">013</span><a id="line.13">  public SqlServer16Platform() {</a>
+<span class="sourceLineNo">014</span><a id="line.14">    super();</a>
+<span class="sourceLineNo">015</span><a id="line.15">    this.platform = Platform.SQLSERVER16;</a>
+<span class="sourceLineNo">016</span><a id="line.16">    // default to use Identity rather than sequences</a>
+<span class="sourceLineNo">017</span><a id="line.17">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">    // non-utf8 column types</a>
+<span class="sourceLineNo">020</span><a id="line.20">    dbTypeMap.put(DbType.CHAR, new DbPlatformType("char", 1));</a>
+<span class="sourceLineNo">021</span><a id="line.21">    dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("varchar", 255));</a>
+<span class="sourceLineNo">022</span><a id="line.22">    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("text"));</a>
+<span class="sourceLineNo">023</span><a id="line.23">    dbTypeMap.put(DbType.CLOB, new DbPlatformType("text"));</a>
+<span class="sourceLineNo">024</span><a id="line.24">  }</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

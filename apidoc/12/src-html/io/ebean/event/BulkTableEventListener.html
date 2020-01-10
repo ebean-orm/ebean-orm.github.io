@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.event;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.DB;</a>
+<span class="sourceLineNo">004</span><a id="line.4"></a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.Set;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Listen for bulk table events that occur.</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * &lt;p&gt;</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * These events can be triggered via</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * {@link DB#externalModification(String, boolean, boolean, boolean)} or</a>
+<span class="sourceLineNo">012</span><a id="line.12"> * automatically determined from Ebean bulk update statements.</a>
+<span class="sourceLineNo">013</span><a id="line.13"> */</a>
+<span class="sourceLineNo">014</span><a id="line.14">public interface BulkTableEventListener {</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">  /**</a>
+<span class="sourceLineNo">017</span><a id="line.17">   * Return the tables that this listener is interested in.</a>
+<span class="sourceLineNo">018</span><a id="line.18">   */</a>
+<span class="sourceLineNo">019</span><a id="line.19">  Set&lt;String&gt; registeredTables();</a>
+<span class="sourceLineNo">020</span><a id="line.20"></a>
+<span class="sourceLineNo">021</span><a id="line.21">  /**</a>
+<span class="sourceLineNo">022</span><a id="line.22">   * Process the event.</a>
+<span class="sourceLineNo">023</span><a id="line.23">   */</a>
+<span class="sourceLineNo">024</span><a id="line.24">  void process(BulkTableEvent bulkTableEvent);</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

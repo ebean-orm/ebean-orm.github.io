@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.text;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.FetchPath;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import io.ebean.Query;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import io.ebean.util.SplitName;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">import java.util.Collection;</a>
+<span class="sourceLineNo">008</span><a id="line.8">import java.util.Iterator;</a>
+<span class="sourceLineNo">009</span><a id="line.9">import java.util.LinkedHashMap;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import java.util.LinkedHashSet;</a>
+<span class="sourceLineNo">011</span><a id="line.11">import java.util.Map;</a>
+<span class="sourceLineNo">012</span><a id="line.12">import java.util.Map.Entry;</a>
+<span class="sourceLineNo">013</span><a id="line.13">import java.util.Set;</a>
+<span class="sourceLineNo">014</span><a id="line.14"></a>
+<span class="sourceLineNo">015</span><a id="line.15">/**</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * This is a Tree like structure of paths and properties that can be used for</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * defining which parts of an object graph to render in JSON or XML, and can</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * also be used to define which parts to select and fetch for an ORM query.</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * &lt;p&gt;</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * It provides a way of parsing a string representation of nested path</a>
+<span class="sourceLineNo">021</span><a id="line.21"> * properties and applying that to both what to fetch (ORM query) and what to</a>
+<span class="sourceLineNo">022</span><a id="line.22"> * render (JAX-RS JSON / XML).</a>
+<span class="sourceLineNo">023</span><a id="line.23"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">024</span><a id="line.24"> */</a>
+<span class="sourceLineNo">025</span><a id="line.25">public class PathProperties implements FetchPath {</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">  private final Map&lt;String, Props&gt; pathMap;</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">  private final Props rootProps;</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">  /**</a>
+<span class="sourceLineNo">032</span><a id="line.32">   * Parse and return a PathProperties from nested string format like</a>
+<span class="sourceLineNo">033</span><a id="line.33">   * (a,b,c(d,e),f(g)) where "c" is a path containing "d" and "e" and "f" is a</a>
+<span class="sourceLineNo">034</span><a id="line.34">   * path containing "g" and the root path contains "a","b","c" and "f".</a>
+<span class="sourceLineNo">035</span><a id="line.35">   */</a>
+<span class="sourceLineNo">036</span><a id="line.36">  public static PathProperties parse(String source) {</a>
+<span class="sourceLineNo">037</span><a id="line.37">    return PathPropertiesParser.parse(source);</a>
+<span class="sourceLineNo">038</span><a id="line.38">  }</a>
+<span class="sourceLineNo">039</span><a id="line.39"></a>
+<span class="sourceLineNo">040</span><a id="line.40">  /**</a>
+<span class="sourceLineNo">041</span><a id="line.41">   * Construct an empty PathProperties.</a>
+<span class="sourceLineNo">042</span><a id="line.42">   */</a>
+<span class="sourceLineNo">043</span><a id="line.43">  public PathProperties() {</a>
+<span class="sourceLineNo">044</span><a id="line.44">    this.rootProps = new Props(this, null, null);</a>
+<span class="sourceLineNo">045</span><a id="line.45">    this.pathMap = new LinkedHashMap&lt;&gt;();</a>
+<span class="sourceLineNo">046</span><a id="line.46">    this.pathMap.put(null, rootProps);</a>
+<span class="sourceLineNo">047</span><a id="line.47">  }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">  @Override</a>
+<span class="sourceLineNo">050</span><a id="line.50">  public String toString() {</a>
+<span class="sourceLineNo">051</span><a id="line.51">    return pathMap.toString();</a>
+<span class="sourceLineNo">052</span><a id="line.52">  }</a>
+<span class="sourceLineNo">053</span><a id="line.53"></a>
+<span class="sourceLineNo">054</span><a id="line.54">  /**</a>
+<span class="sourceLineNo">055</span><a id="line.55">   * Return true if the path is defined and has properties.</a>
+<span class="sourceLineNo">056</span><a id="line.56">   */</a>
+<span class="sourceLineNo">057</span><a id="line.57">  @Override</a>
+<span class="sourceLineNo">058</span><a id="line.58">  public boolean hasPath(String path) {</a>
+<span class="sourceLineNo">059</span><a id="line.59">    Props props = pathMap.get(path);</a>
+<span class="sourceLineNo">060</span><a id="line.60">    return props != null &amp;&amp; !props.isEmpty();</a>
+<span class="sourceLineNo">061</span><a id="line.61">  }</a>
+<span class="sourceLineNo">062</span><a id="line.62"></a>
+<span class="sourceLineNo">063</span><a id="line.63">  /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">   * Get the properties for a given path.</a>
+<span class="sourceLineNo">065</span><a id="line.65">   */</a>
+<span class="sourceLineNo">066</span><a id="line.66">  @Override</a>
+<span class="sourceLineNo">067</span><a id="line.67">  public Set&lt;String&gt; getProperties(String path) {</a>
+<span class="sourceLineNo">068</span><a id="line.68">    Props props = pathMap.get(path);</a>
+<span class="sourceLineNo">069</span><a id="line.69">    return props == null ? null : props.getProperties();</a>
+<span class="sourceLineNo">070</span><a id="line.70">  }</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">  public void addToPath(String path, String property) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">    getProps(path).getProperties().add(property);</a>
+<span class="sourceLineNo">074</span><a id="line.74">  }</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">  public void addNested(String prefix, PathProperties pathProps) {</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">    for (Entry&lt;String, Props&gt; entry : pathProps.pathMap.entrySet()) {</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">      String path = pathAdd(prefix, entry.getKey());</a>
+<span class="sourceLineNo">081</span><a id="line.81">      String[] split = SplitName.split(path);</a>
+<span class="sourceLineNo">082</span><a id="line.82">      getProps(split[0]).addProperty(split[1]);</a>
+<span class="sourceLineNo">083</span><a id="line.83">      getProps(path).addProps(entry.getValue());</a>
+<span class="sourceLineNo">084</span><a id="line.84">    }</a>
+<span class="sourceLineNo">085</span><a id="line.85">  }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">  private String pathAdd(String prefix, String key) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">    return key == null ? prefix : prefix + "." + key;</a>
+<span class="sourceLineNo">089</span><a id="line.89">  }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">  Props getProps(String path) {</a>
+<span class="sourceLineNo">092</span><a id="line.92">    return pathMap.computeIfAbsent(path, p -&gt; new Props(this, null, p));</a>
+<span class="sourceLineNo">093</span><a id="line.93">  }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">  public Collection&lt;Props&gt; getPathProps() {</a>
+<span class="sourceLineNo">096</span><a id="line.96">    return pathMap.values();</a>
+<span class="sourceLineNo">097</span><a id="line.97">  }</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">  /**</a>
+<span class="sourceLineNo">100</span><a id="line.100">   * Apply these path properties as fetch paths to the query.</a>
+<span class="sourceLineNo">101</span><a id="line.101">   */</a>
+<span class="sourceLineNo">102</span><a id="line.102">  @Override</a>
+<span class="sourceLineNo">103</span><a id="line.103">  public &lt;T&gt; void apply(Query&lt;T&gt; query) {</a>
+<span class="sourceLineNo">104</span><a id="line.104"></a>
+<span class="sourceLineNo">105</span><a id="line.105">    for (Entry&lt;String, Props&gt; entry : pathMap.entrySet()) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">      String path = entry.getKey();</a>
+<span class="sourceLineNo">107</span><a id="line.107">      String props = entry.getValue().getPropertiesAsString();</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">      if (path == null || path.isEmpty()) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">        query.select(props);</a>
+<span class="sourceLineNo">111</span><a id="line.111">      } else {</a>
+<span class="sourceLineNo">112</span><a id="line.112">        query.fetch(path, props);</a>
+<span class="sourceLineNo">113</span><a id="line.113">      }</a>
+<span class="sourceLineNo">114</span><a id="line.114">    }</a>
+<span class="sourceLineNo">115</span><a id="line.115">  }</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">  protected Props getRootProperties() {</a>
+<span class="sourceLineNo">118</span><a id="line.118">    return rootProps;</a>
+<span class="sourceLineNo">119</span><a id="line.119">  }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">  /**</a>
+<span class="sourceLineNo">122</span><a id="line.122">   * Return true if the property (dot notation) is included in the PathProperties.</a>
+<span class="sourceLineNo">123</span><a id="line.123">   */</a>
+<span class="sourceLineNo">124</span><a id="line.124">  public boolean includesProperty(String name) {</a>
+<span class="sourceLineNo">125</span><a id="line.125"></a>
+<span class="sourceLineNo">126</span><a id="line.126">    String[] split = SplitName.split(name);</a>
+<span class="sourceLineNo">127</span><a id="line.127">    Props props = pathMap.get(split[0]);</a>
+<span class="sourceLineNo">128</span><a id="line.128">    return (props != null &amp;&amp; props.includes(split[1]));</a>
+<span class="sourceLineNo">129</span><a id="line.129">  }</a>
+<span class="sourceLineNo">130</span><a id="line.130"></a>
+<span class="sourceLineNo">131</span><a id="line.131">  /**</a>
+<span class="sourceLineNo">132</span><a id="line.132">   * Return true if the property is included using a prefix.</a>
+<span class="sourceLineNo">133</span><a id="line.133">   */</a>
+<span class="sourceLineNo">134</span><a id="line.134">  public boolean includesProperty(String prefix, String name) {</a>
+<span class="sourceLineNo">135</span><a id="line.135">    return includesProperty(SplitName.add(prefix, name));</a>
+<span class="sourceLineNo">136</span><a id="line.136">  }</a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">  /**</a>
+<span class="sourceLineNo">139</span><a id="line.139">   * Return true if the fetch path is included in the PathProperties.</a>
+<span class="sourceLineNo">140</span><a id="line.140">   * &lt;p&gt;</a>
+<span class="sourceLineNo">141</span><a id="line.141">   * The fetch path is a OneToMany or ManyToMany path in dot notation.</a>
+<span class="sourceLineNo">142</span><a id="line.142">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">143</span><a id="line.143">   */</a>
+<span class="sourceLineNo">144</span><a id="line.144">  public boolean includesPath(String path) {</a>
+<span class="sourceLineNo">145</span><a id="line.145">    return pathMap.containsKey(path);</a>
+<span class="sourceLineNo">146</span><a id="line.146">  }</a>
+<span class="sourceLineNo">147</span><a id="line.147"></a>
+<span class="sourceLineNo">148</span><a id="line.148">  /**</a>
+<span class="sourceLineNo">149</span><a id="line.149">   * Return true if the path is included using a prefix.</a>
+<span class="sourceLineNo">150</span><a id="line.150">   */</a>
+<span class="sourceLineNo">151</span><a id="line.151">  public boolean includesPath(String prefix, String name) {</a>
+<span class="sourceLineNo">152</span><a id="line.152">    return includesPath(SplitName.add(prefix, name));</a>
+<span class="sourceLineNo">153</span><a id="line.153">  }</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">  public static class Props {</a>
+<span class="sourceLineNo">156</span><a id="line.156"></a>
+<span class="sourceLineNo">157</span><a id="line.157">    private final PathProperties owner;</a>
+<span class="sourceLineNo">158</span><a id="line.158"></a>
+<span class="sourceLineNo">159</span><a id="line.159">    private final String parentPath;</a>
+<span class="sourceLineNo">160</span><a id="line.160">    private final String path;</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">    private final LinkedHashSet&lt;String&gt; propSet;</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">    private Props(PathProperties owner, String parentPath, String path, LinkedHashSet&lt;String&gt; propSet) {</a>
+<span class="sourceLineNo">165</span><a id="line.165">      this.owner = owner;</a>
+<span class="sourceLineNo">166</span><a id="line.166">      this.path = path;</a>
+<span class="sourceLineNo">167</span><a id="line.167">      this.parentPath = parentPath;</a>
+<span class="sourceLineNo">168</span><a id="line.168">      this.propSet = propSet;</a>
+<span class="sourceLineNo">169</span><a id="line.169">    }</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">    private Props(PathProperties owner, String parentPath, String path) {</a>
+<span class="sourceLineNo">172</span><a id="line.172">      this(owner, parentPath, path, new LinkedHashSet&lt;&gt;());</a>
+<span class="sourceLineNo">173</span><a id="line.173">    }</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">    public String getPath() {</a>
+<span class="sourceLineNo">176</span><a id="line.176">      return path;</a>
+<span class="sourceLineNo">177</span><a id="line.177">    }</a>
+<span class="sourceLineNo">178</span><a id="line.178"></a>
+<span class="sourceLineNo">179</span><a id="line.179">    @Override</a>
+<span class="sourceLineNo">180</span><a id="line.180">    public String toString() {</a>
+<span class="sourceLineNo">181</span><a id="line.181">      return propSet.toString();</a>
+<span class="sourceLineNo">182</span><a id="line.182">    }</a>
+<span class="sourceLineNo">183</span><a id="line.183"></a>
+<span class="sourceLineNo">184</span><a id="line.184">    public boolean isEmpty() {</a>
+<span class="sourceLineNo">185</span><a id="line.185">      return propSet.isEmpty();</a>
+<span class="sourceLineNo">186</span><a id="line.186">    }</a>
+<span class="sourceLineNo">187</span><a id="line.187"></a>
+<span class="sourceLineNo">188</span><a id="line.188">    /**</a>
+<span class="sourceLineNo">189</span><a id="line.189">     * Return the properties for this property set.</a>
+<span class="sourceLineNo">190</span><a id="line.190">     */</a>
+<span class="sourceLineNo">191</span><a id="line.191">    public LinkedHashSet&lt;String&gt; getProperties() {</a>
+<span class="sourceLineNo">192</span><a id="line.192">      return propSet;</a>
+<span class="sourceLineNo">193</span><a id="line.193">    }</a>
+<span class="sourceLineNo">194</span><a id="line.194"></a>
+<span class="sourceLineNo">195</span><a id="line.195">    /**</a>
+<span class="sourceLineNo">196</span><a id="line.196">     * Return the properties as a comma delimited string.</a>
+<span class="sourceLineNo">197</span><a id="line.197">     */</a>
+<span class="sourceLineNo">198</span><a id="line.198">    public String getPropertiesAsString() {</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">      StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">201</span><a id="line.201"></a>
+<span class="sourceLineNo">202</span><a id="line.202">      Iterator&lt;String&gt; it = propSet.iterator();</a>
+<span class="sourceLineNo">203</span><a id="line.203">      boolean hasNext = it.hasNext();</a>
+<span class="sourceLineNo">204</span><a id="line.204">      while (hasNext) {</a>
+<span class="sourceLineNo">205</span><a id="line.205">        sb.append(it.next());</a>
+<span class="sourceLineNo">206</span><a id="line.206">        hasNext = it.hasNext();</a>
+<span class="sourceLineNo">207</span><a id="line.207">        if (hasNext) {</a>
+<span class="sourceLineNo">208</span><a id="line.208">          sb.append(",");</a>
+<span class="sourceLineNo">209</span><a id="line.209">        }</a>
+<span class="sourceLineNo">210</span><a id="line.210">      }</a>
+<span class="sourceLineNo">211</span><a id="line.211">      return sb.toString();</a>
+<span class="sourceLineNo">212</span><a id="line.212">    }</a>
+<span class="sourceLineNo">213</span><a id="line.213"></a>
+<span class="sourceLineNo">214</span><a id="line.214">    /**</a>
+<span class="sourceLineNo">215</span><a id="line.215">     * Return the parent path</a>
+<span class="sourceLineNo">216</span><a id="line.216">     */</a>
+<span class="sourceLineNo">217</span><a id="line.217">    protected Props getParent() {</a>
+<span class="sourceLineNo">218</span><a id="line.218">      return owner.pathMap.get(parentPath);</a>
+<span class="sourceLineNo">219</span><a id="line.219">    }</a>
+<span class="sourceLineNo">220</span><a id="line.220"></a>
+<span class="sourceLineNo">221</span><a id="line.221">    /**</a>
+<span class="sourceLineNo">222</span><a id="line.222">     * Add a child Property set.</a>
+<span class="sourceLineNo">223</span><a id="line.223">     */</a>
+<span class="sourceLineNo">224</span><a id="line.224">    protected Props addChild(String subPath) {</a>
+<span class="sourceLineNo">225</span><a id="line.225"></a>
+<span class="sourceLineNo">226</span><a id="line.226">      subPath = subPath.trim();</a>
+<span class="sourceLineNo">227</span><a id="line.227">      addProperty(subPath);</a>
+<span class="sourceLineNo">228</span><a id="line.228"></a>
+<span class="sourceLineNo">229</span><a id="line.229">      // build the subPath</a>
+<span class="sourceLineNo">230</span><a id="line.230">      String fullPath = path == null ? subPath : path + "." + subPath;</a>
+<span class="sourceLineNo">231</span><a id="line.231">      Props nested = new Props(owner, path, fullPath);</a>
+<span class="sourceLineNo">232</span><a id="line.232">      owner.pathMap.put(fullPath, nested);</a>
+<span class="sourceLineNo">233</span><a id="line.233">      return nested;</a>
+<span class="sourceLineNo">234</span><a id="line.234">    }</a>
+<span class="sourceLineNo">235</span><a id="line.235"></a>
+<span class="sourceLineNo">236</span><a id="line.236">    /**</a>
+<span class="sourceLineNo">237</span><a id="line.237">     * Add a properties to include for this path.</a>
+<span class="sourceLineNo">238</span><a id="line.238">     */</a>
+<span class="sourceLineNo">239</span><a id="line.239">    protected void addProperty(String property) {</a>
+<span class="sourceLineNo">240</span><a id="line.240">      propSet.add(property.trim());</a>
+<span class="sourceLineNo">241</span><a id="line.241">    }</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">    private void addProps(Props value) {</a>
+<span class="sourceLineNo">244</span><a id="line.244">      propSet.addAll(value.propSet);</a>
+<span class="sourceLineNo">245</span><a id="line.245">    }</a>
+<span class="sourceLineNo">246</span><a id="line.246"></a>
+<span class="sourceLineNo">247</span><a id="line.247">    private boolean includes(String prop) {</a>
+<span class="sourceLineNo">248</span><a id="line.248">      return propSet.isEmpty() || propSet.contains(prop) || propSet.contains("*");</a>
+<span class="sourceLineNo">249</span><a id="line.249">    }</a>
+<span class="sourceLineNo">250</span><a id="line.250">  }</a>
+<span class="sourceLineNo">251</span><a id="line.251"></a>
+<span class="sourceLineNo">252</span><a id="line.252">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
