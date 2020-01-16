@@ -47,7 +47,7 @@
     <a  href="#testing">For testing</a>
   </li>
   <li >
-    <a  href="#properties">Via Properties</a>
+    <a  href="#properties">via Properties</a>
   </li>
   <li >
     <a  href="#programmatic">Programmatic</a>
@@ -130,8 +130,8 @@
 <p>
   ebean-test will hook into the Ebean startup and configure the datasource based on
   <code>ebean.test.platform</code> and configure the DDL generation and execution
-  based on <code>ebean.test.ddlMode</code>
-  (plus start, setup and wait for docker container(s) as necessary).
+  based on <code>ebean.test.ddlMode</code> (plus start, setup and wait for docker
+  container(s) as necessary when using docker test containers).
 </p>
 <p>
   Refer to <a href="/docs/testing">docs / testing</a> for more details.
@@ -144,7 +144,7 @@
 </p>
 
 
-<h2 id="properties">Via Properties</h2>
+<h2 id="properties">via Properties</h2>
 <p>
   Database can automatically be configured via properties in <code>application.yaml</code>,
   <code>application.properties</code> etc.
@@ -260,6 +260,10 @@
   and <a href="#config">DatabaseConfig</a>.
 </p>
 
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// datasource</span>
 <span class="n">DataSourceConfig</span> <span class="n">dataSourceConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataSourceConfig</span><span class="o">();</span>
@@ -280,7 +284,26 @@
 </pre></div>
 </div>
 </div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// datasource</span>
+<span class="k">val</span> <span class="py">dataSourceConfig</span> <span class="p">=</span> <span class="n">new</span> <span class="n">DataSourceConfig</span><span class="p">()</span>
+<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUsername</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">)</span>
+<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUrl</span><span class="p">(</span><span class="s">&quot;jdbc:h2:mem:withPCQuery;&quot;</span><span class="p">)</span>
+<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setDriver</span><span class="p">(</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="p">)</span>
 
+
+<span class="c1">// configuration ...</span>
+<span class="k">val</span> <span class="py">config</span> <span class="p">=</span> <span class="n">new</span> <span class="n">DatabaseConfig</span><span class="p">();</span>
+<span class="n">config</span><span class="p">.</span><span class="n">setDataSourceConfig</span><span class="p">(</span><span class="n">dataSourceConfig</span><span class="p">)</span>
+<span class="p">...</span>
+
+<span class="c1">// create database instance</span>
+<span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">DatabaseFactory</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+  
+</pre></div>
+</div>
+</div>
 
   <nav class="next">
     <p class="edit-page">
