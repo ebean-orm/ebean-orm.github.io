@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Multiple databases | Docs | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Multiple databases</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+        <li><a href="/docs/mapping">Mapping</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/multi-database">Multiple databases</a>
+<ul class="nav">
+    <li >
+    <a  href="#model">Model constructor</a>
+  </li>
+  <li >
+    <a  href="#dbName">@DbName</a>
+  </li>
+  <li >
+    <a  href="#finder">Finder constructor</a>
+  </li>
+  <li >
+    <a  href="#register">Register</a>
+  </li>
+</ul>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+  <p class="mtl">
+    When using multiple databases one database is known as the default database.
+    We need to do 4 things for entity beans that should only be used on the
+    non-default database(s).
+  </p>
+
+  <h2 id="model">Model constructor</h2>
+  <p>
+    Use the <code>io.ebean.Model</code> constructor that take the string name of
+    the database that should be used.
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nd">@DbName</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">OtherBaseDomain</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="nf">OtherBaseDomain</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>             <span class="c1">// &quot;other&quot; -&gt; database name</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="nd">@DbName</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="k">open</span> <span class="k">class</span> <span class="nc">OtherBaseDomain</span> <span class="p">:</span> <span class="n">Model</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// &quot;other&quot; -&gt; database name</span>
+
+ <span class="p">...</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+  <p>
+    All entity beans that extend this model will use the named database when
+    they <code>save()</code> and <code>delete()</code>.
+  </p>
+
+
+  <h2 id="dbName">@DbName</h2>
+  <p>
+    Put <code>@DbName</code> on a mapped superclass or individual entity beans.
+    This is read by the querybean generator when generating the query beans
+    so that queries for this entity bean type will execute using the named non-default
+    database.
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nd">@DbName</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)</span>  <span class="c1">// &quot;other&quot; -&gt; database name</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">OtherBaseDomain</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="nf">OtherBaseDomain</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>             <span class="c1">// &quot;other&quot; -&gt; database name</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="nd">@DbName</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span>   <span class="c1">// &quot;other&quot; -&gt; database name</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="k">open</span> <span class="k">class</span> <span class="nc">OtherBaseDomain</span> <span class="p">:</span> <span class="n">Model</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// &quot;other&quot; -&gt; database name</span>
+
+ <span class="p">...</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+  <p>
+    For all entity beans extending <code>OtherBaseDomain</code> their query beans
+    will now default to using the named database.
+  </p>
+
+
+
+  <h2 id="finder">Finder constructor</h2>
+  <p>
+    If using <code>io.ebean.Finder</code> we similarly use the constructor that takes the
+    string name of the database that should be used.
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomerFinder</span> <span class="kd">extends</span> <span class="n">Finder</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="nf">CustomerFinder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">super</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>             <span class="c1">// &quot;other&quot; -&gt; database name</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="k">open</span> <span class="k">class</span> <span class="nc">CustomerFinder</span> <span class="p">:</span> <span class="n">Finder</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span> <span class="p">{</span>  <span class="c1">// &quot;other&quot; -&gt; database name</span>
+ <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+  <p>
+    Now using methods on CustomerFinder will default to using the named database.
+  </p>
+
+  <h2 id="register">Register entity types</h2>
+  <p>
+    We also need to register some entity types to the default database and some
+    entity types to the other non default database(s).
+  </p>
+  <p>
+    Note that from Ebean version 12.2.1 the querybean generator will generate
+    code to register the entity bean types to the appropriate database.
+  </p>
+
+  <p>
+    Create an implementation of ServerConfigProvider that registers the
+    entity beans with the appropriate database based on the name.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegisterDomainBeans</span> <span class="kd">implements</span> <span class="n">ServerConfigProvider</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">OTHER</span> <span class="o">=</span> <span class="s">&quot;other&quot;</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">DB</span> <span class="o">=</span> <span class="s">&quot;db&quot;</span><span class="o">;</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">ServerConfig</span> <span class="n">serverConfig</span><span class="o">)</span> <span class="o">{</span>
+
+      <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;register beans for {}&quot;</span><span class="o">,</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="c1">// the default database</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DCustomer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DOrder</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DProduct</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+
+      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">OTHER</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="c1">// second OTHER database</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OSales</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OMarket</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="o">...</span>
+
+      <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  <p>
+    Add a service loader <code>src/main/resources/META-INF/services/io.ebean.config.ServerConfigProvider</code>
+    file to specify our ServerConfigProvider implementation (e.g. RegisterDomainBeans).
+  </p>
+
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/multi-database/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/tuning" class="btn btn-info">Next: Tuning</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>

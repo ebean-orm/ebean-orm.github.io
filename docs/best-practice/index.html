@@ -64,6 +64,25 @@
   <li >
     <a  href="#ddl-generation">DDL generation</a>
   </li>
+  <li >
+    <a  href="#not-null">NOT NULL</a>
+  </li>
+  <li >
+    <a  href="#use-constructors">Use Constructors</a>
+  </li>
+  <li >
+    <a  href="#getters-setters">Getters Setters</a>
+  </li>
+  <li >
+    <a  href="#builder-pattern">Builder pattern</a>
+  </li>
+  <li >
+    <a  href="#bulk-update">Bulk update queries</a>
+  </li>
+  <li >
+    <a  href="#reference-beans">Reference beans</a>
+  </li>
+
           </ul>
   </li>
   <li class="nav1 ">
@@ -93,6 +112,9 @@
   </li>
   <li class="nav1 ">
     <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
   </li>
         <li><a href="/docs/tuning">Tuning</a></li>
         <li><a href="/docs/features">Features</a></li>
@@ -249,7 +271,7 @@
 
   <h2 id="ddl-generation">DDL Generation</h2>
   <p>
-    Use automatic forward generation of DDL - use Ebean to generate all DDL including DB migrations.
+    Use Ebean to generate all DDL including DB migrations - aka prefer forward generation of DDL.
     This keeps all the DDL "in sync" for testing and db migrations and makes it easier to support
     multiple database platforms or migrate between database platforms (e.g. MySql to Postgres).
   </p>
@@ -258,11 +280,172 @@
     schema and can make testing harder.
   </p>
 
+  <h2 id="not-null">Promote use of NOT NULL constraint</h2>
+  <p>
+    Make as much of the model NOT NULL as we can - prefer DB columns to have the NOT NULL constraint
+    if possible. Reduce the amount of 3 valued logic required - have a "tighter" model.
+  </p>
+
+  <h2 id="use-constructors">Use Constructors</h2>
+  <p>
+    Use constructors to help enforce non nullable properties (Kotlin) or promote non nullable properties (Java).
+  </p>
+  <p>
+    For example, if a Customer should always have a name define a constructor that takes the name property.
+  </p>
+
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+
+  <span class="nd">@NotNull</span> <span class="nd">@Length</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="o">...</span>
+
+  <span class="kd">public</span> <span class="nf">Customer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="c1">// getters and setters</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="nd">@Entity</span>
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">name</span> <span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">:</span> <span class="n">BaseModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="nd">@Length</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+  <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="n">name</span>    <span class="c1">// Ebean knows this is Kotlin non-nullable type</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+  <p>
+    Now when we create a new Customer we must create it with a name.
+  </p>
+  <p class="code-kt">
+    For Kotlin we should make <em>name</em> a <code>non-nullable type</code>.
+    Ebean will treat Kotlin non-nullable types as <em>NOT NULL</em> from a database perspective
+    as well giving us a tighter model.
+  </p>
+
+  <h2 id="getters-setters">Getters Setters</h2>
+  <p>
+    Ebean does NOT need getters and setters as it adds it's own accessor methods via enhancement.
+  </p>
+  <p>
+    We can omit getter and setter methods as desired. We can have setter methods follow a fluid style
+    returning this if desired.
+  </p>
+
+  <h2 id="builder-pattern">Builder pattern</h2>
+  <p>
+    If we want to use the Builder pattern rather than generate an additional builder class for a given
+    entity (that then duplicates all the properties of the entity making things harder to maintain) a
+    simpler approach is to have the "setter" methods on the entity bean use the fluid style and return this.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="kd">extends</span> <span class="n">BaseModel</span> <span class="o">{</span>
+
+  <span class="nd">@NotNull</span> <span class="nd">@Length</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">notes</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">level</span><span class="o">;</span>
+  <span class="o">...</span>
+
+  <span class="kd">public</span> <span class="nf">Customer</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="c1">// accessors</span>
+
+  <span class="kd">public</span> <span class="n">Customer</span> <span class="nf">setNotes</span><span class="o">(</span><span class="n">String</span> <span class="n">notes</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// fluid style</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">notes</span> <span class="o">=</span> <span class="n">notes</span><span class="o">;</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Customer</span> <span class="nf">setLevel</span><span class="o">(</span><span class="kt">int</span> <span class="n">level</span><span class="o">)</span> <span class="o">{</span>  <span class="c1">// fluid style</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">level</span> <span class="o">=</span> <span class="n">level</span><span class="o">;</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+
+<span class="c1">// using fluid style</span>
+
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">Customer</span><span class="o">(</span><span class="s">&quot;Roberto&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setNotes</span><span class="o">(</span><span class="s">&quot;An example&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setLevel</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+</pre></div>
+</div>
+
+  <h2 id="bulk-update">Bulk update queries</h2>
+  <p>
+    Prefer the use of <a href="/docs/query/update">bulk update</a> and
+    <a href="/docs/query/delete">delete</a> statements where appropriate. Avoid fetching
+    beans just to iterate and delete them or iterate and update them all in the same way.
+  </p>
+
+  <h2 id="reference-beans">Reference beans</h2>
+  <p>
+    Use reference beans to have a bean with an <code>@Id</code> rather than execute a
+    query to find by id unless we really want to query the DB (to confirm existence typically).
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using a finder to get reference bean</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+
+<span class="c1">// using database to get reference bean</span>
+<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">42</span><span class="o">);</span>
+
+<span class="c1">// reference bean populates the FK column</span>
+<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
+<span class="n">order</span><span class="o">.</span> <span class="o">...</span>
+<span class="n">order</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// using a finder to get reference bean</span>
+<span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">Customer</span><span class="p">.</span><span class="n">ref</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
+
+<span class="c1">// using database to get reference bean</span>
+<span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">getReference</span><span class="p">(</span><span class="n">Customer</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="m">42</span><span class="p">)</span>
+
+
+<span class="c1">// reference bean populates the FK column</span>
+<span class="k">val</span> <span class="py">order</span> <span class="p">=</span> <span class="n">new</span> <span class="n">Order</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
+<span class="n">order</span><span class="p">.</span> <span class="p">...</span>
+<span class="n">order</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+  </div>
+
   <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/best-practice/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
     <p class="next">
-      <a href="/docs/query" class="next btn">Next: Queries</a>
+      <a href="/docs/query" class="btn btn-info">Next: Queries</a>
     </p>
   </nav>
+
 
   </article>
 </div>
