@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Best practice | Docs | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Best Practice</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 active">
+    <a class="active" href="/docs/best-practice">Best practice</a>
+          <ul class="nav nav-scroll">
+  <li >
+    <a  href="#identity">Identity</a>
+  </li>
+  <li >
+    <a  href="#kotlin-data-class">Kotlin data classes</a>
+  </li>
+  <li >
+    <a  href="#list">List vs Set</a>
+  </li>
+  <li >
+    <a  href="#join-column">@JoinColumn</a>
+  </li>
+  <li >
+    <a  href="#column-name">@Column(name=...)</a>
+  </li>
+  <li >
+    <a  href="#mapped-superclass">@MappedSuperclass</a>
+  </li>
+  <li >
+    <a  href="#ddl-generation">DDL generation</a>
+  </li>
+          </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+        <li><a href="/docs/mapping">Mapping</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+  <h2 id="identity">Identity - equals/hashCode</h2>
+  <p>
+    Do not implement <code>equals()</code> and <code>hashCode()</code> on <code>@Entity</code> beans
+     (but instead leave that to Ebean enhancement).
+  </p>
+  <p>
+    Ebean will enhance entity beans with an optimal implementation of
+    <code>equals()</code> and <code>hashCode()</code> and we should not
+    try and do better and instead just leave it to Ebean.
+  </p>
+
+  <h2 id="kotlin-data-class">Kotlin data classes</h2>
+  <p>
+    Do not use Kotlin data classes for <code>@Entity</code> beans as the equals/hashCode
+    implementation is not desirable. Instead use normal Kotlin classes for entity beans.
+  </p>
+  <p>
+    Do use Kotlin data classes for <code>@EmbeddedId</code> beans.
+  </p>
+
+  <h2 id="list">Prefer List over Set</h2>
+  <p>
+    For <code>@OneToMany</code> and <code>@ManyToMany</code> collections prefer
+    the use of List over Set.
+    The use of Set will implicitly calls <code>equals()</code> and <code>hashCode()</code>
+    and generally it's preferable to not call those methods until entity beans have Id values.
+  </p>
+
+
+  <h2 id="join-column">@JoinColumn</h2>
+  <p>
+    Don't use <code>@JoinColumn</code> or <code>@JoinTable</code> unless we have to.
+    The naming convention will provide good names of foreign key columns and join tables
+    so only use these annotations when there are existing foreign keys etc and these do
+    not match the naming convention.
+  </p>
+
+  <h2 id="column-name">@Column(name=...)</h2>
+  <p>
+    Do not use <code>@Column(name=...)</code> to map database column names but instead
+    use the naming convention. Only specify explicit <code>@Column(name=...)</code> when
+    it for some reason does not match the naming convention used.
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Column</span><span class="o">(</span><span class="nx">name</span><span class="o">=</span><span class="s">&quot;when_activated&quot;</span><span class="o">)</span>    <span class="c1">// This is redundant, just adds &quot;annotation noise&quot;</span>
+<span class="n">OffsetDateTime</span> <span class="n">whenActivated</span><span class="o">;</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="nd">@Column</span><span class="p">(</span><span class="nx">name</span><span class="p">=</span><span class="s">&quot;when_activated&quot;</span><span class="p">)</span>    <span class="c1">// This is redundant, just adds &quot;annotation noise&quot;</span>
+<span class="k">val</span> <span class="py">whenActivated</span><span class="p">:</span> <span class="n">OffsetDateTime</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+</pre></div>
+</div>
+  </div>
+
+  <h2 id="mapped-superclass">Use @MappedSuperclass</h2>
+  <p>
+    Make use of <code>@MappedSuperclass</code> to hold common properties. A common mapped
+    superclass might have:
+  </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">BaseDomain</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+  <span class="nd">@Version</span>
+  <span class="kt">long</span> <span class="n">version</span><span class="o">;</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="n">Instant</span> <span class="n">whenCreated</span><span class="o">;</span>
+
+  <span class="nd">@WhenModified</span>
+  <span class="n">Instant</span> <span class="n">whenModified</span><span class="o">;</span>
+
+  <span class="c1">// getters and setters</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="nd">@MappedSuperclass</span>
+<span class="k">open</span> <span class="k">class</span> <span class="nc">BaseDomain</span> <span class="p">:</span> <span class="n">Model</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
+
+  <span class="nd">@Version</span>
+  <span class="k">var</span> <span class="py">version</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
+
+  <span class="nd">@WhenModified</span>
+  <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenModified</span><span class="p">:</span> <span class="n">Instant</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenCreated</span><span class="p">:</span> <span class="n">Instant</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
+
+  <h2 id="ddl-generation">DDL Generation</h2>
+  <p>
+    Use automatic forward generation of DDL - use Ebean to generate all DDL including DB migrations.
+    This keeps all the DDL "in sync" for testing and db migrations and makes it easier to support
+    multiple database platforms or migrate between database platforms (e.g. MySql to Postgres).
+  </p>
+  <p>
+    If we hand craft DDL we increase the chance of variation between the model and actual database
+    schema and can make testing harder.
+  </p>
+
+  <nav class="next">
+    <p class="next">
+      <a href="/docs/query" class="next btn">Next: Queries</a>
+    </p>
+  </nav>
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>
