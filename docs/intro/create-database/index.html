@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Creating Database | Intro | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Creating Database</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs/intro">Introduction</a>
+  <ul>
+  <li class="nav1 ">
+    <a  href="/docs/intro/database">Database & DB</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/intro/create-database">Creating Database</a>
+      <ul class="nav nav-scroll">
+  <li >
+    <a  href="#testing">For testing</a>
+  </li>
+  <li >
+    <a  href="#properties">Via Properties</a>
+  </li>
+  <li >
+    <a  href="#programmatic">Programmatic</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/first-entity">First entity</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/queries">Queries</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/limitations">Limitations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/trouble-shooting">Trouble shooting</a>
+  </li>
+  </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+<h2 id="testing">For Testing</h2>
+<p>
+  For testing we typically get <a href="/docs/testing/#ebean-test">ebean-test</a> to automatically create the Database instance
+  for us based on <code>application-test.yaml</code>.
+</p>
+<p>
+  For example with a <code>src/test/resources/application-test.yaml</code> below:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, ...</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+<p>
+  ebean-test will hook into the Ebean startup and configure the datasource based on
+  <code>ebean.test.platform</code> and configure the DDL generation and execution
+  based on <code>ebean.test.ddlMode</code>
+  (plus start, setup and wait for docker container(s) as necessary).
+</p>
+<p>
+  Refer to <a href="/docs/testing">docs / testing</a> for more details.
+</p>
+<p>
+  This is the recommended approach to creating a Database instance for testing as it
+  puts us in a position where we can easily change the database used for testing.
+  For example, changing from testing against H2 to testing against Postgres docker container
+  is as simple as changing <code>ebean.test.platform</code> to <code>postgres</code>.
+</p>
+
+
+<h2 id="properties">Via Properties</h2>
+<p>
+  Database can automatically be configured via properties in <code>application.yaml</code>,
+  <code>application.properties</code> etc.
+</p>
+<p>
+  The default database name is <code>db</code> so the minimal configuration looks like:
+</p>
+<h3>H2 - In memory</h3>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="c1">## H2 setup - In memory</span>
+<span class="nt">datasource</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sa</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sa</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:h2:mem:myapp</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.h2.Driver</span>
+</pre></div>
+</div>
+
+<h3>Postgres</h3>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">datasource</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_password</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://localhost:5432/my_app</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgresql.Driver</span>
+</pre></div>
+</div>
+
+<h3>ebean.migration.run</h3>
+<p>
+  Generally we want Ebean to run migrations on startup and we have <code>ebean.migration.run</code>
+  set to <code>true</code>.
+</p>
+<h3>Postgres - ebean.dbSchema</h3>
+<p>
+  Generally for Postgres we set <code>ebean.dbSchema</code> to match the database username when
+  we want database tables etc to be in that named schema rather than the <code>public</code> schema.
+</p>
+
+<h3>Example Postgres typical configuration</h3>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">dbSchema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>  <span class="c1"># use this schema rather than public</span>
+  <span class="nt">migration</span><span class="p">:</span>
+    <span class="nt">run</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>       <span class="c1"># run database migrations on startup</span>
+
+<span class="nt">datasource</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&#36;{myPassword}</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://&#36;{myDatabaseHost}:5432/my_app</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgresql.Driver</span>
+
+  <span class="c1">## Expects system properties to be set for:</span>
+  <span class="c1">## myPassword and myDatabaseHost</span>
+</pre></div>
+</div>
+
+
+<h3 id="properties-multiple">Multiple databases</h3>
+<p>
+  When using multiple databases we set multiple datasource configurations.
+  The non-default databases have a name. For example, if we have a second
+  database called <code>"other"</code> we configure a second datasource
+  like below:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">dbSchema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>  <span class="c1"># use this schema rather than public</span>
+  <span class="nt">migration</span><span class="p">:</span>
+    <span class="nt">run</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>       <span class="c1"># run database migrations on startup</span>
+
+<span class="nt">datasource</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&#36;{myPassword2}</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://&#36;{myDatabaseHost2}:5432/my_app</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgresql.Driver</span>
+
+  <span class="nt">other</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">other_username</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&#36;{otherPassword}</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://&#36;{otherDatabaseHost}:5432/other_dbname</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.postgresql.Driver</span>
+</pre></div>
+</div>
+<p>
+  We can obtain the "other" database instance by it's name:
+</p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain &quot;other&quot; database by its name</span>
+<span class="n">Database</span> <span class="n">otherDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// obtain &quot;other&quot; database by its name</span>
+<span class="k">val</span> <span class="py">otherDatabase</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">byName</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">);</span>
+  
+</pre></div>
+</div>
+</div>
+<p>
+  TODO: Link to setup for multiple databases with <code>@DbName</code>, Model and Finder
+</p>
+
+<h2 id="programmatic">Programmatically creating database</h2>
+<p>
+  We can programmatically create a Database instance using <a href="#factory">DatabaseFactory</a>
+  and <a href="#config">DatabaseConfig</a>.
+</p>
+
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// datasource</span>
+<span class="n">DataSourceConfig</span> <span class="n">dataSourceConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataSourceConfig</span><span class="o">();</span>
+<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;sa&quot;</span><span class="o">);</span>
+<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
+<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:withPCQuery;&quot;</span><span class="o">);</span>
+<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setDriver</span><span class="o">(</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="o">);</span>
+
+
+<span class="c1">// configuration ...</span>
+<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
+<span class="n">config</span><span class="o">.</span><span class="na">setDataSourceConfig</span><span class="o">(</span><span class="n">dataSourceConfig</span><span class="o">);</span>
+<span class="o">...</span>
+
+<span class="c1">// create database instance</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  
+</pre></div>
+</div>
+</div>
+
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/create-database/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/intro/first-entity" class="btn btn-info">Next: First Entity</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>

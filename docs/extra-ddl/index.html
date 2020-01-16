@@ -207,11 +207,11 @@
 <span class="nt">&lt;extra-ddl</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/extraddl&quot;</span><span class="nt">&gt;</span>
 
   <span class="nt">&lt;ddl-script</span> <span class="na">name=</span><span class="s">&quot;3 store price trigger&quot;</span> <span class="na">platforms=</span><span class="s">&quot;postgres&quot;</span><span class="nt">&gt;</span>
-    create or replace function trigger_store_price_log() returns trigger as $$
+    create or replace function trigger_store_price_log() returns trigger as &#36;&#36;
     begin
       ...;
     end;
-    $$ LANGUAGE plpgsql;
+    &#36;&#36; LANGUAGE plpgsql;
 
     create trigger trg_store_price_log
       before update on store_price

@@ -365,41 +365,41 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven4">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-agent<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='ebean-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy4">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;io.ebean&quot;</span> <span class="na">name=</span><span class="s">&quot;ebean-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='ebean-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape4">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;ebean-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='ebean-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-agent:<span class='ebean-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-agent:<span class='ebean-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT4">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;io.ebean&quot;</span> <span class="o">%</span> <span class="s">&quot;ebean-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='ebean-agent-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen4">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[io.ebean/ebean-agent &quot;<span class='ebean-agent-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>
@@ -439,41 +439,41 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven3">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>avaje-agentloader<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='avaje-agentloader-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy3">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje&quot;</span> <span class="na">name=</span><span class="s">&quot;avaje-agentloader&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape3">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;avaje-agentloader&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='avaje-agentloader-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje:avaje-agentloader:<span class='avaje-agentloader-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT3">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje&quot;</span> <span class="o">%</span> <span class="s">&quot;avaje-agentloader&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='avaje-agentloader-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen3">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje/avaje-agentloader &quot;<span class='avaje-agentloader-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>

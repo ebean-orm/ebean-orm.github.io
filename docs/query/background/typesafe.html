@@ -307,41 +307,41 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven1">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='querybean-generator-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;io.ebean&quot;</span> <span class="na">name=</span><span class="s">&quot;querybean-generator&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='querybean-generator-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape1">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;querybean-generator&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='querybean-generator-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:querybean-generator:<span class='querybean-generator-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:querybean-generator:<span class='querybean-generator-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;io.ebean&quot;</span> <span class="o">%</span> <span class="s">&quot;querybean-generator&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='querybean-generator-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[io.ebean/querybean-generator &quot;<span class='querybean-generator-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>
@@ -372,41 +372,41 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven2">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean-querybean<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='ebean-querybean-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy2">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;io.ebean&quot;</span> <span class="na">name=</span><span class="s">&quot;ebean-querybean&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='ebean-querybean-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape2">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;io.ebean&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;ebean-querybean&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='ebean-querybean-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle2">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-querybean:<span class='ebean-querybean-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr2">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean:ebean-querybean:<span class='ebean-querybean-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT2">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;io.ebean&quot;</span> <span class="o">%</span> <span class="s">&quot;ebean-querybean&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='ebean-querybean-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen2">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[io.ebean/ebean-querybean &quot;<span class='ebean-querybean-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>
@@ -528,41 +528,41 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven3">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>querybean-agent<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='querybean-agent-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy3">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;org.avaje.ebean&quot;</span> <span class="na">name=</span><span class="s">&quot;querybean-agent&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='querybean-agent-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape3">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;org.avaje.ebean&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;querybean-agent&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='querybean-agent-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebean:querybean-agent:<span class='querybean-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;org.avaje.ebean:querybean-agent:<span class='querybean-agent-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT3">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;org.avaje.ebean&quot;</span> <span class="o">%</span> <span class="s">&quot;querybean-agent&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='querybean-agent-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen3">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[org.avaje.ebean/querybean-agent &quot;<span class='querybean-agent-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>
@@ -611,41 +611,41 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="Maven4">
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean.tools<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>finder-generator<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span><span class='finder-generator-version'>${version}</span><span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Ivy4">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;io.ebean.tools&quot;</span> <span class="na">name=</span><span class="s">&quot;finder-generator&quot;</span> <span class="na">rev=</span><span class="s">&quot;<span class='finder-generator-version'>${version}</span>&quot;</span><span class="nt">/&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Grape4">
 <div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;io.ebean.tools&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;finder-generator&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;<span class='finder-generator-version'>${version}</span>&#39;</span><span class="o">)</span>
+  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
 <span class="o">)</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Gradle4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean.tools:finder-generator:<span class='finder-generator-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Buildr4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;io.ebean.tools:finder-generator:<span class='finder-generator-version'>${version}</span>&#39;</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
 </pre></div>
 </div>    </div>
       <div role="tabpanel" class="tab-pane" id="SBT4">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;io.ebean.tools&quot;</span> <span class="o">%</span> <span class="s">&quot;finder-generator&quot;</span> <span class="o">%</span> <span class="s">&quot;<span class='finder-generator-version'>${version}</span>&quot;</span>
+<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
 </pre></div>
 </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="Leiningen4">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[io.ebean.tools/finder-generator &quot;<span class='finder-generator-version'>${version}</span>&quot;]
+<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
 </pre></div>
 </div>
       </div>

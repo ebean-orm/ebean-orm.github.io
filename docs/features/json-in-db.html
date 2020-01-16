@@ -298,7 +298,7 @@
   </p>
 
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">where</span> <span class="n">json_exists</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;$.path.other&#39;</span><span class="p">)</span>
+<span class="k">where</span> <span class="n">json_exists</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;&#36;.path.other&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
   <h3>Value expressions</h3>
@@ -313,7 +313,7 @@
 </pre></div>
 </div>
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span> <span class="n">c0</span><span class="p">,</span> <span class="p">...</span>
-<span class="k">where</span> <span class="n">json_value</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;$.path.other&#39;</span><span class="p">)</span> <span class="o">=</span> <span class="o">?</span>
+<span class="k">where</span> <span class="n">json_value</span><span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;&#36;.path.other&#39;</span><span class="p">)</span> <span class="o">=</span> <span class="o">?</span>
 </pre></div>
 </div>
 

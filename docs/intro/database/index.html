@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Logging | Intro | Ebean</title>
+  <title>Database & DB | Intro | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -37,14 +37,8 @@
   <li class="nav0 active">
     <a class="active" href="/docs/intro">Introduction</a>
   <ul>
-  <li class="nav1 ">
-    <a  href="/docs/intro/first-entity">First entity</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/intro/queries">Queries</a>
-  </li>
   <li class="nav1 active">
-    <a class="active" href="/docs/intro/api">Database & DB</a>
+    <a class="active" href="/docs/intro/database">Database & DB</a>
       <ul class="nav nav-scroll">
   <li >
     <a  href="#database">Database</a>
@@ -53,12 +47,21 @@
     <a  href="#db">DB</a>
   </li>
   <li >
-    <a  href="#config">DatabaseConfig</a>
+    <a  href="#ebeanserver">EbeanServer</a>
   </li>
   <li >
-    <a  href="#factory">DatabaseFactory</a>
+    <a  href="#ebean">Ebean</a>
   </li>
       </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/create-database">Creating Database</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/first-entity">First entity</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/intro/queries">Queries</a>
   </li>
   <li class="nav1 ">
     <a  href="/docs/intro/logging">Logging</a>
@@ -117,6 +120,10 @@
   <code>io.ebean.Database</code> provides most of the functionality including
   queries, saving, deleting and transactions.
 </p>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
 <span class="n">Customer</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
@@ -140,9 +147,31 @@
 </pre></div>
 </div>
 </div>
+<div class="code-kt">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// persist ...</span>
+<span class="k">val</span> <span class="n">customer</span>  <span class="o">=</span> <span class="o">...</span>
+<span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
 
 
-<h4>javax.sql.DataSource</h4>
+<span class="c1">// fetch ...</span>
+<span class="k">val</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">::</span><span class="n">class</span><span class="o">.</span><span class="na">java</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">()</span>
+
+
+<span class="c1">// transactions ...</span>
+<span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">().</span><span class="na">use</span> <span class="o">{</span> <span class="n">transaction</span> <span class="o">-&gt;</span>
+
+  <span class="c1">// fetch and persist beans etc ...</span>
+
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+  
+</pre></div>
+</div>
+</div>
+
+<h3>javax.sql.DataSource</h3>
 <p>
   A Database instance has an JDBC DataSource associating it one to one to an actual database.
 </p>
@@ -151,7 +180,7 @@
   performance reasons (for read only queries) and potentially connect to database read replicas.
 </p>
 
-<h4>Default database</h4>
+<h3>Default database</h3>
 <p>
   One database can be specified as the <code>default database</code>. The default Database
   instance is registered with <code>DB</code> and then can be obtained via <code>DB.getDefault()</code>.
@@ -164,13 +193,24 @@
 </pre></div>
 </div>
 </div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// obtain the &quot;default&quot; database</span>
+<span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">getDefault</span><span class="p">()</span>
+  
+</pre></div>
+</div>
+</div>
 
-<h4>Named database</h4>
+<h3>Named database</h3>
 <p>
   Each Database instance has a name and can be registered with <code>DB</code> and then obtained by
   it's name via <code>DB.byName()</code>
 </p>
 
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
 <div class="code-java">
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain a database by it&#39;s name</span>
 <span class="n">Database</span> <span class="n">hrDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;hr&quot;</span><span class="o">);</span>
@@ -178,8 +218,15 @@
 </pre></div>
 </div>
 </div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// obtain a database by it&#39;s name</span>
+<span class="k">val</span> <span class="py">hrDatabase</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">byName</span><span class="p">(</span><span class="s">&quot;hr&quot;</span><span class="p">)</span>
+  
+</pre></div>
+</div>
+</div>
 
-<h4>Model uses default database</h4>
+<h3>Model uses default database</h3>
 <p>
   When our entity beans extend <a href="/docs/intro/first-entity/model">Model</a> and we
   use <em>save()</em> that is actually using the default database.
@@ -205,7 +252,7 @@
 </div>
 </div>
 
-<h4>Query beans use default database</h4>
+<h3>Query beans use default database</h3>
 <p>
   When we create a Query bean and execute the query that also is actually using the default database.
 </p>
@@ -232,29 +279,22 @@
 </div>
 </div>
 
-
-<h4>Create database</h4>
-<p>
-  We can programmatically create a Database instance using <a href="#factory">DatabaseFactory</a>
-  and <a href="#config">DatabaseConfig</a> or it can be created automatically from properties
-  file configuration (for testing we often use application-test.yaml and have the database instance created automatically).
+<p class="mtm">
+  Note that in practice when using
+  <a href="/docs/intro/first-entity/model">Model</a> for persisting
+  , <a href="/docs/query/query-beans">Query beans</a> for entity queries and
+  <a href="/docs/transactions">@Transactional</a> for transactions then we tend to only
+  use database directly for <a href="/docs/query/dtoquery">DTO queries</a>,
+  <a href="/docs/query/sqlquery">SQL queries</a> and
+  <a href="/docs/query/sqlupdate">SQL updates</a>.
 </p>
-<div class="code-java">
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// configuration ...</span>
-<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">MyEntityBean</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-<span class="o">...</span>
 
-<span class="c1">// create database instance</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-  
-</pre></div>
-</div>
-</div>
-
+<h3>Creating database</h3>
 <p>
-  Refer to <a href="#factory">DatabaseFactory</a> for more details.
+  Details for <a href="/docs/intro/create-database">creating database</a> instances programmatically and via properties
+  is in the next section.
 </p>
+
 
 <p>&nbsp;</p>
 
@@ -338,44 +378,13 @@
   to use io.ebean.DB.
 </p>
 
-<h2 id="config">DatabaseConfig</h2>
-<p>
-  <code>io.ebean.DatabaseConfig</code> has the configuration used to create a Database instance.
-</p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-
-<span class="c1">// set configuration options</span>
-<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
-<span class="o">...</span>
-<span class="c1">// and/or load configuration properties file</span>
-<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
-
-<span class="c1">// create the Database instance</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-</pre></div>
-</div>
-
-<h2 id="factory">DatabaseFactory</h2>
-<p>
-  <code>io.ebean.DatabaseFactory</code> has the static factory method that
-  takes a DatabaseConfig creating a Database instance.
-</p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// set configuration options</span>
-<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">set</span><span class="o">...</span>
-
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-</pre></div>
-</div>
 
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/api/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/database/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
-      <a href="/docs/intro/logging" class="btn btn-info">Next: Logging</a>
+      <a href="/docs/intro/create-database" class="btn btn-info">Next: Creating Database</a>
     </p>
   </nav>
 
