@@ -192,27 +192,26 @@
   <h5>Examples:</h5>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Contact</span> <span class="n">contact</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>                               <span class="c1">// Contact query bean</span>
-    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.com&quot;</span><span class="o">)</span>              <span class="c1">// type safe expression with IDE auto-completion</span>
-    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>                                <span class="c1">// Contact query bean</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;rob@foo.com&quot;</span><span class="o">)</span>               <span class="c1">// type safe expression</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>                                 <span class="c1">// with IDE auto-completion</span>
 </pre></div>
 </div>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>                              <span class="c1">// Customer query bean</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>                                <span class="c1">// Customer query bean</span>
     <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na field">city</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="s">&quot;Auckland&quot;</span><span class="o">)</span>     <span class="c1">// joins automatically added</span>
+    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span>                          <span class="c1">// to support expressions</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
   <h2 id="apt" class="art">APT / KAPT <em>(generating query beans)</em></h2>
-
   <p>
-    To generate <code>Java</code> query beans we use the <em>io.ebean : querybean-generator</em>
+    To generate <code>Java</code> query beans we use the <em>io.ebean:querybean-generator</em>
     java annotation processor and to generate <code>Kotlin</code> query beans we use
-    <em>io.ebean : kotlin-querybean-generator</em>.
+    <em>io.ebean:kotlin-querybean-generator</em>.
   </p>
 
   <h4 id="maven" class="art">Generating with Maven</h4>
@@ -228,19 +227,13 @@
   </p>
 
   <h2 id="enhancement" class="art">Enhancement</h2>
-
   <p>
-    Query beans require enhancement to work. In the <code>src/main/resources/ebean.mf</code> manifest file
-    we need to specify via <code>querybean-packages</code> the packages that should be enhanced
-    for query beans.
+    Note that prior to version 12.1.8 we need to edit a <code>src/main/resources/ebean.mf</code>
+    manifest file to specify <code>querybean-packages</code> for the packages that should
+    be enhanced for query beans. This is no longer needed from 12.1.8 onwards.
   </p>
 
-  <p>
-    Note that for Java we additionally need to enhance the code that calls the query ebeans.
-    For Kotlin we only need to enhance the query beans themselves.
-  </p>
-
-  <h5>Example</h5>
+  <h5>Example (Pre 12.1.8)</h5>
   <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">entity-packages</span><span class="o">:</span> <span class="s">org.example.domain</span>
 <span class="na">transactional-packages</span><span class="o">:</span> <span class="s">org.example</span>
 <span class="na">querybean-packages</span><span class="o">:</span> <span class="s">org.example</span>
