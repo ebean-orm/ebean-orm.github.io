@@ -197,17 +197,17 @@
   <li>The classes being enhanced (due to ebean debugLevel = 1)</li>
   <li>The DDL, SQL and Transactions (controlled by logback-test.xml in this case)</li>
 </ul>
-<pre>
-$ ./gradlew clean test
 
-> Task :compileJava
-ebean-enhance> cls: org/example/domain/BaseDomain  msg: enhanced
-ebean-enhance> cls: org/example/domain/Customer  msg: enhanced
+<div class="syntax text"><div class="highlight"><pre><span></span>&#36; ./gradlew clean test
 
-> Task :test
+&gt; Task :compileJava
+ebean-enhance&gt; cls: org/example/domain/BaseDomain  msg: enhanced
+ebean-enhance&gt; cls: org/example/domain/Customer  msg: enhanced
+
+&gt; Task :test
 enhancement prior to running tests
 
-Gradle suite > Gradle test > org.example.domain.CustomerTest.saveAndFind STANDARD_OUT
+Gradle suite &gt; Gradle test &gt; org.example.domain.CustomerTest.saveAndFind STANDARD_OUT
 14:48:49.900 [Test worker] INFO  io.ebean.internal.DefaultContainer - DatabasePlatform name:db platform:h2
 14:48:50.063 [Test worker] TRACE io.ebean.TXN - txn[1001] Begin
 14:48:50.064 [Test worker] INFO  io.ebean.DDL - Executing db-create-all.sql - 1 statements
@@ -222,13 +222,14 @@ Gradle suite > Gradle test > org.example.domain.CustomerTest.saveAndFind STANDAR
 14:48:50.130 [Test worker] DEBUG io.ebean.SUM - txn[1004] FindMany type[Customer] origin[D88YBm.A.A] exeMicros[0] rows[0] predicates[t0.id is not null ] bind[]
 hello Hello Rob
 .. started on: 2018-01-30
-14:48:50.136 [Test worker] DEBUG io.ebean.SQL - txn[1005] select t0.id, t0.name, t0.start_date, t0.version from customer t0 where t0.name like ?  and t0.id > ? ; --bind(BatOutOfHell%,1)
-14:48:50.136 [Test worker] DEBUG io.ebean.SUM - txn[1005] FindMany type[Customer] origin[D88YBj.A.A] exeMicros[1619] rows[0] predicates[t0.name like ?  and t0.id > ? ] bind[BatOutOfHell%,1]
+14:48:50.136 [Test worker] DEBUG io.ebean.SQL - txn[1005] select t0.id, t0.name, t0.start_date, t0.version from customer t0 where t0.name like ?  and t0.id &gt; ? ; --bind(BatOutOfHell%,1)
+14:48:50.136 [Test worker] DEBUG io.ebean.SUM - txn[1005] FindMany type[Customer] origin[D88YBj.A.A] exeMicros[1619] rows[0] predicates[t0.name like ?  and t0.id &gt; ? ] bind[BatOutOfHell%,1]
 bats:BeanList size[0] list[]
 
 
 BUILD SUCCESSFUL in 1s
-</pre>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="next">
