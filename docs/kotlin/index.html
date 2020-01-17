@@ -1,182 +1,233 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Introduction</title>
+  <title>Kotlin | Ebean</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-<div id="wrap">
-  <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
-        <div class="mobile-nav">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li ><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Kotlin</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+        <li><a href="/docs/mapping">Mapping</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/kotlin">Kotlin</a>
+          <ul class="nav nav-scroll">
+  <li >
+    <a  href="#constructors">Constructors</a>
+  </li>
+  <li >
+    <a  href="#non-nullable">Non-nullable types</a>
+  </li>
+  <li >
+    <a  href="#mapped-superclass">MappedSuperclass</a>
+  </li>
+  <li >
+    <a  href="#oneToMany">@OneToMany</a>
+  </li>
+          </ul>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
   </div>
-  <div id="main">
+</form>
     
-<div class="jumbotron mini">
-  <div class="container">
-    <h1><a href="/docs/">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Kotlin</span></h1>
-  </div>
+
+<h2 id="constructors">Constructors</h2>
+<p>
+  Ebean does not require a default constructor. We should use constructors
+  to supply the required / non-nullable properties when creating entity bean
+  instances.
+</p>
+<p>
+  For example, if a Customer entity bean requires a name property we can have
+  that in the constructor and use a Kotlin non-nullable type.
+</p>
+<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="nd">@Entity</span>
+<span class="k">class</span> <span class="nc">Customer</span><span class="p">(</span><span class="n">name</span> <span class="p">:</span> <span class="n">String</span><span class="p">)</span> <span class="p">:</span> <span class="n">BaseModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="nd">@Length</span><span class="p">(</span><span class="m">100</span><span class="p">)</span>
+  <span class="k">var</span> <span class="py">name</span><span class="p">:</span> <span class="n">String</span> <span class="p">=</span> <span class="n">name</span>  <span class="c1">// Kotlin non-nullable type</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>
+  The <em>suggested</em> constructor style to use with Kotlin is like the above with
+  the constructor parameter assigned to the property. The reason for this is that
+  with entity bean properties we often have mapping annotations (<code>@Length</code> etc)
+  and it can be easier / clearer to not have those as part of the constructor (where there
+  are more targets for the annotations - method, field, parameter etc).
+</p>
+
+
+<h2 id="non-nullable">Non-nullable types</h2>
+<p>
+  Ebean is aware of Kotlin non nullable types and automatically treats them
+  as <code>@NotNull</code>.  We don't need to specify <code>@NotNull</code>
+  or <code>@Column(nullable=false)</code> or <code>@ManyToOne(optional=false)</code>
+  when the property is a Kotlin non nullable type.
+</p>
+
+
+<h2 id="mapped-superclass">MappedSuperclass</h2>
+<p>
+  It is common to have a mapped superclass that extends <code>io.ebean.Model</code>
+  and has <code>@WhenCreated</code> and <code>@WhenModified</code> like below:
+</p>
+<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="nd">@MappedSuperclass</span>
+<span class="k">abstract</span> <span class="k">class</span> <span class="nc">BaseModel</span> <span class="p">:</span> <span class="n">Model</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="nd">@Id</span>
+  <span class="k">var</span> <span class="py">id</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
+
+  <span class="nd">@Version</span>
+  <span class="k">var</span> <span class="py">version</span><span class="p">:</span> <span class="n">Long</span> <span class="p">=</span> <span class="m">0</span>
+
+  <span class="nd">@WhenCreated</span>
+  <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenCreated</span><span class="p">:</span> <span class="n">Instant</span>
+
+  <span class="nd">@WhenModified</span>
+  <span class="k">lateinit</span> <span class="k">var</span> <span class="py">whenModified</span><span class="p">:</span> <span class="n">Instant</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>
+  It is ok to use <code>lateinit</code> for the whenCreated and whenModified properties and
+  have them as nullable types.
+</p>
+<p>
+  It is good to use non nullable <code>Int = 0</code> and <code>Long = 0</code> for
+  <code>@Id</code> properties like the example above (JVM primitive int and long).
+</p>
+
+<h2 id="oneToMany">@OneToMany</h2>
+<p>
+  For collection types <code>@OneToMany</code> and <code>@ManyToMany</code> it is good
+  to use non nullable mutable lists and initialise then with <code>mutableListOf()</code>.
+  Ebean enhancement will optimise this and collection types will only be initialised
+  when needed (so it's good to model it as a Kotlin non nullable collection type).
+</p>
+<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="p">(</span><span class="nx">name</span> <span class="p">=</span> <span class="s">&quot;orders&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="n">customer</span><span class="p">:</span> <span class="n">Customer</span><span class="p">)</span> <span class="p">:</span> <span class="n">BaseModel</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="p">...</span>
+
+  <span class="nd">@OneToMany</span><span class="p">(</span><span class="nx">mappedBy</span> <span class="p">=</span> <span class="s">&quot;order&quot;</span><span class="p">,</span> <span class="nx">cascade</span> <span class="p">=</span> <span class="p">[</span><span class="nx">CascadeType</span><span class="p">.</span><span class="nx">PERSIST</span><span class="p">])</span>
+  <span class="k">var</span> <span class="py">details</span><span class="p">:</span> <span class="n">MutableList</span><span class="p">&lt;</span><span class="n">OrderDetail</span><span class="p">&gt;</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">()</span>
+
+<span class="p">}</span>
+</pre></div>
 </div>
 
-<div class="container doc-index bs-docs-container">
 
-  <div class="row">
-
-    <div class="col-md-9" role="main">
-
-      <form action="https://www.google.com/search" method="get">
-        <div class="page-inline-search" style="margin-bottom:8px;">
-          <div class="input-group">
-            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-            <input type="hidden" name="as_sitesearch" value="ebean.io">
-            <div class="input-group-btn">
-              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-          </div>
-          <div class="search-results-inline-container" style="display: none;">
-            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
-          </div>
-        </div>
-      </form>
-
-      
-
-<h2>TODO - Kotlin</h2>
-
-
-    </div>
-
-    <div class="col-md-3" role="complementary">
-      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
-        <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/introduction">Introduction</a>
-</li>
-<li >
-  <a href="/docs/tooling">Tooling</a>
-</li>
-<li >
-  <a href="/docs/logging">Logging</a>
-</li>
-<li >
-  <a href="/docs/configuration">Configuration</a>
-</li>
-<li >
-  <a href="/docs/testing">Testing</a>
-</li>
-
-<li >
-  <a href="/docs/ddl-generation">DDL generation</a>
-</li>
-<li >
-  <a href="/docs/db-migrations">DB migrations</a>
-</li>
-
-<li >
-  <a href="/docs/codestyle">Coding style</a>
-</li>
-
-<li >
-  <a href="/docs/mapping">Mapping</a>
-</li>
-<li >
-  <a href="/docs/query">Query</a>
-</li>
-<li >
-  <a href="/docs/persist">Persisting</a>
-</li>
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
+  </article>
 </div>
 
-
-  </div>
 </div>
-
-
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
-  </div>
-</footer>
-
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
 </body>
 </html>
