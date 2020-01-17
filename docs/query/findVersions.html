@@ -77,6 +77,9 @@
     <a  href="/docs/query/findEachWhile">findEachWhile</a>
   </li>
   <li >
+    <a  href="/docs/query/findStream">findStream</a>
+  </li>
+  <li >
     <a  href="/docs/query/findIterate">findIterate</a>
   </li>
 
@@ -176,7 +179,19 @@
 </form>
     
 <h2>findVersions</h2>
-
+<p>
+  Return versions of a @History entity bean.
+</p>
+<p>
+  Note that this query will work against view based history implementations
+  but not sql2011 standards based implementations and we should use
+  <a href="findVersionsBetween">findVersionsBetween</a> that requires
+  a start and end timestamp to be specified.
+</p>
+<p>
+  Generally this query is expected to be a find by id or unique predicates query.
+  It will execute the query against the history returning the versions of the bean.
+</p>
 
   </article>
 </div>

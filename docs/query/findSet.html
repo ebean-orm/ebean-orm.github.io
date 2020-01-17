@@ -77,6 +77,9 @@
     <a  href="/docs/query/findEachWhile">findEachWhile</a>
   </li>
   <li >
+    <a  href="/docs/query/findStream">findStream</a>
+  </li>
+  <li >
     <a  href="/docs/query/findIterate">findIterate</a>
   </li>
 
@@ -176,7 +179,16 @@
 </form>
     
 <h2>findSet</h2>
-
+<p>
+  findSet is similar to <a href="findList">findList</a> except that it returns a Set
+  rather than a List.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSet</span><span class="o">();</span>
+</pre></div>
+</div>
 
   </article>
 </div>
