@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Creating Database | Intro | Ebean</title>
+  <title>Configuration | Intro | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Creating Database</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/intro/">Introduction</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Configuration</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -41,16 +41,19 @@
     <a  href="/docs/intro/database">Database & DB</a>
   </li>
   <li class="nav1 active">
-    <a class="active" href="/docs/intro/create-database">Creating Database</a>
+    <a class="active" href="/docs/intro/configuration">Configuration</a>
       <ul class="nav nav-scroll">
-  <li >
-    <a  href="#testing">For testing</a>
-  </li>
   <li >
     <a  href="#properties">via Properties</a>
   </li>
   <li >
     <a  href="#programmatic">Programmatic</a>
+  </li>
+  <li >
+    <a  href="#testing-ddl">For Testing - ddl.generation</a>
+  </li>
+  <li >
+    <a  href="#testing">For Testing - ebean-test</a>
   </li>
       </ul>
   </li>
@@ -112,41 +115,9 @@
   </div>
 </form>
     
-<h2 id="testing">For Testing</h2>
+<h2 id="properties">via Properties / yaml</h2>
 <p>
-  For testing we typically get <a href="/docs/testing/#ebean-test">ebean-test</a> to automatically create the Database instance
-  for us based on <code>application-test.yaml</code>.
-</p>
-<p>
-  For example with a <code>src/test/resources/application-test.yaml</code> below:
-</p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, ...</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
-</pre></div>
-</div>
-<p>
-  ebean-test will hook into the Ebean startup and configure the datasource based on
-  <code>ebean.test.platform</code> and configure the DDL generation and execution
-  based on <code>ebean.test.ddlMode</code> (plus start, setup and wait for docker
-  container(s) as necessary when using docker test containers).
-</p>
-<p>
-  Refer to <a href="/docs/testing">docs / testing</a> for more details.
-</p>
-<p>
-  This is the recommended approach to creating a Database instance for testing as it
-  puts us in a position where we can easily change the database used for testing.
-  For example, changing from testing against H2 to testing against Postgres docker container
-  is as simple as changing <code>ebean.test.platform</code> to <code>postgres</code>.
-</p>
-
-
-<h2 id="properties">via Properties</h2>
-<p>
-  Database can automatically be configured via properties in <code>application.yaml</code>,
+  io.ebean.Database can automatically be configured via properties in <code>application.yaml</code>,
   <code>application.properties</code> etc.
 </p>
 <p>
@@ -251,7 +222,8 @@
 </div>
 </div>
 <p>
-  TODO: Link to setup for multiple databases with <code>@DbName</code>, Model and Finder
+  Goto <a href="/docs/multi-database">docs / multi-database</a> for more details on using multiple databases
+  with <code>@DbName</code>, Model and Finder.
 </p>
 
 <h2 id="programmatic">Programmatically creating database</h2>
@@ -269,7 +241,7 @@
 <span class="n">DataSourceConfig</span> <span class="n">dataSourceConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataSourceConfig</span><span class="o">();</span>
 <span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;sa&quot;</span><span class="o">);</span>
 <span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
-<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:withPCQuery;&quot;</span><span class="o">);</span>
+<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:myapp;&quot;</span><span class="o">);</span>
 <span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setDriver</span><span class="o">(</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="o">);</span>
 
 
@@ -289,7 +261,7 @@
 <span class="k">val</span> <span class="py">dataSourceConfig</span> <span class="p">=</span> <span class="n">new</span> <span class="n">DataSourceConfig</span><span class="p">()</span>
 <span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUsername</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">)</span>
 <span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUrl</span><span class="p">(</span><span class="s">&quot;jdbc:h2:mem:withPCQuery;&quot;</span><span class="p">)</span>
+<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUrl</span><span class="p">(</span><span class="s">&quot;jdbc:h2:mem:myapp;&quot;</span><span class="p">)</span>
 <span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setDriver</span><span class="p">(</span><span class="s">&quot;org.h2.Driver&quot;</span><span class="p">)</span>
 
 
@@ -305,9 +277,69 @@
 </div>
 </div>
 
+<h2 id="testing-ddl">For Testing with ddl.generation</h2>
+<p>
+  We can set <em>ddl.generation</em> and <em>ddl.run</em> true for simple testing
+  against in memory H2 or a provided database instance (especially if our application is read only).
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">ddl</span><span class="p">:</span>
+    <span class="nt">generate</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="nt">run</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="c1">#   initSql: test-init.sql</span>
+<span class="c1">#   seedSql: test-seed.sql</span>
+
+<span class="nt">datasource</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="nt">username</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sa</span>
+    <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sa</span>
+    <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:h2:mem:myapp</span>
+    <span class="nt">driver</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">org.h2.Driver</span>
+</pre></div>
+</div>
+
+<h2 id="testing">For Testing with ebean-test</h2>
+<p>
+  <code>ebean-test</code> was built to help with testing against against the target database
+  (Postgres, MySql, MariaDB, SQLServer, Oracle ...).
+  Docker especially can be used to programmatically setup and initialise the database for testing
+  purposes.
+</p>
+<p>
+  Testing against the full featured target database(s) comes with a number of advantages
+  in terms of testing and coverage that we talk about at <a href="/docs/testing">docs / testing</a>.
+</p>
+<p>
+  <em>ebean-test</em> reads the configuration in
+  <code>src/test/resources/application-test.yaml</code>.
+  See the example below:
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, mysql, ...</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migration</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+<p>
+  ebean-test hooks into the Ebean startup and configures the datasource based on
+  <code>ebean.test.platform</code> and configures the DDL generation and execution
+  based on <code>ebean.test.ddlMode</code> (plus start, setup and wait for docker
+  container(s) as necessary when using docker test containers).
+</p>
+<p>
+  Using <a href="/docs/testing#ebean-test">ebean-test</a> is the recommended approach
+  for testing as it puts us in a position where we can easily change the database used for testing.
+  For example, changing from testing against H2 to testing against Postgres docker container
+  is as simple as changing <code>ebean.test.platform</code> to <code>postgres</code>.
+</p>
+<p>
+  Refer to <a href="/docs/testing">docs / testing</a> for more details.
+</p>
+
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/create-database/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/intro/configuration/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
       <a href="/docs/intro/first-entity" class="btn btn-info">Next: First Entity</a>
