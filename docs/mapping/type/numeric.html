@@ -1,175 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Documentation</title>
+  <title>Types | Mapping | Ebean</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-<div id="wrap">
-  <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/type">Types</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Numeric</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping">Mapping</a>
+<ul class="nav">
+    <li class="nav1 active">
+    <a class="active" href="/docs/mapping/type">Types</a>
+    <ul class="nav">
+  <li >
+    <a  href="/docs/mapping/type/enum">Enum</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/uuid">UUID</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/file">File</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/boolean">Boolean</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/time">Date and Time</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/mapping/type/numeric">Numeric</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/db-array">DB Array</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type/db-json">DB Json</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/type#other">Other</a>
+  </li>
+    </ul>
+  </li>
+
+  <li class="nav1 ">
+    <a  href="/docs/mapping/jpa">JPA</a>
+  </li>
+
+  <li class="nav1 ">
+    <a  href="/docs/mapping/extensions">Extensions</a>
+  </li>
 </ul>
-        </div>
-        <div class="mobile-nav">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ci-testing">CI Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
   </div>
-  <div id="main">
+</form>
     
-<div class="jumbotron mini">
-  <div class="container">
-    <h1><a href="/docs/">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/type">Type</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Numeric</span></h1>
-  </div>
-</div>
-
-<div class="container doc-index bs-docs-container">
-
-  <div class="row">
-
-    <div class="col-md-9" role="main">
-
-      <form action="https://www.google.com/search" method="get">
-        <div class="page-inline-search" style="margin-bottom:8px;">
-          <div class="input-group">
-            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-            <input type="hidden" name="as_sitesearch" value="ebean.io">
-            <div class="input-group-btn">
-              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-          </div>
-          <div class="search-results-inline-container" style="display: none;">
-            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
-          </div>
-        </div>
-      </form>
-
-      
-
 
 <h2>Numeric</h2>
 
 
 
-
-    </div>
-
-    <div class="col-md-3" role="complementary">
-      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
-        <ul class="nav bs-docs-sidenav">
-
-<li >
-  <a href="/docs/mapping/type/enum">Enum</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/uuid">UUID</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/file">File</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/boolean">Boolean</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/time">Date and Time</a>
-</li>
-<li class="active">
-  <a href="/docs/mapping/type/numeric">Numeric</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/db-array">DB Array</a>
-</li>
-<li >
-  <a href="/docs/mapping/type/db-json">DB Json</a>
-</li>
-<li >
-  <a href="/docs/mapping/type#other">Other</a>
-</li>
-
-        </ul>
-      </nav>
-    </div>
-  </div>
-
+  </article>
 </div>
 
-
-  </div>
 </div>
-
-
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
-  </div>
-</footer>
-
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
 </body>
 </html>

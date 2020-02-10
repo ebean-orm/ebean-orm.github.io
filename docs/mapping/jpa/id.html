@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Mapping | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/jpa/">JPA</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">@Id</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping">Mapping</a>
+<ul class="nav">
+    <li class="nav1 ">
+    <a  href="/docs/mapping/type">Types</a>
+  </li>
+
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping/jpa">JPA</a>
+    <ul class="nav">
+  <li class="active">
+    <a class="active" href="/docs/mapping/jpa/id">@Id</a>
+        <ul class="nav">
+          <li><a href="#enhancement">Enhancement</a></li>
+          <li><a href="#generated-value">Generated value</a></li>
+          <li><a href="#uuid">UUID</a></li>
+          <li><a href="#database-platform">Database platform</a></li>
+          <li><a href="#custom">Custom Id Generator</a></li>
+        </ul>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/version">@Version</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/mapped-superclass">@MappedSuperclass</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/one-to-many">@OneToMany</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/many-to-one">@ManyToOne</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/one-to-one">@OneToOne</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/many-to-many">@ManyToMany</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/lob">@Lob</a>
+  </li>
+    </ul>
+  </li>
+
+  <li class="nav1 ">
+    <a  href="/docs/mapping/extensions">Extensions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ci-testing">CI Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+
+<h2 id="enhancement">Enhancement</h2>
+<p>
+In terms of enhancement @Id properties are treated differently in that they never invoke lazy loading.
+</p>
+
+<h2 id="generated-value">Generated value</h2>
+<p>
+  When you annotate a property with <code>@Id</code> Ebean will automatically assign an appropriate
+  <code>Id generator</code> if the type <code>is a number type or UUID type</code>.
+</p>
+<p>
+  That is, with Ebean it is effectively redundant to also add the <code>@GeneratedValue</code> annotation.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Id</span>
+<span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+
+<span class="c1">// ... is effectively the same as</span>
+
+<span class="nd">@Id</span> <span class="nd">@GeneratedValue</span>
+<span class="kt">long</span> <span class="n">id</span><span class="o">;</span>
+</pre></div>
+</div>
+
+<h2 id="uuid">UUID</h2>
+<p>
+  If the @Id type is <code>UUID</code> then Ebean will automatically assign an appropriate Id generator
+  to that property.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// an appropriate UUID based Id generator</span>
+<span class="c1">// is automatically assigned</span>
+<span class="nd">@Id</span>
+<span class="n">UUID</span> <span class="n">id</span><span class="o">;</span>
+</pre></div>
+</div>
+
+<h2 id="database-platform">Database platform</h2>
+<p>
+  All the supported databases use either <code>Identity</code> or <code>Sequences</code> (or allow both)
+  and Ebean will choose the appropriate Id generation strategy based on the database platform.
+</p>
+<table class="table">
+  <tr><th>Database</th><th>Strategy</th></tr>
+  <tr><td>H2</td><td>Identity (also supports sequences)</td></tr>
+  <tr><td>Postgres</td><td>Identity (as serial, also supports sequences)</td></tr>
+  <tr><td>MySql</td><td>Identity</td></tr>
+  <tr><td>Oracle</td><td>Sequences (also supports Identity)</td></tr>
+  <tr><td>DB2</td><td>Identity (also supports sequences)</td></tr>
+  <tr><td>SQL Server</td><td>Identity</td></tr>
+  <tr><td>SQLite</td><td>Identity</td></tr>
+  <tr><td>SqlAnywhere</td><td>Identity</td></tr>
+</table>
+
+<h2 id="custom">Custom Id Generator</h2>
+<p>
+  There is support for registering and using a custom Id generator.
+</p>
+
+<h4>1. Implement io.ebean.config.IdGenerator</h4>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ModUuidGenerator</span> <span class="kd">implements</span> <span class="n">IdGenerator</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">Object</span> <span class="nf">nextValue</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">ModUUID</span><span class="o">.</span><span class="na">newShortId</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">&quot;shortUid&quot;</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<h4>2. Register with ServerConfig</h4>
+<p>
+  We register the IdGenerator with ServerConfig by using <code>addClass()</code>
+  or <code>add(IdGenerator idGenerator)</code> or <code>setIdGenerators(List<IdGenerator> idGenerators)</code>.
+</p>
+<p>
+  Note that if you are using classpath scanning to find entity beans that this will also automatically
+  find implementations of IdGenerator and automatically register them so in this case you don't need to
+  register the IdGenerator manually with ServerConfig.
+</p>
+
+<h4>3. @GeneratedValue</h4>
+<p>
+  We can then tell Ebean to use our custom IdGenerator by using the <code>@GeneratedValue</code> with
+  the generator being the name of our custom IdGenerator.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Id</span> <span class="nd">@GeneratedValue</span><span class="o">(</span><span class="nx">generator</span> <span class="o">=</span> <span class="s">&quot;shortUid&quot;</span><span class="o">)</span>
+<span class="n">String</span> <span class="n">id</span><span class="o">;</span>
+</pre></div>
+</div>
+
+
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>

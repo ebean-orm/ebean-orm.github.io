@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Mapping | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/extension">Extension</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">@DbPartition</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping">Mapping</a>
+<ul class="nav">
+    <li class="nav1 ">
+    <a  href="/docs/mapping/type">Types</a>
+  </li>
+
+  <li class="nav1 ">
+    <a  href="/docs/mapping/jpa">JPA</a>
+  </li>
+
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping/extensions">Extensions</a>
+    <ul class="nav">
+  <li >
+    <a  href="/docs/mapping/extensions/dbindex">@Index</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/dbenumvalue">@DbEnumValue</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/dbjson">@DbJson</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/dbarray">@DbArray</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/dbhstore">@DbHstore</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/dbcomment">@DbComment</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/mapping/extensions/dbpartition">@DbPartition</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/when-created">@WhenCreated</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/when-modified">@WhenModified</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/who-created">@WhoCreated</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/who-modified">@WhoModified</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/soft-delete">@SoftDelete</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/encrypted">@Encrypted</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/formula">@Formula</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/view">@View</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/history">@History</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/change-log">@ChangeLog</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/extensions/read-audit">@ReadAudit</a>
+  </li>
+    </ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ci-testing">CI Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+
+<h2>@DbPartition</h2>
+<p>
+  This is currently only applicable to <code>Postgres 10</code>.
+</p>
+<p>
+  We can specify common partitioning ranges such as Day, Week, Month and Year. This will then
+  result in appropriate DDL generation and some supporting features to make maintaining
+  partitions easier.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DbPartition</span><span class="o">(</span><span class="nx">mode</span> <span class="o">=</span> <span class="nx">PartitionMode</span><span class="o">.</span><span class="na">MONTH</span><span class="o">,</span> <span class="nx">property</span> <span class="o">=</span> <span class="s">&quot;whenOccurred&quot;</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Event</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+<h3>Postgres DDL</h3>
+<ul>
+  <li>The table DDL uses <code>partition by range</code></li>
+  <li>Ebean supplies helper functions to create partitions</li>
+  <li>When CREATE ALL DLL is executed (ie. testing) Ebean will check for partitions and create some if none exist</li>
+</ul>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">create</span> <span class="k">table</span> <span class="n">event</span> <span class="p">(</span>
+  <span class="n">id</span>                            <span class="n">bigserial</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+  <span class="n">name</span>                          <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">not</span> <span class="k">null</span><span class="p">,</span>
+  <span class="n">when_occurred</span>                 <span class="n">timestamptz</span> <span class="k">not</span> <span class="k">null</span>
+  <span class="p">...</span>
+<span class="p">)</span> <span class="n">partition</span> <span class="k">by</span> <span class="n">range</span> <span class="p">(</span><span class="n">when_occurred</span><span class="p">);</span>
+</pre></div>
+</div>
+
+<h4>Creating Partitions</h4>
+<p>
+  Ebean by default supplies helper functions <code>partition</code> and <code>partition_init</code> to make it
+  easier to create partitions going forward. The below statement creates <code>Week</code> partitions on the
+  event table. It will create a unique index on the id column and an index on the when_occurred column.
+</p>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="n">partition</span><span class="p">(</span><span class="s1">&#39;week&#39;</span><span class="p">,</span><span class="s1">&#39;event&#39;</span><span class="p">,</span><span class="s1">&#39;id&#39;</span><span class="p">,</span><span class="s1">&#39;when_occurred&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>
+  The above ensures the current partition and the 3 next partitions are created.
+</p>
+
+<h4>Initial partitions</h4>
+<p>
+  Generally we will specify explicitly some DDL to create the initial partitions in <code>extra-ddl.xml</code>.
+  The below example uses <code>partition_init</code> to create partitions that have a large initial partition.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;extra-ddl</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/extraddl&quot;</span><span class="nt">&gt;</span>
+
+  <span class="nt">&lt;ddl-script</span> <span class="na">name=</span><span class="s">&quot;1 initial partitions&quot;</span> <span class="nt">&gt;</span>
+select partition_init(date &#39;2015-01-01&#39;, &#39;week&#39;, &#39;event&#39;, &#39;id&#39;, &#39;when_occurred&#39;, 3);
+select partition_init(date &#39;2015-01-01&#39;, &#39;month&#39;, &#39;event_log&#39;, &#39;id&#39;, &#39;&#39;, 2);
+  <span class="nt">&lt;/ddl-script&gt;</span>
+
+<span class="nt">&lt;/extra-ddl&gt;</span>
+</pre></div>
+</div>
+<p>
+  When we don't specify any initial partitions Ebean will detect that there are no partitions and create
+  some for us when it is executing the <code>create all ddl</code>. In the logs we will see messages like
+  the ones below when this occurs.
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>12:18:47.711 [main] INFO  i.e.dbmigration.DdlGenerator - No table partitions for table event
+12:18:47.711 [main] INFO  io.ebean.DDL - Executing initial table partitions - 1 statements
+12:18:47.711 [main] DEBUG io.ebean.DDL - executing 1 of 1 select partition(&#39;week&#39;,&#39;event&#39;,&#39;id&#39;,&#39;when_occurred&#39;,1)
+</pre></div>
+</div>
+<p>
+  Once we explicitly specify how to create initial partitions in <code>extra-ddl</code> then Ebean will no longer
+  create these partitions automatically.
+</p>
+
+
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>
