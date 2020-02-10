@@ -219,8 +219,8 @@
   We can alternatively specify platform specific DDL for indexes via extra-dll.xml.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Index</span><span class="o">(</span><span class="nx">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">columnNames</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">},</span> <span class="nx">platforms</span> <span class="o">=</span> <span class="nx">Platform</span><span class="o">.</span><span class="na">H2</span><span class="o">)</span>
-<span class="nd">@Index</span><span class="o">(</span><span class="nx">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;uq_printer_name&quot;</span><span class="o">,</span> <span class="nx">columnNames</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;lower(name)&quot;</span><span class="o">},</span> <span class="nx">platforms</span> <span class="o">=</span> <span class="nx">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Index</span><span class="o">(</span><span class="nx">platforms</span> <span class="o">=</span> <span class="nx">Platform</span><span class="o">.</span><span class="na">H2</span><span class="o">,</span> <span class="nx">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">columnNames</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;name&quot;</span><span class="o">})</span>
+<span class="nd">@Index</span><span class="o">(</span><span class="nx">platforms</span> <span class="o">=</span> <span class="nx">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">,</span> <span class="nx">unique</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;uq_printer_name&quot;</span><span class="o">,</span> <span class="nx">columnNames</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;lower(name)&quot;</span><span class="o">})</span>
 <span class="nd">@Entity</span>
 <span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;printers&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">DPrinter</span> <span class="kd">extends</span> <span class="n">Model</span> <span class="o">{</span>
@@ -243,7 +243,10 @@
   The <em>definition</em> attribute allows use to specify the full DDL to create the index. When we do this we
   should specify the index name in order to support dropping the index.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Index</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;ix_detail_withdefn&quot;</span><span class="o">,</span> <span class="nx">platforms</span> <span class="o">=</span> <span class="nx">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">,</span> <span class="nx">definition</span> <span class="o">=</span> <span class="s">&quot;create index ix_detail_withdefn on t_detail using hash (lower(name)) where lower(name) like &#39;r%&#39;&quot;</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Index</span><span class="o">(</span>
+  <span class="n">platforms</span> <span class="o">=</span> <span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">,</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;ix_detail_lowername&quot;</span><span class="o">,</span>
+  <span class="n">definition</span> <span class="o">=</span> <span class="s">&quot;create index ix_detail_lowername on t_detail using hash (lower(name)) where lower(name) like &#39;r%&#39;&quot;</span><span class="o">)</span>
 </pre></div>
 </div>
 <p>
