@@ -1,94 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <title>Batch Transactions | Ebean</title>
+  <title>Batch | Transactions | Ebean</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <link rel="shortcut icon" href="/images/favicon.ico" >
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
 </head>
 <body>
-<div id="wrap">
-  <div id="header">
-    <div class="navbar" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".mobile-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="/images/lg5-21x100.png" height="35">
-          </a>
-        </div>
-        <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/transactions">Transactions</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Batch</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/transactions">Transactions</a>
+<ul class="nav">
+    <li class="nav1 ">
+    <a  href="/docs/transactions/">Introduction</a>
+  </li>
+
+  <li class="nav1 active">
+    <a class="active" href="/docs/transactions/batch">Batch</a>
+    <ul class="nav nav-scroll">
+      <li><a href="#transactionalBatchSize">@Transactional(batchSize)</a></li>
+      <li><a href="#batchSize">Batch size</a></li>
+      <li><a href="#generatedKeys">GetGeneratedKeys()</a></li>
+      <li><a href="#flush">Flush</a></li>
+      <li><a href="#flushOnQuery">setBatchFlushOnQuery()</a></li>
+      <li><a href="#flushOnMixed">setBatchFlushOnMixed()</a></li>
+      <li><a href="#flushOnGetter">Flush on getter/setter</a></li>
+      <li><a href="#flushExplicit">Explicit flush()</a></li>
+      <li><a href="#serverConfig">Configuration via ServerConfig</a></li>
+    </ul>
+  </li>
+
+  <li class="nav1 ">
+    <a  href="/docs/transactions/batch">Scopes</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions/savepoints">Savepoints</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions/spring">Spring</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions/jta">JTA</a>
+  </li>
 </ul>
-        </div>
-        <div class="mobile-nav">
-<ul class="nav navbar-nav pull-right nav-btn-rhs">
-  <li ><a href="/"><span class="fas fa-home"></span> Home</a></li>
-  <li class="active"><a href="/docs">Docs</a></li>
-  <li ><a href="/docs/getting-started">Get Started</a></li>
-  <li ><a href="/support">Help</a></li>
-  <li ><a href="/videos">Videos</a></li>
-  <li ><a target="_blank" href="/apidoc/12">ApiDocs</a></li>
-  <li ><a href="/releases">Releases</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm/ebean"> <i class="fab fa-github"></i></a></li>
-</ul>
-        </div>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL Generation</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/extra-ddl">Extra DDL</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/db-migrations">DB Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ci-testing">CI Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
       </div>
     </div>
-
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
   </div>
-  <div id="main">
+</form>
     
-<div class="jumbotron mini">
-  <div class="container">
-    <h1><a href="/docs/">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/transactions">Transactions</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Batch</span></h1>
-  </div>
-</div>
-
-<div class="container doc-index bs-docs-container">
-
-  <div class="row">
-
-    <div class="col-md-9" role="main">
-
-      <form action="https://www.google.com/search" method="get">
-        <div class="page-inline-search" style="margin-bottom:8px;">
-          <div class="input-group">
-            <input name="q" id="searchinput" type="text" class="form-control" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
-            <input type="hidden" name="as_sitesearch" value="ebean.io">
-            <div class="input-group-btn">
-              <button class="btn btn-default form-control" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-            </div>
-          </div>
-          <div class="search-results-inline-container" style="display: none;">
-            <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
-          </div>
-        </div>
-      </form>
-
-      
-
-
-<h2>Batch</h2>
+<h2 id="batch">Batch</h2>
 <p>
   We can explicitly turn on the use of JDBC batch via <em>transaction.setBatchMode(true)</em>
 </p>
@@ -111,7 +177,7 @@
 </pre></div>
 </div>
 
-<h2 id="transactionalBatchSize" class="art">@Transactional(batchSize)</h2>
+<h2 id="transactionalBatchSize">@Transactional(batchSize)</h2>
 <p>
   When using <em>@Transactional</em> setting the <code>batchSize</code> attribute will turn on JDBC batch.
 </p>
@@ -124,16 +190,17 @@
 </pre></div>
 </div>
 
-<h2 id="batchsize" class="art">Batch size</h2>
+<h2 id="batchSize">Batch size</h2>
 <p>
-  The JDBC batch buffer has a size at which it will flush executing the statements in the batch buffer.
+  The batch size controls the number of times Ebean will bind a JDBC prepared statement before executing it.
+  When persisting beans (e.g. customer.save()) it is effectively the number of beans persisted.
 </p>
 <p>
-  When the number of beans (or UpdateSql or CallableSql) hits the buffer size then the batch is flushed
+  When the number of beans (or SqlUpdate or CallableSql) hits the batch size then the batch is flushed
   and all the statements in the buffer are executed.
 </p>
 <p>
-  If we persist different types of beans, for example "order" and "order details" then when any of the buffers
+  When persisting different types of beans, for example "order" and "order details" then when any of the buffers
   hits the batch size all buffers are flushed. This allows Ebean to preserve the execution order, for example
   persisting all the "orders" before persisting all the "order details".
 </p>
@@ -141,7 +208,7 @@
   The batch buffer size default value is set via <em>serverConfig.persistBatchSize</em> which defaults to <code>20</code>.
   We can set the buffer size on the transaction via <code>transaction.setBatchSize()</code> or <code>@Transactional(batchSize)</code>.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="c1">// use JDBC batch</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
@@ -157,24 +224,57 @@
 </pre></div>
 </div>
 
-<h2 id="flush" class="art">Flush</h2>
+<h2 id="generatedKeys">GetGeneratedKeys</h2>
+<p>
+  By default Ebean will get the generated keys after beans are inserted. When we have processing that
+  is inserting a large number of rows/beans and we don't actually need the keys after the insert we
+  can turn off getting the generated keys for a performance benefit.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// don&#39;t bother getting back the generated keys</span>
+<span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>
+  When we are performing a large bulk insert it is common to turn off <em>getGeneratedKeys</em>.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+
+  <span class="c1">// turn off GetGeneratedKeys as we don&#39;t need the keys</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+  <span class="c1">// maybe even turn off persist cascade ...</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setPersistCascade</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+
+  <span class="c1">// perform lots of inserts ...</span>
+  <span class="o">...</span>
+
+
+  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="flush">Flush</h2>
 <p>
   The batch is flushed when:
 </p>
 <ul>
   <li>A buffer hits the batch size</li>
   <li>We execute a query - depending on setBatchFlushOnQuery()</li>
-  <li>We mix UpdateSql, CallableSql with bean persisting - depending on setBatchFlushOnMixed()</li>
+  <li>We mix SqlUpdate, CallableSql with bean persisting - depending on setBatchFlushOnMixed()</li>
   <li>We call a getter or setter on a bean property that is already batched e.g. bean.getId()</li>
   <li>We explicitly call flush()</li>
 </ul>
 
-<h4>setBatchFlushOnQuery</h4>
+<h2 id="flushOnQuery">setBatchFlushOnQuery()</h2>
 <p>
-  We set <em>setBatchFlushOnQuery(false)</em> on a transaction when we want to execute a query
+  Set <code>setBatchFlushOnQuery(false)</code> on a transaction when we want to execute a query
   but don't want that to trigger a flush.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchFlushOnQuery</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
@@ -193,22 +293,22 @@
 </pre></div>
 </div>
 
-<h4>setBatchFlushOnMixed</h4>
+<h2 id="flushOnMixed">setBatchFlushOnMixed()</h2>
 <p>
-  We set <em>setBatchFlushOnMixed(false)</em> on a transaction when we want to execute a UpdateSql
+  We set <em>setBatchFlushOnMixed(false)</em> on a transaction when we want to execute a SqlUpdate
   or CallableSql mixed with bean save(), delete() etc and don't want that to trigger a flush.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchFlushOnQuery</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchFlushOnMixed</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
   <span class="c1">// these go to batch buffer</span>
   <span class="n">aBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
   <span class="o">...</span>
 
-  <span class="c1">// execute UpdateSql but we don&#39;t</span>
+  <span class="c1">// execute SqlUpdate but we don&#39;t</span>
   <span class="c1">// want that to trigger flush</span>
-  <span class="n">UpdateSql</span> <span class="n">update</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="n">SqlUpdate</span> <span class="n">update</span> <span class="o">=</span> <span class="o">...</span>
   <span class="n">update</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
 
   <span class="o">...</span>
@@ -218,19 +318,20 @@
 </pre></div>
 </div>
 
-<h4>Flush on getter/setter</h4>
+<h2 id="flushOnGetter">Flush on getter/setter</h2>
 <p>
   For beans that are in the batch buffer, if we call getters/setters on a generated property
   or "unloaded" Id property this will trigger a flush.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 
   <span class="c1">// bean goes to batch buffer</span>
   <span class="n">myBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
   <span class="o">...</span>
 
-  <span class="c1">// will trigger flush if id is an &quot;unloaded&quot; property and myBean is in the buffer (not flushed)</span>
+  <span class="c1">// will trigger flush if id is an &quot;unloaded&quot; property</span>
+  <span class="c1">// and myBean is in the buffer (not flushed)</span>
   <span class="kt">long</span> <span class="n">id</span> <span class="o">=</span> <span class="n">myBean</span><span class="o">.</span><span class="na">getId</span><span class="o">();</span>
 
   <span class="c1">// will trigger flush if myBean is in the buffer (not flushed)</span>
@@ -243,13 +344,13 @@
 </pre></div>
 </div>
 
-<h4>Explicit flush()</h4>
+<h2 id="flushExplicit">Explicit flush()</h2>
 <p>
-  We may wish to perform an explicit <em>flush()</em> when we want to ensure that any batched statements
-  have been executed. This typically means that we know that all SQL statements have been executed and
-  that all the DB constraints are tested at that point in the application logic.
+  We may wish to perform an explicit <code>transaction.flush()</code> when we want to ensure that any
+  batched statements have been executed. This typically means that we know that all SQL statements have
+  been executed and that all the DB constraints are tested at that point in the application logic.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 
   <span class="c1">// bean goes to batch buffer</span>
@@ -270,33 +371,7 @@
 </pre></div>
 </div>
 
-<h2 id="getGeneratedKeys" class="art">GetGeneratedKeys</h2>
-<p>
-  When we are performing a large bulk insert it is common to turn off <em>getGeneratedKeys</em>
-  as we typically don't use the beans after they have been inserted (so we don't need the keys).
-</p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
-
-  <span class="c1">// turn off GetGeneratedKeys ... as we don&#39;t need them</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-
-  <span class="c1">// maybe even turn off persist cascade ...</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setPersistCascade</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
-
-
-  <span class="c1">// perform lots of bean inserts ...</span>
-  <span class="o">...</span>
-
-
-  <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-
-<h2 id="serverConfig" class="art">Configuration via ServerConfig</h2>
+<h2 id="serverConfig">Configuration via ServerConfig</h2>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use JDBC batch by default</span>
 <span class="n">serverConfig</span><span class="o">.</span><span class="na">setPersistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
@@ -327,91 +402,22 @@
   the same properties on all the beans being updated).
 </p>
 
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/transactions/batch.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/transactions/scopes" class="btn btn-info">Next: Scopes</a>
+    </p>
+  </nav>
 
-<div class="next pull-right">
-  <a href="/docs/transactions/scopes" class="btn btn-info">Next: Scopes</a>
-</div>
-  <p class="edit-page">
-    <a href="https://github.com/ebean-orm/website-source/blob/master/docs/transactions/batch.html"><i class="fab fa-github"></i> Edit Page</a>
-  </p>
 
-
-
-    </div>
-
-    <div class="col-md-3" role="complementary">
-      <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
-        <ul class="nav bs-docs-sidenav">
-<li >
-  <a href="/docs/transactions">Transactions</a>
-</li>
-<li class="active">
-  <a href="/docs/transactions/batch">Batch</a>
-  <ul class="nav">
-    <li><a href="#batchsize">Batch size</a></li>
-    <li><a href="#flush">Flush</a></li>
-    <li><a href="#getGeneratedKeys">GetGeneratedKeys</a></li>
-    <li><a href="#serverConfig">ServerConfig</a></li>
-  </ul>
-</li>
-<li >
-  <a href="/docs/transactions/scopes">Scopes</a>
-</li>
-<li >
-  <a href="/docs/transactions/savepoints">Savepoint</a>
-</li>
-<li >
-  <a href="/docs/transactions/savepoints-explicit">Savepoint - Explicit</a>
-</li>
-<li >
-  <a href="/docs/transactions/spring">Spring</a>
-</li>
-<li >
-  <a href="/docs/transactions/jta">JTA</a>
-</li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
+  </article>
 </div>
 
-
-  </div>
 </div>
-
-
-<footer id="footer">
-  <div class="doc-footer">
-    <ul class="doc-footer-links">
-      <li><a href="/">Ebean ORM</a></li>
-      <li> | </li>
-      <li><a href="http://avaje-metric.github.io">Metrics</a></li>
-    </ul>
-  </div>
-</footer>
-
-  <script type="text/javascript">
-    var categoryNames = {};
-  </script>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="/js/jquery.easing.min.js"></script>
-
-    <script src="/js/jquery.storageapi.min.js"></script>
-  <script src="/js/ebean-site.js"></script>
-  <script src="/js/extra.js"></script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-75181644-1', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
 </body>
 </html>
