@@ -134,12 +134,15 @@
 <p>
   Add a <code>containerTemplate</code> entry for postgres like below:
 </p>
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">containerTemplate</span><span class="o">(</span><span class="nl">args:</span> <span class="s1">&#39;-p 6432&#39;</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">&#39;postgres12&#39;</span><span class="o">,</span> <span class="nl">image:</span> <span class="s1">&#39;postgres:12&#39;</span><span class="o">),</span>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">containerTemplate</span><span class="o">(</span><span class="nl">args:</span> <span class="s1">&#39;-p 6432&#39;</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">&#39;postgres12&#39;</span><span class="o">,</span> <span class="nl">image:</span> <span class="s1">&#39;postgres:12&#39;</span><span class="o">,</span>
+  <span class="nl">envVars:</span> <span class="o">[</span><span class="n">containerEnvVar</span><span class="o">(</span><span class="nl">key:</span> <span class="s1">&#39;POSTGRES_PASSWORD&#39;</span><span class="o">,</span> <span class="nl">value:</span> <span class="s1">&#39;admin&#39;</span><span class="o">)]</span>
+<span class="o">)</span>
 </pre></div>
 </div>
 <p>
-  This will add a postgres container to the pod running with port 6432. This postgres instance
-  will then be available on <em>localhost:6432</em>.
+  This will add a postgres container to the pod running with port 6432 with the password for
+  the <code>postgres</code> user set to <code>admin</code>. This postgres instance
+  will then be available on <code>localhost:6432</code>.
 </p>
 
 <h3>pg_isready</h3>
@@ -154,6 +157,11 @@
 <span class="o">}</span>
 </pre></div>
 </div>
+<p>
+  When ebean-test starts it will make a JDBC connection using <em>postgres:admin</em> username
+  and password and will use this to create the database, role and add extensions as needed.
+</p>
+
 <h3>Logs</h3>
 <p>
   In the logs before the tests actually run we see ebean-test connects to <code>jdbc:postgresql://localhost:6432</code>
