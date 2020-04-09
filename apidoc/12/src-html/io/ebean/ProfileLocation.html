@@ -40,9 +40,9 @@
 <span class="sourceLineNo">031</span><a id="line.31">  }</a>
 <span class="sourceLineNo">032</span><a id="line.32"></a>
 <span class="sourceLineNo">033</span><a id="line.33">  /**</a>
-<span class="sourceLineNo">034</span><a id="line.34">   * Obtain the location description.</a>
+<span class="sourceLineNo">034</span><a id="line.34">   * Obtain the description returning true if this is the initial call.</a>
 <span class="sourceLineNo">035</span><a id="line.35">   */</a>
-<span class="sourceLineNo">036</span><a id="line.36">  String obtain();</a>
+<span class="sourceLineNo">036</span><a id="line.36">  boolean obtain();</a>
 <span class="sourceLineNo">037</span><a id="line.37"></a>
 <span class="sourceLineNo">038</span><a id="line.38">  /**</a>
 <span class="sourceLineNo">039</span><a id="line.39">   * Return a short version of the location description.</a>
@@ -55,10 +55,25 @@
 <span class="sourceLineNo">046</span><a id="line.46">  String label();</a>
 <span class="sourceLineNo">047</span><a id="line.47"></a>
 <span class="sourceLineNo">048</span><a id="line.48">  /**</a>
-<span class="sourceLineNo">049</span><a id="line.49">   * Add execution time.</a>
+<span class="sourceLineNo">049</span><a id="line.49">   * Return the full location.</a>
 <span class="sourceLineNo">050</span><a id="line.50">   */</a>
-<span class="sourceLineNo">051</span><a id="line.51">  void add(long executionTime);</a>
-<span class="sourceLineNo">052</span><a id="line.52">}</a>
+<span class="sourceLineNo">051</span><a id="line.51">  String fullLocation();</a>
+<span class="sourceLineNo">052</span><a id="line.52"></a>
+<span class="sourceLineNo">053</span><a id="line.53">  /**</a>
+<span class="sourceLineNo">054</span><a id="line.54">   * Add execution time.</a>
+<span class="sourceLineNo">055</span><a id="line.55">   */</a>
+<span class="sourceLineNo">056</span><a id="line.56">  void add(long executionTime);</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">  /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">   * Return true if this request should be traced.</a>
+<span class="sourceLineNo">060</span><a id="line.60">   */</a>
+<span class="sourceLineNo">061</span><a id="line.61">  boolean trace();</a>
+<span class="sourceLineNo">062</span><a id="line.62"></a>
+<span class="sourceLineNo">063</span><a id="line.63">  /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">   * Set the number of times to trace the transactions for this profile location.</a>
+<span class="sourceLineNo">065</span><a id="line.65">   */</a>
+<span class="sourceLineNo">066</span><a id="line.66">  void setTraceCount(int traceCount);</a>
+<span class="sourceLineNo">067</span><a id="line.67">}</a>
 
 
 

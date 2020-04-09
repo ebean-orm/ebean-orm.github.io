@@ -180,7 +180,7 @@
 <span class="sourceLineNo">171</span><a id="line.171">        logger.info("Creating transaction, batchSize[" + persistBatchSize + "]");</a>
 <span class="sourceLineNo">172</span><a id="line.172">        transaction.setBatchMode(true);</a>
 <span class="sourceLineNo">173</span><a id="line.173">        transaction.setBatchSize(persistBatchSize);</a>
-<span class="sourceLineNo">174</span><a id="line.174">        transaction.setBatchGetGeneratedKeys(false);</a>
+<span class="sourceLineNo">174</span><a id="line.174">        transaction.setGetGeneratedKeys(false);</a>
 <span class="sourceLineNo">175</span><a id="line.175"></a>
 <span class="sourceLineNo">176</span><a id="line.176">      } else {</a>
 <span class="sourceLineNo">177</span><a id="line.177">        // explicitly turn off JDBC batching in case</a>

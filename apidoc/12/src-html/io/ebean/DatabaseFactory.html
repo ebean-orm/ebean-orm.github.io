@@ -43,14 +43,14 @@
 <span class="sourceLineNo">034</span><a id="line.34">  }</a>
 <span class="sourceLineNo">035</span><a id="line.35"></a>
 <span class="sourceLineNo">036</span><a id="line.36">  /**</a>
-<span class="sourceLineNo">037</span><a id="line.37">   * Create using ebean.properties to configure the server.</a>
+<span class="sourceLineNo">037</span><a id="line.37">   * Create using ebean.properties to configure the database.</a>
 <span class="sourceLineNo">038</span><a id="line.38">   */</a>
 <span class="sourceLineNo">039</span><a id="line.39">  public static synchronized Database create(String name) {</a>
 <span class="sourceLineNo">040</span><a id="line.40">    return EbeanServerFactory.create(name);</a>
 <span class="sourceLineNo">041</span><a id="line.41">  }</a>
 <span class="sourceLineNo">042</span><a id="line.42"></a>
 <span class="sourceLineNo">043</span><a id="line.43">  /**</a>
-<span class="sourceLineNo">044</span><a id="line.44">   * Create using the ServerConfig object to configure the server.</a>
+<span class="sourceLineNo">044</span><a id="line.44">   * Create using the ServerConfig object to configure the database.</a>
 <span class="sourceLineNo">045</span><a id="line.45">   */</a>
 <span class="sourceLineNo">046</span><a id="line.46">  public static synchronized Database create(DatabaseConfig config) {</a>
 <span class="sourceLineNo">047</span><a id="line.47">    return EbeanServerFactory.create(config);</a>

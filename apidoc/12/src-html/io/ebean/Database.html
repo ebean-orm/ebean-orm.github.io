@@ -131,7 +131,7 @@
 <span class="sourceLineNo">122</span><a id="line.122">  String getName();</a>
 <span class="sourceLineNo">123</span><a id="line.123"></a>
 <span class="sourceLineNo">124</span><a id="line.124">  /**</a>
-<span class="sourceLineNo">125</span><a id="line.125">   * Return the ExpressionFactory for this server.</a>
+<span class="sourceLineNo">125</span><a id="line.125">   * Return the ExpressionFactory for this database.</a>
 <span class="sourceLineNo">126</span><a id="line.126">   */</a>
 <span class="sourceLineNo">127</span><a id="line.127">  ExpressionFactory getExpressionFactory();</a>
 <span class="sourceLineNo">128</span><a id="line.128"></a>
@@ -384,7 +384,7 @@
 <span class="sourceLineNo">375</span><a id="line.375">   *   // find orders and their customers</a>
 <span class="sourceLineNo">376</span><a id="line.376">   *   List&lt;Order&gt; list = database.find(Order.class)</a>
 <span class="sourceLineNo">377</span><a id="line.377">   *     .fetch("customer")</a>
-<span class="sourceLineNo">378</span><a id="line.378">   *     .orderBy("id")</a>
+<span class="sourceLineNo">378</span><a id="line.378">   *     .order("id")</a>
 <span class="sourceLineNo">379</span><a id="line.379">   *     .findList();</a>
 <span class="sourceLineNo">380</span><a id="line.380">   *</a>
 <span class="sourceLineNo">381</span><a id="line.381">   *   // sort by customer name ascending, then by order shipDate</a>
@@ -891,696 +891,701 @@
 <span class="sourceLineNo">882</span><a id="line.882">  int saveAll(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
 <span class="sourceLineNo">883</span><a id="line.883"></a>
 <span class="sourceLineNo">884</span><a id="line.884">  /**</a>
-<span class="sourceLineNo">885</span><a id="line.885">   * Delete the bean.</a>
-<span class="sourceLineNo">886</span><a id="line.886">   * &lt;p&gt;</a>
-<span class="sourceLineNo">887</span><a id="line.887">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
-<span class="sourceLineNo">888</span><a id="line.888">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">889</span><a id="line.889">   * &lt;p&gt;</a>
-<span class="sourceLineNo">890</span><a id="line.890">   * If there is no current transaction one will be created and committed for</a>
-<span class="sourceLineNo">891</span><a id="line.891">   * you automatically.</a>
-<span class="sourceLineNo">892</span><a id="line.892">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">893</span><a id="line.893">   * &lt;p&gt;</a>
-<span class="sourceLineNo">894</span><a id="line.894">   * If the Bean does not have a version property (or loaded version property) and</a>
-<span class="sourceLineNo">895</span><a id="line.895">   * the bean does not exist then this returns false indicating that nothing was</a>
-<span class="sourceLineNo">896</span><a id="line.896">   * deleted. Note that, if JDBC batch mode is used then this always returns true.</a>
+<span class="sourceLineNo">885</span><a id="line.885">   * Save all the beans.</a>
+<span class="sourceLineNo">886</span><a id="line.886">   */</a>
+<span class="sourceLineNo">887</span><a id="line.887">  int saveAll(Object... beans) throws OptimisticLockException;</a>
+<span class="sourceLineNo">888</span><a id="line.888"></a>
+<span class="sourceLineNo">889</span><a id="line.889">  /**</a>
+<span class="sourceLineNo">890</span><a id="line.890">   * Delete the bean.</a>
+<span class="sourceLineNo">891</span><a id="line.891">   * &lt;p&gt;</a>
+<span class="sourceLineNo">892</span><a id="line.892">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
+<span class="sourceLineNo">893</span><a id="line.893">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">894</span><a id="line.894">   * &lt;p&gt;</a>
+<span class="sourceLineNo">895</span><a id="line.895">   * If there is no current transaction one will be created and committed for</a>
+<span class="sourceLineNo">896</span><a id="line.896">   * you automatically.</a>
 <span class="sourceLineNo">897</span><a id="line.897">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">898</span><a id="line.898">   */</a>
-<span class="sourceLineNo">899</span><a id="line.899">  boolean delete(Object bean) throws OptimisticLockException;</a>
-<span class="sourceLineNo">900</span><a id="line.900"></a>
-<span class="sourceLineNo">901</span><a id="line.901">  /**</a>
-<span class="sourceLineNo">902</span><a id="line.902">   * Delete the bean with an explicit transaction.</a>
-<span class="sourceLineNo">903</span><a id="line.903">   * &lt;p&gt;</a>
-<span class="sourceLineNo">904</span><a id="line.904">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
-<span class="sourceLineNo">905</span><a id="line.905">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">906</span><a id="line.906">   * &lt;p&gt;</a>
-<span class="sourceLineNo">907</span><a id="line.907">   * If the Bean does not have a version property (or loaded version property) and</a>
-<span class="sourceLineNo">908</span><a id="line.908">   * the bean does not exist then this returns false indicating that nothing was</a>
-<span class="sourceLineNo">909</span><a id="line.909">   * deleted. However, if JDBC batch mode is used then this always returns true.</a>
+<span class="sourceLineNo">898</span><a id="line.898">   * &lt;p&gt;</a>
+<span class="sourceLineNo">899</span><a id="line.899">   * If the Bean does not have a version property (or loaded version property) and</a>
+<span class="sourceLineNo">900</span><a id="line.900">   * the bean does not exist then this returns false indicating that nothing was</a>
+<span class="sourceLineNo">901</span><a id="line.901">   * deleted. Note that, if JDBC batch mode is used then this always returns true.</a>
+<span class="sourceLineNo">902</span><a id="line.902">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">903</span><a id="line.903">   */</a>
+<span class="sourceLineNo">904</span><a id="line.904">  boolean delete(Object bean) throws OptimisticLockException;</a>
+<span class="sourceLineNo">905</span><a id="line.905"></a>
+<span class="sourceLineNo">906</span><a id="line.906">  /**</a>
+<span class="sourceLineNo">907</span><a id="line.907">   * Delete the bean with an explicit transaction.</a>
+<span class="sourceLineNo">908</span><a id="line.908">   * &lt;p&gt;</a>
+<span class="sourceLineNo">909</span><a id="line.909">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
 <span class="sourceLineNo">910</span><a id="line.910">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">911</span><a id="line.911">   */</a>
-<span class="sourceLineNo">912</span><a id="line.912">  boolean delete(Object bean, Transaction transaction) throws OptimisticLockException;</a>
-<span class="sourceLineNo">913</span><a id="line.913"></a>
-<span class="sourceLineNo">914</span><a id="line.914">  /**</a>
-<span class="sourceLineNo">915</span><a id="line.915">   * Delete a bean permanently without soft delete.</a>
+<span class="sourceLineNo">911</span><a id="line.911">   * &lt;p&gt;</a>
+<span class="sourceLineNo">912</span><a id="line.912">   * If the Bean does not have a version property (or loaded version property) and</a>
+<span class="sourceLineNo">913</span><a id="line.913">   * the bean does not exist then this returns false indicating that nothing was</a>
+<span class="sourceLineNo">914</span><a id="line.914">   * deleted. However, if JDBC batch mode is used then this always returns true.</a>
+<span class="sourceLineNo">915</span><a id="line.915">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">916</span><a id="line.916">   */</a>
-<span class="sourceLineNo">917</span><a id="line.917">  boolean deletePermanent(Object bean) throws OptimisticLockException;</a>
+<span class="sourceLineNo">917</span><a id="line.917">  boolean delete(Object bean, Transaction transaction) throws OptimisticLockException;</a>
 <span class="sourceLineNo">918</span><a id="line.918"></a>
 <span class="sourceLineNo">919</span><a id="line.919">  /**</a>
-<span class="sourceLineNo">920</span><a id="line.920">   * Delete a bean permanently without soft delete using an explicit transaction.</a>
+<span class="sourceLineNo">920</span><a id="line.920">   * Delete a bean permanently without soft delete.</a>
 <span class="sourceLineNo">921</span><a id="line.921">   */</a>
-<span class="sourceLineNo">922</span><a id="line.922">  boolean deletePermanent(Object bean, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">922</span><a id="line.922">  boolean deletePermanent(Object bean) throws OptimisticLockException;</a>
 <span class="sourceLineNo">923</span><a id="line.923"></a>
 <span class="sourceLineNo">924</span><a id="line.924">  /**</a>
-<span class="sourceLineNo">925</span><a id="line.925">   * Delete all the beans in the collection permanently without soft delete.</a>
+<span class="sourceLineNo">925</span><a id="line.925">   * Delete a bean permanently without soft delete using an explicit transaction.</a>
 <span class="sourceLineNo">926</span><a id="line.926">   */</a>
-<span class="sourceLineNo">927</span><a id="line.927">  int deleteAllPermanent(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
+<span class="sourceLineNo">927</span><a id="line.927">  boolean deletePermanent(Object bean, Transaction transaction) throws OptimisticLockException;</a>
 <span class="sourceLineNo">928</span><a id="line.928"></a>
 <span class="sourceLineNo">929</span><a id="line.929">  /**</a>
-<span class="sourceLineNo">930</span><a id="line.930">   * Delete all the beans in the collection permanently without soft delete using an explicit transaction.</a>
+<span class="sourceLineNo">930</span><a id="line.930">   * Delete all the beans in the collection permanently without soft delete.</a>
 <span class="sourceLineNo">931</span><a id="line.931">   */</a>
-<span class="sourceLineNo">932</span><a id="line.932">  int deleteAllPermanent(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">932</span><a id="line.932">  int deleteAllPermanent(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
 <span class="sourceLineNo">933</span><a id="line.933"></a>
 <span class="sourceLineNo">934</span><a id="line.934">  /**</a>
-<span class="sourceLineNo">935</span><a id="line.935">   * Delete the bean given its type and id.</a>
+<span class="sourceLineNo">935</span><a id="line.935">   * Delete all the beans in the collection permanently without soft delete using an explicit transaction.</a>
 <span class="sourceLineNo">936</span><a id="line.936">   */</a>
-<span class="sourceLineNo">937</span><a id="line.937">  int delete(Class&lt;?&gt; beanType, Object id);</a>
+<span class="sourceLineNo">937</span><a id="line.937">  int deleteAllPermanent(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
 <span class="sourceLineNo">938</span><a id="line.938"></a>
 <span class="sourceLineNo">939</span><a id="line.939">  /**</a>
-<span class="sourceLineNo">940</span><a id="line.940">   * Delete the bean given its type and id with an explicit transaction.</a>
+<span class="sourceLineNo">940</span><a id="line.940">   * Delete the bean given its type and id.</a>
 <span class="sourceLineNo">941</span><a id="line.941">   */</a>
-<span class="sourceLineNo">942</span><a id="line.942">  int delete(Class&lt;?&gt; beanType, Object id, Transaction transaction);</a>
+<span class="sourceLineNo">942</span><a id="line.942">  int delete(Class&lt;?&gt; beanType, Object id);</a>
 <span class="sourceLineNo">943</span><a id="line.943"></a>
 <span class="sourceLineNo">944</span><a id="line.944">  /**</a>
-<span class="sourceLineNo">945</span><a id="line.945">   * Delete permanent given the bean type and id.</a>
+<span class="sourceLineNo">945</span><a id="line.945">   * Delete the bean given its type and id with an explicit transaction.</a>
 <span class="sourceLineNo">946</span><a id="line.946">   */</a>
-<span class="sourceLineNo">947</span><a id="line.947">  int deletePermanent(Class&lt;?&gt; beanType, Object id);</a>
+<span class="sourceLineNo">947</span><a id="line.947">  int delete(Class&lt;?&gt; beanType, Object id, Transaction transaction);</a>
 <span class="sourceLineNo">948</span><a id="line.948"></a>
 <span class="sourceLineNo">949</span><a id="line.949">  /**</a>
-<span class="sourceLineNo">950</span><a id="line.950">   * Delete permanent given the bean type and id with an explicit transaction.</a>
+<span class="sourceLineNo">950</span><a id="line.950">   * Delete permanent given the bean type and id.</a>
 <span class="sourceLineNo">951</span><a id="line.951">   */</a>
-<span class="sourceLineNo">952</span><a id="line.952">  int deletePermanent(Class&lt;?&gt; beanType, Object id, Transaction transaction);</a>
+<span class="sourceLineNo">952</span><a id="line.952">  int deletePermanent(Class&lt;?&gt; beanType, Object id);</a>
 <span class="sourceLineNo">953</span><a id="line.953"></a>
 <span class="sourceLineNo">954</span><a id="line.954">  /**</a>
-<span class="sourceLineNo">955</span><a id="line.955">   * Delete all the beans in the collection.</a>
+<span class="sourceLineNo">955</span><a id="line.955">   * Delete permanent given the bean type and id with an explicit transaction.</a>
 <span class="sourceLineNo">956</span><a id="line.956">   */</a>
-<span class="sourceLineNo">957</span><a id="line.957">  int deleteAll(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
+<span class="sourceLineNo">957</span><a id="line.957">  int deletePermanent(Class&lt;?&gt; beanType, Object id, Transaction transaction);</a>
 <span class="sourceLineNo">958</span><a id="line.958"></a>
 <span class="sourceLineNo">959</span><a id="line.959">  /**</a>
-<span class="sourceLineNo">960</span><a id="line.960">   * Delete all the beans in the collection using an explicit transaction.</a>
+<span class="sourceLineNo">960</span><a id="line.960">   * Delete all the beans in the collection.</a>
 <span class="sourceLineNo">961</span><a id="line.961">   */</a>
-<span class="sourceLineNo">962</span><a id="line.962">  int deleteAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">962</span><a id="line.962">  int deleteAll(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
 <span class="sourceLineNo">963</span><a id="line.963"></a>
 <span class="sourceLineNo">964</span><a id="line.964">  /**</a>
-<span class="sourceLineNo">965</span><a id="line.965">   * Delete several beans given their type and id values.</a>
+<span class="sourceLineNo">965</span><a id="line.965">   * Delete all the beans in the collection using an explicit transaction.</a>
 <span class="sourceLineNo">966</span><a id="line.966">   */</a>
-<span class="sourceLineNo">967</span><a id="line.967">  int deleteAll(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids);</a>
+<span class="sourceLineNo">967</span><a id="line.967">  int deleteAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
 <span class="sourceLineNo">968</span><a id="line.968"></a>
 <span class="sourceLineNo">969</span><a id="line.969">  /**</a>
-<span class="sourceLineNo">970</span><a id="line.970">   * Delete several beans given their type and id values with an explicit transaction.</a>
+<span class="sourceLineNo">970</span><a id="line.970">   * Delete several beans given their type and id values.</a>
 <span class="sourceLineNo">971</span><a id="line.971">   */</a>
-<span class="sourceLineNo">972</span><a id="line.972">  int deleteAll(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids, Transaction transaction);</a>
+<span class="sourceLineNo">972</span><a id="line.972">  int deleteAll(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids);</a>
 <span class="sourceLineNo">973</span><a id="line.973"></a>
 <span class="sourceLineNo">974</span><a id="line.974">  /**</a>
-<span class="sourceLineNo">975</span><a id="line.975">   * Delete permanent for several beans given their type and id values.</a>
+<span class="sourceLineNo">975</span><a id="line.975">   * Delete several beans given their type and id values with an explicit transaction.</a>
 <span class="sourceLineNo">976</span><a id="line.976">   */</a>
-<span class="sourceLineNo">977</span><a id="line.977">  int deleteAllPermanent(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids);</a>
+<span class="sourceLineNo">977</span><a id="line.977">  int deleteAll(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids, Transaction transaction);</a>
 <span class="sourceLineNo">978</span><a id="line.978"></a>
 <span class="sourceLineNo">979</span><a id="line.979">  /**</a>
-<span class="sourceLineNo">980</span><a id="line.980">   * Delete permanent for several beans given their type and id values with an explicit transaction.</a>
+<span class="sourceLineNo">980</span><a id="line.980">   * Delete permanent for several beans given their type and id values.</a>
 <span class="sourceLineNo">981</span><a id="line.981">   */</a>
-<span class="sourceLineNo">982</span><a id="line.982">  int deleteAllPermanent(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids, Transaction transaction);</a>
+<span class="sourceLineNo">982</span><a id="line.982">  int deleteAllPermanent(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids);</a>
 <span class="sourceLineNo">983</span><a id="line.983"></a>
 <span class="sourceLineNo">984</span><a id="line.984">  /**</a>
-<span class="sourceLineNo">985</span><a id="line.985">   * Execute a Sql Update Delete or Insert statement. This returns the number of</a>
-<span class="sourceLineNo">986</span><a id="line.986">   * rows that where updated, deleted or inserted. If is executed in batch then</a>
-<span class="sourceLineNo">987</span><a id="line.987">   * this returns -1. You can get the actual rowCount after commit() from</a>
-<span class="sourceLineNo">988</span><a id="line.988">   * updateSql.getRowCount().</a>
-<span class="sourceLineNo">989</span><a id="line.989">   * &lt;p&gt;</a>
-<span class="sourceLineNo">990</span><a id="line.990">   * If you wish to execute a Sql Select natively then you should use the</a>
-<span class="sourceLineNo">991</span><a id="line.991">   * SqlQuery object or DtoQuery.</a>
-<span class="sourceLineNo">992</span><a id="line.992">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">993</span><a id="line.993">   * &lt;p&gt;</a>
-<span class="sourceLineNo">994</span><a id="line.994">   * Note that the table modification information is automatically deduced and</a>
-<span class="sourceLineNo">995</span><a id="line.995">   * you do not need to call the DB.externalModification() method when you</a>
-<span class="sourceLineNo">996</span><a id="line.996">   * use this method.</a>
+<span class="sourceLineNo">985</span><a id="line.985">   * Delete permanent for several beans given their type and id values with an explicit transaction.</a>
+<span class="sourceLineNo">986</span><a id="line.986">   */</a>
+<span class="sourceLineNo">987</span><a id="line.987">  int deleteAllPermanent(Class&lt;?&gt; beanType, Collection&lt;?&gt; ids, Transaction transaction);</a>
+<span class="sourceLineNo">988</span><a id="line.988"></a>
+<span class="sourceLineNo">989</span><a id="line.989">  /**</a>
+<span class="sourceLineNo">990</span><a id="line.990">   * Execute a Sql Update Delete or Insert statement. This returns the number of</a>
+<span class="sourceLineNo">991</span><a id="line.991">   * rows that where updated, deleted or inserted. If is executed in batch then</a>
+<span class="sourceLineNo">992</span><a id="line.992">   * this returns -1. You can get the actual rowCount after commit() from</a>
+<span class="sourceLineNo">993</span><a id="line.993">   * updateSql.getRowCount().</a>
+<span class="sourceLineNo">994</span><a id="line.994">   * &lt;p&gt;</a>
+<span class="sourceLineNo">995</span><a id="line.995">   * If you wish to execute a Sql Select natively then you should use the</a>
+<span class="sourceLineNo">996</span><a id="line.996">   * SqlQuery object or DtoQuery.</a>
 <span class="sourceLineNo">997</span><a id="line.997">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">998</span><a id="line.998">   * &lt;p&gt;</a>
-<span class="sourceLineNo">999</span><a id="line.999">   * Example:</a>
-<span class="sourceLineNo">1000</span><a id="line.1000">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1001</span><a id="line.1001">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1002</span><a id="line.1002">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1003</span><a id="line.1003">   *</a>
-<span class="sourceLineNo">1004</span><a id="line.1004">   *   // example that uses 'named' parameters</a>
-<span class="sourceLineNo">1005</span><a id="line.1005">   *   String s = "UPDATE f_topic set post_count = :count where id = :id"</a>
-<span class="sourceLineNo">1006</span><a id="line.1006">   *</a>
-<span class="sourceLineNo">1007</span><a id="line.1007">   *   SqlUpdate update = database.createSqlUpdate(s);</a>
+<span class="sourceLineNo">999</span><a id="line.999">   * Note that the table modification information is automatically deduced and</a>
+<span class="sourceLineNo">1000</span><a id="line.1000">   * you do not need to call the DB.externalModification() method when you</a>
+<span class="sourceLineNo">1001</span><a id="line.1001">   * use this method.</a>
+<span class="sourceLineNo">1002</span><a id="line.1002">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1003</span><a id="line.1003">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1004</span><a id="line.1004">   * Example:</a>
+<span class="sourceLineNo">1005</span><a id="line.1005">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1006</span><a id="line.1006">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1007</span><a id="line.1007">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">1008</span><a id="line.1008">   *</a>
-<span class="sourceLineNo">1009</span><a id="line.1009">   *   update.setParameter("id", 1);</a>
-<span class="sourceLineNo">1010</span><a id="line.1010">   *   update.setParameter("count", 50);</a>
+<span class="sourceLineNo">1009</span><a id="line.1009">   *   // example that uses 'named' parameters</a>
+<span class="sourceLineNo">1010</span><a id="line.1010">   *   String s = "UPDATE f_topic set post_count = :count where id = :id"</a>
 <span class="sourceLineNo">1011</span><a id="line.1011">   *</a>
-<span class="sourceLineNo">1012</span><a id="line.1012">   *   int modifiedCount = database.execute(update);</a>
+<span class="sourceLineNo">1012</span><a id="line.1012">   *   SqlUpdate update = database.createSqlUpdate(s);</a>
 <span class="sourceLineNo">1013</span><a id="line.1013">   *</a>
-<span class="sourceLineNo">1014</span><a id="line.1014">   *   String msg = "There where " + modifiedCount + "rows updated";</a>
-<span class="sourceLineNo">1015</span><a id="line.1015">   *</a>
-<span class="sourceLineNo">1016</span><a id="line.1016">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1017</span><a id="line.1017">   *</a>
-<span class="sourceLineNo">1018</span><a id="line.1018">   * @param sqlUpdate the update sql potentially with bind values</a>
-<span class="sourceLineNo">1019</span><a id="line.1019">   * @return the number of rows updated or deleted. -1 if executed in batch.</a>
-<span class="sourceLineNo">1020</span><a id="line.1020">   * @see CallableSql</a>
-<span class="sourceLineNo">1021</span><a id="line.1021">   */</a>
-<span class="sourceLineNo">1022</span><a id="line.1022">  int execute(SqlUpdate sqlUpdate);</a>
-<span class="sourceLineNo">1023</span><a id="line.1023"></a>
-<span class="sourceLineNo">1024</span><a id="line.1024">  /**</a>
-<span class="sourceLineNo">1025</span><a id="line.1025">   * Execute a ORM insert update or delete statement using the current</a>
-<span class="sourceLineNo">1026</span><a id="line.1026">   * transaction.</a>
-<span class="sourceLineNo">1027</span><a id="line.1027">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1028</span><a id="line.1028">   * This returns the number of rows that where inserted, updated or deleted.</a>
-<span class="sourceLineNo">1029</span><a id="line.1029">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1030</span><a id="line.1030">   */</a>
-<span class="sourceLineNo">1031</span><a id="line.1031">  int execute(Update&lt;?&gt; update);</a>
-<span class="sourceLineNo">1032</span><a id="line.1032"></a>
-<span class="sourceLineNo">1033</span><a id="line.1033">  /**</a>
-<span class="sourceLineNo">1034</span><a id="line.1034">   * Execute a ORM insert update or delete statement with an explicit</a>
-<span class="sourceLineNo">1035</span><a id="line.1035">   * transaction.</a>
-<span class="sourceLineNo">1036</span><a id="line.1036">   */</a>
-<span class="sourceLineNo">1037</span><a id="line.1037">  int execute(Update&lt;?&gt; update, Transaction transaction);</a>
-<span class="sourceLineNo">1038</span><a id="line.1038"></a>
-<span class="sourceLineNo">1039</span><a id="line.1039">  /**</a>
-<span class="sourceLineNo">1040</span><a id="line.1040">   * For making calls to stored procedures.</a>
-<span class="sourceLineNo">1041</span><a id="line.1041">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1042</span><a id="line.1042">   * Example:</a>
-<span class="sourceLineNo">1043</span><a id="line.1043">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1044</span><a id="line.1044">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1045</span><a id="line.1045">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1046</span><a id="line.1046">   *</a>
-<span class="sourceLineNo">1047</span><a id="line.1047">   *   String sql = "{call sp_order_modify(?,?,?)}";</a>
-<span class="sourceLineNo">1048</span><a id="line.1048">   *</a>
-<span class="sourceLineNo">1049</span><a id="line.1049">   *   CallableSql cs = database.createCallableSql(sql);</a>
-<span class="sourceLineNo">1050</span><a id="line.1050">   *   cs.setParameter(1, 27);</a>
-<span class="sourceLineNo">1051</span><a id="line.1051">   *   cs.setParameter(2, "SHIPPED");</a>
-<span class="sourceLineNo">1052</span><a id="line.1052">   *   cs.registerOut(3, Types.INTEGER);</a>
-<span class="sourceLineNo">1053</span><a id="line.1053">   *   cs.execute();</a>
-<span class="sourceLineNo">1054</span><a id="line.1054">   *</a>
-<span class="sourceLineNo">1055</span><a id="line.1055">   *   // read the out parameter</a>
-<span class="sourceLineNo">1056</span><a id="line.1056">   *   Integer returnValue = (Integer) cs.getObject(3);</a>
-<span class="sourceLineNo">1057</span><a id="line.1057">   *</a>
-<span class="sourceLineNo">1058</span><a id="line.1058">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1059</span><a id="line.1059">   */</a>
-<span class="sourceLineNo">1060</span><a id="line.1060">  int execute(CallableSql callableSql);</a>
-<span class="sourceLineNo">1061</span><a id="line.1061"></a>
-<span class="sourceLineNo">1062</span><a id="line.1062">  /**</a>
-<span class="sourceLineNo">1063</span><a id="line.1063">   * Inform Ebean that tables have been modified externally. These could be the</a>
-<span class="sourceLineNo">1064</span><a id="line.1064">   * result of from calling a stored procedure, other JDBC calls or external</a>
-<span class="sourceLineNo">1065</span><a id="line.1065">   * programs including other frameworks.</a>
-<span class="sourceLineNo">1066</span><a id="line.1066">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1067</span><a id="line.1067">   * If you use database.execute(UpdateSql) then the table modification information</a>
-<span class="sourceLineNo">1068</span><a id="line.1068">   * is automatically deduced and you do not need to call this method yourself.</a>
-<span class="sourceLineNo">1069</span><a id="line.1069">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1070</span><a id="line.1070">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1071</span><a id="line.1071">   * This information is used to invalidate objects out of the cache and</a>
-<span class="sourceLineNo">1072</span><a id="line.1072">   * potentially text indexes. This information is also automatically broadcast</a>
-<span class="sourceLineNo">1073</span><a id="line.1073">   * across the cluster.</a>
+<span class="sourceLineNo">1014</span><a id="line.1014">   *   update.setParameter("id", 1);</a>
+<span class="sourceLineNo">1015</span><a id="line.1015">   *   update.setParameter("count", 50);</a>
+<span class="sourceLineNo">1016</span><a id="line.1016">   *</a>
+<span class="sourceLineNo">1017</span><a id="line.1017">   *   int modifiedCount = database.execute(update);</a>
+<span class="sourceLineNo">1018</span><a id="line.1018">   *</a>
+<span class="sourceLineNo">1019</span><a id="line.1019">   *   String msg = "There where " + modifiedCount + "rows updated";</a>
+<span class="sourceLineNo">1020</span><a id="line.1020">   *</a>
+<span class="sourceLineNo">1021</span><a id="line.1021">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1022</span><a id="line.1022">   *</a>
+<span class="sourceLineNo">1023</span><a id="line.1023">   * @param sqlUpdate the update sql potentially with bind values</a>
+<span class="sourceLineNo">1024</span><a id="line.1024">   * @return the number of rows updated or deleted. -1 if executed in batch.</a>
+<span class="sourceLineNo">1025</span><a id="line.1025">   * @see CallableSql</a>
+<span class="sourceLineNo">1026</span><a id="line.1026">   */</a>
+<span class="sourceLineNo">1027</span><a id="line.1027">  int execute(SqlUpdate sqlUpdate);</a>
+<span class="sourceLineNo">1028</span><a id="line.1028"></a>
+<span class="sourceLineNo">1029</span><a id="line.1029">  /**</a>
+<span class="sourceLineNo">1030</span><a id="line.1030">   * Execute a ORM insert update or delete statement using the current</a>
+<span class="sourceLineNo">1031</span><a id="line.1031">   * transaction.</a>
+<span class="sourceLineNo">1032</span><a id="line.1032">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1033</span><a id="line.1033">   * This returns the number of rows that where inserted, updated or deleted.</a>
+<span class="sourceLineNo">1034</span><a id="line.1034">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1035</span><a id="line.1035">   */</a>
+<span class="sourceLineNo">1036</span><a id="line.1036">  int execute(Update&lt;?&gt; update);</a>
+<span class="sourceLineNo">1037</span><a id="line.1037"></a>
+<span class="sourceLineNo">1038</span><a id="line.1038">  /**</a>
+<span class="sourceLineNo">1039</span><a id="line.1039">   * Execute a ORM insert update or delete statement with an explicit</a>
+<span class="sourceLineNo">1040</span><a id="line.1040">   * transaction.</a>
+<span class="sourceLineNo">1041</span><a id="line.1041">   */</a>
+<span class="sourceLineNo">1042</span><a id="line.1042">  int execute(Update&lt;?&gt; update, Transaction transaction);</a>
+<span class="sourceLineNo">1043</span><a id="line.1043"></a>
+<span class="sourceLineNo">1044</span><a id="line.1044">  /**</a>
+<span class="sourceLineNo">1045</span><a id="line.1045">   * For making calls to stored procedures.</a>
+<span class="sourceLineNo">1046</span><a id="line.1046">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1047</span><a id="line.1047">   * Example:</a>
+<span class="sourceLineNo">1048</span><a id="line.1048">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1049</span><a id="line.1049">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1050</span><a id="line.1050">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1051</span><a id="line.1051">   *</a>
+<span class="sourceLineNo">1052</span><a id="line.1052">   *   String sql = "{call sp_order_modify(?,?,?)}";</a>
+<span class="sourceLineNo">1053</span><a id="line.1053">   *</a>
+<span class="sourceLineNo">1054</span><a id="line.1054">   *   CallableSql cs = database.createCallableSql(sql);</a>
+<span class="sourceLineNo">1055</span><a id="line.1055">   *   cs.setParameter(1, 27);</a>
+<span class="sourceLineNo">1056</span><a id="line.1056">   *   cs.setParameter(2, "SHIPPED");</a>
+<span class="sourceLineNo">1057</span><a id="line.1057">   *   cs.registerOut(3, Types.INTEGER);</a>
+<span class="sourceLineNo">1058</span><a id="line.1058">   *   cs.execute();</a>
+<span class="sourceLineNo">1059</span><a id="line.1059">   *</a>
+<span class="sourceLineNo">1060</span><a id="line.1060">   *   // read the out parameter</a>
+<span class="sourceLineNo">1061</span><a id="line.1061">   *   Integer returnValue = (Integer) cs.getObject(3);</a>
+<span class="sourceLineNo">1062</span><a id="line.1062">   *</a>
+<span class="sourceLineNo">1063</span><a id="line.1063">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1064</span><a id="line.1064">   */</a>
+<span class="sourceLineNo">1065</span><a id="line.1065">  int execute(CallableSql callableSql);</a>
+<span class="sourceLineNo">1066</span><a id="line.1066"></a>
+<span class="sourceLineNo">1067</span><a id="line.1067">  /**</a>
+<span class="sourceLineNo">1068</span><a id="line.1068">   * Inform Ebean that tables have been modified externally. These could be the</a>
+<span class="sourceLineNo">1069</span><a id="line.1069">   * result of from calling a stored procedure, other JDBC calls or external</a>
+<span class="sourceLineNo">1070</span><a id="line.1070">   * programs including other frameworks.</a>
+<span class="sourceLineNo">1071</span><a id="line.1071">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1072</span><a id="line.1072">   * If you use database.execute(UpdateSql) then the table modification information</a>
+<span class="sourceLineNo">1073</span><a id="line.1073">   * is automatically deduced and you do not need to call this method yourself.</a>
 <span class="sourceLineNo">1074</span><a id="line.1074">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">1075</span><a id="line.1075">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1076</span><a id="line.1076">   * If there is a transaction then this information is placed into the current</a>
-<span class="sourceLineNo">1077</span><a id="line.1077">   * transactions event information. When the transaction is committed this</a>
-<span class="sourceLineNo">1078</span><a id="line.1078">   * information is registered (with the transaction manager). If this</a>
-<span class="sourceLineNo">1079</span><a id="line.1079">   * transaction is rolled back then none of the transaction event information</a>
-<span class="sourceLineNo">1080</span><a id="line.1080">   * registers including the information you put in via this method.</a>
-<span class="sourceLineNo">1081</span><a id="line.1081">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1082</span><a id="line.1082">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1083</span><a id="line.1083">   * If there is NO current transaction when you call this method then this</a>
-<span class="sourceLineNo">1084</span><a id="line.1084">   * information is registered immediately (with the transaction manager).</a>
-<span class="sourceLineNo">1085</span><a id="line.1085">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1086</span><a id="line.1086">   *</a>
-<span class="sourceLineNo">1087</span><a id="line.1087">   * @param tableName the name of the table that was modified</a>
-<span class="sourceLineNo">1088</span><a id="line.1088">   * @param inserted  true if rows where inserted into the table</a>
-<span class="sourceLineNo">1089</span><a id="line.1089">   * @param updated   true if rows on the table where updated</a>
-<span class="sourceLineNo">1090</span><a id="line.1090">   * @param deleted   true if rows on the table where deleted</a>
-<span class="sourceLineNo">1091</span><a id="line.1091">   */</a>
-<span class="sourceLineNo">1092</span><a id="line.1092">  void externalModification(String tableName, boolean inserted, boolean updated, boolean deleted);</a>
-<span class="sourceLineNo">1093</span><a id="line.1093"></a>
-<span class="sourceLineNo">1094</span><a id="line.1094">  /**</a>
-<span class="sourceLineNo">1095</span><a id="line.1095">   * Find a entity bean with an explicit transaction.</a>
-<span class="sourceLineNo">1096</span><a id="line.1096">   *</a>
-<span class="sourceLineNo">1097</span><a id="line.1097">   * @param &lt;T&gt;         the type of entity bean to find</a>
-<span class="sourceLineNo">1098</span><a id="line.1098">   * @param beanType    the type of entity bean to find</a>
-<span class="sourceLineNo">1099</span><a id="line.1099">   * @param id          the bean id value</a>
-<span class="sourceLineNo">1100</span><a id="line.1100">   * @param transaction the transaction to use (can be null)</a>
-<span class="sourceLineNo">1101</span><a id="line.1101">   */</a>
-<span class="sourceLineNo">1102</span><a id="line.1102">  &lt;T&gt; T find(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
-<span class="sourceLineNo">1103</span><a id="line.1103"></a>
-<span class="sourceLineNo">1104</span><a id="line.1104">  /**</a>
-<span class="sourceLineNo">1105</span><a id="line.1105">   * Insert or update a bean with an explicit transaction.</a>
+<span class="sourceLineNo">1076</span><a id="line.1076">   * This information is used to invalidate objects out of the cache and</a>
+<span class="sourceLineNo">1077</span><a id="line.1077">   * potentially text indexes. This information is also automatically broadcast</a>
+<span class="sourceLineNo">1078</span><a id="line.1078">   * across the cluster.</a>
+<span class="sourceLineNo">1079</span><a id="line.1079">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1080</span><a id="line.1080">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1081</span><a id="line.1081">   * If there is a transaction then this information is placed into the current</a>
+<span class="sourceLineNo">1082</span><a id="line.1082">   * transactions event information. When the transaction is committed this</a>
+<span class="sourceLineNo">1083</span><a id="line.1083">   * information is registered (with the transaction manager). If this</a>
+<span class="sourceLineNo">1084</span><a id="line.1084">   * transaction is rolled back then none of the transaction event information</a>
+<span class="sourceLineNo">1085</span><a id="line.1085">   * registers including the information you put in via this method.</a>
+<span class="sourceLineNo">1086</span><a id="line.1086">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1087</span><a id="line.1087">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1088</span><a id="line.1088">   * If there is NO current transaction when you call this method then this</a>
+<span class="sourceLineNo">1089</span><a id="line.1089">   * information is registered immediately (with the transaction manager).</a>
+<span class="sourceLineNo">1090</span><a id="line.1090">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1091</span><a id="line.1091">   *</a>
+<span class="sourceLineNo">1092</span><a id="line.1092">   * @param tableName the name of the table that was modified</a>
+<span class="sourceLineNo">1093</span><a id="line.1093">   * @param inserted  true if rows where inserted into the table</a>
+<span class="sourceLineNo">1094</span><a id="line.1094">   * @param updated   true if rows on the table where updated</a>
+<span class="sourceLineNo">1095</span><a id="line.1095">   * @param deleted   true if rows on the table where deleted</a>
+<span class="sourceLineNo">1096</span><a id="line.1096">   */</a>
+<span class="sourceLineNo">1097</span><a id="line.1097">  void externalModification(String tableName, boolean inserted, boolean updated, boolean deleted);</a>
+<span class="sourceLineNo">1098</span><a id="line.1098"></a>
+<span class="sourceLineNo">1099</span><a id="line.1099">  /**</a>
+<span class="sourceLineNo">1100</span><a id="line.1100">   * Find a entity bean with an explicit transaction.</a>
+<span class="sourceLineNo">1101</span><a id="line.1101">   *</a>
+<span class="sourceLineNo">1102</span><a id="line.1102">   * @param &lt;T&gt;         the type of entity bean to find</a>
+<span class="sourceLineNo">1103</span><a id="line.1103">   * @param beanType    the type of entity bean to find</a>
+<span class="sourceLineNo">1104</span><a id="line.1104">   * @param id          the bean id value</a>
+<span class="sourceLineNo">1105</span><a id="line.1105">   * @param transaction the transaction to use (can be null)</a>
 <span class="sourceLineNo">1106</span><a id="line.1106">   */</a>
-<span class="sourceLineNo">1107</span><a id="line.1107">  void save(Object bean, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1107</span><a id="line.1107">  &lt;T&gt; T find(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
 <span class="sourceLineNo">1108</span><a id="line.1108"></a>
 <span class="sourceLineNo">1109</span><a id="line.1109">  /**</a>
-<span class="sourceLineNo">1110</span><a id="line.1110">   * Save all the beans in the collection with an explicit transaction.</a>
+<span class="sourceLineNo">1110</span><a id="line.1110">   * Insert or update a bean with an explicit transaction.</a>
 <span class="sourceLineNo">1111</span><a id="line.1111">   */</a>
-<span class="sourceLineNo">1112</span><a id="line.1112">  int saveAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1112</span><a id="line.1112">  void save(Object bean, Transaction transaction) throws OptimisticLockException;</a>
 <span class="sourceLineNo">1113</span><a id="line.1113"></a>
 <span class="sourceLineNo">1114</span><a id="line.1114">  /**</a>
-<span class="sourceLineNo">1115</span><a id="line.1115">   * This method checks the uniqueness of a bean. I.e. if the save will work. It will return the</a>
-<span class="sourceLineNo">1116</span><a id="line.1116">   * properties that violates an unique / primary key. This may be done in an UI save action to</a>
-<span class="sourceLineNo">1117</span><a id="line.1117">   * validate if the user has entered correct values.</a>
-<span class="sourceLineNo">1118</span><a id="line.1118">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1119</span><a id="line.1119">   * Note: This method queries the DB for uniqueness of all indices, so do not use it in a batch update.</a>
-<span class="sourceLineNo">1120</span><a id="line.1120">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1121</span><a id="line.1121">   * Note: This checks only the root bean!</a>
-<span class="sourceLineNo">1122</span><a id="line.1122">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1123</span><a id="line.1123">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1124</span><a id="line.1124">   *</a>
-<span class="sourceLineNo">1125</span><a id="line.1125">   *   // there is a unique constraint on title</a>
-<span class="sourceLineNo">1126</span><a id="line.1126">   *</a>
-<span class="sourceLineNo">1127</span><a id="line.1127">   *   Document doc = new Document();</a>
-<span class="sourceLineNo">1128</span><a id="line.1128">   *   doc.setTitle("One flew over the cuckoo's nest");</a>
-<span class="sourceLineNo">1129</span><a id="line.1129">   *   doc.setBody("clashes with doc1");</a>
-<span class="sourceLineNo">1130</span><a id="line.1130">   *</a>
-<span class="sourceLineNo">1131</span><a id="line.1131">   *   Set&lt;Property&gt; properties = DB.checkUniqueness(doc);</a>
-<span class="sourceLineNo">1132</span><a id="line.1132">   *</a>
-<span class="sourceLineNo">1133</span><a id="line.1133">   *   if (properties.isEmpty()) {</a>
-<span class="sourceLineNo">1134</span><a id="line.1134">   *     // it is unique ... carry on</a>
+<span class="sourceLineNo">1115</span><a id="line.1115">   * Save all the beans in the collection with an explicit transaction.</a>
+<span class="sourceLineNo">1116</span><a id="line.1116">   */</a>
+<span class="sourceLineNo">1117</span><a id="line.1117">  int saveAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1118</span><a id="line.1118"></a>
+<span class="sourceLineNo">1119</span><a id="line.1119">  /**</a>
+<span class="sourceLineNo">1120</span><a id="line.1120">   * This method checks the uniqueness of a bean. I.e. if the save will work. It will return the</a>
+<span class="sourceLineNo">1121</span><a id="line.1121">   * properties that violates an unique / primary key. This may be done in an UI save action to</a>
+<span class="sourceLineNo">1122</span><a id="line.1122">   * validate if the user has entered correct values.</a>
+<span class="sourceLineNo">1123</span><a id="line.1123">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1124</span><a id="line.1124">   * Note: This method queries the DB for uniqueness of all indices, so do not use it in a batch update.</a>
+<span class="sourceLineNo">1125</span><a id="line.1125">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1126</span><a id="line.1126">   * Note: This checks only the root bean!</a>
+<span class="sourceLineNo">1127</span><a id="line.1127">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1128</span><a id="line.1128">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1129</span><a id="line.1129">   *</a>
+<span class="sourceLineNo">1130</span><a id="line.1130">   *   // there is a unique constraint on title</a>
+<span class="sourceLineNo">1131</span><a id="line.1131">   *</a>
+<span class="sourceLineNo">1132</span><a id="line.1132">   *   Document doc = new Document();</a>
+<span class="sourceLineNo">1133</span><a id="line.1133">   *   doc.setTitle("One flew over the cuckoo's nest");</a>
+<span class="sourceLineNo">1134</span><a id="line.1134">   *   doc.setBody("clashes with doc1");</a>
 <span class="sourceLineNo">1135</span><a id="line.1135">   *</a>
-<span class="sourceLineNo">1136</span><a id="line.1136">   *   } else {</a>
-<span class="sourceLineNo">1137</span><a id="line.1137">   *     // build a user friendly message</a>
-<span class="sourceLineNo">1138</span><a id="line.1138">   *     // to return message back to user</a>
-<span class="sourceLineNo">1139</span><a id="line.1139">   *</a>
-<span class="sourceLineNo">1140</span><a id="line.1140">   *     String uniqueProperties = properties.toString();</a>
-<span class="sourceLineNo">1141</span><a id="line.1141">   *</a>
-<span class="sourceLineNo">1142</span><a id="line.1142">   *     StringBuilder msg = new StringBuilder();</a>
-<span class="sourceLineNo">1143</span><a id="line.1143">   *</a>
-<span class="sourceLineNo">1144</span><a id="line.1144">   *     properties.forEach((it)-&gt; {</a>
-<span class="sourceLineNo">1145</span><a id="line.1145">   *       Object propertyValue = it.getVal(doc);</a>
-<span class="sourceLineNo">1146</span><a id="line.1146">   *       String propertyName = it.getName();</a>
-<span class="sourceLineNo">1147</span><a id="line.1147">   *       msg.append(" property["+propertyName+"] value["+propertyValue+"]");</a>
-<span class="sourceLineNo">1148</span><a id="line.1148">   *     });</a>
-<span class="sourceLineNo">1149</span><a id="line.1149">   *</a>
-<span class="sourceLineNo">1150</span><a id="line.1150">   *     // uniqueProperties &gt; [title]</a>
-<span class="sourceLineNo">1151</span><a id="line.1151">   *     //       custom msg &gt; property[title] value[One flew over the cuckoo's nest]</a>
-<span class="sourceLineNo">1152</span><a id="line.1152">   *</a>
-<span class="sourceLineNo">1153</span><a id="line.1153">   *  }</a>
+<span class="sourceLineNo">1136</span><a id="line.1136">   *   Set&lt;Property&gt; properties = DB.checkUniqueness(doc);</a>
+<span class="sourceLineNo">1137</span><a id="line.1137">   *</a>
+<span class="sourceLineNo">1138</span><a id="line.1138">   *   if (properties.isEmpty()) {</a>
+<span class="sourceLineNo">1139</span><a id="line.1139">   *     // it is unique ... carry on</a>
+<span class="sourceLineNo">1140</span><a id="line.1140">   *</a>
+<span class="sourceLineNo">1141</span><a id="line.1141">   *   } else {</a>
+<span class="sourceLineNo">1142</span><a id="line.1142">   *     // build a user friendly message</a>
+<span class="sourceLineNo">1143</span><a id="line.1143">   *     // to return message back to user</a>
+<span class="sourceLineNo">1144</span><a id="line.1144">   *</a>
+<span class="sourceLineNo">1145</span><a id="line.1145">   *     String uniqueProperties = properties.toString();</a>
+<span class="sourceLineNo">1146</span><a id="line.1146">   *</a>
+<span class="sourceLineNo">1147</span><a id="line.1147">   *     StringBuilder msg = new StringBuilder();</a>
+<span class="sourceLineNo">1148</span><a id="line.1148">   *</a>
+<span class="sourceLineNo">1149</span><a id="line.1149">   *     properties.forEach((it)-&gt; {</a>
+<span class="sourceLineNo">1150</span><a id="line.1150">   *       Object propertyValue = it.getVal(doc);</a>
+<span class="sourceLineNo">1151</span><a id="line.1151">   *       String propertyName = it.getName();</a>
+<span class="sourceLineNo">1152</span><a id="line.1152">   *       msg.append(" property["+propertyName+"] value["+propertyValue+"]");</a>
+<span class="sourceLineNo">1153</span><a id="line.1153">   *     });</a>
 <span class="sourceLineNo">1154</span><a id="line.1154">   *</a>
-<span class="sourceLineNo">1155</span><a id="line.1155">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1156</span><a id="line.1156">   *</a>
-<span class="sourceLineNo">1157</span><a id="line.1157">   * @param bean The entity bean to check uniqueness on</a>
-<span class="sourceLineNo">1158</span><a id="line.1158">   * @return a set of Properties if constraint validation was detected or empty list.</a>
-<span class="sourceLineNo">1159</span><a id="line.1159">   */</a>
-<span class="sourceLineNo">1160</span><a id="line.1160">  @Nonnull</a>
-<span class="sourceLineNo">1161</span><a id="line.1161">  Set&lt;Property&gt; checkUniqueness(Object bean);</a>
-<span class="sourceLineNo">1162</span><a id="line.1162"></a>
-<span class="sourceLineNo">1163</span><a id="line.1163">  /**</a>
-<span class="sourceLineNo">1164</span><a id="line.1164">   * Same as {@link #checkUniqueness(Object)}. but with given transaction.</a>
-<span class="sourceLineNo">1165</span><a id="line.1165">   */</a>
-<span class="sourceLineNo">1166</span><a id="line.1166">  @Nonnull</a>
-<span class="sourceLineNo">1167</span><a id="line.1167">  Set&lt;Property&gt; checkUniqueness(Object bean, Transaction transaction);</a>
-<span class="sourceLineNo">1168</span><a id="line.1168"></a>
-<span class="sourceLineNo">1169</span><a id="line.1169">  /**</a>
-<span class="sourceLineNo">1170</span><a id="line.1170">   * Marks the entity bean as dirty.</a>
-<span class="sourceLineNo">1171</span><a id="line.1171">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1172</span><a id="line.1172">   * This is used so that when a bean that is otherwise unmodified is updated the version</a>
-<span class="sourceLineNo">1173</span><a id="line.1173">   * property is updated.</a>
-<span class="sourceLineNo">1174</span><a id="line.1174">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1175</span><a id="line.1175">   * An unmodified bean that is saved or updated is normally skipped and this marks the bean as</a>
-<span class="sourceLineNo">1176</span><a id="line.1176">   * dirty so that it is not skipped.</a>
-<span class="sourceLineNo">1177</span><a id="line.1177">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1178</span><a id="line.1178">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1179</span><a id="line.1179">   *</a>
-<span class="sourceLineNo">1180</span><a id="line.1180">   * Customer customer = database.find(Customer, id);</a>
-<span class="sourceLineNo">1181</span><a id="line.1181">   *</a>
-<span class="sourceLineNo">1182</span><a id="line.1182">   * // mark the bean as dirty so that a save() or update() will</a>
-<span class="sourceLineNo">1183</span><a id="line.1183">   * // increment the version property</a>
-<span class="sourceLineNo">1184</span><a id="line.1184">   * database.markAsDirty(customer);</a>
-<span class="sourceLineNo">1185</span><a id="line.1185">   * database.save(customer);</a>
+<span class="sourceLineNo">1155</span><a id="line.1155">   *     // uniqueProperties &gt; [title]</a>
+<span class="sourceLineNo">1156</span><a id="line.1156">   *     //       custom msg &gt; property[title] value[One flew over the cuckoo's nest]</a>
+<span class="sourceLineNo">1157</span><a id="line.1157">   *</a>
+<span class="sourceLineNo">1158</span><a id="line.1158">   *  }</a>
+<span class="sourceLineNo">1159</span><a id="line.1159">   *</a>
+<span class="sourceLineNo">1160</span><a id="line.1160">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1161</span><a id="line.1161">   *</a>
+<span class="sourceLineNo">1162</span><a id="line.1162">   * @param bean The entity bean to check uniqueness on</a>
+<span class="sourceLineNo">1163</span><a id="line.1163">   * @return a set of Properties if constraint validation was detected or empty list.</a>
+<span class="sourceLineNo">1164</span><a id="line.1164">   */</a>
+<span class="sourceLineNo">1165</span><a id="line.1165">  @Nonnull</a>
+<span class="sourceLineNo">1166</span><a id="line.1166">  Set&lt;Property&gt; checkUniqueness(Object bean);</a>
+<span class="sourceLineNo">1167</span><a id="line.1167"></a>
+<span class="sourceLineNo">1168</span><a id="line.1168">  /**</a>
+<span class="sourceLineNo">1169</span><a id="line.1169">   * Same as {@link #checkUniqueness(Object)}. but with given transaction.</a>
+<span class="sourceLineNo">1170</span><a id="line.1170">   */</a>
+<span class="sourceLineNo">1171</span><a id="line.1171">  @Nonnull</a>
+<span class="sourceLineNo">1172</span><a id="line.1172">  Set&lt;Property&gt; checkUniqueness(Object bean, Transaction transaction);</a>
+<span class="sourceLineNo">1173</span><a id="line.1173"></a>
+<span class="sourceLineNo">1174</span><a id="line.1174">  /**</a>
+<span class="sourceLineNo">1175</span><a id="line.1175">   * Marks the entity bean as dirty.</a>
+<span class="sourceLineNo">1176</span><a id="line.1176">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1177</span><a id="line.1177">   * This is used so that when a bean that is otherwise unmodified is updated the version</a>
+<span class="sourceLineNo">1178</span><a id="line.1178">   * property is updated.</a>
+<span class="sourceLineNo">1179</span><a id="line.1179">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1180</span><a id="line.1180">   * An unmodified bean that is saved or updated is normally skipped and this marks the bean as</a>
+<span class="sourceLineNo">1181</span><a id="line.1181">   * dirty so that it is not skipped.</a>
+<span class="sourceLineNo">1182</span><a id="line.1182">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1183</span><a id="line.1183">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1184</span><a id="line.1184">   *</a>
+<span class="sourceLineNo">1185</span><a id="line.1185">   * Customer customer = database.find(Customer, id);</a>
 <span class="sourceLineNo">1186</span><a id="line.1186">   *</a>
-<span class="sourceLineNo">1187</span><a id="line.1187">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1188</span><a id="line.1188">   */</a>
-<span class="sourceLineNo">1189</span><a id="line.1189">  void markAsDirty(Object bean);</a>
-<span class="sourceLineNo">1190</span><a id="line.1190"></a>
-<span class="sourceLineNo">1191</span><a id="line.1191">  /**</a>
-<span class="sourceLineNo">1192</span><a id="line.1192">   * Saves the bean using an update. If you know you are updating a bean then it is preferable to</a>
-<span class="sourceLineNo">1193</span><a id="line.1193">   * use this update() method rather than save().</a>
-<span class="sourceLineNo">1194</span><a id="line.1194">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1195</span><a id="line.1195">   * &lt;b&gt;Stateless updates:&lt;/b&gt; Note that the bean does not have to be previously fetched to call</a>
-<span class="sourceLineNo">1196</span><a id="line.1196">   * update().You can create a new instance and set some of its properties programmatically for via</a>
-<span class="sourceLineNo">1197</span><a id="line.1197">   * JSON/XML marshalling etc. This is described as a 'stateless update'.</a>
-<span class="sourceLineNo">1198</span><a id="line.1198">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1187</span><a id="line.1187">   * // mark the bean as dirty so that a save() or update() will</a>
+<span class="sourceLineNo">1188</span><a id="line.1188">   * // increment the version property</a>
+<span class="sourceLineNo">1189</span><a id="line.1189">   * database.markAsDirty(customer);</a>
+<span class="sourceLineNo">1190</span><a id="line.1190">   * database.save(customer);</a>
+<span class="sourceLineNo">1191</span><a id="line.1191">   *</a>
+<span class="sourceLineNo">1192</span><a id="line.1192">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1193</span><a id="line.1193">   */</a>
+<span class="sourceLineNo">1194</span><a id="line.1194">  void markAsDirty(Object bean);</a>
+<span class="sourceLineNo">1195</span><a id="line.1195"></a>
+<span class="sourceLineNo">1196</span><a id="line.1196">  /**</a>
+<span class="sourceLineNo">1197</span><a id="line.1197">   * Saves the bean using an update. If you know you are updating a bean then it is preferable to</a>
+<span class="sourceLineNo">1198</span><a id="line.1198">   * use this update() method rather than save().</a>
 <span class="sourceLineNo">1199</span><a id="line.1199">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1200</span><a id="line.1200">   * &lt;b&gt;Optimistic Locking: &lt;/b&gt; Note that if the version property is not set when update() is</a>
-<span class="sourceLineNo">1201</span><a id="line.1201">   * called then no optimistic locking is performed (internally ConcurrencyMode.NONE is used).</a>
-<span class="sourceLineNo">1202</span><a id="line.1202">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1203</span><a id="line.1203">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1204</span><a id="line.1204">   *</a>
-<span class="sourceLineNo">1205</span><a id="line.1205">   * // A 'stateless update' example</a>
-<span class="sourceLineNo">1206</span><a id="line.1206">   * Customer customer = new Customer();</a>
-<span class="sourceLineNo">1207</span><a id="line.1207">   * customer.setId(7);</a>
-<span class="sourceLineNo">1208</span><a id="line.1208">   * customer.setName("ModifiedNameNoOCC");</a>
-<span class="sourceLineNo">1209</span><a id="line.1209">   * database.update(customer);</a>
-<span class="sourceLineNo">1210</span><a id="line.1210">   *</a>
-<span class="sourceLineNo">1211</span><a id="line.1211">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1212</span><a id="line.1212">   */</a>
-<span class="sourceLineNo">1213</span><a id="line.1213">  void update(Object bean) throws OptimisticLockException;</a>
-<span class="sourceLineNo">1214</span><a id="line.1214"></a>
-<span class="sourceLineNo">1215</span><a id="line.1215">  /**</a>
-<span class="sourceLineNo">1216</span><a id="line.1216">   * Update a bean additionally specifying a transaction.</a>
+<span class="sourceLineNo">1200</span><a id="line.1200">   * &lt;b&gt;Stateless updates:&lt;/b&gt; Note that the bean does not have to be previously fetched to call</a>
+<span class="sourceLineNo">1201</span><a id="line.1201">   * update().You can create a new instance and set some of its properties programmatically for via</a>
+<span class="sourceLineNo">1202</span><a id="line.1202">   * JSON/XML marshalling etc. This is described as a 'stateless update'.</a>
+<span class="sourceLineNo">1203</span><a id="line.1203">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1204</span><a id="line.1204">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1205</span><a id="line.1205">   * &lt;b&gt;Optimistic Locking: &lt;/b&gt; Note that if the version property is not set when update() is</a>
+<span class="sourceLineNo">1206</span><a id="line.1206">   * called then no optimistic locking is performed (internally ConcurrencyMode.NONE is used).</a>
+<span class="sourceLineNo">1207</span><a id="line.1207">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1208</span><a id="line.1208">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1209</span><a id="line.1209">   *</a>
+<span class="sourceLineNo">1210</span><a id="line.1210">   * // A 'stateless update' example</a>
+<span class="sourceLineNo">1211</span><a id="line.1211">   * Customer customer = new Customer();</a>
+<span class="sourceLineNo">1212</span><a id="line.1212">   * customer.setId(7);</a>
+<span class="sourceLineNo">1213</span><a id="line.1213">   * customer.setName("ModifiedNameNoOCC");</a>
+<span class="sourceLineNo">1214</span><a id="line.1214">   * database.update(customer);</a>
+<span class="sourceLineNo">1215</span><a id="line.1215">   *</a>
+<span class="sourceLineNo">1216</span><a id="line.1216">   * }&lt;/pre&gt;</a>
 <span class="sourceLineNo">1217</span><a id="line.1217">   */</a>
-<span class="sourceLineNo">1218</span><a id="line.1218">  void update(Object bean, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1218</span><a id="line.1218">  void update(Object bean) throws OptimisticLockException;</a>
 <span class="sourceLineNo">1219</span><a id="line.1219"></a>
 <span class="sourceLineNo">1220</span><a id="line.1220">  /**</a>
-<span class="sourceLineNo">1221</span><a id="line.1221">   * Update a collection of beans. If there is no current transaction one is created and used to</a>
-<span class="sourceLineNo">1222</span><a id="line.1222">   * update all the beans in the collection.</a>
-<span class="sourceLineNo">1223</span><a id="line.1223">   */</a>
-<span class="sourceLineNo">1224</span><a id="line.1224">  void updateAll(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
-<span class="sourceLineNo">1225</span><a id="line.1225"></a>
-<span class="sourceLineNo">1226</span><a id="line.1226">  /**</a>
-<span class="sourceLineNo">1227</span><a id="line.1227">   * Update a collection of beans with an explicit transaction.</a>
+<span class="sourceLineNo">1221</span><a id="line.1221">   * Update a bean additionally specifying a transaction.</a>
+<span class="sourceLineNo">1222</span><a id="line.1222">   */</a>
+<span class="sourceLineNo">1223</span><a id="line.1223">  void update(Object bean, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1224</span><a id="line.1224"></a>
+<span class="sourceLineNo">1225</span><a id="line.1225">  /**</a>
+<span class="sourceLineNo">1226</span><a id="line.1226">   * Update a collection of beans. If there is no current transaction one is created and used to</a>
+<span class="sourceLineNo">1227</span><a id="line.1227">   * update all the beans in the collection.</a>
 <span class="sourceLineNo">1228</span><a id="line.1228">   */</a>
-<span class="sourceLineNo">1229</span><a id="line.1229">  void updateAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1229</span><a id="line.1229">  void updateAll(Collection&lt;?&gt; beans) throws OptimisticLockException;</a>
 <span class="sourceLineNo">1230</span><a id="line.1230"></a>
 <span class="sourceLineNo">1231</span><a id="line.1231">  /**</a>
-<span class="sourceLineNo">1232</span><a id="line.1232">   * Merge the bean using the default merge options (no paths specified, default delete).</a>
-<span class="sourceLineNo">1233</span><a id="line.1233">   *</a>
-<span class="sourceLineNo">1234</span><a id="line.1234">   * @param bean The bean to merge</a>
-<span class="sourceLineNo">1235</span><a id="line.1235">   */</a>
-<span class="sourceLineNo">1236</span><a id="line.1236">  void merge(Object bean);</a>
-<span class="sourceLineNo">1237</span><a id="line.1237"></a>
-<span class="sourceLineNo">1238</span><a id="line.1238">  /**</a>
-<span class="sourceLineNo">1239</span><a id="line.1239">   * Merge the bean using the given merge options.</a>
-<span class="sourceLineNo">1240</span><a id="line.1240">   *</a>
-<span class="sourceLineNo">1241</span><a id="line.1241">   * @param bean    The bean to merge</a>
-<span class="sourceLineNo">1242</span><a id="line.1242">   * @param options The options to control the merge</a>
-<span class="sourceLineNo">1243</span><a id="line.1243">   */</a>
-<span class="sourceLineNo">1244</span><a id="line.1244">  void merge(Object bean, MergeOptions options);</a>
-<span class="sourceLineNo">1245</span><a id="line.1245"></a>
-<span class="sourceLineNo">1246</span><a id="line.1246">  /**</a>
-<span class="sourceLineNo">1247</span><a id="line.1247">   * Merge the bean using the given merge options and a transaction.</a>
-<span class="sourceLineNo">1248</span><a id="line.1248">   *</a>
-<span class="sourceLineNo">1249</span><a id="line.1249">   * @param bean    The bean to merge</a>
-<span class="sourceLineNo">1250</span><a id="line.1250">   * @param options The options to control the merge</a>
-<span class="sourceLineNo">1251</span><a id="line.1251">   */</a>
-<span class="sourceLineNo">1252</span><a id="line.1252">  void merge(Object bean, MergeOptions options, Transaction transaction);</a>
-<span class="sourceLineNo">1253</span><a id="line.1253"></a>
-<span class="sourceLineNo">1254</span><a id="line.1254">  /**</a>
-<span class="sourceLineNo">1255</span><a id="line.1255">   * Insert the bean.</a>
-<span class="sourceLineNo">1256</span><a id="line.1256">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1257</span><a id="line.1257">   * Compared to save() this forces bean to perform an insert rather than trying to decide</a>
-<span class="sourceLineNo">1258</span><a id="line.1258">   * based on the bean state. As such this is useful when you fetch beans from one database</a>
-<span class="sourceLineNo">1259</span><a id="line.1259">   * and want to insert them into another database (and you want to explicitly insert them).</a>
-<span class="sourceLineNo">1260</span><a id="line.1260">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1261</span><a id="line.1261">   */</a>
-<span class="sourceLineNo">1262</span><a id="line.1262">  void insert(Object bean);</a>
-<span class="sourceLineNo">1263</span><a id="line.1263"></a>
-<span class="sourceLineNo">1264</span><a id="line.1264">  /**</a>
-<span class="sourceLineNo">1265</span><a id="line.1265">   * Insert the bean with a transaction.</a>
+<span class="sourceLineNo">1232</span><a id="line.1232">   * Update a collection of beans with an explicit transaction.</a>
+<span class="sourceLineNo">1233</span><a id="line.1233">   */</a>
+<span class="sourceLineNo">1234</span><a id="line.1234">  void updateAll(Collection&lt;?&gt; beans, Transaction transaction) throws OptimisticLockException;</a>
+<span class="sourceLineNo">1235</span><a id="line.1235"></a>
+<span class="sourceLineNo">1236</span><a id="line.1236">  /**</a>
+<span class="sourceLineNo">1237</span><a id="line.1237">   * Merge the bean using the default merge options (no paths specified, default delete).</a>
+<span class="sourceLineNo">1238</span><a id="line.1238">   *</a>
+<span class="sourceLineNo">1239</span><a id="line.1239">   * @param bean The bean to merge</a>
+<span class="sourceLineNo">1240</span><a id="line.1240">   */</a>
+<span class="sourceLineNo">1241</span><a id="line.1241">  void merge(Object bean);</a>
+<span class="sourceLineNo">1242</span><a id="line.1242"></a>
+<span class="sourceLineNo">1243</span><a id="line.1243">  /**</a>
+<span class="sourceLineNo">1244</span><a id="line.1244">   * Merge the bean using the given merge options.</a>
+<span class="sourceLineNo">1245</span><a id="line.1245">   *</a>
+<span class="sourceLineNo">1246</span><a id="line.1246">   * @param bean    The bean to merge</a>
+<span class="sourceLineNo">1247</span><a id="line.1247">   * @param options The options to control the merge</a>
+<span class="sourceLineNo">1248</span><a id="line.1248">   */</a>
+<span class="sourceLineNo">1249</span><a id="line.1249">  void merge(Object bean, MergeOptions options);</a>
+<span class="sourceLineNo">1250</span><a id="line.1250"></a>
+<span class="sourceLineNo">1251</span><a id="line.1251">  /**</a>
+<span class="sourceLineNo">1252</span><a id="line.1252">   * Merge the bean using the given merge options and a transaction.</a>
+<span class="sourceLineNo">1253</span><a id="line.1253">   *</a>
+<span class="sourceLineNo">1254</span><a id="line.1254">   * @param bean    The bean to merge</a>
+<span class="sourceLineNo">1255</span><a id="line.1255">   * @param options The options to control the merge</a>
+<span class="sourceLineNo">1256</span><a id="line.1256">   */</a>
+<span class="sourceLineNo">1257</span><a id="line.1257">  void merge(Object bean, MergeOptions options, Transaction transaction);</a>
+<span class="sourceLineNo">1258</span><a id="line.1258"></a>
+<span class="sourceLineNo">1259</span><a id="line.1259">  /**</a>
+<span class="sourceLineNo">1260</span><a id="line.1260">   * Insert the bean.</a>
+<span class="sourceLineNo">1261</span><a id="line.1261">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1262</span><a id="line.1262">   * Compared to save() this forces bean to perform an insert rather than trying to decide</a>
+<span class="sourceLineNo">1263</span><a id="line.1263">   * based on the bean state. As such this is useful when you fetch beans from one database</a>
+<span class="sourceLineNo">1264</span><a id="line.1264">   * and want to insert them into another database (and you want to explicitly insert them).</a>
+<span class="sourceLineNo">1265</span><a id="line.1265">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">1266</span><a id="line.1266">   */</a>
-<span class="sourceLineNo">1267</span><a id="line.1267">  void insert(Object bean, Transaction transaction);</a>
+<span class="sourceLineNo">1267</span><a id="line.1267">  void insert(Object bean);</a>
 <span class="sourceLineNo">1268</span><a id="line.1268"></a>
 <span class="sourceLineNo">1269</span><a id="line.1269">  /**</a>
-<span class="sourceLineNo">1270</span><a id="line.1270">   * Insert a collection of beans. If there is no current transaction one is created and used to</a>
-<span class="sourceLineNo">1271</span><a id="line.1271">   * insert all the beans in the collection.</a>
-<span class="sourceLineNo">1272</span><a id="line.1272">   */</a>
-<span class="sourceLineNo">1273</span><a id="line.1273">  void insertAll(Collection&lt;?&gt; beans);</a>
-<span class="sourceLineNo">1274</span><a id="line.1274"></a>
-<span class="sourceLineNo">1275</span><a id="line.1275">  /**</a>
-<span class="sourceLineNo">1276</span><a id="line.1276">   * Insert a collection of beans with an explicit transaction.</a>
+<span class="sourceLineNo">1270</span><a id="line.1270">   * Insert the bean with a transaction.</a>
+<span class="sourceLineNo">1271</span><a id="line.1271">   */</a>
+<span class="sourceLineNo">1272</span><a id="line.1272">  void insert(Object bean, Transaction transaction);</a>
+<span class="sourceLineNo">1273</span><a id="line.1273"></a>
+<span class="sourceLineNo">1274</span><a id="line.1274">  /**</a>
+<span class="sourceLineNo">1275</span><a id="line.1275">   * Insert a collection of beans. If there is no current transaction one is created and used to</a>
+<span class="sourceLineNo">1276</span><a id="line.1276">   * insert all the beans in the collection.</a>
 <span class="sourceLineNo">1277</span><a id="line.1277">   */</a>
-<span class="sourceLineNo">1278</span><a id="line.1278">  void insertAll(Collection&lt;?&gt; beans, Transaction transaction);</a>
+<span class="sourceLineNo">1278</span><a id="line.1278">  void insertAll(Collection&lt;?&gt; beans);</a>
 <span class="sourceLineNo">1279</span><a id="line.1279"></a>
 <span class="sourceLineNo">1280</span><a id="line.1280">  /**</a>
-<span class="sourceLineNo">1281</span><a id="line.1281">   * Execute explicitly passing a transaction.</a>
+<span class="sourceLineNo">1281</span><a id="line.1281">   * Insert a collection of beans with an explicit transaction.</a>
 <span class="sourceLineNo">1282</span><a id="line.1282">   */</a>
-<span class="sourceLineNo">1283</span><a id="line.1283">  int execute(SqlUpdate updSql, Transaction transaction);</a>
+<span class="sourceLineNo">1283</span><a id="line.1283">  void insertAll(Collection&lt;?&gt; beans, Transaction transaction);</a>
 <span class="sourceLineNo">1284</span><a id="line.1284"></a>
 <span class="sourceLineNo">1285</span><a id="line.1285">  /**</a>
 <span class="sourceLineNo">1286</span><a id="line.1286">   * Execute explicitly passing a transaction.</a>
 <span class="sourceLineNo">1287</span><a id="line.1287">   */</a>
-<span class="sourceLineNo">1288</span><a id="line.1288">  int execute(CallableSql callableSql, Transaction transaction);</a>
+<span class="sourceLineNo">1288</span><a id="line.1288">  int execute(SqlUpdate updSql, Transaction transaction);</a>
 <span class="sourceLineNo">1289</span><a id="line.1289"></a>
 <span class="sourceLineNo">1290</span><a id="line.1290">  /**</a>
-<span class="sourceLineNo">1291</span><a id="line.1291">   * Execute a Runnable in a Transaction with an explicit scope.</a>
-<span class="sourceLineNo">1292</span><a id="line.1292">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1293</span><a id="line.1293">   * The scope can control the transaction type, isolation and rollback</a>
-<span class="sourceLineNo">1294</span><a id="line.1294">   * semantics.</a>
-<span class="sourceLineNo">1295</span><a id="line.1295">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1296</span><a id="line.1296">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1297</span><a id="line.1297">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1298</span><a id="line.1298">   *</a>
-<span class="sourceLineNo">1299</span><a id="line.1299">   *   // set specific transactional scope settings</a>
-<span class="sourceLineNo">1300</span><a id="line.1300">   *   TxScope scope = TxScope.requiresNew().setIsolation(TxIsolation.SERIALIZABLE);</a>
-<span class="sourceLineNo">1301</span><a id="line.1301">   *</a>
-<span class="sourceLineNo">1302</span><a id="line.1302">   *   database.execute(scope, new Runnable() {</a>
-<span class="sourceLineNo">1303</span><a id="line.1303">   *       public void run() {</a>
-<span class="sourceLineNo">1304</span><a id="line.1304">   *               User u1 = database.find(User.class, 1);</a>
-<span class="sourceLineNo">1305</span><a id="line.1305">   *               ...</a>
-<span class="sourceLineNo">1306</span><a id="line.1306">   *     }</a>
-<span class="sourceLineNo">1307</span><a id="line.1307">   *   });</a>
-<span class="sourceLineNo">1308</span><a id="line.1308">   *</a>
-<span class="sourceLineNo">1309</span><a id="line.1309">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1310</span><a id="line.1310">   */</a>
-<span class="sourceLineNo">1311</span><a id="line.1311">  void execute(TxScope scope, Runnable runnable);</a>
-<span class="sourceLineNo">1312</span><a id="line.1312"></a>
-<span class="sourceLineNo">1313</span><a id="line.1313">  /**</a>
-<span class="sourceLineNo">1314</span><a id="line.1314">   * Execute a Runnable in a Transaction with the default scope.</a>
-<span class="sourceLineNo">1315</span><a id="line.1315">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1316</span><a id="line.1316">   * The default scope runs with REQUIRED and by default will rollback on any</a>
-<span class="sourceLineNo">1317</span><a id="line.1317">   * exception (checked or runtime).</a>
-<span class="sourceLineNo">1318</span><a id="line.1318">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1319</span><a id="line.1319">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1320</span><a id="line.1320">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1321</span><a id="line.1321">   *</a>
-<span class="sourceLineNo">1322</span><a id="line.1322">   *    database.execute(() -&gt; {</a>
-<span class="sourceLineNo">1323</span><a id="line.1323">   *</a>
-<span class="sourceLineNo">1324</span><a id="line.1324">   *        User u1 = database.find(User.class, 1);</a>
-<span class="sourceLineNo">1325</span><a id="line.1325">   *        User u2 = database.find(User.class, 2);</a>
+<span class="sourceLineNo">1291</span><a id="line.1291">   * Execute explicitly passing a transaction.</a>
+<span class="sourceLineNo">1292</span><a id="line.1292">   */</a>
+<span class="sourceLineNo">1293</span><a id="line.1293">  int execute(CallableSql callableSql, Transaction transaction);</a>
+<span class="sourceLineNo">1294</span><a id="line.1294"></a>
+<span class="sourceLineNo">1295</span><a id="line.1295">  /**</a>
+<span class="sourceLineNo">1296</span><a id="line.1296">   * Execute a Runnable in a Transaction with an explicit scope.</a>
+<span class="sourceLineNo">1297</span><a id="line.1297">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1298</span><a id="line.1298">   * The scope can control the transaction type, isolation and rollback</a>
+<span class="sourceLineNo">1299</span><a id="line.1299">   * semantics.</a>
+<span class="sourceLineNo">1300</span><a id="line.1300">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1301</span><a id="line.1301">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1302</span><a id="line.1302">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1303</span><a id="line.1303">   *</a>
+<span class="sourceLineNo">1304</span><a id="line.1304">   *   // set specific transactional scope settings</a>
+<span class="sourceLineNo">1305</span><a id="line.1305">   *   TxScope scope = TxScope.requiresNew().setIsolation(TxIsolation.SERIALIZABLE);</a>
+<span class="sourceLineNo">1306</span><a id="line.1306">   *</a>
+<span class="sourceLineNo">1307</span><a id="line.1307">   *   database.execute(scope, new Runnable() {</a>
+<span class="sourceLineNo">1308</span><a id="line.1308">   *       public void run() {</a>
+<span class="sourceLineNo">1309</span><a id="line.1309">   *               User u1 = database.find(User.class, 1);</a>
+<span class="sourceLineNo">1310</span><a id="line.1310">   *               ...</a>
+<span class="sourceLineNo">1311</span><a id="line.1311">   *     }</a>
+<span class="sourceLineNo">1312</span><a id="line.1312">   *   });</a>
+<span class="sourceLineNo">1313</span><a id="line.1313">   *</a>
+<span class="sourceLineNo">1314</span><a id="line.1314">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1315</span><a id="line.1315">   */</a>
+<span class="sourceLineNo">1316</span><a id="line.1316">  void execute(TxScope scope, Runnable runnable);</a>
+<span class="sourceLineNo">1317</span><a id="line.1317"></a>
+<span class="sourceLineNo">1318</span><a id="line.1318">  /**</a>
+<span class="sourceLineNo">1319</span><a id="line.1319">   * Execute a Runnable in a Transaction with the default scope.</a>
+<span class="sourceLineNo">1320</span><a id="line.1320">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1321</span><a id="line.1321">   * The default scope runs with REQUIRED and by default will rollback on any</a>
+<span class="sourceLineNo">1322</span><a id="line.1322">   * exception (checked or runtime).</a>
+<span class="sourceLineNo">1323</span><a id="line.1323">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1324</span><a id="line.1324">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1325</span><a id="line.1325">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">1326</span><a id="line.1326">   *</a>
-<span class="sourceLineNo">1327</span><a id="line.1327">   *        u1.setName("u1 mod");</a>
-<span class="sourceLineNo">1328</span><a id="line.1328">   *        u2.setName("u2 mod");</a>
-<span class="sourceLineNo">1329</span><a id="line.1329">   *</a>
-<span class="sourceLineNo">1330</span><a id="line.1330">   *        u1.save();</a>
-<span class="sourceLineNo">1331</span><a id="line.1331">   *        u2.save();</a>
-<span class="sourceLineNo">1332</span><a id="line.1332">   *    });</a>
-<span class="sourceLineNo">1333</span><a id="line.1333">   *</a>
-<span class="sourceLineNo">1334</span><a id="line.1334">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1335</span><a id="line.1335">   */</a>
-<span class="sourceLineNo">1336</span><a id="line.1336">  void execute(Runnable runnable);</a>
-<span class="sourceLineNo">1337</span><a id="line.1337"></a>
-<span class="sourceLineNo">1338</span><a id="line.1338">  /**</a>
-<span class="sourceLineNo">1339</span><a id="line.1339">   * Execute a TxCallable in a Transaction with an explicit scope.</a>
-<span class="sourceLineNo">1340</span><a id="line.1340">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1341</span><a id="line.1341">   * The scope can control the transaction type, isolation and rollback</a>
-<span class="sourceLineNo">1342</span><a id="line.1342">   * semantics.</a>
-<span class="sourceLineNo">1343</span><a id="line.1343">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1344</span><a id="line.1344">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1345</span><a id="line.1345">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1346</span><a id="line.1346">   *</a>
-<span class="sourceLineNo">1347</span><a id="line.1347">   *   // set specific transactional scope settings</a>
-<span class="sourceLineNo">1348</span><a id="line.1348">   *   TxScope scope = TxScope.requiresNew().setIsolation(TxIsolation.SERIALIZABLE);</a>
-<span class="sourceLineNo">1349</span><a id="line.1349">   *</a>
-<span class="sourceLineNo">1350</span><a id="line.1350">   *   database.executeCall(scope, new Callable&lt;String&gt;() {</a>
-<span class="sourceLineNo">1351</span><a id="line.1351">   *       public String call() {</a>
-<span class="sourceLineNo">1352</span><a id="line.1352">   *               User u1 = database.find(User.class, 1);</a>
-<span class="sourceLineNo">1353</span><a id="line.1353">   *               ...</a>
-<span class="sourceLineNo">1354</span><a id="line.1354">   *               return u1.getEmail();</a>
-<span class="sourceLineNo">1355</span><a id="line.1355">   *     }</a>
-<span class="sourceLineNo">1356</span><a id="line.1356">   *   });</a>
-<span class="sourceLineNo">1357</span><a id="line.1357">   *</a>
-<span class="sourceLineNo">1358</span><a id="line.1358">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1359</span><a id="line.1359">   */</a>
-<span class="sourceLineNo">1360</span><a id="line.1360">  &lt;T&gt; T executeCall(TxScope scope, Callable&lt;T&gt; callable);</a>
-<span class="sourceLineNo">1361</span><a id="line.1361"></a>
-<span class="sourceLineNo">1362</span><a id="line.1362">  /**</a>
-<span class="sourceLineNo">1363</span><a id="line.1363">   * Execute a TxCallable in a Transaction with the default scope.</a>
-<span class="sourceLineNo">1364</span><a id="line.1364">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1365</span><a id="line.1365">   * The default scope runs with REQUIRED and by default will rollback on any</a>
-<span class="sourceLineNo">1366</span><a id="line.1366">   * exception (checked or runtime).</a>
-<span class="sourceLineNo">1367</span><a id="line.1367">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1368</span><a id="line.1368">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1369</span><a id="line.1369">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1370</span><a id="line.1370">   *</a>
-<span class="sourceLineNo">1371</span><a id="line.1371">   *   database.executeCall(new Callable&lt;String&gt;() {</a>
-<span class="sourceLineNo">1372</span><a id="line.1372">   *     public String call() {</a>
-<span class="sourceLineNo">1373</span><a id="line.1373">   *       User u1 = database.find(User.class, 1);</a>
-<span class="sourceLineNo">1374</span><a id="line.1374">   *       User u2 = database.find(User.class, 2);</a>
+<span class="sourceLineNo">1327</span><a id="line.1327">   *    database.execute(() -&gt; {</a>
+<span class="sourceLineNo">1328</span><a id="line.1328">   *</a>
+<span class="sourceLineNo">1329</span><a id="line.1329">   *        User u1 = database.find(User.class, 1);</a>
+<span class="sourceLineNo">1330</span><a id="line.1330">   *        User u2 = database.find(User.class, 2);</a>
+<span class="sourceLineNo">1331</span><a id="line.1331">   *</a>
+<span class="sourceLineNo">1332</span><a id="line.1332">   *        u1.setName("u1 mod");</a>
+<span class="sourceLineNo">1333</span><a id="line.1333">   *        u2.setName("u2 mod");</a>
+<span class="sourceLineNo">1334</span><a id="line.1334">   *</a>
+<span class="sourceLineNo">1335</span><a id="line.1335">   *        u1.save();</a>
+<span class="sourceLineNo">1336</span><a id="line.1336">   *        u2.save();</a>
+<span class="sourceLineNo">1337</span><a id="line.1337">   *    });</a>
+<span class="sourceLineNo">1338</span><a id="line.1338">   *</a>
+<span class="sourceLineNo">1339</span><a id="line.1339">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1340</span><a id="line.1340">   */</a>
+<span class="sourceLineNo">1341</span><a id="line.1341">  void execute(Runnable runnable);</a>
+<span class="sourceLineNo">1342</span><a id="line.1342"></a>
+<span class="sourceLineNo">1343</span><a id="line.1343">  /**</a>
+<span class="sourceLineNo">1344</span><a id="line.1344">   * Execute a TxCallable in a Transaction with an explicit scope.</a>
+<span class="sourceLineNo">1345</span><a id="line.1345">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1346</span><a id="line.1346">   * The scope can control the transaction type, isolation and rollback</a>
+<span class="sourceLineNo">1347</span><a id="line.1347">   * semantics.</a>
+<span class="sourceLineNo">1348</span><a id="line.1348">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1349</span><a id="line.1349">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1350</span><a id="line.1350">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1351</span><a id="line.1351">   *</a>
+<span class="sourceLineNo">1352</span><a id="line.1352">   *   // set specific transactional scope settings</a>
+<span class="sourceLineNo">1353</span><a id="line.1353">   *   TxScope scope = TxScope.requiresNew().setIsolation(TxIsolation.SERIALIZABLE);</a>
+<span class="sourceLineNo">1354</span><a id="line.1354">   *</a>
+<span class="sourceLineNo">1355</span><a id="line.1355">   *   database.executeCall(scope, new Callable&lt;String&gt;() {</a>
+<span class="sourceLineNo">1356</span><a id="line.1356">   *       public String call() {</a>
+<span class="sourceLineNo">1357</span><a id="line.1357">   *               User u1 = database.find(User.class, 1);</a>
+<span class="sourceLineNo">1358</span><a id="line.1358">   *               ...</a>
+<span class="sourceLineNo">1359</span><a id="line.1359">   *               return u1.getEmail();</a>
+<span class="sourceLineNo">1360</span><a id="line.1360">   *     }</a>
+<span class="sourceLineNo">1361</span><a id="line.1361">   *   });</a>
+<span class="sourceLineNo">1362</span><a id="line.1362">   *</a>
+<span class="sourceLineNo">1363</span><a id="line.1363">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1364</span><a id="line.1364">   */</a>
+<span class="sourceLineNo">1365</span><a id="line.1365">  &lt;T&gt; T executeCall(TxScope scope, Callable&lt;T&gt; callable);</a>
+<span class="sourceLineNo">1366</span><a id="line.1366"></a>
+<span class="sourceLineNo">1367</span><a id="line.1367">  /**</a>
+<span class="sourceLineNo">1368</span><a id="line.1368">   * Execute a TxCallable in a Transaction with the default scope.</a>
+<span class="sourceLineNo">1369</span><a id="line.1369">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1370</span><a id="line.1370">   * The default scope runs with REQUIRED and by default will rollback on any</a>
+<span class="sourceLineNo">1371</span><a id="line.1371">   * exception (checked or runtime).</a>
+<span class="sourceLineNo">1372</span><a id="line.1372">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1373</span><a id="line.1373">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1374</span><a id="line.1374">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">1375</span><a id="line.1375">   *</a>
-<span class="sourceLineNo">1376</span><a id="line.1376">   *       u1.setName("u1 mod");</a>
-<span class="sourceLineNo">1377</span><a id="line.1377">   *       u2.setName("u2 mod");</a>
-<span class="sourceLineNo">1378</span><a id="line.1378">   *</a>
-<span class="sourceLineNo">1379</span><a id="line.1379">   *       database.save(u1);</a>
-<span class="sourceLineNo">1380</span><a id="line.1380">   *       database.save(u2);</a>
-<span class="sourceLineNo">1381</span><a id="line.1381">   *</a>
-<span class="sourceLineNo">1382</span><a id="line.1382">   *       return u1.getEmail();</a>
-<span class="sourceLineNo">1383</span><a id="line.1383">   *     }</a>
-<span class="sourceLineNo">1384</span><a id="line.1384">   *   });</a>
-<span class="sourceLineNo">1385</span><a id="line.1385">   *</a>
-<span class="sourceLineNo">1386</span><a id="line.1386">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1387</span><a id="line.1387">   */</a>
-<span class="sourceLineNo">1388</span><a id="line.1388">  &lt;T&gt; T executeCall(Callable&lt;T&gt; callable);</a>
-<span class="sourceLineNo">1389</span><a id="line.1389"></a>
-<span class="sourceLineNo">1390</span><a id="line.1390">  /**</a>
-<span class="sourceLineNo">1391</span><a id="line.1391">   * Return the manager of the server cache ("L2" cache).</a>
+<span class="sourceLineNo">1376</span><a id="line.1376">   *   database.executeCall(new Callable&lt;String&gt;() {</a>
+<span class="sourceLineNo">1377</span><a id="line.1377">   *     public String call() {</a>
+<span class="sourceLineNo">1378</span><a id="line.1378">   *       User u1 = database.find(User.class, 1);</a>
+<span class="sourceLineNo">1379</span><a id="line.1379">   *       User u2 = database.find(User.class, 2);</a>
+<span class="sourceLineNo">1380</span><a id="line.1380">   *</a>
+<span class="sourceLineNo">1381</span><a id="line.1381">   *       u1.setName("u1 mod");</a>
+<span class="sourceLineNo">1382</span><a id="line.1382">   *       u2.setName("u2 mod");</a>
+<span class="sourceLineNo">1383</span><a id="line.1383">   *</a>
+<span class="sourceLineNo">1384</span><a id="line.1384">   *       database.save(u1);</a>
+<span class="sourceLineNo">1385</span><a id="line.1385">   *       database.save(u2);</a>
+<span class="sourceLineNo">1386</span><a id="line.1386">   *</a>
+<span class="sourceLineNo">1387</span><a id="line.1387">   *       return u1.getEmail();</a>
+<span class="sourceLineNo">1388</span><a id="line.1388">   *     }</a>
+<span class="sourceLineNo">1389</span><a id="line.1389">   *   });</a>
+<span class="sourceLineNo">1390</span><a id="line.1390">   *</a>
+<span class="sourceLineNo">1391</span><a id="line.1391">   * }&lt;/pre&gt;</a>
 <span class="sourceLineNo">1392</span><a id="line.1392">   */</a>
-<span class="sourceLineNo">1393</span><a id="line.1393">  ServerCacheManager getServerCacheManager();</a>
+<span class="sourceLineNo">1393</span><a id="line.1393">  &lt;T&gt; T executeCall(Callable&lt;T&gt; callable);</a>
 <span class="sourceLineNo">1394</span><a id="line.1394"></a>
 <span class="sourceLineNo">1395</span><a id="line.1395">  /**</a>
-<span class="sourceLineNo">1396</span><a id="line.1396">   * Return the BackgroundExecutor service for asynchronous processing of</a>
-<span class="sourceLineNo">1397</span><a id="line.1397">   * queries.</a>
-<span class="sourceLineNo">1398</span><a id="line.1398">   */</a>
-<span class="sourceLineNo">1399</span><a id="line.1399">  BackgroundExecutor getBackgroundExecutor();</a>
-<span class="sourceLineNo">1400</span><a id="line.1400"></a>
-<span class="sourceLineNo">1401</span><a id="line.1401">  /**</a>
-<span class="sourceLineNo">1402</span><a id="line.1402">   * Return the JsonContext for reading/writing JSON.</a>
-<span class="sourceLineNo">1403</span><a id="line.1403">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1404</span><a id="line.1404">   * This instance is safe to be used concurrently by multiple threads and this</a>
-<span class="sourceLineNo">1405</span><a id="line.1405">   * method is cheap to call.</a>
-<span class="sourceLineNo">1406</span><a id="line.1406">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1407</span><a id="line.1407">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1408</span><a id="line.1408">   * &lt;h3&gt;Simple example:&lt;/h3&gt;</a>
-<span class="sourceLineNo">1409</span><a id="line.1409">   * &lt;pre&gt;{@code</a>
-<span class="sourceLineNo">1410</span><a id="line.1410">   *</a>
-<span class="sourceLineNo">1411</span><a id="line.1411">   *     JsonContext json = database.json();</a>
-<span class="sourceLineNo">1412</span><a id="line.1412">   *     String jsonOutput = json.toJson(list);</a>
-<span class="sourceLineNo">1413</span><a id="line.1413">   *     System.out.println(jsonOutput);</a>
-<span class="sourceLineNo">1414</span><a id="line.1414">   *</a>
-<span class="sourceLineNo">1415</span><a id="line.1415">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1416</span><a id="line.1416">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1417</span><a id="line.1417">   * &lt;h3&gt;Using PathProperties:&lt;/h3&gt;</a>
-<span class="sourceLineNo">1418</span><a id="line.1418">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1396</span><a id="line.1396">   * Return the manager of the server cache ("L2" cache).</a>
+<span class="sourceLineNo">1397</span><a id="line.1397">   */</a>
+<span class="sourceLineNo">1398</span><a id="line.1398">  ServerCacheManager getServerCacheManager();</a>
+<span class="sourceLineNo">1399</span><a id="line.1399"></a>
+<span class="sourceLineNo">1400</span><a id="line.1400">  /**</a>
+<span class="sourceLineNo">1401</span><a id="line.1401">   * Return the BackgroundExecutor service for asynchronous processing of</a>
+<span class="sourceLineNo">1402</span><a id="line.1402">   * queries.</a>
+<span class="sourceLineNo">1403</span><a id="line.1403">   */</a>
+<span class="sourceLineNo">1404</span><a id="line.1404">  BackgroundExecutor getBackgroundExecutor();</a>
+<span class="sourceLineNo">1405</span><a id="line.1405"></a>
+<span class="sourceLineNo">1406</span><a id="line.1406">  /**</a>
+<span class="sourceLineNo">1407</span><a id="line.1407">   * Return the JsonContext for reading/writing JSON.</a>
+<span class="sourceLineNo">1408</span><a id="line.1408">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1409</span><a id="line.1409">   * This instance is safe to be used concurrently by multiple threads and this</a>
+<span class="sourceLineNo">1410</span><a id="line.1410">   * method is cheap to call.</a>
+<span class="sourceLineNo">1411</span><a id="line.1411">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1412</span><a id="line.1412">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1413</span><a id="line.1413">   * &lt;h3&gt;Simple example:&lt;/h3&gt;</a>
+<span class="sourceLineNo">1414</span><a id="line.1414">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1415</span><a id="line.1415">   *</a>
+<span class="sourceLineNo">1416</span><a id="line.1416">   *     JsonContext json = database.json();</a>
+<span class="sourceLineNo">1417</span><a id="line.1417">   *     String jsonOutput = json.toJson(list);</a>
+<span class="sourceLineNo">1418</span><a id="line.1418">   *     System.out.println(jsonOutput);</a>
 <span class="sourceLineNo">1419</span><a id="line.1419">   *</a>
-<span class="sourceLineNo">1420</span><a id="line.1420">   *     // specify just the properties we want</a>
-<span class="sourceLineNo">1421</span><a id="line.1421">   *     PathProperties paths = PathProperties.parse("name, status, anniversary");</a>
-<span class="sourceLineNo">1422</span><a id="line.1422">   *</a>
-<span class="sourceLineNo">1423</span><a id="line.1423">   *     List&lt;Customer&gt; customers =</a>
-<span class="sourceLineNo">1424</span><a id="line.1424">   *       database.find(Customer.class)</a>
-<span class="sourceLineNo">1425</span><a id="line.1425">   *         // apply those paths to the query (only fetch what we need)</a>
-<span class="sourceLineNo">1426</span><a id="line.1426">   *         .apply(paths)</a>
-<span class="sourceLineNo">1427</span><a id="line.1427">   *         .where().ilike("name", "rob%")</a>
-<span class="sourceLineNo">1428</span><a id="line.1428">   *         .findList();</a>
-<span class="sourceLineNo">1429</span><a id="line.1429">   *</a>
-<span class="sourceLineNo">1430</span><a id="line.1430">   *     // ... get the json</a>
-<span class="sourceLineNo">1431</span><a id="line.1431">   *     JsonContext jsonContext = database.json();</a>
-<span class="sourceLineNo">1432</span><a id="line.1432">   *     String json = jsonContext.toJson(customers, paths);</a>
-<span class="sourceLineNo">1433</span><a id="line.1433">   *</a>
-<span class="sourceLineNo">1434</span><a id="line.1434">   * }&lt;/pre&gt;</a>
-<span class="sourceLineNo">1435</span><a id="line.1435">   *</a>
-<span class="sourceLineNo">1436</span><a id="line.1436">   * @see FetchPath</a>
-<span class="sourceLineNo">1437</span><a id="line.1437">   * @see Query#apply(FetchPath)</a>
-<span class="sourceLineNo">1438</span><a id="line.1438">   */</a>
-<span class="sourceLineNo">1439</span><a id="line.1439">  JsonContext json();</a>
-<span class="sourceLineNo">1440</span><a id="line.1440"></a>
-<span class="sourceLineNo">1441</span><a id="line.1441">  /**</a>
-<span class="sourceLineNo">1442</span><a id="line.1442">   * Return a ScriptRunner for running SQL or DDL scripts.</a>
-<span class="sourceLineNo">1443</span><a id="line.1443">   * &lt;p/&gt;</a>
-<span class="sourceLineNo">1444</span><a id="line.1444">   * Intended to use mostly in testing to run seed SQL scripts or truncate table scripts etc.</a>
-<span class="sourceLineNo">1445</span><a id="line.1445">   */</a>
-<span class="sourceLineNo">1446</span><a id="line.1446">  ScriptRunner script();</a>
-<span class="sourceLineNo">1447</span><a id="line.1447"></a>
-<span class="sourceLineNo">1448</span><a id="line.1448">  /**</a>
-<span class="sourceLineNo">1449</span><a id="line.1449">   * Return the Document store.</a>
+<span class="sourceLineNo">1420</span><a id="line.1420">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1421</span><a id="line.1421">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1422</span><a id="line.1422">   * &lt;h3&gt;Using PathProperties:&lt;/h3&gt;</a>
+<span class="sourceLineNo">1423</span><a id="line.1423">   * &lt;pre&gt;{@code</a>
+<span class="sourceLineNo">1424</span><a id="line.1424">   *</a>
+<span class="sourceLineNo">1425</span><a id="line.1425">   *     // specify just the properties we want</a>
+<span class="sourceLineNo">1426</span><a id="line.1426">   *     PathProperties paths = PathProperties.parse("name, status, anniversary");</a>
+<span class="sourceLineNo">1427</span><a id="line.1427">   *</a>
+<span class="sourceLineNo">1428</span><a id="line.1428">   *     List&lt;Customer&gt; customers =</a>
+<span class="sourceLineNo">1429</span><a id="line.1429">   *       database.find(Customer.class)</a>
+<span class="sourceLineNo">1430</span><a id="line.1430">   *         // apply those paths to the query (only fetch what we need)</a>
+<span class="sourceLineNo">1431</span><a id="line.1431">   *         .apply(paths)</a>
+<span class="sourceLineNo">1432</span><a id="line.1432">   *         .where().ilike("name", "rob%")</a>
+<span class="sourceLineNo">1433</span><a id="line.1433">   *         .findList();</a>
+<span class="sourceLineNo">1434</span><a id="line.1434">   *</a>
+<span class="sourceLineNo">1435</span><a id="line.1435">   *     // ... get the json</a>
+<span class="sourceLineNo">1436</span><a id="line.1436">   *     JsonContext jsonContext = database.json();</a>
+<span class="sourceLineNo">1437</span><a id="line.1437">   *     String json = jsonContext.toJson(customers, paths);</a>
+<span class="sourceLineNo">1438</span><a id="line.1438">   *</a>
+<span class="sourceLineNo">1439</span><a id="line.1439">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">1440</span><a id="line.1440">   *</a>
+<span class="sourceLineNo">1441</span><a id="line.1441">   * @see FetchPath</a>
+<span class="sourceLineNo">1442</span><a id="line.1442">   * @see Query#apply(FetchPath)</a>
+<span class="sourceLineNo">1443</span><a id="line.1443">   */</a>
+<span class="sourceLineNo">1444</span><a id="line.1444">  JsonContext json();</a>
+<span class="sourceLineNo">1445</span><a id="line.1445"></a>
+<span class="sourceLineNo">1446</span><a id="line.1446">  /**</a>
+<span class="sourceLineNo">1447</span><a id="line.1447">   * Return a ScriptRunner for running SQL or DDL scripts.</a>
+<span class="sourceLineNo">1448</span><a id="line.1448">   * &lt;p/&gt;</a>
+<span class="sourceLineNo">1449</span><a id="line.1449">   * Intended to use mostly in testing to run seed SQL scripts or truncate table scripts etc.</a>
 <span class="sourceLineNo">1450</span><a id="line.1450">   */</a>
-<span class="sourceLineNo">1451</span><a id="line.1451">  DocumentStore docStore();</a>
+<span class="sourceLineNo">1451</span><a id="line.1451">  ScriptRunner script();</a>
 <span class="sourceLineNo">1452</span><a id="line.1452"></a>
 <span class="sourceLineNo">1453</span><a id="line.1453">  /**</a>
-<span class="sourceLineNo">1454</span><a id="line.1454">   * Publish a single bean given its type and id returning the resulting live bean.</a>
-<span class="sourceLineNo">1455</span><a id="line.1455">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1456</span><a id="line.1456">   * The values are published from the draft to the live bean.</a>
-<span class="sourceLineNo">1457</span><a id="line.1457">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1458</span><a id="line.1458">   *</a>
-<span class="sourceLineNo">1459</span><a id="line.1459">   * @param &lt;T&gt;         the type of the entity bean</a>
-<span class="sourceLineNo">1460</span><a id="line.1460">   * @param beanType    the type of the entity bean</a>
-<span class="sourceLineNo">1461</span><a id="line.1461">   * @param id          the id of the entity bean</a>
-<span class="sourceLineNo">1462</span><a id="line.1462">   * @param transaction the transaction the publish process should use (can be null)</a>
-<span class="sourceLineNo">1463</span><a id="line.1463">   */</a>
-<span class="sourceLineNo">1464</span><a id="line.1464">  &lt;T&gt; T publish(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
-<span class="sourceLineNo">1465</span><a id="line.1465"></a>
-<span class="sourceLineNo">1466</span><a id="line.1466">  /**</a>
-<span class="sourceLineNo">1467</span><a id="line.1467">   * Publish a single bean given its type and id returning the resulting live bean.</a>
-<span class="sourceLineNo">1468</span><a id="line.1468">   * This will use the current transaction or create one if required.</a>
-<span class="sourceLineNo">1469</span><a id="line.1469">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1470</span><a id="line.1470">   * The values are published from the draft to the live bean.</a>
-<span class="sourceLineNo">1471</span><a id="line.1471">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1472</span><a id="line.1472">   *</a>
-<span class="sourceLineNo">1473</span><a id="line.1473">   * @param &lt;T&gt;      the type of the entity bean</a>
-<span class="sourceLineNo">1474</span><a id="line.1474">   * @param beanType the type of the entity bean</a>
-<span class="sourceLineNo">1475</span><a id="line.1475">   * @param id       the id of the entity bean</a>
-<span class="sourceLineNo">1476</span><a id="line.1476">   */</a>
-<span class="sourceLineNo">1477</span><a id="line.1477">  &lt;T&gt; T publish(Class&lt;T&gt; beanType, Object id);</a>
-<span class="sourceLineNo">1478</span><a id="line.1478"></a>
-<span class="sourceLineNo">1479</span><a id="line.1479">  /**</a>
-<span class="sourceLineNo">1480</span><a id="line.1480">   * Publish the beans that match the query returning the resulting published beans.</a>
-<span class="sourceLineNo">1481</span><a id="line.1481">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1482</span><a id="line.1482">   * The values are published from the draft beans to the live beans.</a>
-<span class="sourceLineNo">1483</span><a id="line.1483">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1484</span><a id="line.1484">   *</a>
-<span class="sourceLineNo">1485</span><a id="line.1485">   * @param &lt;T&gt;         the type of the entity bean</a>
-<span class="sourceLineNo">1486</span><a id="line.1486">   * @param query       the query used to select the draft beans to publish</a>
-<span class="sourceLineNo">1487</span><a id="line.1487">   * @param transaction the transaction the publish process should use (can be null)</a>
-<span class="sourceLineNo">1488</span><a id="line.1488">   */</a>
-<span class="sourceLineNo">1489</span><a id="line.1489">  &lt;T&gt; List&lt;T&gt; publish(Query&lt;T&gt; query, Transaction transaction);</a>
-<span class="sourceLineNo">1490</span><a id="line.1490"></a>
-<span class="sourceLineNo">1491</span><a id="line.1491">  /**</a>
-<span class="sourceLineNo">1492</span><a id="line.1492">   * Publish the beans that match the query returning the resulting published beans.</a>
-<span class="sourceLineNo">1493</span><a id="line.1493">   * This will use the current transaction or create one if required.</a>
-<span class="sourceLineNo">1494</span><a id="line.1494">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1495</span><a id="line.1495">   * The values are published from the draft beans to the live beans.</a>
-<span class="sourceLineNo">1496</span><a id="line.1496">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1497</span><a id="line.1497">   *</a>
-<span class="sourceLineNo">1498</span><a id="line.1498">   * @param &lt;T&gt;   the type of the entity bean</a>
-<span class="sourceLineNo">1499</span><a id="line.1499">   * @param query the query used to select the draft beans to publish</a>
-<span class="sourceLineNo">1500</span><a id="line.1500">   */</a>
-<span class="sourceLineNo">1501</span><a id="line.1501">  &lt;T&gt; List&lt;T&gt; publish(Query&lt;T&gt; query);</a>
-<span class="sourceLineNo">1502</span><a id="line.1502"></a>
-<span class="sourceLineNo">1503</span><a id="line.1503">  /**</a>
-<span class="sourceLineNo">1504</span><a id="line.1504">   * Restore the draft bean back to the live state.</a>
-<span class="sourceLineNo">1505</span><a id="line.1505">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1506</span><a id="line.1506">   * The values from the live beans are set back to the draft bean and the</a>
-<span class="sourceLineNo">1507</span><a id="line.1507">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
-<span class="sourceLineNo">1508</span><a id="line.1508">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1509</span><a id="line.1509">   *</a>
-<span class="sourceLineNo">1510</span><a id="line.1510">   * @param &lt;T&gt;         the type of the entity bean</a>
-<span class="sourceLineNo">1511</span><a id="line.1511">   * @param beanType    the type of the entity bean</a>
-<span class="sourceLineNo">1512</span><a id="line.1512">   * @param id          the id of the entity bean to restore</a>
-<span class="sourceLineNo">1513</span><a id="line.1513">   * @param transaction the transaction the restore process should use (can be null)</a>
-<span class="sourceLineNo">1514</span><a id="line.1514">   */</a>
-<span class="sourceLineNo">1515</span><a id="line.1515">  &lt;T&gt; T draftRestore(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
-<span class="sourceLineNo">1516</span><a id="line.1516"></a>
-<span class="sourceLineNo">1517</span><a id="line.1517">  /**</a>
-<span class="sourceLineNo">1518</span><a id="line.1518">   * Restore the draft bean back to the live state.</a>
-<span class="sourceLineNo">1519</span><a id="line.1519">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1520</span><a id="line.1520">   * The values from the live beans are set back to the draft bean and the</a>
-<span class="sourceLineNo">1521</span><a id="line.1521">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
-<span class="sourceLineNo">1522</span><a id="line.1522">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1523</span><a id="line.1523">   *</a>
-<span class="sourceLineNo">1524</span><a id="line.1524">   * @param &lt;T&gt;      the type of the entity bean</a>
-<span class="sourceLineNo">1525</span><a id="line.1525">   * @param beanType the type of the entity bean</a>
-<span class="sourceLineNo">1526</span><a id="line.1526">   * @param id       the id of the entity bean to restore</a>
-<span class="sourceLineNo">1527</span><a id="line.1527">   */</a>
-<span class="sourceLineNo">1528</span><a id="line.1528">  &lt;T&gt; T draftRestore(Class&lt;T&gt; beanType, Object id);</a>
-<span class="sourceLineNo">1529</span><a id="line.1529"></a>
-<span class="sourceLineNo">1530</span><a id="line.1530">  /**</a>
-<span class="sourceLineNo">1531</span><a id="line.1531">   * Restore the draft beans matching the query back to the live state.</a>
-<span class="sourceLineNo">1532</span><a id="line.1532">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1533</span><a id="line.1533">   * The values from the live beans are set back to the draft bean and the</a>
-<span class="sourceLineNo">1534</span><a id="line.1534">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
-<span class="sourceLineNo">1535</span><a id="line.1535">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1536</span><a id="line.1536">   *</a>
-<span class="sourceLineNo">1537</span><a id="line.1537">   * @param &lt;T&gt;         the type of the entity bean</a>
-<span class="sourceLineNo">1538</span><a id="line.1538">   * @param query       the query used to select the draft beans to restore</a>
-<span class="sourceLineNo">1539</span><a id="line.1539">   * @param transaction the transaction the restore process should use (can be null)</a>
-<span class="sourceLineNo">1540</span><a id="line.1540">   */</a>
-<span class="sourceLineNo">1541</span><a id="line.1541">  &lt;T&gt; List&lt;T&gt; draftRestore(Query&lt;T&gt; query, Transaction transaction);</a>
-<span class="sourceLineNo">1542</span><a id="line.1542"></a>
-<span class="sourceLineNo">1543</span><a id="line.1543">  /**</a>
-<span class="sourceLineNo">1544</span><a id="line.1544">   * Restore the draft beans matching the query back to the live state.</a>
-<span class="sourceLineNo">1545</span><a id="line.1545">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1546</span><a id="line.1546">   * The values from the live beans are set back to the draft bean and the</a>
-<span class="sourceLineNo">1547</span><a id="line.1547">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
-<span class="sourceLineNo">1548</span><a id="line.1548">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1549</span><a id="line.1549">   *</a>
-<span class="sourceLineNo">1550</span><a id="line.1550">   * @param &lt;T&gt;   the type of the entity bean</a>
-<span class="sourceLineNo">1551</span><a id="line.1551">   * @param query the query used to select the draft beans to restore</a>
-<span class="sourceLineNo">1552</span><a id="line.1552">   */</a>
-<span class="sourceLineNo">1553</span><a id="line.1553">  &lt;T&gt; List&lt;T&gt; draftRestore(Query&lt;T&gt; query);</a>
-<span class="sourceLineNo">1554</span><a id="line.1554"></a>
-<span class="sourceLineNo">1555</span><a id="line.1555">  /**</a>
-<span class="sourceLineNo">1556</span><a id="line.1556">   * Returns the set of properties/paths that are unknown (do not map to known properties or paths).</a>
-<span class="sourceLineNo">1557</span><a id="line.1557">   * &lt;p&gt;</a>
-<span class="sourceLineNo">1558</span><a id="line.1558">   * Validate the query checking the where and orderBy expression paths to confirm if</a>
-<span class="sourceLineNo">1559</span><a id="line.1559">   * they represent valid properties/path for the given bean type.</a>
-<span class="sourceLineNo">1560</span><a id="line.1560">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">1561</span><a id="line.1561">   */</a>
-<span class="sourceLineNo">1562</span><a id="line.1562">  &lt;T&gt; Set&lt;String&gt; validateQuery(Query&lt;T&gt; query);</a>
-<span class="sourceLineNo">1563</span><a id="line.1563"></a>
-<span class="sourceLineNo">1564</span><a id="line.1564">  /**</a>
-<span class="sourceLineNo">1565</span><a id="line.1565">   * Truncate all the given tables.</a>
+<span class="sourceLineNo">1454</span><a id="line.1454">   * Return the Document store.</a>
+<span class="sourceLineNo">1455</span><a id="line.1455">   */</a>
+<span class="sourceLineNo">1456</span><a id="line.1456">  DocumentStore docStore();</a>
+<span class="sourceLineNo">1457</span><a id="line.1457"></a>
+<span class="sourceLineNo">1458</span><a id="line.1458">  /**</a>
+<span class="sourceLineNo">1459</span><a id="line.1459">   * Publish a single bean given its type and id returning the resulting live bean.</a>
+<span class="sourceLineNo">1460</span><a id="line.1460">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1461</span><a id="line.1461">   * The values are published from the draft to the live bean.</a>
+<span class="sourceLineNo">1462</span><a id="line.1462">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1463</span><a id="line.1463">   *</a>
+<span class="sourceLineNo">1464</span><a id="line.1464">   * @param &lt;T&gt;         the type of the entity bean</a>
+<span class="sourceLineNo">1465</span><a id="line.1465">   * @param beanType    the type of the entity bean</a>
+<span class="sourceLineNo">1466</span><a id="line.1466">   * @param id          the id of the entity bean</a>
+<span class="sourceLineNo">1467</span><a id="line.1467">   * @param transaction the transaction the publish process should use (can be null)</a>
+<span class="sourceLineNo">1468</span><a id="line.1468">   */</a>
+<span class="sourceLineNo">1469</span><a id="line.1469">  &lt;T&gt; T publish(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
+<span class="sourceLineNo">1470</span><a id="line.1470"></a>
+<span class="sourceLineNo">1471</span><a id="line.1471">  /**</a>
+<span class="sourceLineNo">1472</span><a id="line.1472">   * Publish a single bean given its type and id returning the resulting live bean.</a>
+<span class="sourceLineNo">1473</span><a id="line.1473">   * This will use the current transaction or create one if required.</a>
+<span class="sourceLineNo">1474</span><a id="line.1474">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1475</span><a id="line.1475">   * The values are published from the draft to the live bean.</a>
+<span class="sourceLineNo">1476</span><a id="line.1476">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1477</span><a id="line.1477">   *</a>
+<span class="sourceLineNo">1478</span><a id="line.1478">   * @param &lt;T&gt;      the type of the entity bean</a>
+<span class="sourceLineNo">1479</span><a id="line.1479">   * @param beanType the type of the entity bean</a>
+<span class="sourceLineNo">1480</span><a id="line.1480">   * @param id       the id of the entity bean</a>
+<span class="sourceLineNo">1481</span><a id="line.1481">   */</a>
+<span class="sourceLineNo">1482</span><a id="line.1482">  &lt;T&gt; T publish(Class&lt;T&gt; beanType, Object id);</a>
+<span class="sourceLineNo">1483</span><a id="line.1483"></a>
+<span class="sourceLineNo">1484</span><a id="line.1484">  /**</a>
+<span class="sourceLineNo">1485</span><a id="line.1485">   * Publish the beans that match the query returning the resulting published beans.</a>
+<span class="sourceLineNo">1486</span><a id="line.1486">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1487</span><a id="line.1487">   * The values are published from the draft beans to the live beans.</a>
+<span class="sourceLineNo">1488</span><a id="line.1488">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1489</span><a id="line.1489">   *</a>
+<span class="sourceLineNo">1490</span><a id="line.1490">   * @param &lt;T&gt;         the type of the entity bean</a>
+<span class="sourceLineNo">1491</span><a id="line.1491">   * @param query       the query used to select the draft beans to publish</a>
+<span class="sourceLineNo">1492</span><a id="line.1492">   * @param transaction the transaction the publish process should use (can be null)</a>
+<span class="sourceLineNo">1493</span><a id="line.1493">   */</a>
+<span class="sourceLineNo">1494</span><a id="line.1494">  &lt;T&gt; List&lt;T&gt; publish(Query&lt;T&gt; query, Transaction transaction);</a>
+<span class="sourceLineNo">1495</span><a id="line.1495"></a>
+<span class="sourceLineNo">1496</span><a id="line.1496">  /**</a>
+<span class="sourceLineNo">1497</span><a id="line.1497">   * Publish the beans that match the query returning the resulting published beans.</a>
+<span class="sourceLineNo">1498</span><a id="line.1498">   * This will use the current transaction or create one if required.</a>
+<span class="sourceLineNo">1499</span><a id="line.1499">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1500</span><a id="line.1500">   * The values are published from the draft beans to the live beans.</a>
+<span class="sourceLineNo">1501</span><a id="line.1501">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1502</span><a id="line.1502">   *</a>
+<span class="sourceLineNo">1503</span><a id="line.1503">   * @param &lt;T&gt;   the type of the entity bean</a>
+<span class="sourceLineNo">1504</span><a id="line.1504">   * @param query the query used to select the draft beans to publish</a>
+<span class="sourceLineNo">1505</span><a id="line.1505">   */</a>
+<span class="sourceLineNo">1506</span><a id="line.1506">  &lt;T&gt; List&lt;T&gt; publish(Query&lt;T&gt; query);</a>
+<span class="sourceLineNo">1507</span><a id="line.1507"></a>
+<span class="sourceLineNo">1508</span><a id="line.1508">  /**</a>
+<span class="sourceLineNo">1509</span><a id="line.1509">   * Restore the draft bean back to the live state.</a>
+<span class="sourceLineNo">1510</span><a id="line.1510">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1511</span><a id="line.1511">   * The values from the live beans are set back to the draft bean and the</a>
+<span class="sourceLineNo">1512</span><a id="line.1512">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
+<span class="sourceLineNo">1513</span><a id="line.1513">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1514</span><a id="line.1514">   *</a>
+<span class="sourceLineNo">1515</span><a id="line.1515">   * @param &lt;T&gt;         the type of the entity bean</a>
+<span class="sourceLineNo">1516</span><a id="line.1516">   * @param beanType    the type of the entity bean</a>
+<span class="sourceLineNo">1517</span><a id="line.1517">   * @param id          the id of the entity bean to restore</a>
+<span class="sourceLineNo">1518</span><a id="line.1518">   * @param transaction the transaction the restore process should use (can be null)</a>
+<span class="sourceLineNo">1519</span><a id="line.1519">   */</a>
+<span class="sourceLineNo">1520</span><a id="line.1520">  &lt;T&gt; T draftRestore(Class&lt;T&gt; beanType, Object id, Transaction transaction);</a>
+<span class="sourceLineNo">1521</span><a id="line.1521"></a>
+<span class="sourceLineNo">1522</span><a id="line.1522">  /**</a>
+<span class="sourceLineNo">1523</span><a id="line.1523">   * Restore the draft bean back to the live state.</a>
+<span class="sourceLineNo">1524</span><a id="line.1524">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1525</span><a id="line.1525">   * The values from the live beans are set back to the draft bean and the</a>
+<span class="sourceLineNo">1526</span><a id="line.1526">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
+<span class="sourceLineNo">1527</span><a id="line.1527">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1528</span><a id="line.1528">   *</a>
+<span class="sourceLineNo">1529</span><a id="line.1529">   * @param &lt;T&gt;      the type of the entity bean</a>
+<span class="sourceLineNo">1530</span><a id="line.1530">   * @param beanType the type of the entity bean</a>
+<span class="sourceLineNo">1531</span><a id="line.1531">   * @param id       the id of the entity bean to restore</a>
+<span class="sourceLineNo">1532</span><a id="line.1532">   */</a>
+<span class="sourceLineNo">1533</span><a id="line.1533">  &lt;T&gt; T draftRestore(Class&lt;T&gt; beanType, Object id);</a>
+<span class="sourceLineNo">1534</span><a id="line.1534"></a>
+<span class="sourceLineNo">1535</span><a id="line.1535">  /**</a>
+<span class="sourceLineNo">1536</span><a id="line.1536">   * Restore the draft beans matching the query back to the live state.</a>
+<span class="sourceLineNo">1537</span><a id="line.1537">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1538</span><a id="line.1538">   * The values from the live beans are set back to the draft bean and the</a>
+<span class="sourceLineNo">1539</span><a id="line.1539">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
+<span class="sourceLineNo">1540</span><a id="line.1540">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1541</span><a id="line.1541">   *</a>
+<span class="sourceLineNo">1542</span><a id="line.1542">   * @param &lt;T&gt;         the type of the entity bean</a>
+<span class="sourceLineNo">1543</span><a id="line.1543">   * @param query       the query used to select the draft beans to restore</a>
+<span class="sourceLineNo">1544</span><a id="line.1544">   * @param transaction the transaction the restore process should use (can be null)</a>
+<span class="sourceLineNo">1545</span><a id="line.1545">   */</a>
+<span class="sourceLineNo">1546</span><a id="line.1546">  &lt;T&gt; List&lt;T&gt; draftRestore(Query&lt;T&gt; query, Transaction transaction);</a>
+<span class="sourceLineNo">1547</span><a id="line.1547"></a>
+<span class="sourceLineNo">1548</span><a id="line.1548">  /**</a>
+<span class="sourceLineNo">1549</span><a id="line.1549">   * Restore the draft beans matching the query back to the live state.</a>
+<span class="sourceLineNo">1550</span><a id="line.1550">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1551</span><a id="line.1551">   * The values from the live beans are set back to the draft bean and the</a>
+<span class="sourceLineNo">1552</span><a id="line.1552">   * &lt;code&gt;@DraftDirty&lt;/code&gt; and &lt;code&gt;@DraftReset&lt;/code&gt; properties are reset.</a>
+<span class="sourceLineNo">1553</span><a id="line.1553">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">1554</span><a id="line.1554">   *</a>
+<span class="sourceLineNo">1555</span><a id="line.1555">   * @param &lt;T&gt;   the type of the entity bean</a>
+<span class="sourceLineNo">1556</span><a id="line.1556">   * @param query the query used to select the draft beans to restore</a>
+<span class="sourceLineNo">1557</span><a id="line.1557">   */</a>
+<span class="sourceLineNo">1558</span><a id="line.1558">  &lt;T&gt; List&lt;T&gt; draftRestore(Query&lt;T&gt; query);</a>
+<span class="sourceLineNo">1559</span><a id="line.1559"></a>
+<span class="sourceLineNo">1560</span><a id="line.1560">  /**</a>
+<span class="sourceLineNo">1561</span><a id="line.1561">   * Returns the set of properties/paths that are unknown (do not map to known properties or paths).</a>
+<span class="sourceLineNo">1562</span><a id="line.1562">   * &lt;p&gt;</a>
+<span class="sourceLineNo">1563</span><a id="line.1563">   * Validate the query checking the where and orderBy expression paths to confirm if</a>
+<span class="sourceLineNo">1564</span><a id="line.1564">   * they represent valid properties/path for the given bean type.</a>
+<span class="sourceLineNo">1565</span><a id="line.1565">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">1566</span><a id="line.1566">   */</a>
-<span class="sourceLineNo">1567</span><a id="line.1567">  void truncate(String... tables);</a>
+<span class="sourceLineNo">1567</span><a id="line.1567">  &lt;T&gt; Set&lt;String&gt; validateQuery(Query&lt;T&gt; query);</a>
 <span class="sourceLineNo">1568</span><a id="line.1568"></a>
 <span class="sourceLineNo">1569</span><a id="line.1569">  /**</a>
-<span class="sourceLineNo">1570</span><a id="line.1570">   * Truncate the base tables for the given bean types.</a>
+<span class="sourceLineNo">1570</span><a id="line.1570">   * Truncate all the given tables.</a>
 <span class="sourceLineNo">1571</span><a id="line.1571">   */</a>
-<span class="sourceLineNo">1572</span><a id="line.1572">  void truncate(Class&lt;?&gt;... tables);</a>
+<span class="sourceLineNo">1572</span><a id="line.1572">  void truncate(String... tables);</a>
 <span class="sourceLineNo">1573</span><a id="line.1573"></a>
-<span class="sourceLineNo">1574</span><a id="line.1574">}</a>
+<span class="sourceLineNo">1574</span><a id="line.1574">  /**</a>
+<span class="sourceLineNo">1575</span><a id="line.1575">   * Truncate the base tables for the given bean types.</a>
+<span class="sourceLineNo">1576</span><a id="line.1576">   */</a>
+<span class="sourceLineNo">1577</span><a id="line.1577">  void truncate(Class&lt;?&gt;... tables);</a>
+<span class="sourceLineNo">1578</span><a id="line.1578"></a>
+<span class="sourceLineNo">1579</span><a id="line.1579">}</a>
 
 
 

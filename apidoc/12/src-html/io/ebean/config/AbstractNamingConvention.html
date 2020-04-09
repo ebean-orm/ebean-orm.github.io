@@ -231,8 +231,8 @@
 <span class="sourceLineNo">222</span><a id="line.222">   * Return true if this class is part of entity inheritance.</a>
 <span class="sourceLineNo">223</span><a id="line.223">   */</a>
 <span class="sourceLineNo">224</span><a id="line.224">  protected boolean hasInheritance(Class&lt;?&gt; supCls) {</a>
-<span class="sourceLineNo">225</span><a id="line.225">    return AnnotationUtil.findAnnotationRecursive(supCls, Inheritance.class) != null</a>
-<span class="sourceLineNo">226</span><a id="line.226">        || AnnotationUtil.findAnnotation(supCls, DiscriminatorValue.class) != null;</a>
+<span class="sourceLineNo">225</span><a id="line.225">    return AnnotationUtil.typeHas(supCls, Inheritance.class)</a>
+<span class="sourceLineNo">226</span><a id="line.226">        || AnnotationUtil.has(supCls, DiscriminatorValue.class);</a>
 <span class="sourceLineNo">227</span><a id="line.227">  }</a>
 <span class="sourceLineNo">228</span><a id="line.228"></a>
 <span class="sourceLineNo">229</span><a id="line.229"></a>
@@ -264,47 +264,43 @@
 <span class="sourceLineNo">255</span><a id="line.255">   * Gets the table name from annotation.</a>
 <span class="sourceLineNo">256</span><a id="line.256">   */</a>
 <span class="sourceLineNo">257</span><a id="line.257">  protected TableName getTableNameFromAnnotation(Class&lt;?&gt; beanClass) {</a>
-<span class="sourceLineNo">258</span><a id="line.258"></a>
-<span class="sourceLineNo">259</span><a id="line.259">    final Table t = AnnotationUtil.findAnnotationRecursive(beanClass, Table.class);</a>
-<span class="sourceLineNo">260</span><a id="line.260"></a>
-<span class="sourceLineNo">261</span><a id="line.261">    // Take the annotation if defined</a>
-<span class="sourceLineNo">262</span><a id="line.262">    if (t != null &amp;&amp; !isEmpty(t.name())) {</a>
-<span class="sourceLineNo">263</span><a id="line.263">      // Note: empty catalog and schema are converted to null</a>
-<span class="sourceLineNo">264</span><a id="line.264">      // Only need to convert quoted identifiers from annotations</a>
-<span class="sourceLineNo">265</span><a id="line.265">      return new TableName(quoteIdentifiers(t.catalog()), quoteIdentifiers(t.schema()), quoteIdentifiers(t.name()));</a>
-<span class="sourceLineNo">266</span><a id="line.266">    }</a>
+<span class="sourceLineNo">258</span><a id="line.258">    final Table table = AnnotationUtil.typeGet(beanClass, Table.class);</a>
+<span class="sourceLineNo">259</span><a id="line.259">    if (table != null &amp;&amp; !isEmpty(table.name())) {</a>
+<span class="sourceLineNo">260</span><a id="line.260">      // Note: empty catalog and schema are converted to null</a>
+<span class="sourceLineNo">261</span><a id="line.261">      // Only need to convert quoted identifiers from annotations</a>
+<span class="sourceLineNo">262</span><a id="line.262">      return new TableName(quoteIdentifiers(table.catalog()), quoteIdentifiers(table.schema()), quoteIdentifiers(table.name()));</a>
+<span class="sourceLineNo">263</span><a id="line.263">    }</a>
+<span class="sourceLineNo">264</span><a id="line.264">    // No annotation</a>
+<span class="sourceLineNo">265</span><a id="line.265">    return null;</a>
+<span class="sourceLineNo">266</span><a id="line.266">  }</a>
 <span class="sourceLineNo">267</span><a id="line.267"></a>
-<span class="sourceLineNo">268</span><a id="line.268">    // No annotation</a>
-<span class="sourceLineNo">269</span><a id="line.269">    return null;</a>
-<span class="sourceLineNo">270</span><a id="line.270">  }</a>
-<span class="sourceLineNo">271</span><a id="line.271"></a>
-<span class="sourceLineNo">272</span><a id="line.272">  /**</a>
-<span class="sourceLineNo">273</span><a id="line.273">   * Replace back ticks (if they are used) with database platform specific</a>
-<span class="sourceLineNo">274</span><a id="line.274">   * quoted identifiers.</a>
-<span class="sourceLineNo">275</span><a id="line.275">   */</a>
-<span class="sourceLineNo">276</span><a id="line.276">  protected String quoteIdentifiers(String s) {</a>
-<span class="sourceLineNo">277</span><a id="line.277">    return databasePlatform.convertQuotedIdentifiers(s);</a>
-<span class="sourceLineNo">278</span><a id="line.278">  }</a>
-<span class="sourceLineNo">279</span><a id="line.279"></a>
-<span class="sourceLineNo">280</span><a id="line.280">  /**</a>
-<span class="sourceLineNo">281</span><a id="line.281">   * Checks string is null or empty .</a>
-<span class="sourceLineNo">282</span><a id="line.282">   */</a>
-<span class="sourceLineNo">283</span><a id="line.283">  protected boolean isEmpty(String s) {</a>
-<span class="sourceLineNo">284</span><a id="line.284">    return s == null || s.trim().isEmpty();</a>
-<span class="sourceLineNo">285</span><a id="line.285">  }</a>
-<span class="sourceLineNo">286</span><a id="line.286"></a>
-<span class="sourceLineNo">287</span><a id="line.287">  /**</a>
-<span class="sourceLineNo">288</span><a id="line.288">   * Load settings from properties.</a>
-<span class="sourceLineNo">289</span><a id="line.289">   */</a>
-<span class="sourceLineNo">290</span><a id="line.290">  @Override</a>
-<span class="sourceLineNo">291</span><a id="line.291">  public void loadFromProperties(PropertiesWrapper properties) {</a>
-<span class="sourceLineNo">292</span><a id="line.292"></a>
-<span class="sourceLineNo">293</span><a id="line.293">    useForeignKeyPrefix = properties.getBoolean("namingConvention.useForeignKeyPrefix", useForeignKeyPrefix);</a>
-<span class="sourceLineNo">294</span><a id="line.294">    sequenceFormat = properties.get("namingConvention.sequenceFormat", sequenceFormat);</a>
-<span class="sourceLineNo">295</span><a id="line.295">    schema = properties.get("namingConvention.schema", schema);</a>
-<span class="sourceLineNo">296</span><a id="line.296">  }</a>
-<span class="sourceLineNo">297</span><a id="line.297"></a>
-<span class="sourceLineNo">298</span><a id="line.298">}</a>
+<span class="sourceLineNo">268</span><a id="line.268">  /**</a>
+<span class="sourceLineNo">269</span><a id="line.269">   * Replace back ticks (if they are used) with database platform specific</a>
+<span class="sourceLineNo">270</span><a id="line.270">   * quoted identifiers.</a>
+<span class="sourceLineNo">271</span><a id="line.271">   */</a>
+<span class="sourceLineNo">272</span><a id="line.272">  protected String quoteIdentifiers(String s) {</a>
+<span class="sourceLineNo">273</span><a id="line.273">    return databasePlatform.convertQuotedIdentifiers(s);</a>
+<span class="sourceLineNo">274</span><a id="line.274">  }</a>
+<span class="sourceLineNo">275</span><a id="line.275"></a>
+<span class="sourceLineNo">276</span><a id="line.276">  /**</a>
+<span class="sourceLineNo">277</span><a id="line.277">   * Checks string is null or empty .</a>
+<span class="sourceLineNo">278</span><a id="line.278">   */</a>
+<span class="sourceLineNo">279</span><a id="line.279">  protected boolean isEmpty(String s) {</a>
+<span class="sourceLineNo">280</span><a id="line.280">    return s == null || s.trim().isEmpty();</a>
+<span class="sourceLineNo">281</span><a id="line.281">  }</a>
+<span class="sourceLineNo">282</span><a id="line.282"></a>
+<span class="sourceLineNo">283</span><a id="line.283">  /**</a>
+<span class="sourceLineNo">284</span><a id="line.284">   * Load settings from properties.</a>
+<span class="sourceLineNo">285</span><a id="line.285">   */</a>
+<span class="sourceLineNo">286</span><a id="line.286">  @Override</a>
+<span class="sourceLineNo">287</span><a id="line.287">  public void loadFromProperties(PropertiesWrapper properties) {</a>
+<span class="sourceLineNo">288</span><a id="line.288"></a>
+<span class="sourceLineNo">289</span><a id="line.289">    useForeignKeyPrefix = properties.getBoolean("namingConvention.useForeignKeyPrefix", useForeignKeyPrefix);</a>
+<span class="sourceLineNo">290</span><a id="line.290">    sequenceFormat = properties.get("namingConvention.sequenceFormat", sequenceFormat);</a>
+<span class="sourceLineNo">291</span><a id="line.291">    schema = properties.get("namingConvention.schema", schema);</a>
+<span class="sourceLineNo">292</span><a id="line.292">  }</a>
+<span class="sourceLineNo">293</span><a id="line.293"></a>
+<span class="sourceLineNo">294</span><a id="line.294">}</a>
 
 
 

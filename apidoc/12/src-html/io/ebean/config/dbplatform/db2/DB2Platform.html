@@ -51,22 +51,21 @@
 <span class="sourceLineNo">042</span><a id="line.42">    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("integer", false));</a>
 <span class="sourceLineNo">043</span><a id="line.43">    dbTypeMap.put(DbType.BIGINT, new DbPlatformType("bigint", false));</a>
 <span class="sourceLineNo">044</span><a id="line.44">    dbTypeMap.put(DbType.REAL, new DbPlatformType("real"));</a>
-<span class="sourceLineNo">045</span><a id="line.45">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("decimal", 15));</a>
-<span class="sourceLineNo">046</span><a id="line.46"></a>
-<span class="sourceLineNo">047</span><a id="line.47">    persistBatchOnCascade = PersistBatch.NONE;</a>
-<span class="sourceLineNo">048</span><a id="line.48">  }</a>
-<span class="sourceLineNo">049</span><a id="line.49"></a>
-<span class="sourceLineNo">050</span><a id="line.50">  /**</a>
-<span class="sourceLineNo">051</span><a id="line.51">   * Return a DB2 specific sequence IdGenerator that supports batch fetching</a>
-<span class="sourceLineNo">052</span><a id="line.52">   * sequence values.</a>
-<span class="sourceLineNo">053</span><a id="line.53">   */</a>
-<span class="sourceLineNo">054</span><a id="line.54">  @Override</a>
-<span class="sourceLineNo">055</span><a id="line.55">  public PlatformIdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, int stepSize, String seqName) {</a>
-<span class="sourceLineNo">056</span><a id="line.56"></a>
-<span class="sourceLineNo">057</span><a id="line.57">    return new DB2SequenceIdGenerator(be, ds, seqName, sequenceBatchSize);</a>
-<span class="sourceLineNo">058</span><a id="line.58">  }</a>
-<span class="sourceLineNo">059</span><a id="line.59"></a>
-<span class="sourceLineNo">060</span><a id="line.60">}</a>
+<span class="sourceLineNo">045</span><a id="line.45">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("decimal", 16, 3));</a>
+<span class="sourceLineNo">046</span><a id="line.46">    persistBatchOnCascade = PersistBatch.NONE;</a>
+<span class="sourceLineNo">047</span><a id="line.47">  }</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">  /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">   * Return a DB2 specific sequence IdGenerator that supports batch fetching</a>
+<span class="sourceLineNo">051</span><a id="line.51">   * sequence values.</a>
+<span class="sourceLineNo">052</span><a id="line.52">   */</a>
+<span class="sourceLineNo">053</span><a id="line.53">  @Override</a>
+<span class="sourceLineNo">054</span><a id="line.54">  public PlatformIdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, int stepSize, String seqName) {</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">    return new DB2SequenceIdGenerator(be, ds, seqName, sequenceBatchSize);</a>
+<span class="sourceLineNo">057</span><a id="line.57">  }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">}</a>
 
 
 

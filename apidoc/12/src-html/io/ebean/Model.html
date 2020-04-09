@@ -202,78 +202,113 @@
 <span class="sourceLineNo">193</span><a id="line.193">  }</a>
 <span class="sourceLineNo">194</span><a id="line.194"></a>
 <span class="sourceLineNo">195</span><a id="line.195">  /**</a>
-<span class="sourceLineNo">196</span><a id="line.196">   * Flush any batched changes to the database.</a>
-<span class="sourceLineNo">197</span><a id="line.197">   * &lt;p&gt;</a>
-<span class="sourceLineNo">198</span><a id="line.198">   * When using JDBC batch flushing occurs automatically at commit() time or when the batch size</a>
-<span class="sourceLineNo">199</span><a id="line.199">   * is reached. This provides the ability to manually flush the batch.</a>
-<span class="sourceLineNo">200</span><a id="line.200">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">201</span><a id="line.201">   */</a>
-<span class="sourceLineNo">202</span><a id="line.202">  public void flush() {</a>
-<span class="sourceLineNo">203</span><a id="line.203">    db().flush();</a>
-<span class="sourceLineNo">204</span><a id="line.204">  }</a>
-<span class="sourceLineNo">205</span><a id="line.205"></a>
-<span class="sourceLineNo">206</span><a id="line.206">  /**</a>
-<span class="sourceLineNo">207</span><a id="line.207">   * Update this entity.</a>
-<span class="sourceLineNo">208</span><a id="line.208">   *</a>
-<span class="sourceLineNo">209</span><a id="line.209">   * @see Database#update(Object)</a>
-<span class="sourceLineNo">210</span><a id="line.210">   */</a>
-<span class="sourceLineNo">211</span><a id="line.211">  public void update() {</a>
-<span class="sourceLineNo">212</span><a id="line.212">    db().update(this);</a>
-<span class="sourceLineNo">213</span><a id="line.213">  }</a>
-<span class="sourceLineNo">214</span><a id="line.214"></a>
-<span class="sourceLineNo">215</span><a id="line.215">  /**</a>
-<span class="sourceLineNo">216</span><a id="line.216">   * Insert this entity.</a>
-<span class="sourceLineNo">217</span><a id="line.217">   *</a>
-<span class="sourceLineNo">218</span><a id="line.218">   * @see Database#insert(Object)</a>
-<span class="sourceLineNo">219</span><a id="line.219">   */</a>
-<span class="sourceLineNo">220</span><a id="line.220">  public void insert() {</a>
-<span class="sourceLineNo">221</span><a id="line.221">    db().insert(this);</a>
-<span class="sourceLineNo">222</span><a id="line.222">  }</a>
-<span class="sourceLineNo">223</span><a id="line.223"></a>
-<span class="sourceLineNo">224</span><a id="line.224">  /**</a>
-<span class="sourceLineNo">225</span><a id="line.225">   * Delete this bean.</a>
-<span class="sourceLineNo">226</span><a id="line.226">   * &lt;p&gt;</a>
-<span class="sourceLineNo">227</span><a id="line.227">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
-<span class="sourceLineNo">228</span><a id="line.228">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">229</span><a id="line.229">   * &lt;p&gt;</a>
-<span class="sourceLineNo">230</span><a id="line.230">   * If there is no current transaction one will be created and committed for</a>
-<span class="sourceLineNo">231</span><a id="line.231">   * you automatically.</a>
-<span class="sourceLineNo">232</span><a id="line.232">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">233</span><a id="line.233">   * &lt;p&gt;</a>
-<span class="sourceLineNo">234</span><a id="line.234">   * If the Bean does not have a version property (or loaded version property) and</a>
-<span class="sourceLineNo">235</span><a id="line.235">   * the bean does not exist then this returns false indicating that nothing was</a>
-<span class="sourceLineNo">236</span><a id="line.236">   * deleted. Note that, if JDBC batch mode is used then this always returns true.</a>
-<span class="sourceLineNo">237</span><a id="line.237">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">238</span><a id="line.238">   *</a>
-<span class="sourceLineNo">239</span><a id="line.239">   * @see Database#delete(Object)</a>
+<span class="sourceLineNo">196</span><a id="line.196">   * Save this entity with an explicit transaction.</a>
+<span class="sourceLineNo">197</span><a id="line.197">   */</a>
+<span class="sourceLineNo">198</span><a id="line.198">  public void save(Transaction transaction) {</a>
+<span class="sourceLineNo">199</span><a id="line.199">    db().save(this, transaction);</a>
+<span class="sourceLineNo">200</span><a id="line.200">  }</a>
+<span class="sourceLineNo">201</span><a id="line.201"></a>
+<span class="sourceLineNo">202</span><a id="line.202">  /**</a>
+<span class="sourceLineNo">203</span><a id="line.203">   * Flush any batched changes to the database.</a>
+<span class="sourceLineNo">204</span><a id="line.204">   * &lt;p&gt;</a>
+<span class="sourceLineNo">205</span><a id="line.205">   * When using JDBC batch flushing occurs automatically at commit() time or when the batch size</a>
+<span class="sourceLineNo">206</span><a id="line.206">   * is reached. This provides the ability to manually flush the batch.</a>
+<span class="sourceLineNo">207</span><a id="line.207">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">208</span><a id="line.208">   */</a>
+<span class="sourceLineNo">209</span><a id="line.209">  public void flush() {</a>
+<span class="sourceLineNo">210</span><a id="line.210">    db().flush();</a>
+<span class="sourceLineNo">211</span><a id="line.211">  }</a>
+<span class="sourceLineNo">212</span><a id="line.212"></a>
+<span class="sourceLineNo">213</span><a id="line.213">  /**</a>
+<span class="sourceLineNo">214</span><a id="line.214">   * Update this entity.</a>
+<span class="sourceLineNo">215</span><a id="line.215">   *</a>
+<span class="sourceLineNo">216</span><a id="line.216">   * @see Database#update(Object)</a>
+<span class="sourceLineNo">217</span><a id="line.217">   */</a>
+<span class="sourceLineNo">218</span><a id="line.218">  public void update() {</a>
+<span class="sourceLineNo">219</span><a id="line.219">    db().update(this);</a>
+<span class="sourceLineNo">220</span><a id="line.220">  }</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">  /**</a>
+<span class="sourceLineNo">223</span><a id="line.223">   * Update this entity with an explicit transaction.</a>
+<span class="sourceLineNo">224</span><a id="line.224">   */</a>
+<span class="sourceLineNo">225</span><a id="line.225">  public void update(Transaction transaction) {</a>
+<span class="sourceLineNo">226</span><a id="line.226">    db().update(this, transaction);</a>
+<span class="sourceLineNo">227</span><a id="line.227">  }</a>
+<span class="sourceLineNo">228</span><a id="line.228"></a>
+<span class="sourceLineNo">229</span><a id="line.229">  /**</a>
+<span class="sourceLineNo">230</span><a id="line.230">   * Insert this entity.</a>
+<span class="sourceLineNo">231</span><a id="line.231">   *</a>
+<span class="sourceLineNo">232</span><a id="line.232">   * @see Database#insert(Object)</a>
+<span class="sourceLineNo">233</span><a id="line.233">   */</a>
+<span class="sourceLineNo">234</span><a id="line.234">  public void insert() {</a>
+<span class="sourceLineNo">235</span><a id="line.235">    db().insert(this);</a>
+<span class="sourceLineNo">236</span><a id="line.236">  }</a>
+<span class="sourceLineNo">237</span><a id="line.237"></a>
+<span class="sourceLineNo">238</span><a id="line.238">  /**</a>
+<span class="sourceLineNo">239</span><a id="line.239">   * Insert with an explicit transaction.</a>
 <span class="sourceLineNo">240</span><a id="line.240">   */</a>
-<span class="sourceLineNo">241</span><a id="line.241">  public boolean delete() {</a>
-<span class="sourceLineNo">242</span><a id="line.242">    return db().delete(this);</a>
+<span class="sourceLineNo">241</span><a id="line.241">  public void insert(Transaction transaction) {</a>
+<span class="sourceLineNo">242</span><a id="line.242">    db().insert(this, transaction);</a>
 <span class="sourceLineNo">243</span><a id="line.243">  }</a>
 <span class="sourceLineNo">244</span><a id="line.244"></a>
 <span class="sourceLineNo">245</span><a id="line.245">  /**</a>
-<span class="sourceLineNo">246</span><a id="line.246">   * Delete a bean permanently without soft delete.</a>
+<span class="sourceLineNo">246</span><a id="line.246">   * Delete this bean.</a>
 <span class="sourceLineNo">247</span><a id="line.247">   * &lt;p&gt;</a>
-<span class="sourceLineNo">248</span><a id="line.248">   * This is used when the bean contains a &lt;code&gt;@SoftDelete&lt;/code&gt; property and we</a>
-<span class="sourceLineNo">249</span><a id="line.249">   * want to perform a hard/permanent delete.</a>
-<span class="sourceLineNo">250</span><a id="line.250">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">251</span><a id="line.251">   *</a>
-<span class="sourceLineNo">252</span><a id="line.252">   * @see Database#deletePermanent(Object)</a>
-<span class="sourceLineNo">253</span><a id="line.253">   */</a>
-<span class="sourceLineNo">254</span><a id="line.254">  public boolean deletePermanent() {</a>
-<span class="sourceLineNo">255</span><a id="line.255">    return db().deletePermanent(this);</a>
-<span class="sourceLineNo">256</span><a id="line.256">  }</a>
-<span class="sourceLineNo">257</span><a id="line.257"></a>
-<span class="sourceLineNo">258</span><a id="line.258">  /**</a>
-<span class="sourceLineNo">259</span><a id="line.259">   * Refreshes this entity from the database.</a>
-<span class="sourceLineNo">260</span><a id="line.260">   *</a>
-<span class="sourceLineNo">261</span><a id="line.261">   * @see Database#refresh(Object)</a>
-<span class="sourceLineNo">262</span><a id="line.262">   */</a>
-<span class="sourceLineNo">263</span><a id="line.263">  public void refresh() {</a>
-<span class="sourceLineNo">264</span><a id="line.264">    db().refresh(this);</a>
-<span class="sourceLineNo">265</span><a id="line.265">  }</a>
-<span class="sourceLineNo">266</span><a id="line.266"></a>
-<span class="sourceLineNo">267</span><a id="line.267">}</a>
+<span class="sourceLineNo">248</span><a id="line.248">   * This will return true if the bean was deleted successfully or JDBC batch is being used.</a>
+<span class="sourceLineNo">249</span><a id="line.249">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">250</span><a id="line.250">   * &lt;p&gt;</a>
+<span class="sourceLineNo">251</span><a id="line.251">   * If there is no current transaction one will be created and committed for</a>
+<span class="sourceLineNo">252</span><a id="line.252">   * you automatically.</a>
+<span class="sourceLineNo">253</span><a id="line.253">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">254</span><a id="line.254">   * &lt;p&gt;</a>
+<span class="sourceLineNo">255</span><a id="line.255">   * If the Bean does not have a version property (or loaded version property) and</a>
+<span class="sourceLineNo">256</span><a id="line.256">   * the bean does not exist then this returns false indicating that nothing was</a>
+<span class="sourceLineNo">257</span><a id="line.257">   * deleted. Note that, if JDBC batch mode is used then this always returns true.</a>
+<span class="sourceLineNo">258</span><a id="line.258">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">259</span><a id="line.259">   *</a>
+<span class="sourceLineNo">260</span><a id="line.260">   * @see Database#delete(Object)</a>
+<span class="sourceLineNo">261</span><a id="line.261">   */</a>
+<span class="sourceLineNo">262</span><a id="line.262">  public boolean delete() {</a>
+<span class="sourceLineNo">263</span><a id="line.263">    return db().delete(this);</a>
+<span class="sourceLineNo">264</span><a id="line.264">  }</a>
+<span class="sourceLineNo">265</span><a id="line.265"></a>
+<span class="sourceLineNo">266</span><a id="line.266">  /**</a>
+<span class="sourceLineNo">267</span><a id="line.267">   * Delete this entity with an explicit transaction.</a>
+<span class="sourceLineNo">268</span><a id="line.268">   */</a>
+<span class="sourceLineNo">269</span><a id="line.269">  public boolean delete(Transaction transaction) {</a>
+<span class="sourceLineNo">270</span><a id="line.270">    return db().delete(this, transaction);</a>
+<span class="sourceLineNo">271</span><a id="line.271">  }</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">  /**</a>
+<span class="sourceLineNo">274</span><a id="line.274">   * Delete a bean permanently without soft delete.</a>
+<span class="sourceLineNo">275</span><a id="line.275">   * &lt;p&gt;</a>
+<span class="sourceLineNo">276</span><a id="line.276">   * This is used when the bean contains a &lt;code&gt;@SoftDelete&lt;/code&gt; property and we</a>
+<span class="sourceLineNo">277</span><a id="line.277">   * want to perform a hard/permanent delete.</a>
+<span class="sourceLineNo">278</span><a id="line.278">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">279</span><a id="line.279">   *</a>
+<span class="sourceLineNo">280</span><a id="line.280">   * @see Database#deletePermanent(Object)</a>
+<span class="sourceLineNo">281</span><a id="line.281">   */</a>
+<span class="sourceLineNo">282</span><a id="line.282">  public boolean deletePermanent() {</a>
+<span class="sourceLineNo">283</span><a id="line.283">    return db().deletePermanent(this);</a>
+<span class="sourceLineNo">284</span><a id="line.284">  }</a>
+<span class="sourceLineNo">285</span><a id="line.285"></a>
+<span class="sourceLineNo">286</span><a id="line.286">  /**</a>
+<span class="sourceLineNo">287</span><a id="line.287">   * Delete a bean permanently without soft delete using an explicit transaction.</a>
+<span class="sourceLineNo">288</span><a id="line.288">   */</a>
+<span class="sourceLineNo">289</span><a id="line.289">  public boolean deletePermanent(Transaction transaction) {</a>
+<span class="sourceLineNo">290</span><a id="line.290">    return db().deletePermanent(this, transaction);</a>
+<span class="sourceLineNo">291</span><a id="line.291">  }</a>
+<span class="sourceLineNo">292</span><a id="line.292"></a>
+<span class="sourceLineNo">293</span><a id="line.293">  /**</a>
+<span class="sourceLineNo">294</span><a id="line.294">   * Refreshes this entity from the database.</a>
+<span class="sourceLineNo">295</span><a id="line.295">   *</a>
+<span class="sourceLineNo">296</span><a id="line.296">   * @see Database#refresh(Object)</a>
+<span class="sourceLineNo">297</span><a id="line.297">   */</a>
+<span class="sourceLineNo">298</span><a id="line.298">  public void refresh() {</a>
+<span class="sourceLineNo">299</span><a id="line.299">    db().refresh(this);</a>
+<span class="sourceLineNo">300</span><a id="line.300">  }</a>
+<span class="sourceLineNo">301</span><a id="line.301"></a>
+<span class="sourceLineNo">302</span><a id="line.302">}</a>
 
 
 

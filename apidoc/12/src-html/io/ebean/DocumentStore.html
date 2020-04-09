@@ -70,7 +70,7 @@
 <span class="sourceLineNo">061</span><a id="line.61">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">062</span><a id="line.62">   *</a>
 <span class="sourceLineNo">063</span><a id="line.63">   * Customer customer =</a>
-<span class="sourceLineNo">064</span><a id="line.64">   *   server.find(Customer.class)</a>
+<span class="sourceLineNo">064</span><a id="line.64">   *   database.find(Customer.class)</a>
 <span class="sourceLineNo">065</span><a id="line.65">   *     .setUseDocStore(true)</a>
 <span class="sourceLineNo">066</span><a id="line.66">   *     .setId(42)</a>
 <span class="sourceLineNo">067</span><a id="line.67">   *     .findOne();</a>
@@ -88,7 +88,7 @@
 <span class="sourceLineNo">079</span><a id="line.79">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">080</span><a id="line.80">   *</a>
 <span class="sourceLineNo">081</span><a id="line.81">   * List&lt;Customer&gt; newCustomers =</a>
-<span class="sourceLineNo">082</span><a id="line.82">   *  server.find(Customer.class)</a>
+<span class="sourceLineNo">082</span><a id="line.82">   *  database.find(Customer.class)</a>
 <span class="sourceLineNo">083</span><a id="line.83">   *    .setUseDocStore(true)</a>
 <span class="sourceLineNo">084</span><a id="line.84">   *    .where().eq("status, Customer.Status.NEW)</a>
 <span class="sourceLineNo">085</span><a id="line.85">   *    .findList();</a>
@@ -108,7 +108,7 @@
 <span class="sourceLineNo">099</span><a id="line.99">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">100</span><a id="line.100">   *</a>
 <span class="sourceLineNo">101</span><a id="line.101">   * PagedList&lt;Customer&gt; newCustomers =</a>
-<span class="sourceLineNo">102</span><a id="line.102">   *  server.find(Customer.class)</a>
+<span class="sourceLineNo">102</span><a id="line.102">   *  database.find(Customer.class)</a>
 <span class="sourceLineNo">103</span><a id="line.103">   *    .setUseDocStore(true)</a>
 <span class="sourceLineNo">104</span><a id="line.104">   *    .where().eq("status, Customer.Status.NEW)</a>
 <span class="sourceLineNo">105</span><a id="line.105">   *    .setMaxRows(50)</a>
@@ -129,7 +129,7 @@
 <span class="sourceLineNo">120</span><a id="line.120">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">121</span><a id="line.121">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">122</span><a id="line.122">   *</a>
-<span class="sourceLineNo">123</span><a id="line.123">   *  server.find(Order.class)</a>
+<span class="sourceLineNo">123</span><a id="line.123">   *  database.find(Order.class)</a>
 <span class="sourceLineNo">124</span><a id="line.124">   *    .setUseDocStore(true)</a>
 <span class="sourceLineNo">125</span><a id="line.125">   *    .where()... // perhaps add predicates</a>
 <span class="sourceLineNo">126</span><a id="line.126">   *    .findEach((Order order) -&gt; {</a>
@@ -154,7 +154,7 @@
 <span class="sourceLineNo">145</span><a id="line.145">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">146</span><a id="line.146">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">147</span><a id="line.147">   *</a>
-<span class="sourceLineNo">148</span><a id="line.148">   *  server.find(Order.class)</a>
+<span class="sourceLineNo">148</span><a id="line.148">   *  database.find(Order.class)</a>
 <span class="sourceLineNo">149</span><a id="line.149">   *    .setUseDocStore(true)</a>
 <span class="sourceLineNo">150</span><a id="line.150">   *    .where()... // perhaps add predicates</a>
 <span class="sourceLineNo">151</span><a id="line.151">   *    .findEachWhile(new Predicate&lt;Order&gt;() {</a>
@@ -199,7 +199,7 @@
 <span class="sourceLineNo">190</span><a id="line.190">   * Drop the index from the document store (similar to DDL drop table).</a>
 <span class="sourceLineNo">191</span><a id="line.191">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">192</span><a id="line.192">   *</a>
-<span class="sourceLineNo">193</span><a id="line.193">   *   DocumentStore documentStore = server.docStore();</a>
+<span class="sourceLineNo">193</span><a id="line.193">   *   DocumentStore documentStore = database.docStore();</a>
 <span class="sourceLineNo">194</span><a id="line.194">   *</a>
 <span class="sourceLineNo">195</span><a id="line.195">   *   documentStore.dropIndex("product_copy");</a>
 <span class="sourceLineNo">196</span><a id="line.196">   *</a>
@@ -211,7 +211,7 @@
 <span class="sourceLineNo">202</span><a id="line.202">   * Create an index given a mapping file as a resource in the classPath (similar to DDL create table).</a>
 <span class="sourceLineNo">203</span><a id="line.203">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">204</span><a id="line.204">   *</a>
-<span class="sourceLineNo">205</span><a id="line.205">   *   DocumentStore documentStore = server.docStore();</a>
+<span class="sourceLineNo">205</span><a id="line.205">   *   DocumentStore documentStore = database.docStore();</a>
 <span class="sourceLineNo">206</span><a id="line.206">   *</a>
 <span class="sourceLineNo">207</span><a id="line.207">   *   // uses product_copy.mapping.json resource</a>
 <span class="sourceLineNo">208</span><a id="line.208">   *   // ... to define mappings for the index</a>
@@ -298,7 +298,7 @@
 <span class="sourceLineNo">289</span><a id="line.289">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">290</span><a id="line.290">   *</a>
 <span class="sourceLineNo">291</span><a id="line.291">   *  // predicates to select the source documents to copy</a>
-<span class="sourceLineNo">292</span><a id="line.292">   *  Query&lt;Product&gt; query = server.find(Product.class)</a>
+<span class="sourceLineNo">292</span><a id="line.292">   *  Query&lt;Product&gt; query = database.find(Product.class)</a>
 <span class="sourceLineNo">293</span><a id="line.293">   *    .where()</a>
 <span class="sourceLineNo">294</span><a id="line.294">   *      .ge("whenModified", new Timestamp(since))</a>
 <span class="sourceLineNo">295</span><a id="line.295">   *      .ge("name", "A")</a>

@@ -26,82 +26,81 @@
 <span class="sourceLineNo">017</span><a id="line.17">    this.sqlLimiter = new HanaSqlLimiter();</a>
 <span class="sourceLineNo">018</span><a id="line.18">    this.persistBatchOnCascade = PersistBatch.NONE;</a>
 <span class="sourceLineNo">019</span><a id="line.19">    this.supportsResultSetConcurrencyModeUpdatable = false;</a>
-<span class="sourceLineNo">020</span><a id="line.20">    this.columnAliasPrefix = null;</a>
-<span class="sourceLineNo">021</span><a id="line.21">    this.historySupport = new HanaHistorySupport();</a>
-<span class="sourceLineNo">022</span><a id="line.22">    this.basicSqlLimiter = new HanaBasicSqlLimiter();</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">    this.likeClauseRaw = "like ?";</a>
-<span class="sourceLineNo">025</span><a id="line.25">    this.maxConstraintNameLength = 127;</a>
-<span class="sourceLineNo">026</span><a id="line.26">    this.maxTableNameLength = 127;</a>
-<span class="sourceLineNo">027</span><a id="line.27"></a>
-<span class="sourceLineNo">028</span><a id="line.28">    this.dbDefaultValue.setNow("current_timestamp");</a>
-<span class="sourceLineNo">029</span><a id="line.29"></a>
-<span class="sourceLineNo">030</span><a id="line.30">    this.exceptionTranslator = new SqlErrorCodes().addAcquireLock("131", "133", "146")</a>
-<span class="sourceLineNo">031</span><a id="line.31">      .addDataIntegrity("130", "429", "461", "462").addDuplicateKey("144", "301", "349").build();</a>
-<span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
-<span class="sourceLineNo">034</span><a id="line.34">    this.dbIdentity.setSelectLastInsertedIdTemplate("select current_identity_value() from sys.dummy");</a>
-<span class="sourceLineNo">035</span><a id="line.35">    this.dbIdentity.setSupportsGetGeneratedKeys(false);</a>
-<span class="sourceLineNo">036</span><a id="line.36">    this.dbIdentity.setSupportsIdentity(true);</a>
-<span class="sourceLineNo">037</span><a id="line.37"></a>
-<span class="sourceLineNo">038</span><a id="line.38">    this.dbTypeMap.put(DbType.BIGINT, new DbPlatformType("bigint", false));</a>
-<span class="sourceLineNo">039</span><a id="line.39">    this.dbTypeMap.put(DbType.BINARY, new DbPlatformType("varbinary", 255));</a>
-<span class="sourceLineNo">040</span><a id="line.40">    this.dbTypeMap.put(DbType.BIT, new DbPlatformType("smallint", false));</a>
-<span class="sourceLineNo">041</span><a id="line.41">    this.dbTypeMap.put(DbType.BLOB, new DbPlatformType("blob", false));</a>
-<span class="sourceLineNo">042</span><a id="line.42">    this.dbTypeMap.put(DbType.CHAR, new DbPlatformType("nvarchar", 255));</a>
-<span class="sourceLineNo">043</span><a id="line.43">    this.dbTypeMap.put(DbType.CLOB, new DbPlatformType("nclob", false));</a>
-<span class="sourceLineNo">044</span><a id="line.44">    this.dbTypeMap.put(DbType.INTEGER, new DbPlatformType("integer", false));</a>
-<span class="sourceLineNo">045</span><a id="line.45">    this.dbTypeMap.put(DbType.JSONVARCHAR, new DbPlatformType("nvarchar", 255));</a>
-<span class="sourceLineNo">046</span><a id="line.46">    this.dbTypeMap.put(DbType.LINESTRING, new DbPlatformType("st_geometry"));</a>
-<span class="sourceLineNo">047</span><a id="line.47">    this.dbTypeMap.put(DbType.LONGVARBINARY, new DbPlatformType("blob", false));</a>
-<span class="sourceLineNo">048</span><a id="line.48">    this.dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("nclob", false));</a>
-<span class="sourceLineNo">049</span><a id="line.49">    this.dbTypeMap.put(DbType.MULTILINESTRING, new DbPlatformType("st_geometry"));</a>
-<span class="sourceLineNo">050</span><a id="line.50">    this.dbTypeMap.put(DbType.MULTIPOINT, new DbPlatformType("st_geometry"));</a>
-<span class="sourceLineNo">051</span><a id="line.51">    this.dbTypeMap.put(DbType.MULTIPOLYGON, new DbPlatformType("st_geometry"));</a>
-<span class="sourceLineNo">052</span><a id="line.52">    this.dbTypeMap.put(DbType.POINT, new DbPlatformType("st_point"));</a>
-<span class="sourceLineNo">053</span><a id="line.53">    this.dbTypeMap.put(DbType.POLYGON, new DbPlatformType("st_geometry"));</a>
-<span class="sourceLineNo">054</span><a id="line.54">    this.dbTypeMap.put(DbType.SMALLINT, new DbPlatformType("smallint", false));</a>
-<span class="sourceLineNo">055</span><a id="line.55">    this.dbTypeMap.put(DbType.TINYINT, new DbPlatformType("smallint", false));</a>
-<span class="sourceLineNo">056</span><a id="line.56">    this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varchar", 40));</a>
-<span class="sourceLineNo">057</span><a id="line.57">    this.dbTypeMap.put(DbType.VARBINARY, new DbPlatformType("varbinary", 255));</a>
-<span class="sourceLineNo">058</span><a id="line.58">    this.dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("nvarchar", 255));</a>
-<span class="sourceLineNo">059</span><a id="line.59">  }</a>
-<span class="sourceLineNo">060</span><a id="line.60"></a>
-<span class="sourceLineNo">061</span><a id="line.61">  @Override</a>
-<span class="sourceLineNo">062</span><a id="line.62">  protected void addGeoTypes(int srid) {</a>
-<span class="sourceLineNo">063</span><a id="line.63">    this.dbTypeMap.put(DbType.LINESTRING, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
-<span class="sourceLineNo">064</span><a id="line.64">    this.dbTypeMap.put(DbType.MULTILINESTRING, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
-<span class="sourceLineNo">065</span><a id="line.65">    this.dbTypeMap.put(DbType.MULTIPOINT, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
-<span class="sourceLineNo">066</span><a id="line.66">    this.dbTypeMap.put(DbType.MULTIPOLYGON, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
-<span class="sourceLineNo">067</span><a id="line.67">    this.dbTypeMap.put(DbType.POINT, new DbPlatformType("st_point(" + srid + ")", false));</a>
-<span class="sourceLineNo">068</span><a id="line.68">    this.dbTypeMap.put(DbType.POLYGON, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
-<span class="sourceLineNo">069</span><a id="line.69">  }</a>
-<span class="sourceLineNo">070</span><a id="line.70"></a>
-<span class="sourceLineNo">071</span><a id="line.71">  @Override</a>
-<span class="sourceLineNo">072</span><a id="line.72">  protected String withForUpdate(String sql, ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">073</span><a id="line.73">    switch (forUpdateMode) {</a>
-<span class="sourceLineNo">074</span><a id="line.74">      case BASE:</a>
-<span class="sourceLineNo">075</span><a id="line.75">        return sql + " for update";</a>
-<span class="sourceLineNo">076</span><a id="line.76">      case NOWAIT:</a>
-<span class="sourceLineNo">077</span><a id="line.77">        return sql + " for update nowait";</a>
-<span class="sourceLineNo">078</span><a id="line.78">      case SKIPLOCKED:</a>
-<span class="sourceLineNo">079</span><a id="line.79">        return sql + " for update ignore locked";</a>
-<span class="sourceLineNo">080</span><a id="line.80">      default:</a>
-<span class="sourceLineNo">081</span><a id="line.81">        throw new IllegalArgumentException("Unknown update mode: " + forUpdateMode.name());</a>
-<span class="sourceLineNo">082</span><a id="line.82">    }</a>
-<span class="sourceLineNo">083</span><a id="line.83">  }</a>
-<span class="sourceLineNo">084</span><a id="line.84"></a>
-<span class="sourceLineNo">085</span><a id="line.85">  @Override</a>
-<span class="sourceLineNo">086</span><a id="line.86">  protected void configure(PlatformConfig config, boolean allQuotedIdentifiers) {</a>
-<span class="sourceLineNo">087</span><a id="line.87">    super.configure(config, allQuotedIdentifiers);</a>
-<span class="sourceLineNo">088</span><a id="line.88">    if (config.getDbUuid().useBinary()) {</a>
-<span class="sourceLineNo">089</span><a id="line.89">      this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varbinary", 16));</a>
-<span class="sourceLineNo">090</span><a id="line.90">    } else {</a>
-<span class="sourceLineNo">091</span><a id="line.91">      this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varchar", 40));</a>
-<span class="sourceLineNo">092</span><a id="line.92">    }</a>
-<span class="sourceLineNo">093</span><a id="line.93">  }</a>
-<span class="sourceLineNo">094</span><a id="line.94"></a>
-<span class="sourceLineNo">095</span><a id="line.95">}</a>
+<span class="sourceLineNo">020</span><a id="line.20">    this.historySupport = new HanaHistorySupport();</a>
+<span class="sourceLineNo">021</span><a id="line.21">    this.basicSqlLimiter = new HanaBasicSqlLimiter();</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">    this.likeClauseRaw = "like ?";</a>
+<span class="sourceLineNo">024</span><a id="line.24">    this.maxConstraintNameLength = 127;</a>
+<span class="sourceLineNo">025</span><a id="line.25">    this.maxTableNameLength = 127;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    this.dbDefaultValue.setNow("current_timestamp");</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">    this.exceptionTranslator = new SqlErrorCodes().addAcquireLock("131", "133", "146")</a>
+<span class="sourceLineNo">030</span><a id="line.30">      .addDataIntegrity("130", "429", "461", "462").addDuplicateKey("144", "301", "349").build();</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
+<span class="sourceLineNo">033</span><a id="line.33">    this.dbIdentity.setSelectLastInsertedIdTemplate("select current_identity_value() from sys.dummy");</a>
+<span class="sourceLineNo">034</span><a id="line.34">    this.dbIdentity.setSupportsGetGeneratedKeys(false);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    this.dbIdentity.setSupportsIdentity(true);</a>
+<span class="sourceLineNo">036</span><a id="line.36"></a>
+<span class="sourceLineNo">037</span><a id="line.37">    this.dbTypeMap.put(DbType.BIGINT, new DbPlatformType("bigint", false));</a>
+<span class="sourceLineNo">038</span><a id="line.38">    this.dbTypeMap.put(DbType.BINARY, new DbPlatformType("varbinary", 255));</a>
+<span class="sourceLineNo">039</span><a id="line.39">    this.dbTypeMap.put(DbType.BIT, new DbPlatformType("smallint", false));</a>
+<span class="sourceLineNo">040</span><a id="line.40">    this.dbTypeMap.put(DbType.BLOB, new DbPlatformType("blob", false));</a>
+<span class="sourceLineNo">041</span><a id="line.41">    this.dbTypeMap.put(DbType.CHAR, new DbPlatformType("nvarchar", 255));</a>
+<span class="sourceLineNo">042</span><a id="line.42">    this.dbTypeMap.put(DbType.CLOB, new DbPlatformType("nclob", false));</a>
+<span class="sourceLineNo">043</span><a id="line.43">    this.dbTypeMap.put(DbType.INTEGER, new DbPlatformType("integer", false));</a>
+<span class="sourceLineNo">044</span><a id="line.44">    this.dbTypeMap.put(DbType.JSONVARCHAR, new DbPlatformType("nvarchar", 255));</a>
+<span class="sourceLineNo">045</span><a id="line.45">    this.dbTypeMap.put(DbType.LINESTRING, new DbPlatformType("st_geometry"));</a>
+<span class="sourceLineNo">046</span><a id="line.46">    this.dbTypeMap.put(DbType.LONGVARBINARY, new DbPlatformType("blob", false));</a>
+<span class="sourceLineNo">047</span><a id="line.47">    this.dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("nclob", false));</a>
+<span class="sourceLineNo">048</span><a id="line.48">    this.dbTypeMap.put(DbType.MULTILINESTRING, new DbPlatformType("st_geometry"));</a>
+<span class="sourceLineNo">049</span><a id="line.49">    this.dbTypeMap.put(DbType.MULTIPOINT, new DbPlatformType("st_geometry"));</a>
+<span class="sourceLineNo">050</span><a id="line.50">    this.dbTypeMap.put(DbType.MULTIPOLYGON, new DbPlatformType("st_geometry"));</a>
+<span class="sourceLineNo">051</span><a id="line.51">    this.dbTypeMap.put(DbType.POINT, new DbPlatformType("st_point"));</a>
+<span class="sourceLineNo">052</span><a id="line.52">    this.dbTypeMap.put(DbType.POLYGON, new DbPlatformType("st_geometry"));</a>
+<span class="sourceLineNo">053</span><a id="line.53">    this.dbTypeMap.put(DbType.SMALLINT, new DbPlatformType("smallint", false));</a>
+<span class="sourceLineNo">054</span><a id="line.54">    this.dbTypeMap.put(DbType.TINYINT, new DbPlatformType("smallint", false));</a>
+<span class="sourceLineNo">055</span><a id="line.55">    this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varchar", 40));</a>
+<span class="sourceLineNo">056</span><a id="line.56">    this.dbTypeMap.put(DbType.VARBINARY, new DbPlatformType("varbinary", 255));</a>
+<span class="sourceLineNo">057</span><a id="line.57">    this.dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("nvarchar", 255));</a>
+<span class="sourceLineNo">058</span><a id="line.58">  }</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">  @Override</a>
+<span class="sourceLineNo">061</span><a id="line.61">  protected void addGeoTypes(int srid) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">    this.dbTypeMap.put(DbType.LINESTRING, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
+<span class="sourceLineNo">063</span><a id="line.63">    this.dbTypeMap.put(DbType.MULTILINESTRING, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
+<span class="sourceLineNo">064</span><a id="line.64">    this.dbTypeMap.put(DbType.MULTIPOINT, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
+<span class="sourceLineNo">065</span><a id="line.65">    this.dbTypeMap.put(DbType.MULTIPOLYGON, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
+<span class="sourceLineNo">066</span><a id="line.66">    this.dbTypeMap.put(DbType.POINT, new DbPlatformType("st_point(" + srid + ")", false));</a>
+<span class="sourceLineNo">067</span><a id="line.67">    this.dbTypeMap.put(DbType.POLYGON, new DbPlatformType("st_geometry(" + srid + ")", false));</a>
+<span class="sourceLineNo">068</span><a id="line.68">  }</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">  @Override</a>
+<span class="sourceLineNo">071</span><a id="line.71">  protected String withForUpdate(String sql, ForUpdate forUpdateMode) {</a>
+<span class="sourceLineNo">072</span><a id="line.72">    switch (forUpdateMode) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">      case BASE:</a>
+<span class="sourceLineNo">074</span><a id="line.74">        return sql + " for update";</a>
+<span class="sourceLineNo">075</span><a id="line.75">      case NOWAIT:</a>
+<span class="sourceLineNo">076</span><a id="line.76">        return sql + " for update nowait";</a>
+<span class="sourceLineNo">077</span><a id="line.77">      case SKIPLOCKED:</a>
+<span class="sourceLineNo">078</span><a id="line.78">        return sql + " for update ignore locked";</a>
+<span class="sourceLineNo">079</span><a id="line.79">      default:</a>
+<span class="sourceLineNo">080</span><a id="line.80">        throw new IllegalArgumentException("Unknown update mode: " + forUpdateMode.name());</a>
+<span class="sourceLineNo">081</span><a id="line.81">    }</a>
+<span class="sourceLineNo">082</span><a id="line.82">  }</a>
+<span class="sourceLineNo">083</span><a id="line.83"></a>
+<span class="sourceLineNo">084</span><a id="line.84">  @Override</a>
+<span class="sourceLineNo">085</span><a id="line.85">  protected void configure(PlatformConfig config, boolean allQuotedIdentifiers) {</a>
+<span class="sourceLineNo">086</span><a id="line.86">    super.configure(config, allQuotedIdentifiers);</a>
+<span class="sourceLineNo">087</span><a id="line.87">    if (config.getDbUuid().useBinary()) {</a>
+<span class="sourceLineNo">088</span><a id="line.88">      this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varbinary", 16));</a>
+<span class="sourceLineNo">089</span><a id="line.89">    } else {</a>
+<span class="sourceLineNo">090</span><a id="line.90">      this.dbTypeMap.put(DbType.UUID, new DbPlatformType("varchar", 40));</a>
+<span class="sourceLineNo">091</span><a id="line.91">    }</a>
+<span class="sourceLineNo">092</span><a id="line.92">  }</a>
+<span class="sourceLineNo">093</span><a id="line.93"></a>
+<span class="sourceLineNo">094</span><a id="line.94">}</a>
 
 
 

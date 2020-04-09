@@ -41,16 +41,15 @@
 <span class="sourceLineNo">032</span><a id="line.32">    dbTypeMap.put(DbType.REAL, new DbPlatformType("float(16)"));</a>
 <span class="sourceLineNo">033</span><a id="line.33">    dbTypeMap.put(DbType.DOUBLE, new DbPlatformType("float(32)"));</a>
 <span class="sourceLineNo">034</span><a id="line.34">    dbTypeMap.put(DbType.TINYINT, new DbPlatformType("smallint"));</a>
-<span class="sourceLineNo">035</span><a id="line.35">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("numeric", 28));</a>
-<span class="sourceLineNo">036</span><a id="line.36"></a>
-<span class="sourceLineNo">037</span><a id="line.37">    dbTypeMap.put(DbType.BLOB, new DbPlatformType("binary(4500)"));</a>
-<span class="sourceLineNo">038</span><a id="line.38">    dbTypeMap.put(DbType.CLOB, new DbPlatformType("long varchar"));</a>
-<span class="sourceLineNo">039</span><a id="line.39">    dbTypeMap.put(DbType.LONGVARBINARY, new DbPlatformType("long binary"));</a>
-<span class="sourceLineNo">040</span><a id="line.40">    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("long varchar"));</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">  }</a>
-<span class="sourceLineNo">043</span><a id="line.43"></a>
-<span class="sourceLineNo">044</span><a id="line.44">}</a>
+<span class="sourceLineNo">035</span><a id="line.35">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("numeric", 16, 3));</a>
+<span class="sourceLineNo">036</span><a id="line.36">    dbTypeMap.put(DbType.BLOB, new DbPlatformType("binary(4500)"));</a>
+<span class="sourceLineNo">037</span><a id="line.37">    dbTypeMap.put(DbType.CLOB, new DbPlatformType("long varchar"));</a>
+<span class="sourceLineNo">038</span><a id="line.38">    dbTypeMap.put(DbType.LONGVARBINARY, new DbPlatformType("long binary"));</a>
+<span class="sourceLineNo">039</span><a id="line.39">    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("long varchar"));</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">  }</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">}</a>
 
 
 

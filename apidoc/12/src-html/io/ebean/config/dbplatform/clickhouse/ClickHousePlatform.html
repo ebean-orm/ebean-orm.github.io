@@ -25,46 +25,44 @@
 <span class="sourceLineNo">016</span><a id="line.16">    //this.dbEncrypt =</a>
 <span class="sourceLineNo">017</span><a id="line.17">    //this.historySupport =</a>
 <span class="sourceLineNo">018</span><a id="line.18">    //this.exceptionTranslator =</a>
-<span class="sourceLineNo">019</span><a id="line.19"></a>
-<span class="sourceLineNo">020</span><a id="line.20">    this.nativeUuidType = true;</a>
-<span class="sourceLineNo">021</span><a id="line.21">    this.dbDefaultValue.setNow("now()");</a>
-<span class="sourceLineNo">022</span><a id="line.22">    this.columnAliasPrefix = null;</a>
-<span class="sourceLineNo">023</span><a id="line.23"></a>
-<span class="sourceLineNo">024</span><a id="line.24">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
-<span class="sourceLineNo">025</span><a id="line.25">    this.dbIdentity.setSupportsGetGeneratedKeys(false);</a>
-<span class="sourceLineNo">026</span><a id="line.26">    this.dbIdentity.setSupportsSequence(false);</a>
-<span class="sourceLineNo">027</span><a id="line.27">    this.dbIdentity.setSupportsIdentity(true);</a>
-<span class="sourceLineNo">028</span><a id="line.28"></a>
-<span class="sourceLineNo">029</span><a id="line.29">    this.booleanDbType = Types.INTEGER;</a>
-<span class="sourceLineNo">030</span><a id="line.30">    dbTypeMap.put(DbType.BOOLEAN, new DbPlatformType("UInt8"));</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">    // using unsigned as default types ...</a>
-<span class="sourceLineNo">033</span><a id="line.33">    dbTypeMap.put(DbType.TINYINT, new DbPlatformType("UInt8", false));</a>
-<span class="sourceLineNo">034</span><a id="line.34">    dbTypeMap.put(DbType.SMALLINT, new DbPlatformType("UInt16", false));</a>
-<span class="sourceLineNo">035</span><a id="line.35">    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("UInt32", false));</a>
-<span class="sourceLineNo">036</span><a id="line.36">    dbTypeMap.put(DbType.BIGINT, new DbPlatformType("UInt64", false));</a>
-<span class="sourceLineNo">037</span><a id="line.37">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("Decimal", 16,4));</a>
-<span class="sourceLineNo">038</span><a id="line.38">    dbTypeMap.put(DbType.DOUBLE, new DbPlatformType("Float64", false));</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">    dbTypeMap.put(DbType.DATE, new DbPlatformType("Date", false));</a>
-<span class="sourceLineNo">041</span><a id="line.41">    dbTypeMap.put(DbType.TIMESTAMP, new DbPlatformType("DateTime", false));</a>
-<span class="sourceLineNo">042</span><a id="line.42"></a>
-<span class="sourceLineNo">043</span><a id="line.43">    dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">044</span><a id="line.44">    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">045</span><a id="line.45">    dbTypeMap.put(DbType.CLOB, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">046</span><a id="line.46">    dbTypeMap.put(DbType.JSONVARCHAR, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">047</span><a id="line.47"></a>
-<span class="sourceLineNo">048</span><a id="line.48">    dbTypeMap.put(DbType.UUID, new DbPlatformType("UUID", false));</a>
-<span class="sourceLineNo">049</span><a id="line.49">    dbTypeMap.put(DbType.INET, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">050</span><a id="line.50">    dbTypeMap.put(DbType.CIDR, new DbPlatformType("String", false));</a>
-<span class="sourceLineNo">051</span><a id="line.51">  }</a>
-<span class="sourceLineNo">052</span><a id="line.52"></a>
-<span class="sourceLineNo">053</span><a id="line.53">  @Override</a>
-<span class="sourceLineNo">054</span><a id="line.54">  public boolean isNativeArrayType() {</a>
-<span class="sourceLineNo">055</span><a id="line.55">    return true;</a>
-<span class="sourceLineNo">056</span><a id="line.56">  }</a>
-<span class="sourceLineNo">057</span><a id="line.57"></a>
-<span class="sourceLineNo">058</span><a id="line.58">}</a>
+<span class="sourceLineNo">019</span><a id="line.19">    this.nativeUuidType = true;</a>
+<span class="sourceLineNo">020</span><a id="line.20">    this.dbDefaultValue.setNow("now()");</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
+<span class="sourceLineNo">023</span><a id="line.23">    this.dbIdentity.setSupportsGetGeneratedKeys(false);</a>
+<span class="sourceLineNo">024</span><a id="line.24">    this.dbIdentity.setSupportsSequence(false);</a>
+<span class="sourceLineNo">025</span><a id="line.25">    this.dbIdentity.setSupportsIdentity(true);</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">    this.booleanDbType = Types.INTEGER;</a>
+<span class="sourceLineNo">028</span><a id="line.28">    dbTypeMap.put(DbType.BOOLEAN, new DbPlatformType("UInt8"));</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">    // using unsigned as default types ...</a>
+<span class="sourceLineNo">031</span><a id="line.31">    dbTypeMap.put(DbType.TINYINT, new DbPlatformType("UInt8", false));</a>
+<span class="sourceLineNo">032</span><a id="line.32">    dbTypeMap.put(DbType.SMALLINT, new DbPlatformType("UInt16", false));</a>
+<span class="sourceLineNo">033</span><a id="line.33">    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("UInt32", false));</a>
+<span class="sourceLineNo">034</span><a id="line.34">    dbTypeMap.put(DbType.BIGINT, new DbPlatformType("UInt64", false));</a>
+<span class="sourceLineNo">035</span><a id="line.35">    dbTypeMap.put(DbType.DECIMAL, new DbPlatformType("Decimal", 16, 3));</a>
+<span class="sourceLineNo">036</span><a id="line.36">    dbTypeMap.put(DbType.DOUBLE, new DbPlatformType("Float64", false));</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">    dbTypeMap.put(DbType.DATE, new DbPlatformType("Date", false));</a>
+<span class="sourceLineNo">039</span><a id="line.39">    dbTypeMap.put(DbType.TIMESTAMP, new DbPlatformType("DateTime", false));</a>
+<span class="sourceLineNo">040</span><a id="line.40"></a>
+<span class="sourceLineNo">041</span><a id="line.41">    dbTypeMap.put(DbType.VARCHAR, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">042</span><a id="line.42">    dbTypeMap.put(DbType.LONGVARCHAR, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">043</span><a id="line.43">    dbTypeMap.put(DbType.CLOB, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">044</span><a id="line.44">    dbTypeMap.put(DbType.JSONVARCHAR, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">045</span><a id="line.45"></a>
+<span class="sourceLineNo">046</span><a id="line.46">    dbTypeMap.put(DbType.UUID, new DbPlatformType("UUID", false));</a>
+<span class="sourceLineNo">047</span><a id="line.47">    dbTypeMap.put(DbType.INET, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">048</span><a id="line.48">    dbTypeMap.put(DbType.CIDR, new DbPlatformType("String", false));</a>
+<span class="sourceLineNo">049</span><a id="line.49">  }</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">  @Override</a>
+<span class="sourceLineNo">052</span><a id="line.52">  public boolean isNativeArrayType() {</a>
+<span class="sourceLineNo">053</span><a id="line.53">    return true;</a>
+<span class="sourceLineNo">054</span><a id="line.54">  }</a>
+<span class="sourceLineNo">055</span><a id="line.55"></a>
+<span class="sourceLineNo">056</span><a id="line.56">}</a>
 
 
 

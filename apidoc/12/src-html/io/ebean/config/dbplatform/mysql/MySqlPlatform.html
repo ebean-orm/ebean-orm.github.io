@@ -40,51 +40,50 @@
 <span class="sourceLineNo">031</span><a id="line.31">    this.inlineSqlUpdateLimit = true;</a>
 <span class="sourceLineNo">032</span><a id="line.32">    this.dbEncrypt = new MySqlDbEncrypt();</a>
 <span class="sourceLineNo">033</span><a id="line.33">    this.historySupport = new MySqlHistorySupport();</a>
-<span class="sourceLineNo">034</span><a id="line.34">    this.columnAliasPrefix = null;</a>
-<span class="sourceLineNo">035</span><a id="line.35">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
-<span class="sourceLineNo">036</span><a id="line.36">    this.dbIdentity.setSupportsGetGeneratedKeys(true);</a>
-<span class="sourceLineNo">037</span><a id="line.37">    this.dbIdentity.setSupportsIdentity(true);</a>
-<span class="sourceLineNo">038</span><a id="line.38">    this.dbIdentity.setSupportsSequence(false);</a>
-<span class="sourceLineNo">039</span><a id="line.39"></a>
-<span class="sourceLineNo">040</span><a id="line.40">    this.dbDefaultValue.setNow("now(6)"); // must have same precision as TIMESTAMP</a>
-<span class="sourceLineNo">041</span><a id="line.41">    this.dbDefaultValue.setFalse("0");</a>
-<span class="sourceLineNo">042</span><a id="line.42">    this.dbDefaultValue.setTrue("1");</a>
+<span class="sourceLineNo">034</span><a id="line.34">    this.dbIdentity.setIdType(IdType.IDENTITY);</a>
+<span class="sourceLineNo">035</span><a id="line.35">    this.dbIdentity.setSupportsGetGeneratedKeys(true);</a>
+<span class="sourceLineNo">036</span><a id="line.36">    this.dbIdentity.setSupportsIdentity(true);</a>
+<span class="sourceLineNo">037</span><a id="line.37">    this.dbIdentity.setSupportsSequence(false);</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">    this.dbDefaultValue.setNow("now(6)"); // must have same precision as TIMESTAMP</a>
+<span class="sourceLineNo">040</span><a id="line.40">    this.dbDefaultValue.setFalse("0");</a>
+<span class="sourceLineNo">041</span><a id="line.41">    this.dbDefaultValue.setTrue("1");</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
 <span class="sourceLineNo">043</span><a id="line.43"></a>
-<span class="sourceLineNo">044</span><a id="line.44"></a>
-<span class="sourceLineNo">045</span><a id="line.45">    this.exceptionTranslator =</a>
-<span class="sourceLineNo">046</span><a id="line.46">      new SqlErrorCodes()</a>
-<span class="sourceLineNo">047</span><a id="line.47">        .addAcquireLock("1205")</a>
-<span class="sourceLineNo">048</span><a id="line.48">        .addDuplicateKey("1062", "1169")</a>
-<span class="sourceLineNo">049</span><a id="line.49">        .addDataIntegrity("630", "839", "840", "893", "1215", "1216", "1217", "1364", "1451", "1452", "1557")</a>
-<span class="sourceLineNo">050</span><a id="line.50">        .build();</a>
-<span class="sourceLineNo">051</span><a id="line.51"></a>
-<span class="sourceLineNo">052</span><a id="line.52">    this.openQuote = "`";</a>
-<span class="sourceLineNo">053</span><a id="line.53">    this.closeQuote = "`";</a>
-<span class="sourceLineNo">054</span><a id="line.54">    // use pipe for escaping as it depends if mysql runs in no_backslash_escapes or not.</a>
-<span class="sourceLineNo">055</span><a id="line.55">    this.likeClauseRaw = "like ? escape''";</a>
-<span class="sourceLineNo">056</span><a id="line.56">    this.likeClauseEscaped = "like ? escape'|'";</a>
-<span class="sourceLineNo">057</span><a id="line.57"></a>
-<span class="sourceLineNo">058</span><a id="line.58">    this.forwardOnlyHintOnFindIterate = true;</a>
-<span class="sourceLineNo">059</span><a id="line.59">    this.booleanDbType = Types.BIT;</a>
-<span class="sourceLineNo">060</span><a id="line.60"></a>
-<span class="sourceLineNo">061</span><a id="line.61">    dbTypeMap.put(DbType.BIT, new DbPlatformType("tinyint(1)"));</a>
-<span class="sourceLineNo">062</span><a id="line.62">    dbTypeMap.put(DbType.BOOLEAN, new DbPlatformType("tinyint(1)"));</a>
-<span class="sourceLineNo">063</span><a id="line.63">    dbTypeMap.put(DbType.TIMESTAMP, new DbPlatformType("datetime(6)"));</a>
-<span class="sourceLineNo">064</span><a id="line.64">    dbTypeMap.put(DbType.CLOB, new MySqlClob());</a>
-<span class="sourceLineNo">065</span><a id="line.65">    dbTypeMap.put(DbType.BLOB, new MySqlBlob());</a>
-<span class="sourceLineNo">066</span><a id="line.66">    dbTypeMap.put(DbType.BINARY, new DbPlatformType("binary", 255));</a>
-<span class="sourceLineNo">067</span><a id="line.67">    dbTypeMap.put(DbType.VARBINARY, new DbPlatformType("varbinary", 255));</a>
-<span class="sourceLineNo">068</span><a id="line.68">    dbTypeMap.put(DbType.JSON, new DbPlatformType("json", false));</a>
-<span class="sourceLineNo">069</span><a id="line.69">    dbTypeMap.put(DbType.JSONB, new DbPlatformType("json", false));</a>
-<span class="sourceLineNo">070</span><a id="line.70">  }</a>
-<span class="sourceLineNo">071</span><a id="line.71"></a>
-<span class="sourceLineNo">072</span><a id="line.72">  @Override</a>
-<span class="sourceLineNo">073</span><a id="line.73">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">074</span><a id="line.74">    // NOWAIT and SKIP LOCKED currently not supported with MySQL</a>
-<span class="sourceLineNo">075</span><a id="line.75">    return sql + " for update";</a>
-<span class="sourceLineNo">076</span><a id="line.76">  }</a>
-<span class="sourceLineNo">077</span><a id="line.77"></a>
-<span class="sourceLineNo">078</span><a id="line.78">}</a>
+<span class="sourceLineNo">044</span><a id="line.44">    this.exceptionTranslator =</a>
+<span class="sourceLineNo">045</span><a id="line.45">      new SqlErrorCodes()</a>
+<span class="sourceLineNo">046</span><a id="line.46">        .addAcquireLock("1205")</a>
+<span class="sourceLineNo">047</span><a id="line.47">        .addDuplicateKey("1062", "1169")</a>
+<span class="sourceLineNo">048</span><a id="line.48">        .addDataIntegrity("630", "839", "840", "893", "1215", "1216", "1217", "1364", "1451", "1452", "1557")</a>
+<span class="sourceLineNo">049</span><a id="line.49">        .build();</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">    this.openQuote = "`";</a>
+<span class="sourceLineNo">052</span><a id="line.52">    this.closeQuote = "`";</a>
+<span class="sourceLineNo">053</span><a id="line.53">    // use pipe for escaping as it depends if mysql runs in no_backslash_escapes or not.</a>
+<span class="sourceLineNo">054</span><a id="line.54">    this.likeClauseRaw = "like ? escape''";</a>
+<span class="sourceLineNo">055</span><a id="line.55">    this.likeClauseEscaped = "like ? escape'|'";</a>
+<span class="sourceLineNo">056</span><a id="line.56"></a>
+<span class="sourceLineNo">057</span><a id="line.57">    this.forwardOnlyHintOnFindIterate = true;</a>
+<span class="sourceLineNo">058</span><a id="line.58">    this.booleanDbType = Types.BIT;</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">    dbTypeMap.put(DbType.BIT, new DbPlatformType("tinyint(1)"));</a>
+<span class="sourceLineNo">061</span><a id="line.61">    dbTypeMap.put(DbType.BOOLEAN, new DbPlatformType("tinyint(1)"));</a>
+<span class="sourceLineNo">062</span><a id="line.62">    dbTypeMap.put(DbType.TIMESTAMP, new DbPlatformType("datetime(6)"));</a>
+<span class="sourceLineNo">063</span><a id="line.63">    dbTypeMap.put(DbType.CLOB, new MySqlClob());</a>
+<span class="sourceLineNo">064</span><a id="line.64">    dbTypeMap.put(DbType.BLOB, new MySqlBlob());</a>
+<span class="sourceLineNo">065</span><a id="line.65">    dbTypeMap.put(DbType.BINARY, new DbPlatformType("binary", 255));</a>
+<span class="sourceLineNo">066</span><a id="line.66">    dbTypeMap.put(DbType.VARBINARY, new DbPlatformType("varbinary", 255));</a>
+<span class="sourceLineNo">067</span><a id="line.67">    dbTypeMap.put(DbType.JSON, new DbPlatformType("json", false));</a>
+<span class="sourceLineNo">068</span><a id="line.68">    dbTypeMap.put(DbType.JSONB, new DbPlatformType("json", false));</a>
+<span class="sourceLineNo">069</span><a id="line.69">  }</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">  @Override</a>
+<span class="sourceLineNo">072</span><a id="line.72">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">    // NOWAIT and SKIP LOCKED currently not supported with MySQL</a>
+<span class="sourceLineNo">074</span><a id="line.74">    return sql + " for update";</a>
+<span class="sourceLineNo">075</span><a id="line.75">  }</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">}</a>
 
 
 

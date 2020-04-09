@@ -86,66 +86,87 @@
 <span class="sourceLineNo">077</span><a id="line.77">  Optional&lt;T&gt; findOneOrEmpty();</a>
 <span class="sourceLineNo">078</span><a id="line.78"></a>
 <span class="sourceLineNo">079</span><a id="line.79">  /**</a>
-<span class="sourceLineNo">080</span><a id="line.80">   * The same as bind for named parameters.</a>
-<span class="sourceLineNo">081</span><a id="line.81">   */</a>
-<span class="sourceLineNo">082</span><a id="line.82">  DtoQuery&lt;T&gt; setParameter(String name, Object value);</a>
-<span class="sourceLineNo">083</span><a id="line.83"></a>
-<span class="sourceLineNo">084</span><a id="line.84">  /**</a>
-<span class="sourceLineNo">085</span><a id="line.85">   * The same as bind for positioned parameters.</a>
-<span class="sourceLineNo">086</span><a id="line.86">   */</a>
-<span class="sourceLineNo">087</span><a id="line.87">  DtoQuery&lt;T&gt; setParameter(int position, Object value);</a>
-<span class="sourceLineNo">088</span><a id="line.88"></a>
-<span class="sourceLineNo">089</span><a id="line.89">  /**</a>
-<span class="sourceLineNo">090</span><a id="line.90">   * Set the index of the first row of the results to return.</a>
-<span class="sourceLineNo">091</span><a id="line.91">   */</a>
-<span class="sourceLineNo">092</span><a id="line.92">  DtoQuery&lt;T&gt; setFirstRow(int firstRow);</a>
-<span class="sourceLineNo">093</span><a id="line.93"></a>
-<span class="sourceLineNo">094</span><a id="line.94">  /**</a>
-<span class="sourceLineNo">095</span><a id="line.95">   * Set the maximum number of query results to return.</a>
-<span class="sourceLineNo">096</span><a id="line.96">   */</a>
-<span class="sourceLineNo">097</span><a id="line.97">  DtoQuery&lt;T&gt; setMaxRows(int maxRows);</a>
-<span class="sourceLineNo">098</span><a id="line.98"></a>
-<span class="sourceLineNo">099</span><a id="line.99">  /**</a>
-<span class="sourceLineNo">100</span><a id="line.100">   * When resultSet columns are not able to be mapped to a bean property then instead of</a>
-<span class="sourceLineNo">101</span><a id="line.101">   * throwing effectively skip reading that column.</a>
-<span class="sourceLineNo">102</span><a id="line.102">   */</a>
-<span class="sourceLineNo">103</span><a id="line.103">  DtoQuery&lt;T&gt; setRelaxedMode();</a>
-<span class="sourceLineNo">104</span><a id="line.104"></a>
-<span class="sourceLineNo">105</span><a id="line.105">  /**</a>
-<span class="sourceLineNo">106</span><a id="line.106">   * Set a label on the query to make it easier to identify queries related to query execution statistics.</a>
-<span class="sourceLineNo">107</span><a id="line.107">   *</a>
-<span class="sourceLineNo">108</span><a id="line.108">   * @param label A label that is unique to the DTO bean type.</a>
-<span class="sourceLineNo">109</span><a id="line.109">   */</a>
-<span class="sourceLineNo">110</span><a id="line.110">  DtoQuery&lt;T&gt; setLabel(String label);</a>
-<span class="sourceLineNo">111</span><a id="line.111"></a>
-<span class="sourceLineNo">112</span><a id="line.112">  /**</a>
-<span class="sourceLineNo">113</span><a id="line.113">   * Set the profile location of this query. This is used to relate query execution metrics</a>
-<span class="sourceLineNo">114</span><a id="line.114">   * back to a location like a specific line of code.</a>
-<span class="sourceLineNo">115</span><a id="line.115">   */</a>
-<span class="sourceLineNo">116</span><a id="line.116">  DtoQuery&lt;T&gt; setProfileLocation(ProfileLocation profileLocation);</a>
-<span class="sourceLineNo">117</span><a id="line.117"></a>
-<span class="sourceLineNo">118</span><a id="line.118">  /**</a>
-<span class="sourceLineNo">119</span><a id="line.119">   * Set a timeout on this query.</a>
-<span class="sourceLineNo">120</span><a id="line.120">   * &lt;p&gt;</a>
-<span class="sourceLineNo">121</span><a id="line.121">   * This will typically result in a call to setQueryTimeout() on a</a>
-<span class="sourceLineNo">122</span><a id="line.122">   * preparedStatement. If the timeout occurs an exception will be thrown - this</a>
-<span class="sourceLineNo">123</span><a id="line.123">   * will be a SQLException wrapped up in a PersistenceException.</a>
-<span class="sourceLineNo">124</span><a id="line.124">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">125</span><a id="line.125">   *</a>
-<span class="sourceLineNo">126</span><a id="line.126">   * @param secs the query timeout limit in seconds. Zero means there is no limit.</a>
-<span class="sourceLineNo">127</span><a id="line.127">   */</a>
-<span class="sourceLineNo">128</span><a id="line.128">  DtoQuery&lt;T&gt; setTimeout(int secs);</a>
-<span class="sourceLineNo">129</span><a id="line.129"></a>
-<span class="sourceLineNo">130</span><a id="line.130">  /**</a>
-<span class="sourceLineNo">131</span><a id="line.131">   * A hint which for JDBC translates to the Statement.fetchSize().</a>
-<span class="sourceLineNo">132</span><a id="line.132">   * &lt;p&gt;</a>
-<span class="sourceLineNo">133</span><a id="line.133">   * Gives the JDBC driver a hint as to the number of rows that should be</a>
-<span class="sourceLineNo">134</span><a id="line.134">   * fetched from the database when more rows are needed for ResultSet.</a>
-<span class="sourceLineNo">135</span><a id="line.135">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">136</span><a id="line.136">   */</a>
-<span class="sourceLineNo">137</span><a id="line.137">  DtoQuery&lt;T&gt; setBufferFetchSizeHint(int bufferFetchSizeHint);</a>
-<span class="sourceLineNo">138</span><a id="line.138"></a>
-<span class="sourceLineNo">139</span><a id="line.139">}</a>
+<span class="sourceLineNo">080</span><a id="line.80">   * Bind all the parameters using index positions.</a>
+<span class="sourceLineNo">081</span><a id="line.81">   * &lt;p&gt;</a>
+<span class="sourceLineNo">082</span><a id="line.82">   * Binds each parameter moving the index position each time.</a>
+<span class="sourceLineNo">083</span><a id="line.83">   * &lt;p&gt;</a>
+<span class="sourceLineNo">084</span><a id="line.84">   * A convenience for multiple calls to {@link #setParameter(Object)}</a>
+<span class="sourceLineNo">085</span><a id="line.85">   */</a>
+<span class="sourceLineNo">086</span><a id="line.86">  DtoQuery&lt;T&gt; setParameters(Object... value);</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">  /**</a>
+<span class="sourceLineNo">089</span><a id="line.89">   * Bind the next parameter using index position.</a>
+<span class="sourceLineNo">090</span><a id="line.90">   * &lt;p&gt;</a>
+<span class="sourceLineNo">091</span><a id="line.91">   * Bind the parameter using index position starting at 1 and incrementing.</a>
+<span class="sourceLineNo">092</span><a id="line.92">   * &lt;p&gt;</a>
+<span class="sourceLineNo">093</span><a id="line.93">   */</a>
+<span class="sourceLineNo">094</span><a id="line.94">  DtoQuery&lt;T&gt; setParameter(Object value);</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">  /**</a>
+<span class="sourceLineNo">097</span><a id="line.97">   * Bind the named parameter.</a>
+<span class="sourceLineNo">098</span><a id="line.98">   */</a>
+<span class="sourceLineNo">099</span><a id="line.99">  DtoQuery&lt;T&gt; setParameter(String name, Object value);</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">  /**</a>
+<span class="sourceLineNo">102</span><a id="line.102">   * Bind the parameter by its index position (1 based like JDBC).</a>
+<span class="sourceLineNo">103</span><a id="line.103">   */</a>
+<span class="sourceLineNo">104</span><a id="line.104">  DtoQuery&lt;T&gt; setParameter(int position, Object value);</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">  /**</a>
+<span class="sourceLineNo">107</span><a id="line.107">   * Set the index of the first row of the results to return.</a>
+<span class="sourceLineNo">108</span><a id="line.108">   */</a>
+<span class="sourceLineNo">109</span><a id="line.109">  DtoQuery&lt;T&gt; setFirstRow(int firstRow);</a>
+<span class="sourceLineNo">110</span><a id="line.110"></a>
+<span class="sourceLineNo">111</span><a id="line.111">  /**</a>
+<span class="sourceLineNo">112</span><a id="line.112">   * Set the maximum number of query results to return.</a>
+<span class="sourceLineNo">113</span><a id="line.113">   */</a>
+<span class="sourceLineNo">114</span><a id="line.114">  DtoQuery&lt;T&gt; setMaxRows(int maxRows);</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">  /**</a>
+<span class="sourceLineNo">117</span><a id="line.117">   * When resultSet columns are not able to be mapped to a bean property then instead of</a>
+<span class="sourceLineNo">118</span><a id="line.118">   * throwing effectively skip reading that column.</a>
+<span class="sourceLineNo">119</span><a id="line.119">   */</a>
+<span class="sourceLineNo">120</span><a id="line.120">  DtoQuery&lt;T&gt; setRelaxedMode();</a>
+<span class="sourceLineNo">121</span><a id="line.121"></a>
+<span class="sourceLineNo">122</span><a id="line.122">  /**</a>
+<span class="sourceLineNo">123</span><a id="line.123">   * Set a label on the query to make it easier to identify queries related to query execution statistics.</a>
+<span class="sourceLineNo">124</span><a id="line.124">   *</a>
+<span class="sourceLineNo">125</span><a id="line.125">   * @param label A label that is unique to the DTO bean type.</a>
+<span class="sourceLineNo">126</span><a id="line.126">   */</a>
+<span class="sourceLineNo">127</span><a id="line.127">  DtoQuery&lt;T&gt; setLabel(String label);</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">  /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">   * Set the profile location of this query. This is used to relate query execution metrics</a>
+<span class="sourceLineNo">131</span><a id="line.131">   * back to a location like a specific line of code.</a>
+<span class="sourceLineNo">132</span><a id="line.132">   */</a>
+<span class="sourceLineNo">133</span><a id="line.133">  DtoQuery&lt;T&gt; setProfileLocation(ProfileLocation profileLocation);</a>
+<span class="sourceLineNo">134</span><a id="line.134"></a>
+<span class="sourceLineNo">135</span><a id="line.135">  /**</a>
+<span class="sourceLineNo">136</span><a id="line.136">   * Set a timeout on this query.</a>
+<span class="sourceLineNo">137</span><a id="line.137">   * &lt;p&gt;</a>
+<span class="sourceLineNo">138</span><a id="line.138">   * This will typically result in a call to setQueryTimeout() on a</a>
+<span class="sourceLineNo">139</span><a id="line.139">   * preparedStatement. If the timeout occurs an exception will be thrown - this</a>
+<span class="sourceLineNo">140</span><a id="line.140">   * will be a SQLException wrapped up in a PersistenceException.</a>
+<span class="sourceLineNo">141</span><a id="line.141">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">142</span><a id="line.142">   *</a>
+<span class="sourceLineNo">143</span><a id="line.143">   * @param secs the query timeout limit in seconds. Zero means there is no limit.</a>
+<span class="sourceLineNo">144</span><a id="line.144">   */</a>
+<span class="sourceLineNo">145</span><a id="line.145">  DtoQuery&lt;T&gt; setTimeout(int secs);</a>
+<span class="sourceLineNo">146</span><a id="line.146"></a>
+<span class="sourceLineNo">147</span><a id="line.147">  /**</a>
+<span class="sourceLineNo">148</span><a id="line.148">   * A hint which for JDBC translates to the Statement.fetchSize().</a>
+<span class="sourceLineNo">149</span><a id="line.149">   * &lt;p&gt;</a>
+<span class="sourceLineNo">150</span><a id="line.150">   * Gives the JDBC driver a hint as to the number of rows that should be</a>
+<span class="sourceLineNo">151</span><a id="line.151">   * fetched from the database when more rows are needed for ResultSet.</a>
+<span class="sourceLineNo">152</span><a id="line.152">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">153</span><a id="line.153">   */</a>
+<span class="sourceLineNo">154</span><a id="line.154">  DtoQuery&lt;T&gt; setBufferFetchSizeHint(int bufferFetchSizeHint);</a>
+<span class="sourceLineNo">155</span><a id="line.155"></a>
+<span class="sourceLineNo">156</span><a id="line.156">  /**</a>
+<span class="sourceLineNo">157</span><a id="line.157">   * Use the explicit transaction to execute the query.</a>
+<span class="sourceLineNo">158</span><a id="line.158">   */</a>
+<span class="sourceLineNo">159</span><a id="line.159">  DtoQuery&lt;T&gt; usingTransaction(Transaction transaction);</a>
+<span class="sourceLineNo">160</span><a id="line.160">}</a>
 
 
 

@@ -32,43 +32,42 @@
 <span class="sourceLineNo">023</span><a id="line.23">    this.idInExpandedForm = true;</a>
 <span class="sourceLineNo">024</span><a id="line.24">    this.supportsResultSetConcurrencyModeUpdatable = false;</a>
 <span class="sourceLineNo">025</span><a id="line.25">    this.supportsDeleteTableAlias = true;</a>
-<span class="sourceLineNo">026</span><a id="line.26">    this.columnAliasPrefix = null;</a>
-<span class="sourceLineNo">027</span><a id="line.27">    this.likeClauseRaw = "like ?";</a>
-<span class="sourceLineNo">028</span><a id="line.28">    this.historySupport = new NuoDbHistorySupport();</a>
-<span class="sourceLineNo">029</span><a id="line.29">    //this.dbEncrypt = ...</a>
-<span class="sourceLineNo">030</span><a id="line.30">    dbIdentity.setIdType(IdType.IDENTITY);</a>
-<span class="sourceLineNo">031</span><a id="line.31">    dbIdentity.setSupportsIdentity(true);</a>
-<span class="sourceLineNo">032</span><a id="line.32">    dbIdentity.setSupportsSequence(true);</a>
-<span class="sourceLineNo">033</span><a id="line.33">    dbIdentity.setSupportsGetGeneratedKeys(true);</a>
-<span class="sourceLineNo">034</span><a id="line.34"></a>
-<span class="sourceLineNo">035</span><a id="line.35">    // No referential integrity exception to map</a>
-<span class="sourceLineNo">036</span><a id="line.36">    this.exceptionTranslator =</a>
-<span class="sourceLineNo">037</span><a id="line.37">      new SqlErrorCodes()</a>
-<span class="sourceLineNo">038</span><a id="line.38">        //.addAcquireLock("")</a>
-<span class="sourceLineNo">039</span><a id="line.39">        .addDuplicateKey("23000")</a>
-<span class="sourceLineNo">040</span><a id="line.40">        .addSerializableConflict("40002")</a>
-<span class="sourceLineNo">041</span><a id="line.41">        .build();</a>
-<span class="sourceLineNo">042</span><a id="line.42"></a>
-<span class="sourceLineNo">043</span><a id="line.43">    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("integer", false));</a>
-<span class="sourceLineNo">044</span><a id="line.44">  }</a>
-<span class="sourceLineNo">045</span><a id="line.45"></a>
-<span class="sourceLineNo">046</span><a id="line.46">  @Override</a>
-<span class="sourceLineNo">047</span><a id="line.47">  public PlatformIdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, int stepSize, String seqName) {</a>
-<span class="sourceLineNo">048</span><a id="line.48">    return new NuoDbSequence(be, ds, seqName, stepSize);</a>
-<span class="sourceLineNo">049</span><a id="line.49">  }</a>
-<span class="sourceLineNo">050</span><a id="line.50"></a>
-<span class="sourceLineNo">051</span><a id="line.51">  @Override</a>
-<span class="sourceLineNo">052</span><a id="line.52">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">053</span><a id="line.53">    switch (forUpdateMode) {</a>
-<span class="sourceLineNo">054</span><a id="line.54">      case NOWAIT:</a>
-<span class="sourceLineNo">055</span><a id="line.55">        return sql + " for update nowait";</a>
-<span class="sourceLineNo">056</span><a id="line.56">      case SKIPLOCKED:</a>
-<span class="sourceLineNo">057</span><a id="line.57">      default:</a>
-<span class="sourceLineNo">058</span><a id="line.58">        return sql + " for update";</a>
-<span class="sourceLineNo">059</span><a id="line.59">    }</a>
-<span class="sourceLineNo">060</span><a id="line.60">  }</a>
-<span class="sourceLineNo">061</span><a id="line.61"></a>
-<span class="sourceLineNo">062</span><a id="line.62">}</a>
+<span class="sourceLineNo">026</span><a id="line.26">    this.likeClauseRaw = "like ?";</a>
+<span class="sourceLineNo">027</span><a id="line.27">    this.historySupport = new NuoDbHistorySupport();</a>
+<span class="sourceLineNo">028</span><a id="line.28">    //this.dbEncrypt = ...</a>
+<span class="sourceLineNo">029</span><a id="line.29">    dbIdentity.setIdType(IdType.IDENTITY);</a>
+<span class="sourceLineNo">030</span><a id="line.30">    dbIdentity.setSupportsIdentity(true);</a>
+<span class="sourceLineNo">031</span><a id="line.31">    dbIdentity.setSupportsSequence(true);</a>
+<span class="sourceLineNo">032</span><a id="line.32">    dbIdentity.setSupportsGetGeneratedKeys(true);</a>
+<span class="sourceLineNo">033</span><a id="line.33"></a>
+<span class="sourceLineNo">034</span><a id="line.34">    // No referential integrity exception to map</a>
+<span class="sourceLineNo">035</span><a id="line.35">    this.exceptionTranslator =</a>
+<span class="sourceLineNo">036</span><a id="line.36">      new SqlErrorCodes()</a>
+<span class="sourceLineNo">037</span><a id="line.37">        //.addAcquireLock("")</a>
+<span class="sourceLineNo">038</span><a id="line.38">        .addDuplicateKey("23000")</a>
+<span class="sourceLineNo">039</span><a id="line.39">        .addSerializableConflict("40002")</a>
+<span class="sourceLineNo">040</span><a id="line.40">        .build();</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">    dbTypeMap.put(DbType.INTEGER, new DbPlatformType("integer", false));</a>
+<span class="sourceLineNo">043</span><a id="line.43">  }</a>
+<span class="sourceLineNo">044</span><a id="line.44"></a>
+<span class="sourceLineNo">045</span><a id="line.45">  @Override</a>
+<span class="sourceLineNo">046</span><a id="line.46">  public PlatformIdGenerator createSequenceIdGenerator(BackgroundExecutor be, DataSource ds, int stepSize, String seqName) {</a>
+<span class="sourceLineNo">047</span><a id="line.47">    return new NuoDbSequence(be, ds, seqName, stepSize);</a>
+<span class="sourceLineNo">048</span><a id="line.48">  }</a>
+<span class="sourceLineNo">049</span><a id="line.49"></a>
+<span class="sourceLineNo">050</span><a id="line.50">  @Override</a>
+<span class="sourceLineNo">051</span><a id="line.51">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
+<span class="sourceLineNo">052</span><a id="line.52">    switch (forUpdateMode) {</a>
+<span class="sourceLineNo">053</span><a id="line.53">      case NOWAIT:</a>
+<span class="sourceLineNo">054</span><a id="line.54">        return sql + " for update nowait";</a>
+<span class="sourceLineNo">055</span><a id="line.55">      case SKIPLOCKED:</a>
+<span class="sourceLineNo">056</span><a id="line.56">      default:</a>
+<span class="sourceLineNo">057</span><a id="line.57">        return sql + " for update";</a>
+<span class="sourceLineNo">058</span><a id="line.58">    }</a>
+<span class="sourceLineNo">059</span><a id="line.59">  }</a>
+<span class="sourceLineNo">060</span><a id="line.60"></a>
+<span class="sourceLineNo">061</span><a id="line.61">}</a>
 
 
 

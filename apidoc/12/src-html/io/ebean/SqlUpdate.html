@@ -248,62 +248,81 @@
 <span class="sourceLineNo">239</span><a id="line.239">   *   String sql = "insert into audit_log (id, name, version) values (?,?,?)";</a>
 <span class="sourceLineNo">240</span><a id="line.240">   *</a>
 <span class="sourceLineNo">241</span><a id="line.241">   *   DB.sqlUpdate(sql)</a>
-<span class="sourceLineNo">242</span><a id="line.242">   *       .setParams(UUID.randomUUID(), "Hello", 1)</a>
+<span class="sourceLineNo">242</span><a id="line.242">   *       .setParameters(UUID.randomUUID(), "Hello", 1)</a>
 <span class="sourceLineNo">243</span><a id="line.243">   *       .executeNow();</a>
 <span class="sourceLineNo">244</span><a id="line.244">   *</a>
 <span class="sourceLineNo">245</span><a id="line.245">   *</a>
 <span class="sourceLineNo">246</span><a id="line.246">   *   // is the same as ...</a>
 <span class="sourceLineNo">247</span><a id="line.247">   *</a>
 <span class="sourceLineNo">248</span><a id="line.248">   *   DB.sqlUpdate(sql)</a>
-<span class="sourceLineNo">249</span><a id="line.249">   *       .setParameter(1, UUID.randomUUID())</a>
-<span class="sourceLineNo">250</span><a id="line.250">   *       .setParameter(2, "Hello")</a>
-<span class="sourceLineNo">251</span><a id="line.251">   *       .setParameter(3, 1)</a>
+<span class="sourceLineNo">249</span><a id="line.249">   *       .setParameter(UUID.randomUUID())</a>
+<span class="sourceLineNo">250</span><a id="line.250">   *       .setParameter("Hello")</a>
+<span class="sourceLineNo">251</span><a id="line.251">   *       .setParameter(1)</a>
 <span class="sourceLineNo">252</span><a id="line.252">   *       .executeNow();</a>
 <span class="sourceLineNo">253</span><a id="line.253">   *</a>
-<span class="sourceLineNo">254</span><a id="line.254">   * }&lt;/pre&gt;</a>
+<span class="sourceLineNo">254</span><a id="line.254">   *   // which is the same as ...</a>
 <span class="sourceLineNo">255</span><a id="line.255">   *</a>
-<span class="sourceLineNo">256</span><a id="line.256">   */</a>
-<span class="sourceLineNo">257</span><a id="line.257">  SqlUpdate setParams(Object... values);</a>
-<span class="sourceLineNo">258</span><a id="line.258"></a>
-<span class="sourceLineNo">259</span><a id="line.259">  /**</a>
-<span class="sourceLineNo">260</span><a id="line.260">   * Set the next positioned parameter.</a>
+<span class="sourceLineNo">256</span><a id="line.256">   *   DB.sqlUpdate(sql)</a>
+<span class="sourceLineNo">257</span><a id="line.257">   *       .setParameter(1, UUID.randomUUID())</a>
+<span class="sourceLineNo">258</span><a id="line.258">   *       .setParameter(2, "Hello")</a>
+<span class="sourceLineNo">259</span><a id="line.259">   *       .setParameter(3, 1)</a>
+<span class="sourceLineNo">260</span><a id="line.260">   *       .executeNow();</a>
 <span class="sourceLineNo">261</span><a id="line.261">   *</a>
-<span class="sourceLineNo">262</span><a id="line.262">   * @param value The value to bind</a>
+<span class="sourceLineNo">262</span><a id="line.262">   * }&lt;/pre&gt;</a>
 <span class="sourceLineNo">263</span><a id="line.263">   */</a>
-<span class="sourceLineNo">264</span><a id="line.264">  SqlUpdate setNextParameter(Object value);</a>
+<span class="sourceLineNo">264</span><a id="line.264">  SqlUpdate setParameters(Object... values);</a>
 <span class="sourceLineNo">265</span><a id="line.265"></a>
 <span class="sourceLineNo">266</span><a id="line.266">  /**</a>
-<span class="sourceLineNo">267</span><a id="line.267">   * Set a parameter via its index position.</a>
+<span class="sourceLineNo">267</span><a id="line.267">   * Deprecated migrate to setParameters(Object... values).</a>
 <span class="sourceLineNo">268</span><a id="line.268">   */</a>
-<span class="sourceLineNo">269</span><a id="line.269">  SqlUpdate setParameter(int position, Object value);</a>
-<span class="sourceLineNo">270</span><a id="line.270"></a>
-<span class="sourceLineNo">271</span><a id="line.271">  /**</a>
-<span class="sourceLineNo">272</span><a id="line.272">   * Set a null parameter via its index position.</a>
-<span class="sourceLineNo">273</span><a id="line.273">   */</a>
-<span class="sourceLineNo">274</span><a id="line.274">  SqlUpdate setNull(int position, int jdbcType);</a>
-<span class="sourceLineNo">275</span><a id="line.275"></a>
-<span class="sourceLineNo">276</span><a id="line.276">  /**</a>
-<span class="sourceLineNo">277</span><a id="line.277">   * Set a null valued parameter using its index position.</a>
-<span class="sourceLineNo">278</span><a id="line.278">   */</a>
-<span class="sourceLineNo">279</span><a id="line.279">  SqlUpdate setNullParameter(int position, int jdbcType);</a>
-<span class="sourceLineNo">280</span><a id="line.280"></a>
-<span class="sourceLineNo">281</span><a id="line.281">  /**</a>
-<span class="sourceLineNo">282</span><a id="line.282">   * Set a named parameter value.</a>
-<span class="sourceLineNo">283</span><a id="line.283">   */</a>
-<span class="sourceLineNo">284</span><a id="line.284">  SqlUpdate setParameter(String name, Object param);</a>
-<span class="sourceLineNo">285</span><a id="line.285"></a>
-<span class="sourceLineNo">286</span><a id="line.286">  /**</a>
-<span class="sourceLineNo">287</span><a id="line.287">   * Set a named parameter that has a null value. Exactly the same as</a>
-<span class="sourceLineNo">288</span><a id="line.288">   * {@link #setNullParameter(String, int)}.</a>
-<span class="sourceLineNo">289</span><a id="line.289">   */</a>
-<span class="sourceLineNo">290</span><a id="line.290">  SqlUpdate setNull(String name, int jdbcType);</a>
-<span class="sourceLineNo">291</span><a id="line.291"></a>
-<span class="sourceLineNo">292</span><a id="line.292">  /**</a>
-<span class="sourceLineNo">293</span><a id="line.293">   * Set a named parameter that has a null value.</a>
-<span class="sourceLineNo">294</span><a id="line.294">   */</a>
-<span class="sourceLineNo">295</span><a id="line.295">  SqlUpdate setNullParameter(String name, int jdbcType);</a>
-<span class="sourceLineNo">296</span><a id="line.296"></a>
-<span class="sourceLineNo">297</span><a id="line.297">}</a>
+<span class="sourceLineNo">269</span><a id="line.269">  @Deprecated</a>
+<span class="sourceLineNo">270</span><a id="line.270">  SqlUpdate setParams(Object... values);</a>
+<span class="sourceLineNo">271</span><a id="line.271"></a>
+<span class="sourceLineNo">272</span><a id="line.272">  /**</a>
+<span class="sourceLineNo">273</span><a id="line.273">   * Set the next bind parameter by position.</a>
+<span class="sourceLineNo">274</span><a id="line.274">   *</a>
+<span class="sourceLineNo">275</span><a id="line.275">   * @param value The value to bind</a>
+<span class="sourceLineNo">276</span><a id="line.276">   */</a>
+<span class="sourceLineNo">277</span><a id="line.277">  SqlUpdate setParameter(Object value);</a>
+<span class="sourceLineNo">278</span><a id="line.278"></a>
+<span class="sourceLineNo">279</span><a id="line.279">  /**</a>
+<span class="sourceLineNo">280</span><a id="line.280">   * Deprecated migrate to setParameter(value).</a>
+<span class="sourceLineNo">281</span><a id="line.281">   */</a>
+<span class="sourceLineNo">282</span><a id="line.282">  @Deprecated</a>
+<span class="sourceLineNo">283</span><a id="line.283">  SqlUpdate setNextParameter(Object value);</a>
+<span class="sourceLineNo">284</span><a id="line.284"></a>
+<span class="sourceLineNo">285</span><a id="line.285">  /**</a>
+<span class="sourceLineNo">286</span><a id="line.286">   * Set a parameter via its index position.</a>
+<span class="sourceLineNo">287</span><a id="line.287">   */</a>
+<span class="sourceLineNo">288</span><a id="line.288">  SqlUpdate setParameter(int position, Object value);</a>
+<span class="sourceLineNo">289</span><a id="line.289"></a>
+<span class="sourceLineNo">290</span><a id="line.290">  /**</a>
+<span class="sourceLineNo">291</span><a id="line.291">   * Set a null parameter via its index position.</a>
+<span class="sourceLineNo">292</span><a id="line.292">   */</a>
+<span class="sourceLineNo">293</span><a id="line.293">  SqlUpdate setNull(int position, int jdbcType);</a>
+<span class="sourceLineNo">294</span><a id="line.294"></a>
+<span class="sourceLineNo">295</span><a id="line.295">  /**</a>
+<span class="sourceLineNo">296</span><a id="line.296">   * Set a null valued parameter using its index position.</a>
+<span class="sourceLineNo">297</span><a id="line.297">   */</a>
+<span class="sourceLineNo">298</span><a id="line.298">  SqlUpdate setNullParameter(int position, int jdbcType);</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">  /**</a>
+<span class="sourceLineNo">301</span><a id="line.301">   * Set a named parameter value.</a>
+<span class="sourceLineNo">302</span><a id="line.302">   */</a>
+<span class="sourceLineNo">303</span><a id="line.303">  SqlUpdate setParameter(String name, Object param);</a>
+<span class="sourceLineNo">304</span><a id="line.304"></a>
+<span class="sourceLineNo">305</span><a id="line.305">  /**</a>
+<span class="sourceLineNo">306</span><a id="line.306">   * Set a named parameter that has a null value. Exactly the same as</a>
+<span class="sourceLineNo">307</span><a id="line.307">   * {@link #setNullParameter(String, int)}.</a>
+<span class="sourceLineNo">308</span><a id="line.308">   */</a>
+<span class="sourceLineNo">309</span><a id="line.309">  SqlUpdate setNull(String name, int jdbcType);</a>
+<span class="sourceLineNo">310</span><a id="line.310"></a>
+<span class="sourceLineNo">311</span><a id="line.311">  /**</a>
+<span class="sourceLineNo">312</span><a id="line.312">   * Set a named parameter that has a null value.</a>
+<span class="sourceLineNo">313</span><a id="line.313">   */</a>
+<span class="sourceLineNo">314</span><a id="line.314">  SqlUpdate setNullParameter(String name, int jdbcType);</a>
+<span class="sourceLineNo">315</span><a id="line.315"></a>
+<span class="sourceLineNo">316</span><a id="line.316">}</a>
 
 
 

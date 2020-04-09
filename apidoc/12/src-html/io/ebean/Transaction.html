@@ -304,7 +304,7 @@
 <span class="sourceLineNo">295</span><a id="line.295">   *</a>
 <span class="sourceLineNo">296</span><a id="line.296">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">297</span><a id="line.297">   *</a>
-<span class="sourceLineNo">298</span><a id="line.298">   * try (Transaction transaction = server.beginTransaction()) {</a>
+<span class="sourceLineNo">298</span><a id="line.298">   * try (Transaction transaction = database.beginTransaction()) {</a>
 <span class="sourceLineNo">299</span><a id="line.299">   *</a>
 <span class="sourceLineNo">300</span><a id="line.300">   *   // turn on JDBC batch</a>
 <span class="sourceLineNo">301</span><a id="line.301">   *   transaction.setBatchMode(true);</a>
@@ -322,12 +322,12 @@
 <span class="sourceLineNo">313</span><a id="line.313">   * &lt;h3&gt;getGeneratedKeys&lt;/h3&gt;</a>
 <span class="sourceLineNo">314</span><a id="line.314">   * &lt;p&gt;</a>
 <span class="sourceLineNo">315</span><a id="line.315">   * Often with large batch inserts we want to turn off getGeneratedKeys. We do</a>
-<span class="sourceLineNo">316</span><a id="line.316">   * this via {@link #setBatchGetGeneratedKeys(boolean)}.</a>
+<span class="sourceLineNo">316</span><a id="line.316">   * this via {@link #setGetGeneratedKeys(boolean)}.</a>
 <span class="sourceLineNo">317</span><a id="line.317">   * Also note that some JDBC drivers do not support getGeneratedKeys in JDBC batch mode.</a>
 <span class="sourceLineNo">318</span><a id="line.318">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">319</span><a id="line.319">   * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">320</span><a id="line.320">   *</a>
-<span class="sourceLineNo">321</span><a id="line.321">   * try (Transaction transaction = server.beginTransaction()) {</a>
+<span class="sourceLineNo">321</span><a id="line.321">   * try (Transaction transaction = database.beginTransaction()) {</a>
 <span class="sourceLineNo">322</span><a id="line.322">   *</a>
 <span class="sourceLineNo">323</span><a id="line.323">   *   transaction.setBatchMode(true);</a>
 <span class="sourceLineNo">324</span><a id="line.324">   *   transaction.setBatchSize(100);</a>
@@ -351,7 +351,7 @@
 <span class="sourceLineNo">342</span><a id="line.342">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">343</span><a id="line.343">   * &lt;p&gt;</a>
 <span class="sourceLineNo">344</span><a id="line.344">   * We use {@link #flush()} to explicitly flush the batch and we can use</a>
-<span class="sourceLineNo">345</span><a id="line.345">   * {@link #setBatchFlushOnQuery(boolean)} and {@link #setBatchFlushOnMixed(boolean)}</a>
+<span class="sourceLineNo">345</span><a id="line.345">   * {@link #setFlushOnQuery(boolean)} and {@link #setFlushOnMixed(boolean)}</a>
 <span class="sourceLineNo">346</span><a id="line.346">   * to control the automatic flushing behaviour.</a>
 <span class="sourceLineNo">347</span><a id="line.347">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">348</span><a id="line.348">   * &lt;p&gt;</a>
@@ -441,113 +441,145 @@
 <span class="sourceLineNo">432</span><a id="line.432">   * number of objects and you don't care about getting back the ids.</a>
 <span class="sourceLineNo">433</span><a id="line.433">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">434</span><a id="line.434">   */</a>
-<span class="sourceLineNo">435</span><a id="line.435">  void setBatchGetGeneratedKeys(boolean getGeneratedKeys);</a>
+<span class="sourceLineNo">435</span><a id="line.435">  void setGetGeneratedKeys(boolean getGeneratedKeys);</a>
 <span class="sourceLineNo">436</span><a id="line.436"></a>
 <span class="sourceLineNo">437</span><a id="line.437">  /**</a>
-<span class="sourceLineNo">438</span><a id="line.438">   * By default when mixing UpdateSql (or CallableSql) with Beans the batch is</a>
-<span class="sourceLineNo">439</span><a id="line.439">   * automatically flushed when you change (between persisting beans and</a>
-<span class="sourceLineNo">440</span><a id="line.440">   * executing UpdateSql or CallableSql).</a>
-<span class="sourceLineNo">441</span><a id="line.441">   * &lt;p&gt;</a>
-<span class="sourceLineNo">442</span><a id="line.442">   * If you want to execute both WITHOUT having the batch automatically flush</a>
-<span class="sourceLineNo">443</span><a id="line.443">   * you need to call this with batchFlushOnMixed = false.</a>
-<span class="sourceLineNo">444</span><a id="line.444">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">445</span><a id="line.445">   * &lt;p&gt;</a>
-<span class="sourceLineNo">446</span><a id="line.446">   * Note that UpdateSql and CallableSql are ALWAYS executed first (before the</a>
-<span class="sourceLineNo">447</span><a id="line.447">   * beans are executed). This is because the UpdateSql and CallableSql have</a>
-<span class="sourceLineNo">448</span><a id="line.448">   * already been bound to their PreparedStatements. The beans on the other hand</a>
-<span class="sourceLineNo">449</span><a id="line.449">   * have a 2 step process (delayed binding).</a>
-<span class="sourceLineNo">450</span><a id="line.450">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">451</span><a id="line.451">   */</a>
-<span class="sourceLineNo">452</span><a id="line.452">  void setBatchFlushOnMixed(boolean batchFlushOnMixed);</a>
-<span class="sourceLineNo">453</span><a id="line.453"></a>
-<span class="sourceLineNo">454</span><a id="line.454">  /**</a>
-<span class="sourceLineNo">455</span><a id="line.455">   * By default executing a query will automatically flush any batched</a>
-<span class="sourceLineNo">456</span><a id="line.456">   * statements (persisted beans, executed UpdateSql etc).</a>
-<span class="sourceLineNo">457</span><a id="line.457">   * &lt;p&gt;</a>
-<span class="sourceLineNo">458</span><a id="line.458">   * Calling this method with batchFlushOnQuery = false means that you can</a>
-<span class="sourceLineNo">459</span><a id="line.459">   * execute a query and the batch will not be automatically flushed.</a>
-<span class="sourceLineNo">460</span><a id="line.460">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">461</span><a id="line.461">   */</a>
-<span class="sourceLineNo">462</span><a id="line.462">  void setBatchFlushOnQuery(boolean batchFlushOnQuery);</a>
-<span class="sourceLineNo">463</span><a id="line.463"></a>
-<span class="sourceLineNo">464</span><a id="line.464">  /**</a>
-<span class="sourceLineNo">465</span><a id="line.465">   * Return true if the batch (of persisted beans or executed UpdateSql etc)</a>
-<span class="sourceLineNo">466</span><a id="line.466">   * should be flushed prior to executing a query.</a>
-<span class="sourceLineNo">467</span><a id="line.467">   * &lt;p&gt;</a>
-<span class="sourceLineNo">468</span><a id="line.468">   * The default is for this to be true.</a>
-<span class="sourceLineNo">469</span><a id="line.469">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">470</span><a id="line.470">   */</a>
-<span class="sourceLineNo">471</span><a id="line.471">  boolean isBatchFlushOnQuery();</a>
-<span class="sourceLineNo">472</span><a id="line.472"></a>
-<span class="sourceLineNo">473</span><a id="line.473">  /**</a>
-<span class="sourceLineNo">474</span><a id="line.474">   * The batch will be flushing automatically but you can use this to explicitly</a>
-<span class="sourceLineNo">475</span><a id="line.475">   * flush the batch if you like.</a>
-<span class="sourceLineNo">476</span><a id="line.476">   * &lt;p&gt;</a>
-<span class="sourceLineNo">477</span><a id="line.477">   * Flushing occurs automatically when:</a>
-<span class="sourceLineNo">478</span><a id="line.478">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">479</span><a id="line.479">   * &lt;ul&gt;</a>
-<span class="sourceLineNo">480</span><a id="line.480">   * &lt;li&gt;the batch size is reached&lt;/li&gt;</a>
-<span class="sourceLineNo">481</span><a id="line.481">   * &lt;li&gt;A query is executed on the same transaction&lt;/li&gt;</a>
-<span class="sourceLineNo">482</span><a id="line.482">   * &lt;li&gt;UpdateSql or CallableSql are mixed with bean save and delete&lt;/li&gt;</a>
-<span class="sourceLineNo">483</span><a id="line.483">   * &lt;li&gt;Transaction commit occurs&lt;/li&gt;</a>
-<span class="sourceLineNo">484</span><a id="line.484">   * &lt;li&gt;A getter method is called on a batched bean&lt;/li&gt;</a>
-<span class="sourceLineNo">485</span><a id="line.485">   * &lt;/ul&gt;</a>
-<span class="sourceLineNo">486</span><a id="line.486">   */</a>
-<span class="sourceLineNo">487</span><a id="line.487">  void flush() throws PersistenceException;</a>
-<span class="sourceLineNo">488</span><a id="line.488"></a>
-<span class="sourceLineNo">489</span><a id="line.489">  /**</a>
-<span class="sourceLineNo">490</span><a id="line.490">   * This is a synonym for flush() and will be deprecated.</a>
+<span class="sourceLineNo">438</span><a id="line.438">   * Deprecated renamed to setGetGeneratedKeys().</a>
+<span class="sourceLineNo">439</span><a id="line.439">   */</a>
+<span class="sourceLineNo">440</span><a id="line.440">  @Deprecated</a>
+<span class="sourceLineNo">441</span><a id="line.441">  default void setBatchGetGeneratedKeys(boolean getGeneratedKeys) {</a>
+<span class="sourceLineNo">442</span><a id="line.442">    setGetGeneratedKeys(getGeneratedKeys);</a>
+<span class="sourceLineNo">443</span><a id="line.443">  }</a>
+<span class="sourceLineNo">444</span><a id="line.444"></a>
+<span class="sourceLineNo">445</span><a id="line.445">  /**</a>
+<span class="sourceLineNo">446</span><a id="line.446">   * By default when mixing UpdateSql (or CallableSql) with Beans the batch is</a>
+<span class="sourceLineNo">447</span><a id="line.447">   * automatically flushed when you change (between persisting beans and</a>
+<span class="sourceLineNo">448</span><a id="line.448">   * executing UpdateSql or CallableSql).</a>
+<span class="sourceLineNo">449</span><a id="line.449">   * &lt;p&gt;</a>
+<span class="sourceLineNo">450</span><a id="line.450">   * If you want to execute both WITHOUT having the batch automatically flush</a>
+<span class="sourceLineNo">451</span><a id="line.451">   * you need to call this with batchFlushOnMixed = false.</a>
+<span class="sourceLineNo">452</span><a id="line.452">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">453</span><a id="line.453">   * &lt;p&gt;</a>
+<span class="sourceLineNo">454</span><a id="line.454">   * Note that UpdateSql and CallableSql are ALWAYS executed first (before the</a>
+<span class="sourceLineNo">455</span><a id="line.455">   * beans are executed). This is because the UpdateSql and CallableSql have</a>
+<span class="sourceLineNo">456</span><a id="line.456">   * already been bound to their PreparedStatements. The beans on the other hand</a>
+<span class="sourceLineNo">457</span><a id="line.457">   * have a 2 step process (delayed binding).</a>
+<span class="sourceLineNo">458</span><a id="line.458">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">459</span><a id="line.459">   */</a>
+<span class="sourceLineNo">460</span><a id="line.460">  void setFlushOnMixed(boolean batchFlushOnMixed);</a>
+<span class="sourceLineNo">461</span><a id="line.461"></a>
+<span class="sourceLineNo">462</span><a id="line.462">  /**</a>
+<span class="sourceLineNo">463</span><a id="line.463">   * Deprecated renamed to setFlushOnMixed().</a>
+<span class="sourceLineNo">464</span><a id="line.464">   */</a>
+<span class="sourceLineNo">465</span><a id="line.465">  @Deprecated</a>
+<span class="sourceLineNo">466</span><a id="line.466">  default void setBatchFlushOnMixed(boolean batchFlushOnMixed) {</a>
+<span class="sourceLineNo">467</span><a id="line.467">    setFlushOnMixed(batchFlushOnMixed);</a>
+<span class="sourceLineNo">468</span><a id="line.468">  }</a>
+<span class="sourceLineNo">469</span><a id="line.469"></a>
+<span class="sourceLineNo">470</span><a id="line.470">  /**</a>
+<span class="sourceLineNo">471</span><a id="line.471">   * By default executing a query will automatically flush any batched</a>
+<span class="sourceLineNo">472</span><a id="line.472">   * statements (persisted beans, executed UpdateSql etc).</a>
+<span class="sourceLineNo">473</span><a id="line.473">   * &lt;p&gt;</a>
+<span class="sourceLineNo">474</span><a id="line.474">   * Calling this method with batchFlushOnQuery = false means that you can</a>
+<span class="sourceLineNo">475</span><a id="line.475">   * execute a query and the batch will not be automatically flushed.</a>
+<span class="sourceLineNo">476</span><a id="line.476">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">477</span><a id="line.477">   */</a>
+<span class="sourceLineNo">478</span><a id="line.478">  void setFlushOnQuery(boolean batchFlushOnQuery);</a>
+<span class="sourceLineNo">479</span><a id="line.479"></a>
+<span class="sourceLineNo">480</span><a id="line.480">  /**</a>
+<span class="sourceLineNo">481</span><a id="line.481">   * Deprecated renamed to setFlushOnQuery().</a>
+<span class="sourceLineNo">482</span><a id="line.482">   */</a>
+<span class="sourceLineNo">483</span><a id="line.483">  @Deprecated</a>
+<span class="sourceLineNo">484</span><a id="line.484">  default void setBatchFlushOnQuery(boolean batchFlushOnQuery) {</a>
+<span class="sourceLineNo">485</span><a id="line.485">    setFlushOnQuery(batchFlushOnQuery);</a>
+<span class="sourceLineNo">486</span><a id="line.486">  }</a>
+<span class="sourceLineNo">487</span><a id="line.487"></a>
+<span class="sourceLineNo">488</span><a id="line.488">  /**</a>
+<span class="sourceLineNo">489</span><a id="line.489">   * Return true if the batch (of persisted beans or executed UpdateSql etc)</a>
+<span class="sourceLineNo">490</span><a id="line.490">   * should be flushed prior to executing a query.</a>
 <span class="sourceLineNo">491</span><a id="line.491">   * &lt;p&gt;</a>
-<span class="sourceLineNo">492</span><a id="line.492">   * flush() is preferred as it matches the JPA flush() method.</a>
+<span class="sourceLineNo">492</span><a id="line.492">   * The default is for this to be true.</a>
 <span class="sourceLineNo">493</span><a id="line.493">   * &lt;/p&gt;</a>
 <span class="sourceLineNo">494</span><a id="line.494">   */</a>
-<span class="sourceLineNo">495</span><a id="line.495">  void flushBatch() throws PersistenceException;</a>
+<span class="sourceLineNo">495</span><a id="line.495">  boolean isFlushOnQuery();</a>
 <span class="sourceLineNo">496</span><a id="line.496"></a>
 <span class="sourceLineNo">497</span><a id="line.497">  /**</a>
-<span class="sourceLineNo">498</span><a id="line.498">   * Return the underlying Connection object.</a>
-<span class="sourceLineNo">499</span><a id="line.499">   * &lt;p&gt;</a>
-<span class="sourceLineNo">500</span><a id="line.500">   * Useful where a Developer wishes to use the JDBC API directly. Note that the</a>
-<span class="sourceLineNo">501</span><a id="line.501">   * commit() rollback() and end() methods on the Transaction should still be</a>
-<span class="sourceLineNo">502</span><a id="line.502">   * used. Calling these methods on the Connection would be a big no no unless</a>
-<span class="sourceLineNo">503</span><a id="line.503">   * you know what you are doing.</a>
-<span class="sourceLineNo">504</span><a id="line.504">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">505</span><a id="line.505">   * &lt;p&gt;</a>
-<span class="sourceLineNo">506</span><a id="line.506">   * Examples of when a developer may wish to use the connection directly are:</a>
-<span class="sourceLineNo">507</span><a id="line.507">   * Savepoints, advanced CLOB BLOB use and advanced stored procedure calls.</a>
-<span class="sourceLineNo">508</span><a id="line.508">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">509</span><a id="line.509">   */</a>
-<span class="sourceLineNo">510</span><a id="line.510">  Connection getConnection();</a>
-<span class="sourceLineNo">511</span><a id="line.511"></a>
-<span class="sourceLineNo">512</span><a id="line.512">  /**</a>
-<span class="sourceLineNo">513</span><a id="line.513">   * Add table modification information to the TransactionEvent.</a>
-<span class="sourceLineNo">514</span><a id="line.514">   * &lt;p&gt;</a>
-<span class="sourceLineNo">515</span><a id="line.515">   * Use this in conjunction with getConnection() and raw JDBC.</a>
-<span class="sourceLineNo">516</span><a id="line.516">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">517</span><a id="line.517">   * &lt;p&gt;</a>
-<span class="sourceLineNo">518</span><a id="line.518">   * This effectively informs Ebean of the data that has been changed by the</a>
-<span class="sourceLineNo">519</span><a id="line.519">   * transaction and this information is normally automatically handled by Ebean</a>
-<span class="sourceLineNo">520</span><a id="line.520">   * when you save entity beans or use UpdateSql etc.</a>
-<span class="sourceLineNo">521</span><a id="line.521">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">522</span><a id="line.522">   * &lt;p&gt;</a>
-<span class="sourceLineNo">523</span><a id="line.523">   * If you use raw JDBC then you can use this method to inform Ebean for the</a>
-<span class="sourceLineNo">524</span><a id="line.524">   * tables that have been modified. Ebean uses this information to keep its</a>
-<span class="sourceLineNo">525</span><a id="line.525">   * caches in synch and maintain text indexes.</a>
-<span class="sourceLineNo">526</span><a id="line.526">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">527</span><a id="line.527">   */</a>
-<span class="sourceLineNo">528</span><a id="line.528">  void addModification(String tableName, boolean inserts, boolean updates, boolean deletes);</a>
-<span class="sourceLineNo">529</span><a id="line.529"></a>
-<span class="sourceLineNo">530</span><a id="line.530">  /**</a>
-<span class="sourceLineNo">531</span><a id="line.531">   * Add an arbitrary user object to the transaction. The objects added have no</a>
-<span class="sourceLineNo">532</span><a id="line.532">   * impact on any internals of ebean and are solely meant as a convenient</a>
-<span class="sourceLineNo">533</span><a id="line.533">   * method push user information (although somewhat replaced by TransactionCallback).</a>
-<span class="sourceLineNo">534</span><a id="line.534">   */</a>
-<span class="sourceLineNo">535</span><a id="line.535">  void putUserObject(String name, Object value);</a>
-<span class="sourceLineNo">536</span><a id="line.536"></a>
-<span class="sourceLineNo">537</span><a id="line.537">  /**</a>
-<span class="sourceLineNo">538</span><a id="line.538">   * Get an object added with {@link #putUserObject(String, Object)}.</a>
-<span class="sourceLineNo">539</span><a id="line.539">   */</a>
-<span class="sourceLineNo">540</span><a id="line.540">  Object getUserObject(String name);</a>
-<span class="sourceLineNo">541</span><a id="line.541">}</a>
+<span class="sourceLineNo">498</span><a id="line.498">   * Deprecated renamed to isFlushOnQuery().</a>
+<span class="sourceLineNo">499</span><a id="line.499">   */</a>
+<span class="sourceLineNo">500</span><a id="line.500">  @Deprecated</a>
+<span class="sourceLineNo">501</span><a id="line.501">  default boolean isBatchFlushOnQuery() {</a>
+<span class="sourceLineNo">502</span><a id="line.502">    return isFlushOnQuery();</a>
+<span class="sourceLineNo">503</span><a id="line.503">  }</a>
+<span class="sourceLineNo">504</span><a id="line.504"></a>
+<span class="sourceLineNo">505</span><a id="line.505">  /**</a>
+<span class="sourceLineNo">506</span><a id="line.506">   * The batch will be flushing automatically but you can use this to explicitly</a>
+<span class="sourceLineNo">507</span><a id="line.507">   * flush the batch if you like.</a>
+<span class="sourceLineNo">508</span><a id="line.508">   * &lt;p&gt;</a>
+<span class="sourceLineNo">509</span><a id="line.509">   * Flushing occurs automatically when:</a>
+<span class="sourceLineNo">510</span><a id="line.510">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">511</span><a id="line.511">   * &lt;ul&gt;</a>
+<span class="sourceLineNo">512</span><a id="line.512">   * &lt;li&gt;the batch size is reached&lt;/li&gt;</a>
+<span class="sourceLineNo">513</span><a id="line.513">   * &lt;li&gt;A query is executed on the same transaction&lt;/li&gt;</a>
+<span class="sourceLineNo">514</span><a id="line.514">   * &lt;li&gt;UpdateSql or CallableSql are mixed with bean save and delete&lt;/li&gt;</a>
+<span class="sourceLineNo">515</span><a id="line.515">   * &lt;li&gt;Transaction commit occurs&lt;/li&gt;</a>
+<span class="sourceLineNo">516</span><a id="line.516">   * &lt;li&gt;A getter method is called on a batched bean&lt;/li&gt;</a>
+<span class="sourceLineNo">517</span><a id="line.517">   * &lt;/ul&gt;</a>
+<span class="sourceLineNo">518</span><a id="line.518">   */</a>
+<span class="sourceLineNo">519</span><a id="line.519">  void flush() throws PersistenceException;</a>
+<span class="sourceLineNo">520</span><a id="line.520"></a>
+<span class="sourceLineNo">521</span><a id="line.521">  /**</a>
+<span class="sourceLineNo">522</span><a id="line.522">   * This is a synonym for flush() and will be deprecated.</a>
+<span class="sourceLineNo">523</span><a id="line.523">   * &lt;p&gt;</a>
+<span class="sourceLineNo">524</span><a id="line.524">   * flush() is preferred as it matches the JPA flush() method.</a>
+<span class="sourceLineNo">525</span><a id="line.525">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">526</span><a id="line.526">   */</a>
+<span class="sourceLineNo">527</span><a id="line.527">  void flushBatch() throws PersistenceException;</a>
+<span class="sourceLineNo">528</span><a id="line.528"></a>
+<span class="sourceLineNo">529</span><a id="line.529">  /**</a>
+<span class="sourceLineNo">530</span><a id="line.530">   * Return the underlying Connection object.</a>
+<span class="sourceLineNo">531</span><a id="line.531">   * &lt;p&gt;</a>
+<span class="sourceLineNo">532</span><a id="line.532">   * Useful where a Developer wishes to use the JDBC API directly. Note that the</a>
+<span class="sourceLineNo">533</span><a id="line.533">   * commit() rollback() and end() methods on the Transaction should still be</a>
+<span class="sourceLineNo">534</span><a id="line.534">   * used. Calling these methods on the Connection would be a big no no unless</a>
+<span class="sourceLineNo">535</span><a id="line.535">   * you know what you are doing.</a>
+<span class="sourceLineNo">536</span><a id="line.536">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">537</span><a id="line.537">   * &lt;p&gt;</a>
+<span class="sourceLineNo">538</span><a id="line.538">   * Examples of when a developer may wish to use the connection directly are:</a>
+<span class="sourceLineNo">539</span><a id="line.539">   * Savepoints, advanced CLOB BLOB use and advanced stored procedure calls.</a>
+<span class="sourceLineNo">540</span><a id="line.540">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">541</span><a id="line.541">   */</a>
+<span class="sourceLineNo">542</span><a id="line.542">  Connection getConnection();</a>
+<span class="sourceLineNo">543</span><a id="line.543"></a>
+<span class="sourceLineNo">544</span><a id="line.544">  /**</a>
+<span class="sourceLineNo">545</span><a id="line.545">   * Add table modification information to the TransactionEvent.</a>
+<span class="sourceLineNo">546</span><a id="line.546">   * &lt;p&gt;</a>
+<span class="sourceLineNo">547</span><a id="line.547">   * Use this in conjunction with getConnection() and raw JDBC.</a>
+<span class="sourceLineNo">548</span><a id="line.548">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">549</span><a id="line.549">   * &lt;p&gt;</a>
+<span class="sourceLineNo">550</span><a id="line.550">   * This effectively informs Ebean of the data that has been changed by the</a>
+<span class="sourceLineNo">551</span><a id="line.551">   * transaction and this information is normally automatically handled by Ebean</a>
+<span class="sourceLineNo">552</span><a id="line.552">   * when you save entity beans or use UpdateSql etc.</a>
+<span class="sourceLineNo">553</span><a id="line.553">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">554</span><a id="line.554">   * &lt;p&gt;</a>
+<span class="sourceLineNo">555</span><a id="line.555">   * If you use raw JDBC then you can use this method to inform Ebean for the</a>
+<span class="sourceLineNo">556</span><a id="line.556">   * tables that have been modified. Ebean uses this information to keep its</a>
+<span class="sourceLineNo">557</span><a id="line.557">   * caches in synch and maintain text indexes.</a>
+<span class="sourceLineNo">558</span><a id="line.558">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">559</span><a id="line.559">   */</a>
+<span class="sourceLineNo">560</span><a id="line.560">  void addModification(String tableName, boolean inserts, boolean updates, boolean deletes);</a>
+<span class="sourceLineNo">561</span><a id="line.561"></a>
+<span class="sourceLineNo">562</span><a id="line.562">  /**</a>
+<span class="sourceLineNo">563</span><a id="line.563">   * Add an arbitrary user object to the transaction. The objects added have no</a>
+<span class="sourceLineNo">564</span><a id="line.564">   * impact on any internals of ebean and are solely meant as a convenient</a>
+<span class="sourceLineNo">565</span><a id="line.565">   * method push user information (although somewhat replaced by TransactionCallback).</a>
+<span class="sourceLineNo">566</span><a id="line.566">   */</a>
+<span class="sourceLineNo">567</span><a id="line.567">  void putUserObject(String name, Object value);</a>
+<span class="sourceLineNo">568</span><a id="line.568"></a>
+<span class="sourceLineNo">569</span><a id="line.569">  /**</a>
+<span class="sourceLineNo">570</span><a id="line.570">   * Get an object added with {@link #putUserObject(String, Object)}.</a>
+<span class="sourceLineNo">571</span><a id="line.571">   */</a>
+<span class="sourceLineNo">572</span><a id="line.572">  Object getUserObject(String name);</a>
+<span class="sourceLineNo">573</span><a id="line.573">}</a>
 
 
 
