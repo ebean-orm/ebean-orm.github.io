@@ -167,10 +167,103 @@
     
 <h2>MariaDB</h2>
 <p>
-  For MariaDB we use the <a href="/docs/database/mysql">MySql</a> platform.
-  There is currently no difference.
+  Since 12.3.6 MariaDB has it's own platform with SQL2012 History support and DDL generation to support that.
+</p>
+<h3>MariaDB JDBC Driver - useLegacyDatetimeCode</h3>
+<p>
+  The expectation is that the MariaDB JDBC driver is used and that <code>useLegacyDatetimeCode=false</code>
+  is set. This ensures the JDBC driver honours the database server timezone. ebean-test will automatically
+  set the useLegacyDatetimeCode parameter for but otherwise we need to ensure that parameter is set on
+  the connection pool.
+</p>
+<div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## example manually setting useLegacyDatetimeCode in properties file</span>
+<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">my_app</span>
+<span class="na">datasource.db.password</span><span class="o">=</span><span class="s">test</span>
+<span class="na">datasource.db.url</span><span class="o">=</span><span class="s">jdbc:mariadb://localhost:4306/unit?useLegacyDatetimeCode=false</span>
+</pre></div>
+</div>
+<p>
+  It is expected that the MariaDB JDBC Driver is used.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.mariadb.jdbc<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>mariadb-java-client<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>2.6.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+<h3>Testing</h3>
+<p>
+  To test against MariaDB docker test container set the <em>platform</em> to <code>mariadb</code> in
+  <code>src/test/resources/application-test.yaml</code>
+</p>
+<p>
+  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
+</p>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mariadb</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+
+<p>
+  The above will use the following defaults:
+</p>
+<table class="compact w100">
+  <tr><th>username:</th><td>{dbName}</td></tr>
+  <tr><th>password:</th><td>test</td></tr>
+  <tr><th>port:</th><td>4306</td></tr>
+  <tr><th>url:</th><td>jdbc:mariadb://localhost:{port}/{dbName}?useLegacyDatetimeCode=false</td></tr>
+  <tr><th>image:</th><td>mariadb:{version:10}</td></tr>
+</table>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h2 id="types">Types</h2>
+<h5>UUID</h5>
+<p>
+  UUID is not a native MariaDB type and can be mapped to either BINARY(16) or VARCHAR(36).
 </p>
 
+<h5>JSON</h5>
+<p>
+  We can use <code>@DbJson</code> to map content.
+</p>
+
+<h2 id="history">History support</h2>
+<p>
+  MariaDB has native SQL2011 history support and Ebean will generate DDL to enable and use this
+  on entities annotated with <code>@History</code>.
+</p>
+
+<h2 id="start-docker">Programmatically start using docker</h2>
+<p>
+  We can programmatically start a MariaDB docker container using <code>ebean-test-docker</code> via:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MariaDBConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MariaDBContainer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StartMariaDb</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="n">MariaDBConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MariaDBConfig</span><span class="o">(</span><span class="s">&quot;10.5&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDbName</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setUser</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
+
+    <span class="n">MariaDBContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MariaDBContainer</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">startWithDropCreate</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="edit-page">
