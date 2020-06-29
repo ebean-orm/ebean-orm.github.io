@@ -175,7 +175,7 @@
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">test</span><span class="p">:</span>
-  <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, ...</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, ...</span>
     <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
     <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
 </pre></div>
@@ -188,12 +188,11 @@
   The above will use the following defaults:
 </p>
 <table class="compact w100">
-  <tr><th>username:</th><td>{databaseName}</td></tr>
+  <tr><th>username:</th><td>{dbName}</td></tr>
   <tr><th>password:</th><td>test</td></tr>
   <tr><th>port:</th><td>6432</td></tr>
-  <tr><th>url:</th><td>jdbc:postgresql://localhost:{port}/{databaseName}</td></tr>
-  <tr><th>driver:</th><td>org.postgresql.Driver</td></tr>
-  <tr><th>image:</th><td>postgres:{version}</td></tr>
+  <tr><th>url:</th><td>jdbc:postgresql://localhost:{port}/{dbName}</td></tr>
+  <tr><th>image:</th><td>postgres:{version:12}</td></tr>
 </table>
 
 
@@ -235,7 +234,13 @@
   Postgres 10 added support for table partitioning. We use <code>@DbPartition</code> to define the
   table should have range partitioning based on DAY, WEEK, MONTH or YEAR.
 </p>
-
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@DbPartition</span><span class="o">(</span><span class="nx">mode</span> <span class="o">=</span> <span class="nx">DAY</span><span class="o">,</span> <span class="nx">property</span> <span class="o">=</span> <span class="s">&quot;eventTime&quot;</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;event&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DEvent</span> <span class="kd">extends</span> <span class="n">BaseDomain</span> <span class="o">{</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
 <h2 id="extensions">Extensions</h2>
 <p>
   We may want to use extensions like <code>hstore</code> and <code>pgcrypto</code>.
