@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Mapping | Ebean</title>
+  <title>@Identity | Mapping | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/extension">Extension</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">@WhoModified</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/extension">Extension</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">@Identity</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -66,8 +66,8 @@
   <li class="nav1 active">
     <a class="active" href="/docs/mapping/extensions">Extensions</a>
     <ul class="nav">
-  <li >
-    <a  href="/docs/mapping/extensions/identity">@Identity</a>
+  <li class="active">
+    <a class="active" href="/docs/mapping/extensions/identity">@Identity</a>
   </li>
   <li >
     <a  href="/docs/mapping/extensions/dbindex">@Index</a>
@@ -99,8 +99,8 @@
   <li >
     <a  href="/docs/mapping/extensions/who-created">@WhoCreated</a>
   </li>
-  <li class="active">
-    <a class="active" href="/docs/mapping/extensions/who-modified">@WhoModified</a>
+  <li >
+    <a  href="/docs/mapping/extensions/who-modified">@WhoModified</a>
   </li>
   <li >
     <a  href="/docs/mapping/extensions/soft-delete">@SoftDelete</a>
@@ -194,16 +194,46 @@
 </form>
     
 
-
-<h2>@WhoModified</h2>
+<h2 id="identity">@Identity</h2>
 <p>
-  Along with <code>WhoCreated</code> is a property maintained by Ebean via a <code>CurrentUserProvider</code>
-  that is supplied to ServerConfig.
+  With <em>@Identity</em> we can specify additional attributes for database identity and sequences
+  and we can additionally apply this on the class level (or on the @Id property).
 </p>
-<p>&nbsp;</p>
-
 <p>
-  Refer to <a href="/docs/features/who">Who feature</a> for details.
+  It is useful to be able to specify <code>@Identity</code> on the class level when using
+  <code>@MappedBy</code> and the @Id property is inherited.
+</p>
+<p>
+  The additional properties we can specify include:
+</p>
+<ul>
+  <li><b>start</b> - start value</li>
+  <li><b>cache</b> - cache value (performance optimisation)</li>
+  <li><b>generatedBy</b> - By DEFAULT or ALWAYS</li>
+</ul>
+
+<p>&nbsp;</p>
+<h3>Example use</h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Identity</span><span class="o">(</span><span class="nx">generated</span> <span class="o">=</span> <span class="nx">BY_DEFAULT</span><span class="o">,</span> <span class="nx">start</span> <span class="o">=</span> <span class="mi">1000</span><span class="o">,</span> <span class="nx">cache</span> <span class="o">=</span> <span class="mi">100</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuditLog</span> <span class="o">{</span>
+  <span class="o">...</span>
+</pre></div>
+</div>
+
+<p>&nbsp;</p>
+<h3>start value</h3>
+<p>
+  The <em>start</em> value is supported in DDL generation for H2, Postgres, Oracle
+  and SQL Server sequences.
+</p>
+
+<p>&nbsp;</p>
+<h3>cache value</h3>
+<p>
+  The <em>cache</em> value is an important performance optimisation available in some databases
+  including Postgres, Oracle & NuoDB. This specifies how many identity values the database should
+  generate and cache ahead of time and is useful for tables that have a lot of inserts.
 </p>
 
 
