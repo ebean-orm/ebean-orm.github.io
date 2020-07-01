@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>CI Testing | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/testing">Testing</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">CI Testing</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL & Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/testing">Testing</a>
+<ul class="nav nav-scroll">
+  <li><a href="#third-age">Third age of testing</a></li>
+  <li><a href="#ebean-test">ebean-test dependency</a></li>
+  <li><a href="#ddlmode">DDL Mode</a></li>
+  <li><a href="#docker">Docker test containers</a></li>
+    <li >
+    <a  href="/docs/testing/#scriptRunner#container-startup">Container startup</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#container-shutdown">Container shutdown</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#not-docker">Not using docker</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#current-user">Current User & Tenant</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#ddl-generation-properties">DDL generation properties</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#scriptRunner">DDL/SQL Script runner</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/testing/ci-testing">CI - Jenkins etc</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+<h2 id="jenkins-k8s">Jenkins Kubernetes Plugin</h2>
+<p>
+  With the Jenkins Kubernetes Plugin we can add a <code>containerTemplate()</code> for the database
+  container we want to use.
+</p>
+
+<h3>containerTemplate</h3>
+<p>
+  Add a <code>containerTemplate</code> entry for postgres like below:
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">containerTemplate</span><span class="o">(</span><span class="nl">args:</span> <span class="s1">&#39;-p 6432&#39;</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">&#39;postgres12&#39;</span><span class="o">,</span> <span class="nl">image:</span> <span class="s1">&#39;postgres:12&#39;</span><span class="o">,</span>
+  <span class="nl">envVars:</span> <span class="o">[</span><span class="n">containerEnvVar</span><span class="o">(</span><span class="nl">key:</span> <span class="s1">&#39;POSTGRES_PASSWORD&#39;</span><span class="o">,</span> <span class="nl">value:</span> <span class="s1">&#39;admin&#39;</span><span class="o">)]</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+<p>
+  This will add a postgres container to the pod running with port 6432 with the password for
+  the <code>postgres</code> user set to <code>admin</code>. This postgres instance
+  will then be available on <code>localhost:6432</code>.
+</p>
+
+<h3>pg_isready</h3>
+<p>
+  We add a code block that uses <code>pg_isready</code> to wait for postgres to be ready
+  before we build and run tests.
+</p>
+<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="n">container</span><span class="o">(</span><span class="s1">&#39;postgres12&#39;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">print</span> <span class="s2">&quot;wait for postgres ready&quot;</span>
+  <span class="n">sh</span><span class="o">(</span><span class="s1">&#39;pg_isready -t 60 -h localhost -p 6432&#39;</span><span class="o">)</span>
+  <span class="n">print</span> <span class="s2">&quot;postgres ready now, continue&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  When ebean-test starts it will make a JDBC connection using <em>postgres:admin</em> username
+  and password and will use this to create the database, role and add extensions as needed.
+</p>
+
+<h3>Logs</h3>
+<p>
+  In the logs before the tests actually run we see ebean-test connects to <code>jdbc:postgresql://localhost:6432</code>
+  and runs sql to create the database, role and extensions necessary to run the tests.
+</p>
+<div class="syntax text"><div class="highlight"><pre><span></span>INFO  ?. io.ebean.EbeanVersion - ebean version: 12.3.6
+INFO  ?. io.ebean.config.properties.LoadContext - loaded properties from [application.properties, application-test.yaml]
+INFO  ?. io.ebean.test.config.platform.Config - Using jdbc settings - username:my_app url:jdbc:postgresql://localhost:6432/my_app driver:org.postgresql.Driver
+TRACE ?. io.ebean.docker.commands.Commands - sqlRun: select 1 from pg_database where datname = &#39;my_app&#39;
+TRACE ?. io.ebean.docker.commands.Commands - sqlRun: select rolname from pg_roles where rolname = &#39;my_app&#39;
+DEBUG ?. io.ebean.docker.commands.Commands - sqlRun: create role my_app password &#39;test&#39; login createrole
+DEBUG ?. io.ebean.docker.commands.Commands - sqlRun: create database my_app with owner my_app
+DEBUG ?. io.ebean.docker.commands.Commands - sqlRun: create extension if not exists hstore
+DEBUG ?. io.ebean.docker.commands.Commands - sqlRun: create extension if not exists pgcrypto
+DEBUG ?. io.ebean.docker.commands.Commands - Container ut_postgres ready with port 6432
+</pre></div>
+</div>
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/testing/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/database" class="btn btn-info">Next: Database platforms</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>
