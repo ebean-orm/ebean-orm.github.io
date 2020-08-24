@@ -1031,7 +1031,7 @@ where id in (?,?,?,?,?)
 
   <p>The benefit of using PagedList over just using the normal Query with Query.setFirstRow(int) and
     Query.setMaxRows(int) is that it additionally wraps functionality that can call
-    Query.findFutureRowCount() to determine total row count, total page count etc.</p>
+    Query.findFutureCount() to determine total row count, total page count etc.</p>
 
   <p>Internally this works using Query.setFirstRow(int) and Query.setMaxRows(int) on the query. This
     translates into SQL that uses limit offset, rownum or row_number function to limit the result
@@ -1091,7 +1091,7 @@ Methods on Query for ansychronous execution
 
 <span class="kd">public</span> <span class="n">FutureIds</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureIds</span><span class="o">();</span>
 
-<span class="kd">public</span> <span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureRowCount</span><span class="o">();</span>
+<span class="kd">public</span> <span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="nf">findFutureCount</span><span class="o">();</span>
 </pre></div>
 </div>
 
