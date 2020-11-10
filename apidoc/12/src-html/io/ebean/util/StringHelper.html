@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.util;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import java.util.HashMap;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import java.util.Map;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import java.util.regex.Pattern;</a>
+<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">007</span><a id="line.7">/**</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * Utility String class that supports String manipulation functions.</a>
+<span class="sourceLineNo">009</span><a id="line.9"> */</a>
+<span class="sourceLineNo">010</span><a id="line.10">public class StringHelper {</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">  private static final Pattern SPLIT_NAMES = Pattern.compile("[\\s,;]+");</a>
+<span class="sourceLineNo">013</span><a id="line.13"></a>
+<span class="sourceLineNo">014</span><a id="line.14">  private static final String[] EMPTY_STRING_ARRAY = new String[0];</a>
+<span class="sourceLineNo">015</span><a id="line.15"></a>
+<span class="sourceLineNo">016</span><a id="line.16">  /**</a>
+<span class="sourceLineNo">017</span><a id="line.17">   * Return true if the value is null or an empty string.</a>
+<span class="sourceLineNo">018</span><a id="line.18">   */</a>
+<span class="sourceLineNo">019</span><a id="line.19">  public static boolean isNull(String value) {</a>
+<span class="sourceLineNo">020</span><a id="line.20">    return value == null || value.trim().isEmpty();</a>
+<span class="sourceLineNo">021</span><a id="line.21">  }</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">  /**</a>
+<span class="sourceLineNo">024</span><a id="line.24">   * Parses out a list of Name Value pairs that are delimited together. Will</a>
+<span class="sourceLineNo">025</span><a id="line.25">   * always return a StringMap. If allNameValuePairs is null, or no name values</a>
+<span class="sourceLineNo">026</span><a id="line.26">   * can be parsed out an empty StringMap is returned.</a>
+<span class="sourceLineNo">027</span><a id="line.27">   *</a>
+<span class="sourceLineNo">028</span><a id="line.28">   * @param source  the entire string to be parsed.</a>
+<span class="sourceLineNo">029</span><a id="line.29">   * @param listDelimiter      (typically ';') the delimited between the list</a>
+<span class="sourceLineNo">030</span><a id="line.30">   * @param nameValueSeparator (typically '=') the separator between the name and value</a>
+<span class="sourceLineNo">031</span><a id="line.31">   */</a>
+<span class="sourceLineNo">032</span><a id="line.32">  public static Map&lt;String, String&gt; delimitedToMap(String source, String listDelimiter, String nameValueSeparator) {</a>
+<span class="sourceLineNo">033</span><a id="line.33">    Map&lt;String, String&gt; params = new HashMap&lt;&gt;();</a>
+<span class="sourceLineNo">034</span><a id="line.34">    if (source == null || source.isEmpty()) {</a>
+<span class="sourceLineNo">035</span><a id="line.35">      return params;</a>
+<span class="sourceLineNo">036</span><a id="line.36">    }</a>
+<span class="sourceLineNo">037</span><a id="line.37">    // trim off any leading listDelimiter...</a>
+<span class="sourceLineNo">038</span><a id="line.38">    source = trimFront(source, listDelimiter);</a>
+<span class="sourceLineNo">039</span><a id="line.39">    return delimitedToMap(params, source, listDelimiter, nameValueSeparator);</a>
+<span class="sourceLineNo">040</span><a id="line.40">  }</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">  /**</a>
+<span class="sourceLineNo">043</span><a id="line.43">   * Trims off recurring strings from the front of a string.</a>
+<span class="sourceLineNo">044</span><a id="line.44">   *</a>
+<span class="sourceLineNo">045</span><a id="line.45">   * @param source the source string</a>
+<span class="sourceLineNo">046</span><a id="line.46">   * @param trim   the string to trim off the front</a>
+<span class="sourceLineNo">047</span><a id="line.47">   */</a>
+<span class="sourceLineNo">048</span><a id="line.48">  private static String trimFront(String source, String trim) {</a>
+<span class="sourceLineNo">049</span><a id="line.49">    while (true) {</a>
+<span class="sourceLineNo">050</span><a id="line.50">      if (source.indexOf(trim) == 0) {</a>
+<span class="sourceLineNo">051</span><a id="line.51">        source = source.substring(trim.length());</a>
+<span class="sourceLineNo">052</span><a id="line.52">      } else {</a>
+<span class="sourceLineNo">053</span><a id="line.53">        return source;</a>
+<span class="sourceLineNo">054</span><a id="line.54">      }</a>
+<span class="sourceLineNo">055</span><a id="line.55">    }</a>
+<span class="sourceLineNo">056</span><a id="line.56">  }</a>
+<span class="sourceLineNo">057</span><a id="line.57"></a>
+<span class="sourceLineNo">058</span><a id="line.58">  /**</a>
+<span class="sourceLineNo">059</span><a id="line.59">   * Recursively pulls out the key value pairs from a raw string.</a>
+<span class="sourceLineNo">060</span><a id="line.60">   */</a>
+<span class="sourceLineNo">061</span><a id="line.61">  private static Map&lt;String, String&gt; delimitedToMap(Map&lt;String, String&gt; map, String source, String listDelimiter, String nameValueSeparator) {</a>
+<span class="sourceLineNo">062</span><a id="line.62">    int pos = 0;</a>
+<span class="sourceLineNo">063</span><a id="line.63">    while (true) {</a>
+<span class="sourceLineNo">064</span><a id="line.64">      if (pos &gt;= source.length()) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">        return map;</a>
+<span class="sourceLineNo">066</span><a id="line.66">      }</a>
+<span class="sourceLineNo">067</span><a id="line.67">      int equalsPos = source.indexOf(nameValueSeparator, pos);</a>
+<span class="sourceLineNo">068</span><a id="line.68">      int delimPos = source.indexOf(listDelimiter, pos);</a>
+<span class="sourceLineNo">069</span><a id="line.69">      if (delimPos == -1) {</a>
+<span class="sourceLineNo">070</span><a id="line.70">        delimPos = source.length();</a>
+<span class="sourceLineNo">071</span><a id="line.71">      }</a>
+<span class="sourceLineNo">072</span><a id="line.72">      if (equalsPos == -1) {</a>
+<span class="sourceLineNo">073</span><a id="line.73">        return map;</a>
+<span class="sourceLineNo">074</span><a id="line.74">      }</a>
+<span class="sourceLineNo">075</span><a id="line.75">      if (delimPos == (equalsPos + 1)) {</a>
+<span class="sourceLineNo">076</span><a id="line.76">        pos = delimPos + 1;</a>
+<span class="sourceLineNo">077</span><a id="line.77">        continue;</a>
+<span class="sourceLineNo">078</span><a id="line.78">      }</a>
+<span class="sourceLineNo">079</span><a id="line.79">      if (equalsPos &gt; delimPos) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">        // there is a key without a value?</a>
+<span class="sourceLineNo">081</span><a id="line.81">        String key = source.substring(pos, delimPos);</a>
+<span class="sourceLineNo">082</span><a id="line.82">        key = key.trim();</a>
+<span class="sourceLineNo">083</span><a id="line.83">        if (!key.isEmpty()) {</a>
+<span class="sourceLineNo">084</span><a id="line.84">          map.put(key, null);</a>
+<span class="sourceLineNo">085</span><a id="line.85">        }</a>
+<span class="sourceLineNo">086</span><a id="line.86">        pos = delimPos + 1;</a>
+<span class="sourceLineNo">087</span><a id="line.87">        continue;</a>
+<span class="sourceLineNo">088</span><a id="line.88">      }</a>
+<span class="sourceLineNo">089</span><a id="line.89">      String key = source.substring(pos, equalsPos);</a>
+<span class="sourceLineNo">090</span><a id="line.90">      String value = source.substring(equalsPos + 1, delimPos);</a>
+<span class="sourceLineNo">091</span><a id="line.91">      map.put(key.trim(), value);</a>
+<span class="sourceLineNo">092</span><a id="line.92">      pos = delimPos + 1;</a>
+<span class="sourceLineNo">093</span><a id="line.93">    }</a>
+<span class="sourceLineNo">094</span><a id="line.94">  }</a>
+<span class="sourceLineNo">095</span><a id="line.95"></a>
+<span class="sourceLineNo">096</span><a id="line.96">  /**</a>
+<span class="sourceLineNo">097</span><a id="line.97">   * This method takes a String and will replace all occurrences of the match</a>
+<span class="sourceLineNo">098</span><a id="line.98">   * String with that of the replace String.</a>
+<span class="sourceLineNo">099</span><a id="line.99">   *</a>
+<span class="sourceLineNo">100</span><a id="line.100">   * @param source  the source string</a>
+<span class="sourceLineNo">101</span><a id="line.101">   * @param match   the string used to find a match</a>
+<span class="sourceLineNo">102</span><a id="line.102">   * @param replace the string used to replace match with</a>
+<span class="sourceLineNo">103</span><a id="line.103">   * @return the source string after the search and replace</a>
+<span class="sourceLineNo">104</span><a id="line.104">   */</a>
+<span class="sourceLineNo">105</span><a id="line.105">  public static String replace(String source, String match, String replace) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">    if (source == null) {</a>
+<span class="sourceLineNo">107</span><a id="line.107">      return null;</a>
+<span class="sourceLineNo">108</span><a id="line.108">    }</a>
+<span class="sourceLineNo">109</span><a id="line.109">    if (replace == null) {</a>
+<span class="sourceLineNo">110</span><a id="line.110">      return source;</a>
+<span class="sourceLineNo">111</span><a id="line.111">    }</a>
+<span class="sourceLineNo">112</span><a id="line.112">    return source.replace(match, replace);</a>
+<span class="sourceLineNo">113</span><a id="line.113">  }</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">  /**</a>
+<span class="sourceLineNo">116</span><a id="line.116">   * Return new line and carriage return with space.</a>
+<span class="sourceLineNo">117</span><a id="line.117">   */</a>
+<span class="sourceLineNo">118</span><a id="line.118">  public static String removeNewLines(String source) {</a>
+<span class="sourceLineNo">119</span><a id="line.119">    source = source.replace('\n', ' ');</a>
+<span class="sourceLineNo">120</span><a id="line.120">    return source.replace('\r', ' ');</a>
+<span class="sourceLineNo">121</span><a id="line.121">  }</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">  /**</a>
+<span class="sourceLineNo">124</span><a id="line.124">   * Splits at any whitespace "," or ";" and trims the result.</a>
+<span class="sourceLineNo">125</span><a id="line.125">   * It does not return empty entries.</a>
+<span class="sourceLineNo">126</span><a id="line.126">   */</a>
+<span class="sourceLineNo">127</span><a id="line.127">  public static String[] splitNames(String names) {</a>
+<span class="sourceLineNo">128</span><a id="line.128">    if (names == null || names.isEmpty()) {</a>
+<span class="sourceLineNo">129</span><a id="line.129">      return EMPTY_STRING_ARRAY;</a>
+<span class="sourceLineNo">130</span><a id="line.130">    }</a>
+<span class="sourceLineNo">131</span><a id="line.131">    String[] result = SPLIT_NAMES.split(names);</a>
+<span class="sourceLineNo">132</span><a id="line.132">    if (result.length == 0) {</a>
+<span class="sourceLineNo">133</span><a id="line.133">      return EMPTY_STRING_ARRAY;</a>
+<span class="sourceLineNo">134</span><a id="line.134">    }</a>
+<span class="sourceLineNo">135</span><a id="line.135">    if ("".equals(result[0])) { //  input string starts with whitespace</a>
+<span class="sourceLineNo">136</span><a id="line.136">      if (result.length == 1) { // input string contains only whitespace</a>
+<span class="sourceLineNo">137</span><a id="line.137">        return EMPTY_STRING_ARRAY;</a>
+<span class="sourceLineNo">138</span><a id="line.138">      } else {</a>
+<span class="sourceLineNo">139</span><a id="line.139">        String[] ret = new String[result.length-1]; // remove first entry</a>
+<span class="sourceLineNo">140</span><a id="line.140">        System.arraycopy(result, 1, ret, 0, ret.length);</a>
+<span class="sourceLineNo">141</span><a id="line.141">        return ret;</a>
+<span class="sourceLineNo">142</span><a id="line.142">      }</a>
+<span class="sourceLineNo">143</span><a id="line.143">    } else {</a>
+<span class="sourceLineNo">144</span><a id="line.144">      return result;</a>
+<span class="sourceLineNo">145</span><a id="line.145">    }</a>
+<span class="sourceLineNo">146</span><a id="line.146">  }</a>
+<span class="sourceLineNo">147</span><a id="line.147">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

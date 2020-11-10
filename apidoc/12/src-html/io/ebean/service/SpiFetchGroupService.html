@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package io.ebean.service;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">import io.ebean.FetchGroup;</a>
+<span class="sourceLineNo">004</span><a id="line.4">import io.ebean.FetchGroupBuilder;</a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">/**</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * Service that parses FetchGroup expressions.</a>
+<span class="sourceLineNo">008</span><a id="line.8"> */</a>
+<span class="sourceLineNo">009</span><a id="line.9">public interface SpiFetchGroupService {</a>
+<span class="sourceLineNo">010</span><a id="line.10"></a>
+<span class="sourceLineNo">011</span><a id="line.11">  /**</a>
+<span class="sourceLineNo">012</span><a id="line.12">   * Return the FetchGroup with the given select clause.</a>
+<span class="sourceLineNo">013</span><a id="line.13">   *</a>
+<span class="sourceLineNo">014</span><a id="line.14">   * @param beanType The type of entity bean the fetch group is for</a>
+<span class="sourceLineNo">015</span><a id="line.15">   * @param select   The properties to select (top level properties)</a>
+<span class="sourceLineNo">016</span><a id="line.16">   */</a>
+<span class="sourceLineNo">017</span><a id="line.17">  &lt;T&gt; FetchGroup&lt;T&gt; of(Class&lt;T&gt; beanType, String select);</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">  /**</a>
+<span class="sourceLineNo">020</span><a id="line.20">   * Create and return a FetchGroupBuilder starting with a select() clause.</a>
+<span class="sourceLineNo">021</span><a id="line.21">   *</a>
+<span class="sourceLineNo">022</span><a id="line.22">   * @param beanType The type of entity bean the fetch group is for</a>
+<span class="sourceLineNo">023</span><a id="line.23">   * @return The FetchGroupBuilder to add additional select and fetch clauses</a>
+<span class="sourceLineNo">024</span><a id="line.24">   */</a>
+<span class="sourceLineNo">025</span><a id="line.25">  &lt;T&gt; FetchGroupBuilder&lt;T&gt; of(Class&lt;T&gt; beanType);</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">  /**</a>
+<span class="sourceLineNo">028</span><a id="line.28">   * Return a new FetchGroupQuery for building FetchGroup via query beans.</a>
+<span class="sourceLineNo">029</span><a id="line.29">   */</a>
+<span class="sourceLineNo">030</span><a id="line.30">  &lt;T&gt; SpiFetchGroupQuery&lt;T&gt; queryFor(Class&lt;T&gt; beanType);</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
