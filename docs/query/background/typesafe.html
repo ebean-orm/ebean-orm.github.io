@@ -278,312 +278,31 @@
 </pre></div>
 </div>
 
-  <h2 id="dependencies">Dependencies</h2>
-
-  <h4>querybean-generator</h4>
+  <h2 id="apt" class="art">APT / KAPT <em>(generating query beans)</em></h2>
   <p>
-    Query bean generator is a Java annotation processor so you add it as a dependency and then javac
-    will automatically register it and whenever a entity is compiled the associated query beans are
-    generated.
-  </p>
-  <p>
-    If the dependency is added with <code>provided</code> scope then the generator itself will not
-    be included in the final build artifact.
+    To generate <code>Java</code> query beans we use the <em>io.ebean:querybean-generator</em>
+    java annotation processor and to generate <code>Kotlin</code> query beans we use
+    <em>io.ebean:kotlin-querybean-generator</em>.
   </p>
 
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven1" aria-controls="Maven1" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy1" aria-controls="Ivy1" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape1" aria-controls="Grape1" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle1" aria-controls="Gradle1" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr1" aria-controls="Buildr1" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT1" aria-controls="SBT1" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen1" aria-controls="Leiningen1" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven1">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy1">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr1">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT1">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen1">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
-
-
-  </div>
-
-  <h4>ebean-querybean</h4>
+  <h4 id="maven" class="art">Generating with Maven</h4>
   <p>
-    We need to add <code>ebean-querybean</code> as a dependency. This provides the property
-    types for the generated <code>query beans</code>.
+    Refer to <a href="/docs/getting-started/maven">docs / getting-started / maven</a>
+    for details of how to generate query beans using maven.
   </p>
 
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven2" aria-controls="Maven2" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy2" aria-controls="Ivy2" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape2" aria-controls="Grape2" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle2" aria-controls="Gradle2" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr2" aria-controls="Buildr2" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT2" aria-controls="SBT2" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen2" aria-controls="Leiningen2" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven2">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy2">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape2">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle2">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr2">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT2">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen2">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
-
-
-  </div>
-
-
-  <h2 id="enhancement">Enhancement</h2>
+  <h4 id="gradle">Generating with Gradle</h4>
   <p>
-    The <code>query beans</code> have been designed so for maximum readability of the query code. That is,
-    some type safe query mechanisms achieve the type safety goal but in doing so result in query code that
-    is virtually unreadable and we specifically want to avoid that issue.
-  </p>
-  <p>
-    Ebean's type safe query mechanism results in very readable queries with the downside that it requires
-    a bit of AOP to enhance <code>query beans</code> and simulate properties. If the target JVM language
-    supported properties then we would not need to use AOP but Java does not have proper properties support
-    so we are using AOP instead.
-  </p>
-  <p>
-    The AOP enhancement is easy to incorporate with an IDE plugin available for IntelliJ IDEA (and planned
-    for Eclipse) as well as the standard javaagent and maven plugin for load time and compile time enhancement.
+    Refer to <a href="/docs/getting-started/gradle">docs / getting-started / gradle</a>
+    for details of how to generate query beans using gradle.
   </p>
 
-  <h3>IDEA Query bean plugin</h3>
+  <h2 id="enhancement" class="art">Enhancement</h2>
   <p>
-    In IntelliJ install the <code>Ebean ORM Query bean enhancer</code> plugin. It should then appear as an
-    extra item on the <code>Build menu</code> where it can be toggled on and off.
+    Note that prior to version 12.1.8 we need to edit a <code>src/main/resources/ebean.mf</code>
+    manifest file to specify <code>querybean-packages</code> for the packages that should
+    be enhanced for query beans. This is no longer needed from 12.1.8 onwards.
   </p>
-
-  <h3>Maven tile</h3>
-  <p>
-    Ebean supplies a maven tile that brings in both the enhancer for entity beans as well
-    as the enhancement for query beans. This is simpler, cleaner less verbose than
-    defining the plugin in the traditional (non-tile) fashion and now the preferred approach.
-  </p>
-
-  <h5>ebean-enhancement tile</h5>
-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.17<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;tiles&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:12.3.6<span class="nt">&lt;/tile&gt;</span>
-    <span class="nt">&lt;/tiles&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
-</div>
-  <p>
-    Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.
-  </p>
-
-<!--
-
-  <h3>querybean-maven-plugin</h3>
-  <p>
-    If you do <b>NOT</b> wish to use maven tiles then you can define the <code>querybean-maven-plugin</code>
-    in the more traditional (non-tile) manor as shown below. This is more verbose and less clean than the
-    tile approach and as such using the tile instead is preferred.
-  </p>
-
-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>org.avaje.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>querybean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>8.1.1<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;executions&gt;</span>
-    <span class="c">&lt;!-- enhance code --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-    <span class="c">&lt;!-- enhance test code --&gt;</span>
-    <span class="nt">&lt;execution&gt;</span>
-      <span class="nt">&lt;id&gt;</span>test<span class="nt">&lt;/id&gt;</span>
-      <span class="nt">&lt;phase&gt;</span>process-test-classes<span class="nt">&lt;/phase&gt;</span>
-      <span class="nt">&lt;configuration&gt;</span>
-        <span class="nt">&lt;classSource&gt;</span>target/test-classes<span class="nt">&lt;/classSource&gt;</span>
-        <span class="nt">&lt;transformArgs&gt;</span>debug=0<span class="nt">&lt;/transformArgs&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-      <span class="nt">&lt;goals&gt;</span>
-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>
-      <span class="nt">&lt;/goals&gt;</span>
-    <span class="nt">&lt;/execution&gt;</span>
-  <span class="nt">&lt;/executions&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
-</pre></div>
-</div>
-
-  <h4>querybean-agent</h4>
-  <p>
-    You use the <code>querybean-agent</code> if you want to use the standard <code>javaagent</code>
-    mechanism to enhance the <code>query beans</code>.
-  </p>
-
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven3" aria-controls="Maven3" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy3" aria-controls="Ivy3" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape3" aria-controls="Grape3" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle3" aria-controls="Gradle3" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr3" aria-controls="Buildr3" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT3" aria-controls="SBT3" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen3" aria-controls="Leiningen3" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven3">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy3">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr3">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT3">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen3">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
-
-
-  </div>
-
--->
-
-  <h2 id="generation">Generation</h2>
-  <p>
-    Once the dependency to querybean-generator is added the query beans will be generated
-    automatically whenever javac compile occurs.
-  </p>
-<!--
-  <p>
-    Note that along with generating query beans the generator generates
-    a manifest file at: <code>META-INF/ebean-typequery.mf</code>
-  </p>
--->
 
   <hr/>
 
@@ -594,65 +313,13 @@
     re-run this process (where as with the java annotation processor it is automatically updated with each
     compile).
   </p>
-
-
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#Maven4" aria-controls="Maven4" role="tab" data-toggle="tab">Maven</a></li>
-      <li role="presentation"><a href="#Ivy4" aria-controls="Ivy4" role="tab" data-toggle="tab">Ivy</a></li>
-      <li role="presentation"><a href="#Grape4" aria-controls="Grape4" role="tab" data-toggle="tab">Grape</a></li>
-      <li role="presentation"><a href="#Gradle4" aria-controls="Gradle4" role="tab" data-toggle="tab">Gradle</a></li>
-      <li role="presentation"><a href="#Buildr4" aria-controls="Buildr4" role="tab" data-toggle="tab">Buildr</a></li>
-      <li role="presentation"><a href="#SBT4" aria-controls="SBT4" role="tab" data-toggle="tab">SBT</a></li>
-      <li role="presentation"><a href="#Leiningen4" aria-controls="Leiningen4" role="tab" data-toggle="tab">Leiningen</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="Maven4">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>&#36;{groupid}<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>&#36;{artifactid}<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>&#36;{version_str}<span class="nt">&lt;/version&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean.tools<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>finder-generator<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>12.1.1<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Ivy4">
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency</span> <span class="na">org=</span><span class="s">&quot;&#36;{groupid}&quot;</span> <span class="na">name=</span><span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="na">rev=</span><span class="s">&quot;&#36;{version_str}&quot;</span><span class="nt">/&gt;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Grape4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="nd">@Grapes</span><span class="o">(</span>
-  <span class="nd">@Grab</span><span class="o">(</span><span class="n">group</span><span class="o">=</span><span class="s1">&#39;&#36;{groupid}&#39;</span><span class="o">,</span> <span class="n">module</span><span class="o">=</span><span class="s1">&#39;&#36;{artifactid}&#39;</span><span class="o">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;&#36;{version_str}&#39;</span><span class="o">)</span>
-<span class="o">)</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Gradle4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Buildr4">
-<div class="syntax groovy"><div class="highlight"><pre><span></span><span class="s1">&#39;&#36;{groupid}:&#36;{artifactid}:&#36;{version_str}&#39;</span>
-</pre></div>
-</div>    </div>
-      <div role="tabpanel" class="tab-pane" id="SBT4">
-<div class="syntax scala"><div class="highlight"><pre><span></span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">&quot;&#36;{groupid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{artifactid}&quot;</span> <span class="o">%</span> <span class="s">&quot;&#36;{version_str}&quot;</span>
-</pre></div>
-</div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="Leiningen4">
-<div class="syntax xml"><div class="highlight"><pre><span></span>[&#36;{groupid}/&#36;{artifactid} &quot;&#36;{version_str}&quot;]
-</pre></div>
-</div>
-      </div>
-    </div>
-
-
-  </div>
   <p>
     To generate the <code>query beans</code> add code similar to below to your <code>src/test</code>.
     The Generator reads compiled <code>.class</code> entity beans using the <code>ASM</code> library.
@@ -704,94 +371,6 @@
 <span class="o">}</span>
 </pre></div>
 </div>
-
-
-
-  <h2 id="query-beans">Query bean source</h2>
-  <p>
-    For each entity bean a <code>query bean</code> is generated.
-  </p>
-
-  <h4>Example</h4>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">org.example.domain.query</span><span class="o">;</span>
-
-<span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.PEnum</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.PLong</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.PSqlDate</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.PTimestamp</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.TQRootBean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">io.ebean.typequery.TypeQueryBean</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.Order</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.Order.Status</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocAddress</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocCustomer</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">org.example.domain.query.assoc.QAssocOrderDetail</span><span class="o">;</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Query bean for Order.</span>
-<span class="cm"> */</span>
-<span class="nd">@TypeQueryBean</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QOrder</span> <span class="kd">extends</span> <span class="n">TQRootBean</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">,</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="o">{</span>
-
-  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">QOrder</span> <span class="n">_alias</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QOrder</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Return the shared &#39;Alias&#39; instance used to provide properties to</span>
-<span class="cm">   * &lt;code&gt;select()&lt;/code&gt; and &lt;code&gt;fetch()&lt;/code&gt;</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">QOrder</span> <span class="nf">alias</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">_alias</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">id</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PLong</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">version</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenCreated</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PTimestamp</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">whenUpdated</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PEnum</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">,</span><span class="n">Status</span><span class="o">&gt;</span> <span class="n">status</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">orderDate</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">PSqlDate</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shipDate</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocCustomer</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">customer</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocAddress</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">shippingAddress</span><span class="o">;</span>
-  <span class="kd">public</span> <span class="n">QAssocOrderDetail</span><span class="o">&lt;</span><span class="n">QOrder</span><span class="o">&gt;</span> <span class="n">details</span><span class="o">;</span>
-
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct with a given EbeanServer.</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">(</span><span class="n">EbeanServer</span> <span class="n">server</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">server</span><span class="o">)</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct using the default EbeanServer.</span>
-<span class="cm">   */</span>
-  <span class="kd">public</span> <span class="nf">QOrder</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-  <span class="o">}</span>
-
-  <span class="cm">/**</span>
-<span class="cm">   * Construct for Alias.</span>
-<span class="cm">   */</span>
-  <span class="kd">private</span> <span class="nf">QOrder</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">dummy</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">(</span><span class="n">dummy</span><span class="o">);</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-  <h4>Associated Query Beans</h4>
-  <p>
-    Along with <code>query beans</code> you'll see another set of generated beans that look very similar
-    to query beans in a <code>assoc</code> sub-package - these are <code>association query beans</code>
-    and represent beans when they are associated by OneToMany, ManyToOne, OneToOne and ManyToOne or are
-    Embedded.
-  </p>
-  <p>
-    When beans are associated/related they have slightly different expressions like <code>fetch()</code>,
-    <code>filterMany()</code> and <code>equalTo()</code> and need different internals to work as expected.
-    They look a little redundant but they aren't (in order to get a nice representation of the query language
-    features).
-  </p>
 
 </div>
 
