@@ -11,8 +11,8 @@
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import io.ebean.docstore.DocQueryContext;</a>
 <span class="sourceLineNo">004</span><a id="line.4">import io.ebean.docstore.RawDoc;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import javax.annotation.Nullable;</a>
-<span class="sourceLineNo">006</span><a id="line.6"></a>
+<span class="sourceLineNo">005</span><a id="line.5"></a>
+<span class="sourceLineNo">006</span><a id="line.6">import javax.annotation.Nullable;</a>
 <span class="sourceLineNo">007</span><a id="line.7">import java.io.IOException;</a>
 <span class="sourceLineNo">008</span><a id="line.8">import java.util.List;</a>
 <span class="sourceLineNo">009</span><a id="line.9">import java.util.Map;</a>
@@ -158,7 +158,7 @@
 <span class="sourceLineNo">149</span><a id="line.149">   *    .setUseDocStore(true)</a>
 <span class="sourceLineNo">150</span><a id="line.150">   *    .where()... // perhaps add predicates</a>
 <span class="sourceLineNo">151</span><a id="line.151">   *    .findEachWhile(new Predicate&lt;Order&gt;() {</a>
-<span class="sourceLineNo">152</span><a id="line.152">   *      ＠Override</a>
+<span class="sourceLineNo">152</span><a id="line.152">   *      @Override</a>
 <span class="sourceLineNo">153</span><a id="line.153">   *      public void accept(Order bean) {</a>
 <span class="sourceLineNo">154</span><a id="line.154">   *        // process the bean</a>
 <span class="sourceLineNo">155</span><a id="line.155">   *</a>

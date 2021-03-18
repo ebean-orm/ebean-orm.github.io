@@ -16,281 +16,308 @@
 <span class="sourceLineNo">007</span><a id="line.7">import javax.persistence.Inheritance;</a>
 <span class="sourceLineNo">008</span><a id="line.8">import javax.persistence.Table;</a>
 <span class="sourceLineNo">009</span><a id="line.9"></a>
-<span class="sourceLineNo">010</span><a id="line.10">/**</a>
-<span class="sourceLineNo">011</span><a id="line.11"> * Provides some base implementation for NamingConventions.</a>
-<span class="sourceLineNo">012</span><a id="line.12"> *</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * @author emcgreal</a>
-<span class="sourceLineNo">014</span><a id="line.14"> */</a>
-<span class="sourceLineNo">015</span><a id="line.15">public abstract class AbstractNamingConvention implements NamingConvention {</a>
-<span class="sourceLineNo">016</span><a id="line.16"></a>
-<span class="sourceLineNo">017</span><a id="line.17">  /**</a>
-<span class="sourceLineNo">018</span><a id="line.18">   * The Constant DEFAULT_SEQ_FORMAT.</a>
-<span class="sourceLineNo">019</span><a id="line.19">   */</a>
-<span class="sourceLineNo">020</span><a id="line.20">  public static final String DEFAULT_SEQ_FORMAT = "{table}_seq";</a>
-<span class="sourceLineNo">021</span><a id="line.21"></a>
-<span class="sourceLineNo">022</span><a id="line.22">  /**</a>
-<span class="sourceLineNo">023</span><a id="line.23">   * The catalog.</a>
-<span class="sourceLineNo">024</span><a id="line.24">   */</a>
-<span class="sourceLineNo">025</span><a id="line.25">  private String catalog;</a>
-<span class="sourceLineNo">026</span><a id="line.26"></a>
-<span class="sourceLineNo">027</span><a id="line.27">  /**</a>
-<span class="sourceLineNo">028</span><a id="line.28">   * The schema.</a>
-<span class="sourceLineNo">029</span><a id="line.29">   */</a>
-<span class="sourceLineNo">030</span><a id="line.30">  private String schema;</a>
-<span class="sourceLineNo">031</span><a id="line.31"></a>
-<span class="sourceLineNo">032</span><a id="line.32">  /**</a>
-<span class="sourceLineNo">033</span><a id="line.33">   * The sequence format.</a>
-<span class="sourceLineNo">034</span><a id="line.34">   */</a>
-<span class="sourceLineNo">035</span><a id="line.35">  private String sequenceFormat;</a>
-<span class="sourceLineNo">036</span><a id="line.36"></a>
-<span class="sourceLineNo">037</span><a id="line.37">  /**</a>
-<span class="sourceLineNo">038</span><a id="line.38">   * The database platform.</a>
-<span class="sourceLineNo">039</span><a id="line.39">   */</a>
-<span class="sourceLineNo">040</span><a id="line.40">  protected DatabasePlatform databasePlatform;</a>
-<span class="sourceLineNo">041</span><a id="line.41"></a>
-<span class="sourceLineNo">042</span><a id="line.42">  /**</a>
-<span class="sourceLineNo">043</span><a id="line.43">   * Used to trim off extra prefix for M2M.</a>
-<span class="sourceLineNo">044</span><a id="line.44">   */</a>
-<span class="sourceLineNo">045</span><a id="line.45">  protected int rhsPrefixLength = 3;</a>
-<span class="sourceLineNo">046</span><a id="line.46"></a>
-<span class="sourceLineNo">047</span><a id="line.47">  protected boolean useForeignKeyPrefix;</a>
+<span class="sourceLineNo">010</span><a id="line.10">import static io.ebean.util.StringHelper.isNull;</a>
+<span class="sourceLineNo">011</span><a id="line.11"></a>
+<span class="sourceLineNo">012</span><a id="line.12">/**</a>
+<span class="sourceLineNo">013</span><a id="line.13"> * Provides some base implementation for NamingConventions.</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * @author emcgreal</a>
+<span class="sourceLineNo">016</span><a id="line.16"> */</a>
+<span class="sourceLineNo">017</span><a id="line.17">public abstract class AbstractNamingConvention implements NamingConvention {</a>
+<span class="sourceLineNo">018</span><a id="line.18"></a>
+<span class="sourceLineNo">019</span><a id="line.19">  /**</a>
+<span class="sourceLineNo">020</span><a id="line.20">   * The Constant DEFAULT_SEQ_FORMAT.</a>
+<span class="sourceLineNo">021</span><a id="line.21">   */</a>
+<span class="sourceLineNo">022</span><a id="line.22">  public static final String DEFAULT_SEQ_FORMAT = "{table}_seq";</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">  /**</a>
+<span class="sourceLineNo">025</span><a id="line.25">   * The catalog.</a>
+<span class="sourceLineNo">026</span><a id="line.26">   */</a>
+<span class="sourceLineNo">027</span><a id="line.27">  private String catalog;</a>
+<span class="sourceLineNo">028</span><a id="line.28"></a>
+<span class="sourceLineNo">029</span><a id="line.29">  /**</a>
+<span class="sourceLineNo">030</span><a id="line.30">   * The schema.</a>
+<span class="sourceLineNo">031</span><a id="line.31">   */</a>
+<span class="sourceLineNo">032</span><a id="line.32">  private String schema;</a>
+<span class="sourceLineNo">033</span><a id="line.33"></a>
+<span class="sourceLineNo">034</span><a id="line.34">  /**</a>
+<span class="sourceLineNo">035</span><a id="line.35">   * The sequence format.</a>
+<span class="sourceLineNo">036</span><a id="line.36">   */</a>
+<span class="sourceLineNo">037</span><a id="line.37">  private String sequenceFormat;</a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">  /**</a>
+<span class="sourceLineNo">040</span><a id="line.40">   * The database platform.</a>
+<span class="sourceLineNo">041</span><a id="line.41">   */</a>
+<span class="sourceLineNo">042</span><a id="line.42">  protected DatabasePlatform databasePlatform;</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">  /**</a>
+<span class="sourceLineNo">045</span><a id="line.45">   * Used to trim off extra prefix for M2M.</a>
+<span class="sourceLineNo">046</span><a id="line.46">   */</a>
+<span class="sourceLineNo">047</span><a id="line.47">  protected int rhsPrefixLength = 3;</a>
 <span class="sourceLineNo">048</span><a id="line.48"></a>
-<span class="sourceLineNo">049</span><a id="line.49">  /**</a>
-<span class="sourceLineNo">050</span><a id="line.50">   * Construct with a sequence format and useForeignKeyPrefix setting.</a>
-<span class="sourceLineNo">051</span><a id="line.51">   */</a>
-<span class="sourceLineNo">052</span><a id="line.52">  public AbstractNamingConvention(String sequenceFormat, boolean useForeignKeyPrefix) {</a>
-<span class="sourceLineNo">053</span><a id="line.53">    this.sequenceFormat = sequenceFormat;</a>
-<span class="sourceLineNo">054</span><a id="line.54">    this.useForeignKeyPrefix = useForeignKeyPrefix;</a>
-<span class="sourceLineNo">055</span><a id="line.55">  }</a>
-<span class="sourceLineNo">056</span><a id="line.56"></a>
-<span class="sourceLineNo">057</span><a id="line.57">  /**</a>
-<span class="sourceLineNo">058</span><a id="line.58">   * Construct with a sequence format.</a>
-<span class="sourceLineNo">059</span><a id="line.59">   *</a>
-<span class="sourceLineNo">060</span><a id="line.60">   * @param sequenceFormat the sequence format</a>
-<span class="sourceLineNo">061</span><a id="line.61">   */</a>
-<span class="sourceLineNo">062</span><a id="line.62">  public AbstractNamingConvention(String sequenceFormat) {</a>
-<span class="sourceLineNo">063</span><a id="line.63">    this.sequenceFormat = sequenceFormat;</a>
-<span class="sourceLineNo">064</span><a id="line.64">    this.useForeignKeyPrefix = true;</a>
-<span class="sourceLineNo">065</span><a id="line.65">  }</a>
-<span class="sourceLineNo">066</span><a id="line.66"></a>
-<span class="sourceLineNo">067</span><a id="line.67">  /**</a>
-<span class="sourceLineNo">068</span><a id="line.68">   * Construct with the default sequence format ("{table}_seq") and useForeignKeyPrefix as true.</a>
-<span class="sourceLineNo">069</span><a id="line.69">   */</a>
-<span class="sourceLineNo">070</span><a id="line.70">  public AbstractNamingConvention() {</a>
-<span class="sourceLineNo">071</span><a id="line.71">    this(DEFAULT_SEQ_FORMAT);</a>
-<span class="sourceLineNo">072</span><a id="line.72">  }</a>
-<span class="sourceLineNo">073</span><a id="line.73"></a>
-<span class="sourceLineNo">074</span><a id="line.74">  @Override</a>
-<span class="sourceLineNo">075</span><a id="line.75">  public void setDatabasePlatform(DatabasePlatform databasePlatform) {</a>
-<span class="sourceLineNo">076</span><a id="line.76">    this.databasePlatform = databasePlatform;</a>
-<span class="sourceLineNo">077</span><a id="line.77">  }</a>
-<span class="sourceLineNo">078</span><a id="line.78"></a>
-<span class="sourceLineNo">079</span><a id="line.79">  @Override</a>
-<span class="sourceLineNo">080</span><a id="line.80">  public String getSequenceName(String rawTableName, String pkColumn) {</a>
-<span class="sourceLineNo">081</span><a id="line.81">    final String tableNameUnquoted = databasePlatform.unQuote(rawTableName);</a>
-<span class="sourceLineNo">082</span><a id="line.82">    String seqName = sequenceFormat.replace("{table}", tableNameUnquoted);</a>
-<span class="sourceLineNo">083</span><a id="line.83">    pkColumn = (pkColumn == null) ? "" : databasePlatform.unQuote(pkColumn);</a>
-<span class="sourceLineNo">084</span><a id="line.84">    return seqName.replace("{column}", pkColumn);</a>
-<span class="sourceLineNo">085</span><a id="line.85">  }</a>
-<span class="sourceLineNo">086</span><a id="line.86"></a>
-<span class="sourceLineNo">087</span><a id="line.87">  /**</a>
-<span class="sourceLineNo">088</span><a id="line.88">   * Return the catalog.</a>
-<span class="sourceLineNo">089</span><a id="line.89">   */</a>
-<span class="sourceLineNo">090</span><a id="line.90">  public String getCatalog() {</a>
-<span class="sourceLineNo">091</span><a id="line.91">    return catalog;</a>
-<span class="sourceLineNo">092</span><a id="line.92">  }</a>
-<span class="sourceLineNo">093</span><a id="line.93"></a>
-<span class="sourceLineNo">094</span><a id="line.94">  /**</a>
-<span class="sourceLineNo">095</span><a id="line.95">   * Sets the catalog.</a>
-<span class="sourceLineNo">096</span><a id="line.96">   */</a>
-<span class="sourceLineNo">097</span><a id="line.97">  public void setCatalog(String catalog) {</a>
-<span class="sourceLineNo">098</span><a id="line.98">    this.catalog = catalog;</a>
-<span class="sourceLineNo">099</span><a id="line.99">  }</a>
-<span class="sourceLineNo">100</span><a id="line.100"></a>
-<span class="sourceLineNo">101</span><a id="line.101">  /**</a>
-<span class="sourceLineNo">102</span><a id="line.102">   * Return the schema.</a>
-<span class="sourceLineNo">103</span><a id="line.103">   */</a>
-<span class="sourceLineNo">104</span><a id="line.104">  public String getSchema() {</a>
-<span class="sourceLineNo">105</span><a id="line.105">    return schema;</a>
-<span class="sourceLineNo">106</span><a id="line.106">  }</a>
-<span class="sourceLineNo">107</span><a id="line.107"></a>
-<span class="sourceLineNo">108</span><a id="line.108">  /**</a>
-<span class="sourceLineNo">109</span><a id="line.109">   * Sets the schema.</a>
-<span class="sourceLineNo">110</span><a id="line.110">   */</a>
-<span class="sourceLineNo">111</span><a id="line.111">  public void setSchema(String schema) {</a>
-<span class="sourceLineNo">112</span><a id="line.112">    this.schema = schema;</a>
-<span class="sourceLineNo">113</span><a id="line.113">  }</a>
-<span class="sourceLineNo">114</span><a id="line.114"></a>
-<span class="sourceLineNo">115</span><a id="line.115">  /**</a>
-<span class="sourceLineNo">116</span><a id="line.116">   * Returns the sequence format.</a>
-<span class="sourceLineNo">117</span><a id="line.117">   */</a>
-<span class="sourceLineNo">118</span><a id="line.118">  public String getSequenceFormat() {</a>
-<span class="sourceLineNo">119</span><a id="line.119">    return sequenceFormat;</a>
-<span class="sourceLineNo">120</span><a id="line.120">  }</a>
-<span class="sourceLineNo">121</span><a id="line.121"></a>
-<span class="sourceLineNo">122</span><a id="line.122">  /**</a>
-<span class="sourceLineNo">123</span><a id="line.123">   * Set the sequence format used to generate the sequence name.</a>
-<span class="sourceLineNo">124</span><a id="line.124">   * &lt;p&gt;</a>
-<span class="sourceLineNo">125</span><a id="line.125">   * The format should include "{table}". When generating the sequence name</a>
-<span class="sourceLineNo">126</span><a id="line.126">   * {table} is replaced with the actual table name.</a>
-<span class="sourceLineNo">127</span><a id="line.127">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">128</span><a id="line.128">   *</a>
-<span class="sourceLineNo">129</span><a id="line.129">   * @param sequenceFormat string containing "{table}" which is replaced with the actual</a>
-<span class="sourceLineNo">130</span><a id="line.130">   *                       table name to generate the sequence name.</a>
-<span class="sourceLineNo">131</span><a id="line.131">   */</a>
-<span class="sourceLineNo">132</span><a id="line.132">  public void setSequenceFormat(String sequenceFormat) {</a>
-<span class="sourceLineNo">133</span><a id="line.133">    this.sequenceFormat = sequenceFormat;</a>
-<span class="sourceLineNo">134</span><a id="line.134">  }</a>
-<span class="sourceLineNo">135</span><a id="line.135"></a>
-<span class="sourceLineNo">136</span><a id="line.136">  /**</a>
-<span class="sourceLineNo">137</span><a id="line.137">   * Return true if a prefix should be used building a foreign key name.</a>
-<span class="sourceLineNo">138</span><a id="line.138">   * &lt;p&gt;</a>
-<span class="sourceLineNo">139</span><a id="line.139">   * This by default is true and this works well when the primary key column</a>
-<span class="sourceLineNo">140</span><a id="line.140">   * names are simply "ID". In this case a prefix (such as "ORDER" and</a>
-<span class="sourceLineNo">141</span><a id="line.141">   * "CUSTOMER" etc) is added to the foreign key column producing "ORDER_ID" and</a>
-<span class="sourceLineNo">142</span><a id="line.142">   * "CUSTOMER_ID".</a>
-<span class="sourceLineNo">143</span><a id="line.143">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">144</span><a id="line.144">   * &lt;p&gt;</a>
-<span class="sourceLineNo">145</span><a id="line.145">   * This should return false when your primary key columns are the same as the</a>
-<span class="sourceLineNo">146</span><a id="line.146">   * foreign key columns. For example, when the primary key columns are</a>
-<span class="sourceLineNo">147</span><a id="line.147">   * "ORDER_ID", "CUST_ID" etc ... and they are the same as the foreign key</a>
-<span class="sourceLineNo">148</span><a id="line.148">   * column names.</a>
-<span class="sourceLineNo">149</span><a id="line.149">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">150</span><a id="line.150">   */</a>
-<span class="sourceLineNo">151</span><a id="line.151">  @Override</a>
-<span class="sourceLineNo">152</span><a id="line.152">  public boolean isUseForeignKeyPrefix() {</a>
-<span class="sourceLineNo">153</span><a id="line.153">    return useForeignKeyPrefix;</a>
-<span class="sourceLineNo">154</span><a id="line.154">  }</a>
-<span class="sourceLineNo">155</span><a id="line.155"></a>
-<span class="sourceLineNo">156</span><a id="line.156">  /**</a>
-<span class="sourceLineNo">157</span><a id="line.157">   * Set this to false when the primary key columns matching your foreign key</a>
-<span class="sourceLineNo">158</span><a id="line.158">   * columns.</a>
-<span class="sourceLineNo">159</span><a id="line.159">   */</a>
-<span class="sourceLineNo">160</span><a id="line.160">  public void setUseForeignKeyPrefix(boolean useForeignKeyPrefix) {</a>
-<span class="sourceLineNo">161</span><a id="line.161">    this.useForeignKeyPrefix = useForeignKeyPrefix;</a>
+<span class="sourceLineNo">049</span><a id="line.49">  protected boolean useForeignKeyPrefix;</a>
+<span class="sourceLineNo">050</span><a id="line.50"></a>
+<span class="sourceLineNo">051</span><a id="line.51">  /**</a>
+<span class="sourceLineNo">052</span><a id="line.52">   * Construct with a sequence format and useForeignKeyPrefix setting.</a>
+<span class="sourceLineNo">053</span><a id="line.53">   */</a>
+<span class="sourceLineNo">054</span><a id="line.54">  public AbstractNamingConvention(String sequenceFormat, boolean useForeignKeyPrefix) {</a>
+<span class="sourceLineNo">055</span><a id="line.55">    this.sequenceFormat = sequenceFormat;</a>
+<span class="sourceLineNo">056</span><a id="line.56">    this.useForeignKeyPrefix = useForeignKeyPrefix;</a>
+<span class="sourceLineNo">057</span><a id="line.57">  }</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">  /**</a>
+<span class="sourceLineNo">060</span><a id="line.60">   * Construct with a sequence format.</a>
+<span class="sourceLineNo">061</span><a id="line.61">   *</a>
+<span class="sourceLineNo">062</span><a id="line.62">   * @param sequenceFormat the sequence format</a>
+<span class="sourceLineNo">063</span><a id="line.63">   */</a>
+<span class="sourceLineNo">064</span><a id="line.64">  public AbstractNamingConvention(String sequenceFormat) {</a>
+<span class="sourceLineNo">065</span><a id="line.65">    this.sequenceFormat = sequenceFormat;</a>
+<span class="sourceLineNo">066</span><a id="line.66">    this.useForeignKeyPrefix = true;</a>
+<span class="sourceLineNo">067</span><a id="line.67">  }</a>
+<span class="sourceLineNo">068</span><a id="line.68"></a>
+<span class="sourceLineNo">069</span><a id="line.69">  /**</a>
+<span class="sourceLineNo">070</span><a id="line.70">   * Construct with the default sequence format ("{table}_seq") and useForeignKeyPrefix as true.</a>
+<span class="sourceLineNo">071</span><a id="line.71">   */</a>
+<span class="sourceLineNo">072</span><a id="line.72">  public AbstractNamingConvention() {</a>
+<span class="sourceLineNo">073</span><a id="line.73">    this(DEFAULT_SEQ_FORMAT);</a>
+<span class="sourceLineNo">074</span><a id="line.74">  }</a>
+<span class="sourceLineNo">075</span><a id="line.75"></a>
+<span class="sourceLineNo">076</span><a id="line.76">  @Override</a>
+<span class="sourceLineNo">077</span><a id="line.77">  public void setDatabasePlatform(DatabasePlatform databasePlatform) {</a>
+<span class="sourceLineNo">078</span><a id="line.78">    this.databasePlatform = databasePlatform;</a>
+<span class="sourceLineNo">079</span><a id="line.79">  }</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">  @Override</a>
+<span class="sourceLineNo">082</span><a id="line.82">  public String getSequenceName(String rawTableName, String pkColumn) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">    TableName tableName = new TableName(rawTableName);</a>
+<span class="sourceLineNo">084</span><a id="line.84">    String seqName = seqName(pkColumn, tableName.getName());</a>
+<span class="sourceLineNo">085</span><a id="line.85">    return tableName.withCatalogAndSchema(seqName);</a>
+<span class="sourceLineNo">086</span><a id="line.86">  }</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">  private String seqName(String pkColumn, String tableName) {</a>
+<span class="sourceLineNo">089</span><a id="line.89">    final String tableNameUnquoted = unQuote(tableName);</a>
+<span class="sourceLineNo">090</span><a id="line.90">    String seqName = sequenceFormat.replace("{table}", tableNameUnquoted);</a>
+<span class="sourceLineNo">091</span><a id="line.91">    pkColumn = (pkColumn == null) ? "" : unQuote(pkColumn);</a>
+<span class="sourceLineNo">092</span><a id="line.92">    return quoteIdentifiers(seqName.replace("{column}", pkColumn));</a>
+<span class="sourceLineNo">093</span><a id="line.93">  }</a>
+<span class="sourceLineNo">094</span><a id="line.94"></a>
+<span class="sourceLineNo">095</span><a id="line.95">  /**</a>
+<span class="sourceLineNo">096</span><a id="line.96">   * Return the catalog.</a>
+<span class="sourceLineNo">097</span><a id="line.97">   */</a>
+<span class="sourceLineNo">098</span><a id="line.98">  public String getCatalog() {</a>
+<span class="sourceLineNo">099</span><a id="line.99">    return catalog;</a>
+<span class="sourceLineNo">100</span><a id="line.100">  }</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">  /**</a>
+<span class="sourceLineNo">103</span><a id="line.103">   * Sets the catalog.</a>
+<span class="sourceLineNo">104</span><a id="line.104">   */</a>
+<span class="sourceLineNo">105</span><a id="line.105">  public void setCatalog(String catalog) {</a>
+<span class="sourceLineNo">106</span><a id="line.106">    this.catalog = catalog;</a>
+<span class="sourceLineNo">107</span><a id="line.107">  }</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">  /**</a>
+<span class="sourceLineNo">110</span><a id="line.110">   * Return the schema.</a>
+<span class="sourceLineNo">111</span><a id="line.111">   */</a>
+<span class="sourceLineNo">112</span><a id="line.112">  public String getSchema() {</a>
+<span class="sourceLineNo">113</span><a id="line.113">    return schema;</a>
+<span class="sourceLineNo">114</span><a id="line.114">  }</a>
+<span class="sourceLineNo">115</span><a id="line.115"></a>
+<span class="sourceLineNo">116</span><a id="line.116">  /**</a>
+<span class="sourceLineNo">117</span><a id="line.117">   * Sets the schema.</a>
+<span class="sourceLineNo">118</span><a id="line.118">   */</a>
+<span class="sourceLineNo">119</span><a id="line.119">  public void setSchema(String schema) {</a>
+<span class="sourceLineNo">120</span><a id="line.120">    this.schema = schema;</a>
+<span class="sourceLineNo">121</span><a id="line.121">  }</a>
+<span class="sourceLineNo">122</span><a id="line.122"></a>
+<span class="sourceLineNo">123</span><a id="line.123">  /**</a>
+<span class="sourceLineNo">124</span><a id="line.124">   * Returns the sequence format.</a>
+<span class="sourceLineNo">125</span><a id="line.125">   */</a>
+<span class="sourceLineNo">126</span><a id="line.126">  public String getSequenceFormat() {</a>
+<span class="sourceLineNo">127</span><a id="line.127">    return sequenceFormat;</a>
+<span class="sourceLineNo">128</span><a id="line.128">  }</a>
+<span class="sourceLineNo">129</span><a id="line.129"></a>
+<span class="sourceLineNo">130</span><a id="line.130">  /**</a>
+<span class="sourceLineNo">131</span><a id="line.131">   * Set the sequence format used to generate the sequence name.</a>
+<span class="sourceLineNo">132</span><a id="line.132">   * &lt;p&gt;</a>
+<span class="sourceLineNo">133</span><a id="line.133">   * The format should include "{table}". When generating the sequence name</a>
+<span class="sourceLineNo">134</span><a id="line.134">   * {table} is replaced with the actual table name.</a>
+<span class="sourceLineNo">135</span><a id="line.135">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">136</span><a id="line.136">   *</a>
+<span class="sourceLineNo">137</span><a id="line.137">   * @param sequenceFormat string containing "{table}" which is replaced with the actual</a>
+<span class="sourceLineNo">138</span><a id="line.138">   *                       table name to generate the sequence name.</a>
+<span class="sourceLineNo">139</span><a id="line.139">   */</a>
+<span class="sourceLineNo">140</span><a id="line.140">  public void setSequenceFormat(String sequenceFormat) {</a>
+<span class="sourceLineNo">141</span><a id="line.141">    this.sequenceFormat = sequenceFormat;</a>
+<span class="sourceLineNo">142</span><a id="line.142">  }</a>
+<span class="sourceLineNo">143</span><a id="line.143"></a>
+<span class="sourceLineNo">144</span><a id="line.144">  /**</a>
+<span class="sourceLineNo">145</span><a id="line.145">   * Return true if a prefix should be used building a foreign key name.</a>
+<span class="sourceLineNo">146</span><a id="line.146">   * &lt;p&gt;</a>
+<span class="sourceLineNo">147</span><a id="line.147">   * This by default is true and this works well when the primary key column</a>
+<span class="sourceLineNo">148</span><a id="line.148">   * names are simply "ID". In this case a prefix (such as "ORDER" and</a>
+<span class="sourceLineNo">149</span><a id="line.149">   * "CUSTOMER" etc) is added to the foreign key column producing "ORDER_ID" and</a>
+<span class="sourceLineNo">150</span><a id="line.150">   * "CUSTOMER_ID".</a>
+<span class="sourceLineNo">151</span><a id="line.151">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">152</span><a id="line.152">   * &lt;p&gt;</a>
+<span class="sourceLineNo">153</span><a id="line.153">   * This should return false when your primary key columns are the same as the</a>
+<span class="sourceLineNo">154</span><a id="line.154">   * foreign key columns. For example, when the primary key columns are</a>
+<span class="sourceLineNo">155</span><a id="line.155">   * "ORDER_ID", "CUST_ID" etc ... and they are the same as the foreign key</a>
+<span class="sourceLineNo">156</span><a id="line.156">   * column names.</a>
+<span class="sourceLineNo">157</span><a id="line.157">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">158</span><a id="line.158">   */</a>
+<span class="sourceLineNo">159</span><a id="line.159">  @Override</a>
+<span class="sourceLineNo">160</span><a id="line.160">  public boolean isUseForeignKeyPrefix() {</a>
+<span class="sourceLineNo">161</span><a id="line.161">    return useForeignKeyPrefix;</a>
 <span class="sourceLineNo">162</span><a id="line.162">  }</a>
 <span class="sourceLineNo">163</span><a id="line.163"></a>
 <span class="sourceLineNo">164</span><a id="line.164">  /**</a>
-<span class="sourceLineNo">165</span><a id="line.165">   * Return the tableName using the naming convention (rather than deployed</a>
-<span class="sourceLineNo">166</span><a id="line.166">   * Table annotation).</a>
+<span class="sourceLineNo">165</span><a id="line.165">   * Set this to false when the primary key columns matching your foreign key</a>
+<span class="sourceLineNo">166</span><a id="line.166">   * columns.</a>
 <span class="sourceLineNo">167</span><a id="line.167">   */</a>
-<span class="sourceLineNo">168</span><a id="line.168">  protected abstract TableName getTableNameByConvention(Class&lt;?&gt; beanClass);</a>
-<span class="sourceLineNo">169</span><a id="line.169"></a>
-<span class="sourceLineNo">170</span><a id="line.170">  /**</a>
-<span class="sourceLineNo">171</span><a id="line.171">   * Returns the table name for a given entity bean.</a>
-<span class="sourceLineNo">172</span><a id="line.172">   * &lt;p&gt;</a>
-<span class="sourceLineNo">173</span><a id="line.173">   * This first checks for the @Table annotation and if not present uses the</a>
-<span class="sourceLineNo">174</span><a id="line.174">   * naming convention to define the table name.</a>
-<span class="sourceLineNo">175</span><a id="line.175">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">176</span><a id="line.176">   *</a>
-<span class="sourceLineNo">177</span><a id="line.177">   * @see #getTableNameFromAnnotation(Class)</a>
-<span class="sourceLineNo">178</span><a id="line.178">   * @see #getTableNameByConvention(Class)</a>
-<span class="sourceLineNo">179</span><a id="line.179">   */</a>
-<span class="sourceLineNo">180</span><a id="line.180">  @Override</a>
-<span class="sourceLineNo">181</span><a id="line.181">  public TableName getTableName(Class&lt;?&gt; beanClass) {</a>
-<span class="sourceLineNo">182</span><a id="line.182">    while (true) {</a>
-<span class="sourceLineNo">183</span><a id="line.183"></a>
-<span class="sourceLineNo">184</span><a id="line.184">      TableName tableName = getTableNameFromAnnotation(beanClass);</a>
-<span class="sourceLineNo">185</span><a id="line.185">      if (tableName == null) {</a>
-<span class="sourceLineNo">186</span><a id="line.186">        Class&lt;?&gt; supCls = beanClass.getSuperclass();</a>
-<span class="sourceLineNo">187</span><a id="line.187">        if (hasInheritance(supCls)) {</a>
-<span class="sourceLineNo">188</span><a id="line.188">          // get the table as per inherited class in case there</a>
-<span class="sourceLineNo">189</span><a id="line.189">          // is not a table annotation in the inheritance hierarchy</a>
-<span class="sourceLineNo">190</span><a id="line.190">          beanClass = supCls;</a>
-<span class="sourceLineNo">191</span><a id="line.191">          continue;</a>
-<span class="sourceLineNo">192</span><a id="line.192">        }</a>
-<span class="sourceLineNo">193</span><a id="line.193"></a>
-<span class="sourceLineNo">194</span><a id="line.194">        tableName = getTableNameByConvention(beanClass);</a>
-<span class="sourceLineNo">195</span><a id="line.195">      }</a>
-<span class="sourceLineNo">196</span><a id="line.196"></a>
-<span class="sourceLineNo">197</span><a id="line.197">      // Use naming convention for catalog or schema,</a>
-<span class="sourceLineNo">198</span><a id="line.198">      // if not set in the annotation.</a>
-<span class="sourceLineNo">199</span><a id="line.199">      String catalog = tableName.getCatalog();</a>
-<span class="sourceLineNo">200</span><a id="line.200">      if (isEmpty(catalog)) {</a>
-<span class="sourceLineNo">201</span><a id="line.201">        catalog = getCatalog();</a>
-<span class="sourceLineNo">202</span><a id="line.202">      }</a>
-<span class="sourceLineNo">203</span><a id="line.203">      String schema = tableName.getSchema();</a>
-<span class="sourceLineNo">204</span><a id="line.204">      if (isEmpty(schema)) {</a>
-<span class="sourceLineNo">205</span><a id="line.205">        schema = getSchema();</a>
-<span class="sourceLineNo">206</span><a id="line.206">      }</a>
-<span class="sourceLineNo">207</span><a id="line.207">      return new TableName(catalog, schema, tableName.getName());</a>
-<span class="sourceLineNo">208</span><a id="line.208">    }</a>
-<span class="sourceLineNo">209</span><a id="line.209">  }</a>
-<span class="sourceLineNo">210</span><a id="line.210"></a>
-<span class="sourceLineNo">211</span><a id="line.211">  /**</a>
-<span class="sourceLineNo">212</span><a id="line.212">   * Return true if this class is part of entity inheritance.</a>
-<span class="sourceLineNo">213</span><a id="line.213">   */</a>
-<span class="sourceLineNo">214</span><a id="line.214">  protected boolean hasInheritance(Class&lt;?&gt; supCls) {</a>
-<span class="sourceLineNo">215</span><a id="line.215">    return AnnotationUtil.typeHas(supCls, Inheritance.class)</a>
-<span class="sourceLineNo">216</span><a id="line.216">        || AnnotationUtil.has(supCls, DiscriminatorValue.class);</a>
+<span class="sourceLineNo">168</span><a id="line.168">  public void setUseForeignKeyPrefix(boolean useForeignKeyPrefix) {</a>
+<span class="sourceLineNo">169</span><a id="line.169">    this.useForeignKeyPrefix = useForeignKeyPrefix;</a>
+<span class="sourceLineNo">170</span><a id="line.170">  }</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">  /**</a>
+<span class="sourceLineNo">173</span><a id="line.173">   * Return the tableName using the naming convention (rather than deployed</a>
+<span class="sourceLineNo">174</span><a id="line.174">   * Table annotation).</a>
+<span class="sourceLineNo">175</span><a id="line.175">   */</a>
+<span class="sourceLineNo">176</span><a id="line.176">  protected abstract TableName getTableNameByConvention(Class&lt;?&gt; beanClass);</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">  /**</a>
+<span class="sourceLineNo">179</span><a id="line.179">   * Returns the table name for a given entity bean.</a>
+<span class="sourceLineNo">180</span><a id="line.180">   * &lt;p&gt;</a>
+<span class="sourceLineNo">181</span><a id="line.181">   * This first checks for the @Table annotation and if not present uses the</a>
+<span class="sourceLineNo">182</span><a id="line.182">   * naming convention to define the table name.</a>
+<span class="sourceLineNo">183</span><a id="line.183">   * &lt;/p&gt;</a>
+<span class="sourceLineNo">184</span><a id="line.184">   *</a>
+<span class="sourceLineNo">185</span><a id="line.185">   * @see #getTableNameFromAnnotation(Class)</a>
+<span class="sourceLineNo">186</span><a id="line.186">   * @see #getTableNameByConvention(Class)</a>
+<span class="sourceLineNo">187</span><a id="line.187">   */</a>
+<span class="sourceLineNo">188</span><a id="line.188">  @Override</a>
+<span class="sourceLineNo">189</span><a id="line.189">  public TableName getTableName(Class&lt;?&gt; beanClass) {</a>
+<span class="sourceLineNo">190</span><a id="line.190">    while (true) {</a>
+<span class="sourceLineNo">191</span><a id="line.191"></a>
+<span class="sourceLineNo">192</span><a id="line.192">      TableName tableName = getTableNameFromAnnotation(beanClass);</a>
+<span class="sourceLineNo">193</span><a id="line.193">      if (tableName == null) {</a>
+<span class="sourceLineNo">194</span><a id="line.194">        Class&lt;?&gt; supCls = beanClass.getSuperclass();</a>
+<span class="sourceLineNo">195</span><a id="line.195">        if (hasInheritance(supCls)) {</a>
+<span class="sourceLineNo">196</span><a id="line.196">          // get the table as per inherited class in case there</a>
+<span class="sourceLineNo">197</span><a id="line.197">          // is not a table annotation in the inheritance hierarchy</a>
+<span class="sourceLineNo">198</span><a id="line.198">          beanClass = supCls;</a>
+<span class="sourceLineNo">199</span><a id="line.199">          continue;</a>
+<span class="sourceLineNo">200</span><a id="line.200">        }</a>
+<span class="sourceLineNo">201</span><a id="line.201"></a>
+<span class="sourceLineNo">202</span><a id="line.202">        tableName = getTableNameByConvention(beanClass);</a>
+<span class="sourceLineNo">203</span><a id="line.203">      }</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">      // Use naming convention for catalog or schema,</a>
+<span class="sourceLineNo">206</span><a id="line.206">      // if not set in the annotation.</a>
+<span class="sourceLineNo">207</span><a id="line.207">      String catalog = tableName.getCatalog();</a>
+<span class="sourceLineNo">208</span><a id="line.208">      if (isEmpty(catalog)) {</a>
+<span class="sourceLineNo">209</span><a id="line.209">        catalog = getCatalog();</a>
+<span class="sourceLineNo">210</span><a id="line.210">      }</a>
+<span class="sourceLineNo">211</span><a id="line.211">      String schema = tableName.getSchema();</a>
+<span class="sourceLineNo">212</span><a id="line.212">      if (isEmpty(schema)) {</a>
+<span class="sourceLineNo">213</span><a id="line.213">        schema = getSchema();</a>
+<span class="sourceLineNo">214</span><a id="line.214">      }</a>
+<span class="sourceLineNo">215</span><a id="line.215">      return new TableName(catalog, schema, tableName.getName());</a>
+<span class="sourceLineNo">216</span><a id="line.216">    }</a>
 <span class="sourceLineNo">217</span><a id="line.217">  }</a>
 <span class="sourceLineNo">218</span><a id="line.218"></a>
-<span class="sourceLineNo">219</span><a id="line.219"></a>
-<span class="sourceLineNo">220</span><a id="line.220">  @Override</a>
-<span class="sourceLineNo">221</span><a id="line.221">  public TableName getM2MJoinTableName(TableName lhsTable, TableName rhsTable) {</a>
-<span class="sourceLineNo">222</span><a id="line.222"></a>
-<span class="sourceLineNo">223</span><a id="line.223">    StringBuilder buffer = new StringBuilder();</a>
-<span class="sourceLineNo">224</span><a id="line.224">    buffer.append(lhsTable.getName());</a>
-<span class="sourceLineNo">225</span><a id="line.225">    buffer.append("_");</a>
+<span class="sourceLineNo">219</span><a id="line.219">  /**</a>
+<span class="sourceLineNo">220</span><a id="line.220">   * Return true if this class is part of entity inheritance.</a>
+<span class="sourceLineNo">221</span><a id="line.221">   */</a>
+<span class="sourceLineNo">222</span><a id="line.222">  protected boolean hasInheritance(Class&lt;?&gt; supCls) {</a>
+<span class="sourceLineNo">223</span><a id="line.223">    return AnnotationUtil.typeHas(supCls, Inheritance.class)</a>
+<span class="sourceLineNo">224</span><a id="line.224">        || AnnotationUtil.has(supCls, DiscriminatorValue.class);</a>
+<span class="sourceLineNo">225</span><a id="line.225">  }</a>
 <span class="sourceLineNo">226</span><a id="line.226"></a>
-<span class="sourceLineNo">227</span><a id="line.227">    String rhsTableName = rhsTable.getName();</a>
-<span class="sourceLineNo">228</span><a id="line.228">    if (rhsTableName.indexOf('_') &lt; rhsPrefixLength) {</a>
-<span class="sourceLineNo">229</span><a id="line.229">      // trim off a xx_ prefix if there is one</a>
-<span class="sourceLineNo">230</span><a id="line.230">      rhsTableName = rhsTableName.substring(rhsTableName.indexOf('_') + 1);</a>
-<span class="sourceLineNo">231</span><a id="line.231">    }</a>
-<span class="sourceLineNo">232</span><a id="line.232">    buffer.append(rhsTableName);</a>
-<span class="sourceLineNo">233</span><a id="line.233"></a>
-<span class="sourceLineNo">234</span><a id="line.234">    int maxTableNameLength = databasePlatform.getMaxTableNameLength();</a>
-<span class="sourceLineNo">235</span><a id="line.235"></a>
-<span class="sourceLineNo">236</span><a id="line.236">    // maxConstraintNameLength is used as the max table name length.</a>
-<span class="sourceLineNo">237</span><a id="line.237">    if (buffer.length() &gt; maxTableNameLength) {</a>
-<span class="sourceLineNo">238</span><a id="line.238">      buffer.setLength(maxTableNameLength);</a>
-<span class="sourceLineNo">239</span><a id="line.239">    }</a>
-<span class="sourceLineNo">240</span><a id="line.240"></a>
-<span class="sourceLineNo">241</span><a id="line.241">    return new TableName(lhsTable.getCatalog(), lhsTable.getSchema(), buffer.toString());</a>
-<span class="sourceLineNo">242</span><a id="line.242">  }</a>
-<span class="sourceLineNo">243</span><a id="line.243"></a>
-<span class="sourceLineNo">244</span><a id="line.244">  /**</a>
-<span class="sourceLineNo">245</span><a id="line.245">   * Gets the table name from annotation.</a>
-<span class="sourceLineNo">246</span><a id="line.246">   */</a>
-<span class="sourceLineNo">247</span><a id="line.247">  protected TableName getTableNameFromAnnotation(Class&lt;?&gt; beanClass) {</a>
-<span class="sourceLineNo">248</span><a id="line.248">    final Table table = AnnotationUtil.typeGet(beanClass, Table.class);</a>
-<span class="sourceLineNo">249</span><a id="line.249">    if (table != null &amp;&amp; !isEmpty(table.name())) {</a>
-<span class="sourceLineNo">250</span><a id="line.250">      // Note: empty catalog and schema are converted to null</a>
-<span class="sourceLineNo">251</span><a id="line.251">      // Only need to convert quoted identifiers from annotations</a>
-<span class="sourceLineNo">252</span><a id="line.252">      return new TableName(quoteIdentifiers(table.catalog()), quoteIdentifiers(table.schema()), quoteIdentifiers(table.name()));</a>
-<span class="sourceLineNo">253</span><a id="line.253">    }</a>
-<span class="sourceLineNo">254</span><a id="line.254">    // No annotation</a>
-<span class="sourceLineNo">255</span><a id="line.255">    return null;</a>
-<span class="sourceLineNo">256</span><a id="line.256">  }</a>
-<span class="sourceLineNo">257</span><a id="line.257"></a>
-<span class="sourceLineNo">258</span><a id="line.258">  /**</a>
-<span class="sourceLineNo">259</span><a id="line.259">   * Replace back ticks (if they are used) with database platform specific</a>
-<span class="sourceLineNo">260</span><a id="line.260">   * quoted identifiers.</a>
-<span class="sourceLineNo">261</span><a id="line.261">   */</a>
-<span class="sourceLineNo">262</span><a id="line.262">  protected String quoteIdentifiers(String s) {</a>
-<span class="sourceLineNo">263</span><a id="line.263">    return databasePlatform.convertQuotedIdentifiers(s);</a>
-<span class="sourceLineNo">264</span><a id="line.264">  }</a>
-<span class="sourceLineNo">265</span><a id="line.265"></a>
-<span class="sourceLineNo">266</span><a id="line.266">  /**</a>
-<span class="sourceLineNo">267</span><a id="line.267">   * Checks string is null or empty .</a>
-<span class="sourceLineNo">268</span><a id="line.268">   */</a>
-<span class="sourceLineNo">269</span><a id="line.269">  protected boolean isEmpty(String s) {</a>
-<span class="sourceLineNo">270</span><a id="line.270">    return s == null || s.trim().isEmpty();</a>
-<span class="sourceLineNo">271</span><a id="line.271">  }</a>
-<span class="sourceLineNo">272</span><a id="line.272"></a>
-<span class="sourceLineNo">273</span><a id="line.273">  /**</a>
-<span class="sourceLineNo">274</span><a id="line.274">   * Load settings from properties.</a>
-<span class="sourceLineNo">275</span><a id="line.275">   */</a>
-<span class="sourceLineNo">276</span><a id="line.276">  @Override</a>
-<span class="sourceLineNo">277</span><a id="line.277">  public void loadFromProperties(PropertiesWrapper properties) {</a>
-<span class="sourceLineNo">278</span><a id="line.278"></a>
-<span class="sourceLineNo">279</span><a id="line.279">    useForeignKeyPrefix = properties.getBoolean("namingConvention.useForeignKeyPrefix", useForeignKeyPrefix);</a>
-<span class="sourceLineNo">280</span><a id="line.280">    sequenceFormat = properties.get("namingConvention.sequenceFormat", sequenceFormat);</a>
-<span class="sourceLineNo">281</span><a id="line.281">    schema = properties.get("namingConvention.schema", schema);</a>
-<span class="sourceLineNo">282</span><a id="line.282">  }</a>
-<span class="sourceLineNo">283</span><a id="line.283"></a>
-<span class="sourceLineNo">284</span><a id="line.284">}</a>
+<span class="sourceLineNo">227</span><a id="line.227">  @Override</a>
+<span class="sourceLineNo">228</span><a id="line.228">  public TableName getM2MJoinTableName(TableName lhsTable, TableName rhsTable) {</a>
+<span class="sourceLineNo">229</span><a id="line.229">    StringBuilder buffer = new StringBuilder();</a>
+<span class="sourceLineNo">230</span><a id="line.230">    buffer.append(unQuote(lhsTable.getName()));</a>
+<span class="sourceLineNo">231</span><a id="line.231">    buffer.append("_");</a>
+<span class="sourceLineNo">232</span><a id="line.232"></a>
+<span class="sourceLineNo">233</span><a id="line.233">    String rhsTableName = unQuote(rhsTable.getName());</a>
+<span class="sourceLineNo">234</span><a id="line.234">    if (rhsTableName.indexOf('_') &lt; rhsPrefixLength) {</a>
+<span class="sourceLineNo">235</span><a id="line.235">      // trim off a xx_ prefix if there is one</a>
+<span class="sourceLineNo">236</span><a id="line.236">      rhsTableName = rhsTableName.substring(rhsTableName.indexOf('_') + 1);</a>
+<span class="sourceLineNo">237</span><a id="line.237">    }</a>
+<span class="sourceLineNo">238</span><a id="line.238">    buffer.append(rhsTableName);</a>
+<span class="sourceLineNo">239</span><a id="line.239"></a>
+<span class="sourceLineNo">240</span><a id="line.240">    int maxTableNameLength = databasePlatform.getMaxTableNameLength();</a>
+<span class="sourceLineNo">241</span><a id="line.241"></a>
+<span class="sourceLineNo">242</span><a id="line.242">    // maxConstraintNameLength is used as the max table name length.</a>
+<span class="sourceLineNo">243</span><a id="line.243">    if (buffer.length() &gt; maxTableNameLength) {</a>
+<span class="sourceLineNo">244</span><a id="line.244">      buffer.setLength(maxTableNameLength);</a>
+<span class="sourceLineNo">245</span><a id="line.245">    }</a>
+<span class="sourceLineNo">246</span><a id="line.246"></a>
+<span class="sourceLineNo">247</span><a id="line.247">    String tableName = quoteIdentifiers(buffer.toString());</a>
+<span class="sourceLineNo">248</span><a id="line.248">    return new TableName(lhsTable.getCatalog(), lhsTable.getSchema(), tableName);</a>
+<span class="sourceLineNo">249</span><a id="line.249">  }</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">  @Override</a>
+<span class="sourceLineNo">252</span><a id="line.252">  public String deriveM2MColumn(String tableName, String dbColumn) {</a>
+<span class="sourceLineNo">253</span><a id="line.253">    return quoteIdentifiers(unQuote(tableName) +"_" + unQuote(dbColumn));</a>
+<span class="sourceLineNo">254</span><a id="line.254">  }</a>
+<span class="sourceLineNo">255</span><a id="line.255"></a>
+<span class="sourceLineNo">256</span><a id="line.256">  /**</a>
+<span class="sourceLineNo">257</span><a id="line.257">   * Gets the table name from annotation.</a>
+<span class="sourceLineNo">258</span><a id="line.258">   */</a>
+<span class="sourceLineNo">259</span><a id="line.259">  protected TableName getTableNameFromAnnotation(Class&lt;?&gt; beanClass) {</a>
+<span class="sourceLineNo">260</span><a id="line.260">    final Table table = AnnotationUtil.typeGet(beanClass, Table.class);</a>
+<span class="sourceLineNo">261</span><a id="line.261">    if (table != null &amp;&amp; !isEmpty(table.name())) {</a>
+<span class="sourceLineNo">262</span><a id="line.262">      // Note: empty catalog and schema are converted to null</a>
+<span class="sourceLineNo">263</span><a id="line.263">      // Only need to convert quoted identifiers from annotations</a>
+<span class="sourceLineNo">264</span><a id="line.264">      return new TableName(quoteIdentifiers(table.catalog()), quoteIdentifiers(table.schema()), quoteIdentifiers(table.name()));</a>
+<span class="sourceLineNo">265</span><a id="line.265">    }</a>
+<span class="sourceLineNo">266</span><a id="line.266">    // No annotation</a>
+<span class="sourceLineNo">267</span><a id="line.267">    return null;</a>
+<span class="sourceLineNo">268</span><a id="line.268">  }</a>
+<span class="sourceLineNo">269</span><a id="line.269"></a>
+<span class="sourceLineNo">270</span><a id="line.270">  @Override</a>
+<span class="sourceLineNo">271</span><a id="line.271">  public String getTableName(String catalog, String schema, String name) {</a>
+<span class="sourceLineNo">272</span><a id="line.272">    StringBuilder sb = new StringBuilder();</a>
+<span class="sourceLineNo">273</span><a id="line.273">    if (!isNull(catalog)) {</a>
+<span class="sourceLineNo">274</span><a id="line.274">      sb.append(quoteIdentifiers(catalog)).append(".");</a>
+<span class="sourceLineNo">275</span><a id="line.275">    }</a>
+<span class="sourceLineNo">276</span><a id="line.276">    if (!isNull(schema)) {</a>
+<span class="sourceLineNo">277</span><a id="line.277">      sb.append(quoteIdentifiers(schema)).append(".");</a>
+<span class="sourceLineNo">278</span><a id="line.278">    }</a>
+<span class="sourceLineNo">279</span><a id="line.279">    return sb.append(quoteIdentifiers(name)).toString();</a>
+<span class="sourceLineNo">280</span><a id="line.280">  }</a>
+<span class="sourceLineNo">281</span><a id="line.281"></a>
+<span class="sourceLineNo">282</span><a id="line.282">  /**</a>
+<span class="sourceLineNo">283</span><a id="line.283">   * Replace back ticks (if they are used) with database platform specific quoted identifiers.</a>
+<span class="sourceLineNo">284</span><a id="line.284">   */</a>
+<span class="sourceLineNo">285</span><a id="line.285">  protected String quoteIdentifiers(String s) {</a>
+<span class="sourceLineNo">286</span><a id="line.286">    return databasePlatform.convertQuotedIdentifiers(s);</a>
+<span class="sourceLineNo">287</span><a id="line.287">  }</a>
+<span class="sourceLineNo">288</span><a id="line.288"></a>
+<span class="sourceLineNo">289</span><a id="line.289">  private String unQuote(String val) {</a>
+<span class="sourceLineNo">290</span><a id="line.290">    return databasePlatform.unQuote(val);</a>
+<span class="sourceLineNo">291</span><a id="line.291">  }</a>
+<span class="sourceLineNo">292</span><a id="line.292"></a>
+<span class="sourceLineNo">293</span><a id="line.293">  /**</a>
+<span class="sourceLineNo">294</span><a id="line.294">   * Checks string is null or empty .</a>
+<span class="sourceLineNo">295</span><a id="line.295">   */</a>
+<span class="sourceLineNo">296</span><a id="line.296">  protected boolean isEmpty(String s) {</a>
+<span class="sourceLineNo">297</span><a id="line.297">    return s == null || s.trim().isEmpty();</a>
+<span class="sourceLineNo">298</span><a id="line.298">  }</a>
+<span class="sourceLineNo">299</span><a id="line.299"></a>
+<span class="sourceLineNo">300</span><a id="line.300">  /**</a>
+<span class="sourceLineNo">301</span><a id="line.301">   * Load settings from properties.</a>
+<span class="sourceLineNo">302</span><a id="line.302">   */</a>
+<span class="sourceLineNo">303</span><a id="line.303">  @Override</a>
+<span class="sourceLineNo">304</span><a id="line.304">  public void loadFromProperties(PropertiesWrapper properties) {</a>
+<span class="sourceLineNo">305</span><a id="line.305"></a>
+<span class="sourceLineNo">306</span><a id="line.306">    useForeignKeyPrefix = properties.getBoolean("namingConvention.useForeignKeyPrefix", useForeignKeyPrefix);</a>
+<span class="sourceLineNo">307</span><a id="line.307">    sequenceFormat = properties.get("namingConvention.sequenceFormat", sequenceFormat);</a>
+<span class="sourceLineNo">308</span><a id="line.308">    schema = properties.get("namingConvention.schema", schema);</a>
+<span class="sourceLineNo">309</span><a id="line.309">  }</a>
+<span class="sourceLineNo">310</span><a id="line.310"></a>
+<span class="sourceLineNo">311</span><a id="line.311">}</a>
 
 
 

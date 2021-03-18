@@ -22,9 +22,10 @@
 <span class="sourceLineNo">013</span><a id="line.13">    this.platform = Platform.ORACLE11;</a>
 <span class="sourceLineNo">014</span><a id="line.14">    this.columnAliasPrefix = "c";</a>
 <span class="sourceLineNo">015</span><a id="line.15">    this.sqlLimiter = new OracleRownumSqlLimiter();</a>
-<span class="sourceLineNo">016</span><a id="line.16">    dbIdentity.setIdType(IdType.SEQUENCE);</a>
-<span class="sourceLineNo">017</span><a id="line.17">  }</a>
-<span class="sourceLineNo">018</span><a id="line.18">}</a>
+<span class="sourceLineNo">016</span><a id="line.16">    this.basicSqlLimiter = new OracleRownumBasicLimiter();</a>
+<span class="sourceLineNo">017</span><a id="line.17">    dbIdentity.setIdType(IdType.SEQUENCE);</a>
+<span class="sourceLineNo">018</span><a id="line.18">  }</a>
+<span class="sourceLineNo">019</span><a id="line.19">}</a>
 
 
 

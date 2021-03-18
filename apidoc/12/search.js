@@ -143,6 +143,7 @@ $.widget("custom.catcomplete", $.ui.autocomplete, {
         return li;
     }
 });
+
 $(function() {
     $("#search").catcomplete({
         minLength: 1,
@@ -324,3 +325,6 @@ $(function() {
         }
     });
 });
+getURLPrefix = function(ui) {
+    return "";
+};

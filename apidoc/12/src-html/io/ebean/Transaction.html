@@ -11,8 +11,8 @@
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3">import io.ebean.annotation.DocStoreMode;</a>
 <span class="sourceLineNo">004</span><a id="line.4">import io.ebean.annotation.PersistBatch;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import io.ebean.config.DocStoreConfig;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import io.ebean.config.DatabaseConfig;</a>
+<span class="sourceLineNo">005</span><a id="line.5">import io.ebean.config.DatabaseConfig;</a>
+<span class="sourceLineNo">006</span><a id="line.6">import io.ebean.config.DocStoreConfig;</a>
 <span class="sourceLineNo">007</span><a id="line.7"></a>
 <span class="sourceLineNo">008</span><a id="line.8">import javax.persistence.PersistenceException;</a>
 <span class="sourceLineNo">009</span><a id="line.9">import java.sql.Connection;</a>
@@ -528,11 +528,11 @@
 <span class="sourceLineNo">519</span><a id="line.519">  void flush() throws PersistenceException;</a>
 <span class="sourceLineNo">520</span><a id="line.520"></a>
 <span class="sourceLineNo">521</span><a id="line.521">  /**</a>
-<span class="sourceLineNo">522</span><a id="line.522">   * This is a synonym for flush() and will be deprecated.</a>
+<span class="sourceLineNo">522</span><a id="line.522">   * Deprecated - migrate to flush().</a>
 <span class="sourceLineNo">523</span><a id="line.523">   * &lt;p&gt;</a>
 <span class="sourceLineNo">524</span><a id="line.524">   * flush() is preferred as it matches the JPA flush() method.</a>
-<span class="sourceLineNo">525</span><a id="line.525">   * &lt;/p&gt;</a>
-<span class="sourceLineNo">526</span><a id="line.526">   */</a>
+<span class="sourceLineNo">525</span><a id="line.525">   */</a>
+<span class="sourceLineNo">526</span><a id="line.526">  @Deprecated</a>
 <span class="sourceLineNo">527</span><a id="line.527">  void flushBatch() throws PersistenceException;</a>
 <span class="sourceLineNo">528</span><a id="line.528"></a>
 <span class="sourceLineNo">529</span><a id="line.529">  /**</a>

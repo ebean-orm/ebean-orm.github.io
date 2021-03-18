@@ -69,7 +69,7 @@
 <span class="sourceLineNo">060</span><a id="line.60">  }</a>
 <span class="sourceLineNo">061</span><a id="line.61"></a>
 <span class="sourceLineNo">062</span><a id="line.62">  @Override</a>
-<span class="sourceLineNo">063</span><a id="line.63">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
+<span class="sourceLineNo">063</span><a id="line.63">  protected String withForUpdate(String sql, Query.LockWait lockWait, Query.LockType lockType) {</a>
 <span class="sourceLineNo">064</span><a id="line.64">    // NOWAIT and SKIP LOCKED currently not supported with MySQL</a>
 <span class="sourceLineNo">065</span><a id="line.65">    return sql + " for update";</a>
 <span class="sourceLineNo">066</span><a id="line.66">  }</a>

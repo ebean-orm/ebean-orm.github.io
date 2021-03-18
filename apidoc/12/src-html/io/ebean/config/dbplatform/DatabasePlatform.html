@@ -688,143 +688,142 @@
 <span class="sourceLineNo">679</span><a id="line.679"></a>
 <span class="sourceLineNo">680</span><a id="line.680">  public String completeSql(String sql, Query&lt;?&gt; query) {</a>
 <span class="sourceLineNo">681</span><a id="line.681">    if (query.isForUpdate()) {</a>
-<span class="sourceLineNo">682</span><a id="line.682">      sql = withForUpdate(sql, query.getForUpdateMode());</a>
+<span class="sourceLineNo">682</span><a id="line.682">      sql = withForUpdate(sql, query.getForUpdateLockWait(), query.getForUpdateLockType());</a>
 <span class="sourceLineNo">683</span><a id="line.683">    }</a>
-<span class="sourceLineNo">684</span><a id="line.684"></a>
-<span class="sourceLineNo">685</span><a id="line.685">    return sql;</a>
-<span class="sourceLineNo">686</span><a id="line.686">  }</a>
-<span class="sourceLineNo">687</span><a id="line.687"></a>
-<span class="sourceLineNo">688</span><a id="line.688">  /**</a>
-<span class="sourceLineNo">689</span><a id="line.689">   * For update hint on the FROM clause (SQL server only).</a>
-<span class="sourceLineNo">690</span><a id="line.690">   */</a>
-<span class="sourceLineNo">691</span><a id="line.691">  public String fromForUpdate(Query.ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">692</span><a id="line.692">    // return null except for sql server</a>
-<span class="sourceLineNo">693</span><a id="line.693">    return null;</a>
-<span class="sourceLineNo">694</span><a id="line.694">  }</a>
-<span class="sourceLineNo">695</span><a id="line.695"></a>
-<span class="sourceLineNo">696</span><a id="line.696">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">697</span><a id="line.697">    // silently assume the database does not support the "for update" clause.</a>
-<span class="sourceLineNo">698</span><a id="line.698">    logger.info("it seems your database does not support the 'for update' clause");</a>
-<span class="sourceLineNo">699</span><a id="line.699">    return sql;</a>
-<span class="sourceLineNo">700</span><a id="line.700">  }</a>
-<span class="sourceLineNo">701</span><a id="line.701"></a>
-<span class="sourceLineNo">702</span><a id="line.702">  /**</a>
-<span class="sourceLineNo">703</span><a id="line.703">   * Returns the like clause used by this database platform.</a>
-<span class="sourceLineNo">704</span><a id="line.704">   * &lt;p&gt;</a>
-<span class="sourceLineNo">705</span><a id="line.705">   * This may include an escape clause to disable a default escape character.</a>
-<span class="sourceLineNo">706</span><a id="line.706">   */</a>
-<span class="sourceLineNo">707</span><a id="line.707">  public String getLikeClause(boolean rawLikeExpression) {</a>
-<span class="sourceLineNo">708</span><a id="line.708">    return rawLikeExpression ? likeClauseRaw : likeClauseEscaped;</a>
-<span class="sourceLineNo">709</span><a id="line.709">  }</a>
-<span class="sourceLineNo">710</span><a id="line.710"></a>
-<span class="sourceLineNo">711</span><a id="line.711">  /**</a>
-<span class="sourceLineNo">712</span><a id="line.712">   * Return the platform default JDBC batch mode for persist cascade.</a>
-<span class="sourceLineNo">713</span><a id="line.713">   */</a>
-<span class="sourceLineNo">714</span><a id="line.714">  public PersistBatch getPersistBatchOnCascade() {</a>
-<span class="sourceLineNo">715</span><a id="line.715">    return persistBatchOnCascade;</a>
-<span class="sourceLineNo">716</span><a id="line.716">  }</a>
-<span class="sourceLineNo">717</span><a id="line.717"></a>
-<span class="sourceLineNo">718</span><a id="line.718">  /**</a>
-<span class="sourceLineNo">719</span><a id="line.719">   * Return a statement to truncate a table.</a>
-<span class="sourceLineNo">720</span><a id="line.720">   */</a>
-<span class="sourceLineNo">721</span><a id="line.721">  public String truncateStatement(String table) {</a>
-<span class="sourceLineNo">722</span><a id="line.722">    return String.format(truncateTable, table);</a>
-<span class="sourceLineNo">723</span><a id="line.723">  }</a>
-<span class="sourceLineNo">724</span><a id="line.724"></a>
-<span class="sourceLineNo">725</span><a id="line.725">  /**</a>
-<span class="sourceLineNo">726</span><a id="line.726">   * Create the DB schema if it does not exist.</a>
-<span class="sourceLineNo">727</span><a id="line.727">   */</a>
-<span class="sourceLineNo">728</span><a id="line.728">  public void createSchemaIfNotExists(String dbSchema, Connection connection) throws SQLException {</a>
-<span class="sourceLineNo">729</span><a id="line.729">    if (!schemaExists(dbSchema, connection)) {</a>
-<span class="sourceLineNo">730</span><a id="line.730">      Statement query = connection.createStatement();</a>
-<span class="sourceLineNo">731</span><a id="line.731">      try {</a>
-<span class="sourceLineNo">732</span><a id="line.732">        logger.info("create schema:{}", dbSchema);</a>
-<span class="sourceLineNo">733</span><a id="line.733">        query.executeUpdate("create schema " + dbSchema);</a>
-<span class="sourceLineNo">734</span><a id="line.734">      } finally {</a>
-<span class="sourceLineNo">735</span><a id="line.735">        JdbcClose.close(query);</a>
-<span class="sourceLineNo">736</span><a id="line.736">      }</a>
-<span class="sourceLineNo">737</span><a id="line.737">    }</a>
-<span class="sourceLineNo">738</span><a id="line.738">  }</a>
-<span class="sourceLineNo">739</span><a id="line.739"></a>
-<span class="sourceLineNo">740</span><a id="line.740">  /**</a>
-<span class="sourceLineNo">741</span><a id="line.741">   * Return true if the schema exists.</a>
-<span class="sourceLineNo">742</span><a id="line.742">   */</a>
-<span class="sourceLineNo">743</span><a id="line.743">  public boolean schemaExists(String dbSchema, Connection connection) throws SQLException {</a>
-<span class="sourceLineNo">744</span><a id="line.744">    ResultSet schemas = connection.getMetaData().getSchemas();</a>
-<span class="sourceLineNo">745</span><a id="line.745">    try {</a>
-<span class="sourceLineNo">746</span><a id="line.746">      while (schemas.next()) {</a>
-<span class="sourceLineNo">747</span><a id="line.747">        String schema = schemas.getString(1);</a>
-<span class="sourceLineNo">748</span><a id="line.748">        if (schema.equalsIgnoreCase(dbSchema)) {</a>
-<span class="sourceLineNo">749</span><a id="line.749">          return true;</a>
-<span class="sourceLineNo">750</span><a id="line.750">        }</a>
-<span class="sourceLineNo">751</span><a id="line.751">      }</a>
-<span class="sourceLineNo">752</span><a id="line.752">    } finally {</a>
-<span class="sourceLineNo">753</span><a id="line.753">      JdbcClose.close(schemas);</a>
-<span class="sourceLineNo">754</span><a id="line.754">    }</a>
-<span class="sourceLineNo">755</span><a id="line.755">    return false;</a>
-<span class="sourceLineNo">756</span><a id="line.756">  }</a>
-<span class="sourceLineNo">757</span><a id="line.757"></a>
-<span class="sourceLineNo">758</span><a id="line.758">  /**</a>
-<span class="sourceLineNo">759</span><a id="line.759">   * Return true if the table exists.</a>
-<span class="sourceLineNo">760</span><a id="line.760">   */</a>
-<span class="sourceLineNo">761</span><a id="line.761">  public boolean tableExists(Connection connection, String catalog, String schema, String table) throws SQLException {</a>
-<span class="sourceLineNo">762</span><a id="line.762"></a>
-<span class="sourceLineNo">763</span><a id="line.763">    DatabaseMetaData metaData = connection.getMetaData();</a>
-<span class="sourceLineNo">764</span><a id="line.764">    ResultSet tables = metaData.getTables(catalog, schema, table, null);</a>
-<span class="sourceLineNo">765</span><a id="line.765">    try {</a>
-<span class="sourceLineNo">766</span><a id="line.766">      return tables.next();</a>
-<span class="sourceLineNo">767</span><a id="line.767">    } finally {</a>
-<span class="sourceLineNo">768</span><a id="line.768">      JdbcClose.close(tables);</a>
-<span class="sourceLineNo">769</span><a id="line.769">    }</a>
-<span class="sourceLineNo">770</span><a id="line.770">  }</a>
-<span class="sourceLineNo">771</span><a id="line.771"></a>
-<span class="sourceLineNo">772</span><a id="line.772">  /**</a>
-<span class="sourceLineNo">773</span><a id="line.773">   * Return true if partitions exist for the given table.</a>
-<span class="sourceLineNo">774</span><a id="line.774">   */</a>
-<span class="sourceLineNo">775</span><a id="line.775">  public boolean tablePartitionsExist(Connection connection, String table) throws SQLException {</a>
-<span class="sourceLineNo">776</span><a id="line.776">    return true;</a>
-<span class="sourceLineNo">777</span><a id="line.777">  }</a>
-<span class="sourceLineNo">778</span><a id="line.778"></a>
-<span class="sourceLineNo">779</span><a id="line.779">  /**</a>
-<span class="sourceLineNo">780</span><a id="line.780">   * Return the SQL to create an initial partition for the given table.</a>
-<span class="sourceLineNo">781</span><a id="line.781">   */</a>
-<span class="sourceLineNo">782</span><a id="line.782">  public String tablePartitionInit(String tableName, PartitionMode mode, String property, String singlePrimaryKey) {</a>
-<span class="sourceLineNo">783</span><a id="line.783">    return null;</a>
-<span class="sourceLineNo">784</span><a id="line.784">  }</a>
-<span class="sourceLineNo">785</span><a id="line.785"></a>
-<span class="sourceLineNo">786</span><a id="line.786">  /**</a>
-<span class="sourceLineNo">787</span><a id="line.787">   * Escapes the like string for this DB-Platform</a>
-<span class="sourceLineNo">788</span><a id="line.788">   */</a>
-<span class="sourceLineNo">789</span><a id="line.789">  public String escapeLikeString(String value) {</a>
-<span class="sourceLineNo">790</span><a id="line.790">    StringBuilder sb = null;</a>
-<span class="sourceLineNo">791</span><a id="line.791">    for (int i = 0; i &lt; value.length(); i++) {</a>
-<span class="sourceLineNo">792</span><a id="line.792">      char ch = value.charAt(i);</a>
-<span class="sourceLineNo">793</span><a id="line.793">      boolean escaped = false;</a>
-<span class="sourceLineNo">794</span><a id="line.794">      for (char escapeChar : likeSpecialCharacters) {</a>
-<span class="sourceLineNo">795</span><a id="line.795">        if (ch == escapeChar) {</a>
-<span class="sourceLineNo">796</span><a id="line.796">          if (sb == null) {</a>
-<span class="sourceLineNo">797</span><a id="line.797">            sb = new StringBuilder(value.substring(0, i));</a>
-<span class="sourceLineNo">798</span><a id="line.798">          }</a>
-<span class="sourceLineNo">799</span><a id="line.799">          escapeLikeCharacter(escapeChar, sb);</a>
-<span class="sourceLineNo">800</span><a id="line.800">          escaped = true;</a>
-<span class="sourceLineNo">801</span><a id="line.801">          break;</a>
-<span class="sourceLineNo">802</span><a id="line.802">        }</a>
-<span class="sourceLineNo">803</span><a id="line.803">      }</a>
-<span class="sourceLineNo">804</span><a id="line.804">      if (!escaped &amp;&amp; sb != null) {</a>
-<span class="sourceLineNo">805</span><a id="line.805">        sb.append(ch);</a>
-<span class="sourceLineNo">806</span><a id="line.806">      }</a>
-<span class="sourceLineNo">807</span><a id="line.807">    }</a>
-<span class="sourceLineNo">808</span><a id="line.808">    if (sb == null) {</a>
-<span class="sourceLineNo">809</span><a id="line.809">      return value;</a>
-<span class="sourceLineNo">810</span><a id="line.810">    } else {</a>
-<span class="sourceLineNo">811</span><a id="line.811">      return sb.toString();</a>
-<span class="sourceLineNo">812</span><a id="line.812">    }</a>
-<span class="sourceLineNo">813</span><a id="line.813">  }</a>
-<span class="sourceLineNo">814</span><a id="line.814"></a>
-<span class="sourceLineNo">815</span><a id="line.815">  protected void escapeLikeCharacter(char ch, StringBuilder sb) {</a>
-<span class="sourceLineNo">816</span><a id="line.816">    sb.append(likeEscapeChar).append(ch);</a>
-<span class="sourceLineNo">817</span><a id="line.817">  }</a>
-<span class="sourceLineNo">818</span><a id="line.818">}</a>
+<span class="sourceLineNo">684</span><a id="line.684">    return sql;</a>
+<span class="sourceLineNo">685</span><a id="line.685">  }</a>
+<span class="sourceLineNo">686</span><a id="line.686"></a>
+<span class="sourceLineNo">687</span><a id="line.687">  /**</a>
+<span class="sourceLineNo">688</span><a id="line.688">   * For update hint on the FROM clause (SQL server only).</a>
+<span class="sourceLineNo">689</span><a id="line.689">   */</a>
+<span class="sourceLineNo">690</span><a id="line.690">  public String fromForUpdate(Query.LockWait lockWait) {</a>
+<span class="sourceLineNo">691</span><a id="line.691">    // return null except for sql server</a>
+<span class="sourceLineNo">692</span><a id="line.692">    return null;</a>
+<span class="sourceLineNo">693</span><a id="line.693">  }</a>
+<span class="sourceLineNo">694</span><a id="line.694"></a>
+<span class="sourceLineNo">695</span><a id="line.695">  protected String withForUpdate(String sql, Query.LockWait lockWait, Query.LockType lockType) {</a>
+<span class="sourceLineNo">696</span><a id="line.696">    // silently assume the database does not support the "for update" clause.</a>
+<span class="sourceLineNo">697</span><a id="line.697">    logger.info("it seems your database does not support the 'for update' clause");</a>
+<span class="sourceLineNo">698</span><a id="line.698">    return sql;</a>
+<span class="sourceLineNo">699</span><a id="line.699">  }</a>
+<span class="sourceLineNo">700</span><a id="line.700"></a>
+<span class="sourceLineNo">701</span><a id="line.701">  /**</a>
+<span class="sourceLineNo">702</span><a id="line.702">   * Returns the like clause used by this database platform.</a>
+<span class="sourceLineNo">703</span><a id="line.703">   * &lt;p&gt;</a>
+<span class="sourceLineNo">704</span><a id="line.704">   * This may include an escape clause to disable a default escape character.</a>
+<span class="sourceLineNo">705</span><a id="line.705">   */</a>
+<span class="sourceLineNo">706</span><a id="line.706">  public String getLikeClause(boolean rawLikeExpression) {</a>
+<span class="sourceLineNo">707</span><a id="line.707">    return rawLikeExpression ? likeClauseRaw : likeClauseEscaped;</a>
+<span class="sourceLineNo">708</span><a id="line.708">  }</a>
+<span class="sourceLineNo">709</span><a id="line.709"></a>
+<span class="sourceLineNo">710</span><a id="line.710">  /**</a>
+<span class="sourceLineNo">711</span><a id="line.711">   * Return the platform default JDBC batch mode for persist cascade.</a>
+<span class="sourceLineNo">712</span><a id="line.712">   */</a>
+<span class="sourceLineNo">713</span><a id="line.713">  public PersistBatch getPersistBatchOnCascade() {</a>
+<span class="sourceLineNo">714</span><a id="line.714">    return persistBatchOnCascade;</a>
+<span class="sourceLineNo">715</span><a id="line.715">  }</a>
+<span class="sourceLineNo">716</span><a id="line.716"></a>
+<span class="sourceLineNo">717</span><a id="line.717">  /**</a>
+<span class="sourceLineNo">718</span><a id="line.718">   * Return a statement to truncate a table.</a>
+<span class="sourceLineNo">719</span><a id="line.719">   */</a>
+<span class="sourceLineNo">720</span><a id="line.720">  public String truncateStatement(String table) {</a>
+<span class="sourceLineNo">721</span><a id="line.721">    return String.format(truncateTable, table);</a>
+<span class="sourceLineNo">722</span><a id="line.722">  }</a>
+<span class="sourceLineNo">723</span><a id="line.723"></a>
+<span class="sourceLineNo">724</span><a id="line.724">  /**</a>
+<span class="sourceLineNo">725</span><a id="line.725">   * Create the DB schema if it does not exist.</a>
+<span class="sourceLineNo">726</span><a id="line.726">   */</a>
+<span class="sourceLineNo">727</span><a id="line.727">  public void createSchemaIfNotExists(String dbSchema, Connection connection) throws SQLException {</a>
+<span class="sourceLineNo">728</span><a id="line.728">    if (!schemaExists(dbSchema, connection)) {</a>
+<span class="sourceLineNo">729</span><a id="line.729">      Statement query = connection.createStatement();</a>
+<span class="sourceLineNo">730</span><a id="line.730">      try {</a>
+<span class="sourceLineNo">731</span><a id="line.731">        logger.info("create schema:{}", dbSchema);</a>
+<span class="sourceLineNo">732</span><a id="line.732">        query.executeUpdate("create schema " + dbSchema);</a>
+<span class="sourceLineNo">733</span><a id="line.733">      } finally {</a>
+<span class="sourceLineNo">734</span><a id="line.734">        JdbcClose.close(query);</a>
+<span class="sourceLineNo">735</span><a id="line.735">      }</a>
+<span class="sourceLineNo">736</span><a id="line.736">    }</a>
+<span class="sourceLineNo">737</span><a id="line.737">  }</a>
+<span class="sourceLineNo">738</span><a id="line.738"></a>
+<span class="sourceLineNo">739</span><a id="line.739">  /**</a>
+<span class="sourceLineNo">740</span><a id="line.740">   * Return true if the schema exists.</a>
+<span class="sourceLineNo">741</span><a id="line.741">   */</a>
+<span class="sourceLineNo">742</span><a id="line.742">  public boolean schemaExists(String dbSchema, Connection connection) throws SQLException {</a>
+<span class="sourceLineNo">743</span><a id="line.743">    ResultSet schemas = connection.getMetaData().getSchemas();</a>
+<span class="sourceLineNo">744</span><a id="line.744">    try {</a>
+<span class="sourceLineNo">745</span><a id="line.745">      while (schemas.next()) {</a>
+<span class="sourceLineNo">746</span><a id="line.746">        String schema = schemas.getString(1);</a>
+<span class="sourceLineNo">747</span><a id="line.747">        if (schema.equalsIgnoreCase(dbSchema)) {</a>
+<span class="sourceLineNo">748</span><a id="line.748">          return true;</a>
+<span class="sourceLineNo">749</span><a id="line.749">        }</a>
+<span class="sourceLineNo">750</span><a id="line.750">      }</a>
+<span class="sourceLineNo">751</span><a id="line.751">    } finally {</a>
+<span class="sourceLineNo">752</span><a id="line.752">      JdbcClose.close(schemas);</a>
+<span class="sourceLineNo">753</span><a id="line.753">    }</a>
+<span class="sourceLineNo">754</span><a id="line.754">    return false;</a>
+<span class="sourceLineNo">755</span><a id="line.755">  }</a>
+<span class="sourceLineNo">756</span><a id="line.756"></a>
+<span class="sourceLineNo">757</span><a id="line.757">  /**</a>
+<span class="sourceLineNo">758</span><a id="line.758">   * Return true if the table exists.</a>
+<span class="sourceLineNo">759</span><a id="line.759">   */</a>
+<span class="sourceLineNo">760</span><a id="line.760">  public boolean tableExists(Connection connection, String catalog, String schema, String table) throws SQLException {</a>
+<span class="sourceLineNo">761</span><a id="line.761"></a>
+<span class="sourceLineNo">762</span><a id="line.762">    DatabaseMetaData metaData = connection.getMetaData();</a>
+<span class="sourceLineNo">763</span><a id="line.763">    ResultSet tables = metaData.getTables(catalog, schema, table, null);</a>
+<span class="sourceLineNo">764</span><a id="line.764">    try {</a>
+<span class="sourceLineNo">765</span><a id="line.765">      return tables.next();</a>
+<span class="sourceLineNo">766</span><a id="line.766">    } finally {</a>
+<span class="sourceLineNo">767</span><a id="line.767">      JdbcClose.close(tables);</a>
+<span class="sourceLineNo">768</span><a id="line.768">    }</a>
+<span class="sourceLineNo">769</span><a id="line.769">  }</a>
+<span class="sourceLineNo">770</span><a id="line.770"></a>
+<span class="sourceLineNo">771</span><a id="line.771">  /**</a>
+<span class="sourceLineNo">772</span><a id="line.772">   * Return true if partitions exist for the given table.</a>
+<span class="sourceLineNo">773</span><a id="line.773">   */</a>
+<span class="sourceLineNo">774</span><a id="line.774">  public boolean tablePartitionsExist(Connection connection, String table) throws SQLException {</a>
+<span class="sourceLineNo">775</span><a id="line.775">    return true;</a>
+<span class="sourceLineNo">776</span><a id="line.776">  }</a>
+<span class="sourceLineNo">777</span><a id="line.777"></a>
+<span class="sourceLineNo">778</span><a id="line.778">  /**</a>
+<span class="sourceLineNo">779</span><a id="line.779">   * Return the SQL to create an initial partition for the given table.</a>
+<span class="sourceLineNo">780</span><a id="line.780">   */</a>
+<span class="sourceLineNo">781</span><a id="line.781">  public String tablePartitionInit(String tableName, PartitionMode mode, String property, String singlePrimaryKey) {</a>
+<span class="sourceLineNo">782</span><a id="line.782">    return null;</a>
+<span class="sourceLineNo">783</span><a id="line.783">  }</a>
+<span class="sourceLineNo">784</span><a id="line.784"></a>
+<span class="sourceLineNo">785</span><a id="line.785">  /**</a>
+<span class="sourceLineNo">786</span><a id="line.786">   * Escapes the like string for this DB-Platform</a>
+<span class="sourceLineNo">787</span><a id="line.787">   */</a>
+<span class="sourceLineNo">788</span><a id="line.788">  public String escapeLikeString(String value) {</a>
+<span class="sourceLineNo">789</span><a id="line.789">    StringBuilder sb = null;</a>
+<span class="sourceLineNo">790</span><a id="line.790">    for (int i = 0; i &lt; value.length(); i++) {</a>
+<span class="sourceLineNo">791</span><a id="line.791">      char ch = value.charAt(i);</a>
+<span class="sourceLineNo">792</span><a id="line.792">      boolean escaped = false;</a>
+<span class="sourceLineNo">793</span><a id="line.793">      for (char escapeChar : likeSpecialCharacters) {</a>
+<span class="sourceLineNo">794</span><a id="line.794">        if (ch == escapeChar) {</a>
+<span class="sourceLineNo">795</span><a id="line.795">          if (sb == null) {</a>
+<span class="sourceLineNo">796</span><a id="line.796">            sb = new StringBuilder(value.substring(0, i));</a>
+<span class="sourceLineNo">797</span><a id="line.797">          }</a>
+<span class="sourceLineNo">798</span><a id="line.798">          escapeLikeCharacter(escapeChar, sb);</a>
+<span class="sourceLineNo">799</span><a id="line.799">          escaped = true;</a>
+<span class="sourceLineNo">800</span><a id="line.800">          break;</a>
+<span class="sourceLineNo">801</span><a id="line.801">        }</a>
+<span class="sourceLineNo">802</span><a id="line.802">      }</a>
+<span class="sourceLineNo">803</span><a id="line.803">      if (!escaped &amp;&amp; sb != null) {</a>
+<span class="sourceLineNo">804</span><a id="line.804">        sb.append(ch);</a>
+<span class="sourceLineNo">805</span><a id="line.805">      }</a>
+<span class="sourceLineNo">806</span><a id="line.806">    }</a>
+<span class="sourceLineNo">807</span><a id="line.807">    if (sb == null) {</a>
+<span class="sourceLineNo">808</span><a id="line.808">      return value;</a>
+<span class="sourceLineNo">809</span><a id="line.809">    } else {</a>
+<span class="sourceLineNo">810</span><a id="line.810">      return sb.toString();</a>
+<span class="sourceLineNo">811</span><a id="line.811">    }</a>
+<span class="sourceLineNo">812</span><a id="line.812">  }</a>
+<span class="sourceLineNo">813</span><a id="line.813"></a>
+<span class="sourceLineNo">814</span><a id="line.814">  protected void escapeLikeCharacter(char ch, StringBuilder sb) {</a>
+<span class="sourceLineNo">815</span><a id="line.815">    sb.append(likeEscapeChar).append(ch);</a>
+<span class="sourceLineNo">816</span><a id="line.816">  }</a>
+<span class="sourceLineNo">817</span><a id="line.817">}</a>
 
 
 

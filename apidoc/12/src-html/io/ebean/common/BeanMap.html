@@ -86,7 +86,7 @@
 <span class="sourceLineNo">077</span><a id="line.77">  }</a>
 <span class="sourceLineNo">078</span><a id="line.78"></a>
 <span class="sourceLineNo">079</span><a id="line.79">  public void internalPutWithCheck(Object key, Object bean) {</a>
-<span class="sourceLineNo">080</span><a id="line.80">    if (map == null || !map.containsKey(key)) {</a>
+<span class="sourceLineNo">080</span><a id="line.80">    if (map == null || key == null || !map.containsKey(key)) {</a>
 <span class="sourceLineNo">081</span><a id="line.81">      internalPut(key, bean);</a>
 <span class="sourceLineNo">082</span><a id="line.82">    }</a>
 <span class="sourceLineNo">083</span><a id="line.83">  }</a>

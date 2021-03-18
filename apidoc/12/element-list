@@ -18,7 +18,6 @@ io.ebean.config.dbplatform.postgres
 io.ebean.config.dbplatform.sqlanywhere
 io.ebean.config.dbplatform.sqlite
 io.ebean.config.dbplatform.sqlserver
-io.ebean.dbmigration
 io.ebean.docstore
 io.ebean.event
 io.ebean.event.changelog

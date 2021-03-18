@@ -41,7 +41,7 @@
 <span class="sourceLineNo">032</span><a id="line.32">  private static final int STATE_REFERENCE = 1;</a>
 <span class="sourceLineNo">033</span><a id="line.33">  private static final int STATE_LOADED = 2;</a>
 <span class="sourceLineNo">034</span><a id="line.34"></a>
-<span class="sourceLineNo">035</span><a id="line.35">  private transient final ReentrantLock lock = new ReentrantLock(false);</a>
+<span class="sourceLineNo">035</span><a id="line.35">  private transient final ReentrantLock lock = new ReentrantLock();</a>
 <span class="sourceLineNo">036</span><a id="line.36"></a>
 <span class="sourceLineNo">037</span><a id="line.37">  private transient NodeUsageCollector nodeUsageCollector;</a>
 <span class="sourceLineNo">038</span><a id="line.38"></a>
@@ -940,225 +940,229 @@
 <span class="sourceLineNo">931</span><a id="line.931">   * OneToMany and ManyToMany only set loaded state.</a>
 <span class="sourceLineNo">932</span><a id="line.932">   */</a>
 <span class="sourceLineNo">933</span><a id="line.933">  public void preSetterMany(boolean interceptField, int propertyIndex, Object oldValue, Object newValue) {</a>
-<span class="sourceLineNo">934</span><a id="line.934">    if (readOnly) {</a>
-<span class="sourceLineNo">935</span><a id="line.935">      throw new IllegalStateException("This bean is readOnly");</a>
-<span class="sourceLineNo">936</span><a id="line.936">    }</a>
-<span class="sourceLineNo">937</span><a id="line.937">    setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">938</span><a id="line.938">  }</a>
-<span class="sourceLineNo">939</span><a id="line.939"></a>
-<span class="sourceLineNo">940</span><a id="line.940">  private void setChangedPropertyValue(int propertyIndex, boolean setDirtyState, Object origValue) {</a>
-<span class="sourceLineNo">941</span><a id="line.941">    if (readOnly) {</a>
-<span class="sourceLineNo">942</span><a id="line.942">      throw new IllegalStateException("This bean is readOnly");</a>
-<span class="sourceLineNo">943</span><a id="line.943">    }</a>
-<span class="sourceLineNo">944</span><a id="line.944">    setChangedProperty(propertyIndex);</a>
-<span class="sourceLineNo">945</span><a id="line.945">    if (setDirtyState) {</a>
-<span class="sourceLineNo">946</span><a id="line.946">      setOriginalValue(propertyIndex, origValue);</a>
-<span class="sourceLineNo">947</span><a id="line.947">      setDirtyStatus();</a>
-<span class="sourceLineNo">948</span><a id="line.948">    }</a>
-<span class="sourceLineNo">949</span><a id="line.949">  }</a>
-<span class="sourceLineNo">950</span><a id="line.950"></a>
-<span class="sourceLineNo">951</span><a id="line.951">  private void setDirtyStatus() {</a>
-<span class="sourceLineNo">952</span><a id="line.952">    if (!dirty) {</a>
-<span class="sourceLineNo">953</span><a id="line.953">      dirty = true;</a>
-<span class="sourceLineNo">954</span><a id="line.954">      if (embeddedOwner != null) {</a>
-<span class="sourceLineNo">955</span><a id="line.955">        // Cascade dirty state from Embedded bean to parent bean</a>
-<span class="sourceLineNo">956</span><a id="line.956">        embeddedOwner._ebean_getIntercept().setEmbeddedDirty(embeddedOwnerIndex);</a>
-<span class="sourceLineNo">957</span><a id="line.957">      }</a>
-<span class="sourceLineNo">958</span><a id="line.958">      if (nodeUsageCollector != null) {</a>
-<span class="sourceLineNo">959</span><a id="line.959">        nodeUsageCollector.setModified();</a>
-<span class="sourceLineNo">960</span><a id="line.960">      }</a>
-<span class="sourceLineNo">961</span><a id="line.961">    }</a>
-<span class="sourceLineNo">962</span><a id="line.962">  }</a>
-<span class="sourceLineNo">963</span><a id="line.963"></a>
-<span class="sourceLineNo">964</span><a id="line.964">  /**</a>
-<span class="sourceLineNo">965</span><a id="line.965">   * Check to see if the values are not equal. If they are not equal then create</a>
-<span class="sourceLineNo">966</span><a id="line.966">   * the old values for use with ConcurrencyMode.ALL.</a>
-<span class="sourceLineNo">967</span><a id="line.967">   */</a>
-<span class="sourceLineNo">968</span><a id="line.968">  public void preSetter(boolean intercept, int propertyIndex, Object oldValue, Object newValue) {</a>
-<span class="sourceLineNo">969</span><a id="line.969">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">970</span><a id="line.970">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">971</span><a id="line.971">    } else if (notEqual(oldValue, newValue)) {</a>
-<span class="sourceLineNo">972</span><a id="line.972">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">973</span><a id="line.973">    }</a>
-<span class="sourceLineNo">974</span><a id="line.974">  }</a>
-<span class="sourceLineNo">975</span><a id="line.975"></a>
-<span class="sourceLineNo">976</span><a id="line.976"></a>
-<span class="sourceLineNo">977</span><a id="line.977">  /**</a>
-<span class="sourceLineNo">978</span><a id="line.978">   * Check for primitive boolean.</a>
-<span class="sourceLineNo">979</span><a id="line.979">   */</a>
-<span class="sourceLineNo">980</span><a id="line.980">  public void preSetter(boolean intercept, int propertyIndex, boolean oldValue, boolean newValue) {</a>
-<span class="sourceLineNo">981</span><a id="line.981">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">982</span><a id="line.982">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">983</span><a id="line.983">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">984</span><a id="line.984">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">985</span><a id="line.985">    }</a>
-<span class="sourceLineNo">986</span><a id="line.986">  }</a>
-<span class="sourceLineNo">987</span><a id="line.987"></a>
-<span class="sourceLineNo">988</span><a id="line.988">  /**</a>
-<span class="sourceLineNo">989</span><a id="line.989">   * Check for primitive int.</a>
-<span class="sourceLineNo">990</span><a id="line.990">   */</a>
-<span class="sourceLineNo">991</span><a id="line.991">  public void preSetter(boolean intercept, int propertyIndex, int oldValue, int newValue) {</a>
-<span class="sourceLineNo">992</span><a id="line.992">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">993</span><a id="line.993">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">994</span><a id="line.994">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">995</span><a id="line.995">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">996</span><a id="line.996">    }</a>
-<span class="sourceLineNo">997</span><a id="line.997">  }</a>
-<span class="sourceLineNo">998</span><a id="line.998"></a>
-<span class="sourceLineNo">999</span><a id="line.999">  /**</a>
-<span class="sourceLineNo">1000</span><a id="line.1000">   * long.</a>
-<span class="sourceLineNo">1001</span><a id="line.1001">   */</a>
-<span class="sourceLineNo">1002</span><a id="line.1002">  public void preSetter(boolean intercept, int propertyIndex, long oldValue, long newValue) {</a>
-<span class="sourceLineNo">1003</span><a id="line.1003">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1004</span><a id="line.1004">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1005</span><a id="line.1005">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">1006</span><a id="line.1006">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1007</span><a id="line.1007">    }</a>
-<span class="sourceLineNo">1008</span><a id="line.1008">  }</a>
-<span class="sourceLineNo">1009</span><a id="line.1009"></a>
-<span class="sourceLineNo">1010</span><a id="line.1010">  /**</a>
-<span class="sourceLineNo">1011</span><a id="line.1011">   * double.</a>
-<span class="sourceLineNo">1012</span><a id="line.1012">   */</a>
-<span class="sourceLineNo">1013</span><a id="line.1013">  public void preSetter(boolean intercept, int propertyIndex, double oldValue, double newValue) {</a>
-<span class="sourceLineNo">1014</span><a id="line.1014">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1015</span><a id="line.1015">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1016</span><a id="line.1016">    } else if (Double.compare(oldValue, newValue) != 0) {</a>
-<span class="sourceLineNo">1017</span><a id="line.1017">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1018</span><a id="line.1018">    }</a>
-<span class="sourceLineNo">1019</span><a id="line.1019">  }</a>
-<span class="sourceLineNo">1020</span><a id="line.1020"></a>
-<span class="sourceLineNo">1021</span><a id="line.1021">  /**</a>
-<span class="sourceLineNo">1022</span><a id="line.1022">   * float.</a>
-<span class="sourceLineNo">1023</span><a id="line.1023">   */</a>
-<span class="sourceLineNo">1024</span><a id="line.1024">  public void preSetter(boolean intercept, int propertyIndex, float oldValue, float newValue) {</a>
-<span class="sourceLineNo">1025</span><a id="line.1025">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1026</span><a id="line.1026">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1027</span><a id="line.1027">    } else if (Float.compare(oldValue, newValue) != 0) {</a>
-<span class="sourceLineNo">1028</span><a id="line.1028">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1029</span><a id="line.1029">    }</a>
-<span class="sourceLineNo">1030</span><a id="line.1030">  }</a>
-<span class="sourceLineNo">1031</span><a id="line.1031"></a>
-<span class="sourceLineNo">1032</span><a id="line.1032">  /**</a>
-<span class="sourceLineNo">1033</span><a id="line.1033">   * short.</a>
-<span class="sourceLineNo">1034</span><a id="line.1034">   */</a>
-<span class="sourceLineNo">1035</span><a id="line.1035">  public void preSetter(boolean intercept, int propertyIndex, short oldValue, short newValue) {</a>
-<span class="sourceLineNo">1036</span><a id="line.1036">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1037</span><a id="line.1037">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1038</span><a id="line.1038">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">1039</span><a id="line.1039">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1040</span><a id="line.1040">    }</a>
-<span class="sourceLineNo">1041</span><a id="line.1041">  }</a>
-<span class="sourceLineNo">1042</span><a id="line.1042"></a>
-<span class="sourceLineNo">1043</span><a id="line.1043">  /**</a>
-<span class="sourceLineNo">1044</span><a id="line.1044">   * char.</a>
-<span class="sourceLineNo">1045</span><a id="line.1045">   */</a>
-<span class="sourceLineNo">1046</span><a id="line.1046">  public void preSetter(boolean intercept, int propertyIndex, char oldValue, char newValue) {</a>
-<span class="sourceLineNo">1047</span><a id="line.1047">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1048</span><a id="line.1048">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1049</span><a id="line.1049">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">1050</span><a id="line.1050">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1051</span><a id="line.1051">    }</a>
-<span class="sourceLineNo">1052</span><a id="line.1052">  }</a>
-<span class="sourceLineNo">1053</span><a id="line.1053"></a>
-<span class="sourceLineNo">1054</span><a id="line.1054">  /**</a>
-<span class="sourceLineNo">1055</span><a id="line.1055">   * byte.</a>
-<span class="sourceLineNo">1056</span><a id="line.1056">   */</a>
-<span class="sourceLineNo">1057</span><a id="line.1057">  public void preSetter(boolean intercept, int propertyIndex, byte oldValue, byte newValue) {</a>
-<span class="sourceLineNo">1058</span><a id="line.1058">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1059</span><a id="line.1059">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1060</span><a id="line.1060">    } else if (oldValue != newValue) {</a>
-<span class="sourceLineNo">1061</span><a id="line.1061">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1062</span><a id="line.1062">    }</a>
-<span class="sourceLineNo">1063</span><a id="line.1063">  }</a>
-<span class="sourceLineNo">1064</span><a id="line.1064"></a>
-<span class="sourceLineNo">1065</span><a id="line.1065">  /**</a>
-<span class="sourceLineNo">1066</span><a id="line.1066">   * char[].</a>
-<span class="sourceLineNo">1067</span><a id="line.1067">   */</a>
-<span class="sourceLineNo">1068</span><a id="line.1068">  public void preSetter(boolean intercept, int propertyIndex, char[] oldValue, char[] newValue) {</a>
-<span class="sourceLineNo">1069</span><a id="line.1069">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1070</span><a id="line.1070">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1071</span><a id="line.1071">    } else if (!Arrays.equals(oldValue, newValue)) {</a>
-<span class="sourceLineNo">1072</span><a id="line.1072">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1073</span><a id="line.1073">    }</a>
-<span class="sourceLineNo">1074</span><a id="line.1074">  }</a>
-<span class="sourceLineNo">1075</span><a id="line.1075"></a>
-<span class="sourceLineNo">1076</span><a id="line.1076">  /**</a>
-<span class="sourceLineNo">1077</span><a id="line.1077">   * byte[].</a>
-<span class="sourceLineNo">1078</span><a id="line.1078">   */</a>
-<span class="sourceLineNo">1079</span><a id="line.1079">  public void preSetter(boolean intercept, int propertyIndex, byte[] oldValue, byte[] newValue) {</a>
-<span class="sourceLineNo">1080</span><a id="line.1080">    if (state == STATE_NEW) {</a>
-<span class="sourceLineNo">1081</span><a id="line.1081">      setLoadedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1082</span><a id="line.1082">    } else if (!Arrays.equals(oldValue, newValue)) {</a>
-<span class="sourceLineNo">1083</span><a id="line.1083">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
-<span class="sourceLineNo">1084</span><a id="line.1084">    }</a>
-<span class="sourceLineNo">1085</span><a id="line.1085">  }</a>
-<span class="sourceLineNo">1086</span><a id="line.1086"></a>
-<span class="sourceLineNo">1087</span><a id="line.1087">  /**</a>
-<span class="sourceLineNo">1088</span><a id="line.1088">   * Explicitly set an old value with force (the old value is forced even it is already set).</a>
-<span class="sourceLineNo">1089</span><a id="line.1089">   */</a>
-<span class="sourceLineNo">1090</span><a id="line.1090">  public void setOldValue(int propertyIndex, Object oldValue) {</a>
-<span class="sourceLineNo">1091</span><a id="line.1091">    setChangedProperty(propertyIndex);</a>
-<span class="sourceLineNo">1092</span><a id="line.1092">    setOriginalValueForce(propertyIndex, oldValue);</a>
-<span class="sourceLineNo">1093</span><a id="line.1093">    setDirtyStatus();</a>
-<span class="sourceLineNo">1094</span><a id="line.1094">  }</a>
-<span class="sourceLineNo">1095</span><a id="line.1095"></a>
-<span class="sourceLineNo">1096</span><a id="line.1096">  /**</a>
-<span class="sourceLineNo">1097</span><a id="line.1097">   * Return the sort order value for an order column.</a>
-<span class="sourceLineNo">1098</span><a id="line.1098">   */</a>
-<span class="sourceLineNo">1099</span><a id="line.1099">  public int getSortOrder() {</a>
-<span class="sourceLineNo">1100</span><a id="line.1100">    return sortOrder;</a>
-<span class="sourceLineNo">1101</span><a id="line.1101">  }</a>
-<span class="sourceLineNo">1102</span><a id="line.1102"></a>
-<span class="sourceLineNo">1103</span><a id="line.1103">  /**</a>
-<span class="sourceLineNo">1104</span><a id="line.1104">   * Set the sort order value for an order column.</a>
-<span class="sourceLineNo">1105</span><a id="line.1105">   */</a>
-<span class="sourceLineNo">1106</span><a id="line.1106">  public void setSortOrder(int sortOrder) {</a>
-<span class="sourceLineNo">1107</span><a id="line.1107">    this.sortOrder = sortOrder;</a>
-<span class="sourceLineNo">1108</span><a id="line.1108">  }</a>
-<span class="sourceLineNo">1109</span><a id="line.1109"></a>
-<span class="sourceLineNo">1110</span><a id="line.1110">  /**</a>
-<span class="sourceLineNo">1111</span><a id="line.1111">   * Set if the entity was deleted from a BeanCollection.</a>
-<span class="sourceLineNo">1112</span><a id="line.1112">   */</a>
-<span class="sourceLineNo">1113</span><a id="line.1113">  public void setDeletedFromCollection(final boolean deletedFromCollection) {</a>
-<span class="sourceLineNo">1114</span><a id="line.1114">    this.deletedFromCollection = deletedFromCollection;</a>
-<span class="sourceLineNo">1115</span><a id="line.1115">  }</a>
-<span class="sourceLineNo">1116</span><a id="line.1116"></a>
-<span class="sourceLineNo">1117</span><a id="line.1117">  public boolean isOrphanDelete() {</a>
-<span class="sourceLineNo">1118</span><a id="line.1118">    return deletedFromCollection &amp;&amp; !isNew();</a>
+<span class="sourceLineNo">934</span><a id="line.934">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">935</span><a id="line.935">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">936</span><a id="line.936">    } else {</a>
+<span class="sourceLineNo">937</span><a id="line.937">      if (readOnly) {</a>
+<span class="sourceLineNo">938</span><a id="line.938">        throw new IllegalStateException("This bean is readOnly");</a>
+<span class="sourceLineNo">939</span><a id="line.939">      }</a>
+<span class="sourceLineNo">940</span><a id="line.940">      setChangedProperty(propertyIndex);</a>
+<span class="sourceLineNo">941</span><a id="line.941">    }</a>
+<span class="sourceLineNo">942</span><a id="line.942">  }</a>
+<span class="sourceLineNo">943</span><a id="line.943"></a>
+<span class="sourceLineNo">944</span><a id="line.944">  private void setChangedPropertyValue(int propertyIndex, boolean setDirtyState, Object origValue) {</a>
+<span class="sourceLineNo">945</span><a id="line.945">    if (readOnly) {</a>
+<span class="sourceLineNo">946</span><a id="line.946">      throw new IllegalStateException("This bean is readOnly");</a>
+<span class="sourceLineNo">947</span><a id="line.947">    }</a>
+<span class="sourceLineNo">948</span><a id="line.948">    setChangedProperty(propertyIndex);</a>
+<span class="sourceLineNo">949</span><a id="line.949">    if (setDirtyState) {</a>
+<span class="sourceLineNo">950</span><a id="line.950">      setOriginalValue(propertyIndex, origValue);</a>
+<span class="sourceLineNo">951</span><a id="line.951">      setDirtyStatus();</a>
+<span class="sourceLineNo">952</span><a id="line.952">    }</a>
+<span class="sourceLineNo">953</span><a id="line.953">  }</a>
+<span class="sourceLineNo">954</span><a id="line.954"></a>
+<span class="sourceLineNo">955</span><a id="line.955">  private void setDirtyStatus() {</a>
+<span class="sourceLineNo">956</span><a id="line.956">    if (!dirty) {</a>
+<span class="sourceLineNo">957</span><a id="line.957">      dirty = true;</a>
+<span class="sourceLineNo">958</span><a id="line.958">      if (embeddedOwner != null) {</a>
+<span class="sourceLineNo">959</span><a id="line.959">        // Cascade dirty state from Embedded bean to parent bean</a>
+<span class="sourceLineNo">960</span><a id="line.960">        embeddedOwner._ebean_getIntercept().setEmbeddedDirty(embeddedOwnerIndex);</a>
+<span class="sourceLineNo">961</span><a id="line.961">      }</a>
+<span class="sourceLineNo">962</span><a id="line.962">      if (nodeUsageCollector != null) {</a>
+<span class="sourceLineNo">963</span><a id="line.963">        nodeUsageCollector.setModified();</a>
+<span class="sourceLineNo">964</span><a id="line.964">      }</a>
+<span class="sourceLineNo">965</span><a id="line.965">    }</a>
+<span class="sourceLineNo">966</span><a id="line.966">  }</a>
+<span class="sourceLineNo">967</span><a id="line.967"></a>
+<span class="sourceLineNo">968</span><a id="line.968">  /**</a>
+<span class="sourceLineNo">969</span><a id="line.969">   * Check to see if the values are not equal. If they are not equal then create</a>
+<span class="sourceLineNo">970</span><a id="line.970">   * the old values for use with ConcurrencyMode.ALL.</a>
+<span class="sourceLineNo">971</span><a id="line.971">   */</a>
+<span class="sourceLineNo">972</span><a id="line.972">  public void preSetter(boolean intercept, int propertyIndex, Object oldValue, Object newValue) {</a>
+<span class="sourceLineNo">973</span><a id="line.973">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">974</span><a id="line.974">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">975</span><a id="line.975">    } else if (notEqual(oldValue, newValue)) {</a>
+<span class="sourceLineNo">976</span><a id="line.976">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">977</span><a id="line.977">    }</a>
+<span class="sourceLineNo">978</span><a id="line.978">  }</a>
+<span class="sourceLineNo">979</span><a id="line.979"></a>
+<span class="sourceLineNo">980</span><a id="line.980"></a>
+<span class="sourceLineNo">981</span><a id="line.981">  /**</a>
+<span class="sourceLineNo">982</span><a id="line.982">   * Check for primitive boolean.</a>
+<span class="sourceLineNo">983</span><a id="line.983">   */</a>
+<span class="sourceLineNo">984</span><a id="line.984">  public void preSetter(boolean intercept, int propertyIndex, boolean oldValue, boolean newValue) {</a>
+<span class="sourceLineNo">985</span><a id="line.985">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">986</span><a id="line.986">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">987</span><a id="line.987">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">988</span><a id="line.988">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">989</span><a id="line.989">    }</a>
+<span class="sourceLineNo">990</span><a id="line.990">  }</a>
+<span class="sourceLineNo">991</span><a id="line.991"></a>
+<span class="sourceLineNo">992</span><a id="line.992">  /**</a>
+<span class="sourceLineNo">993</span><a id="line.993">   * Check for primitive int.</a>
+<span class="sourceLineNo">994</span><a id="line.994">   */</a>
+<span class="sourceLineNo">995</span><a id="line.995">  public void preSetter(boolean intercept, int propertyIndex, int oldValue, int newValue) {</a>
+<span class="sourceLineNo">996</span><a id="line.996">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">997</span><a id="line.997">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">998</span><a id="line.998">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">999</span><a id="line.999">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1000</span><a id="line.1000">    }</a>
+<span class="sourceLineNo">1001</span><a id="line.1001">  }</a>
+<span class="sourceLineNo">1002</span><a id="line.1002"></a>
+<span class="sourceLineNo">1003</span><a id="line.1003">  /**</a>
+<span class="sourceLineNo">1004</span><a id="line.1004">   * long.</a>
+<span class="sourceLineNo">1005</span><a id="line.1005">   */</a>
+<span class="sourceLineNo">1006</span><a id="line.1006">  public void preSetter(boolean intercept, int propertyIndex, long oldValue, long newValue) {</a>
+<span class="sourceLineNo">1007</span><a id="line.1007">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1008</span><a id="line.1008">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1009</span><a id="line.1009">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">1010</span><a id="line.1010">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1011</span><a id="line.1011">    }</a>
+<span class="sourceLineNo">1012</span><a id="line.1012">  }</a>
+<span class="sourceLineNo">1013</span><a id="line.1013"></a>
+<span class="sourceLineNo">1014</span><a id="line.1014">  /**</a>
+<span class="sourceLineNo">1015</span><a id="line.1015">   * double.</a>
+<span class="sourceLineNo">1016</span><a id="line.1016">   */</a>
+<span class="sourceLineNo">1017</span><a id="line.1017">  public void preSetter(boolean intercept, int propertyIndex, double oldValue, double newValue) {</a>
+<span class="sourceLineNo">1018</span><a id="line.1018">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1019</span><a id="line.1019">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1020</span><a id="line.1020">    } else if (Double.compare(oldValue, newValue) != 0) {</a>
+<span class="sourceLineNo">1021</span><a id="line.1021">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1022</span><a id="line.1022">    }</a>
+<span class="sourceLineNo">1023</span><a id="line.1023">  }</a>
+<span class="sourceLineNo">1024</span><a id="line.1024"></a>
+<span class="sourceLineNo">1025</span><a id="line.1025">  /**</a>
+<span class="sourceLineNo">1026</span><a id="line.1026">   * float.</a>
+<span class="sourceLineNo">1027</span><a id="line.1027">   */</a>
+<span class="sourceLineNo">1028</span><a id="line.1028">  public void preSetter(boolean intercept, int propertyIndex, float oldValue, float newValue) {</a>
+<span class="sourceLineNo">1029</span><a id="line.1029">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1030</span><a id="line.1030">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1031</span><a id="line.1031">    } else if (Float.compare(oldValue, newValue) != 0) {</a>
+<span class="sourceLineNo">1032</span><a id="line.1032">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1033</span><a id="line.1033">    }</a>
+<span class="sourceLineNo">1034</span><a id="line.1034">  }</a>
+<span class="sourceLineNo">1035</span><a id="line.1035"></a>
+<span class="sourceLineNo">1036</span><a id="line.1036">  /**</a>
+<span class="sourceLineNo">1037</span><a id="line.1037">   * short.</a>
+<span class="sourceLineNo">1038</span><a id="line.1038">   */</a>
+<span class="sourceLineNo">1039</span><a id="line.1039">  public void preSetter(boolean intercept, int propertyIndex, short oldValue, short newValue) {</a>
+<span class="sourceLineNo">1040</span><a id="line.1040">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1041</span><a id="line.1041">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1042</span><a id="line.1042">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">1043</span><a id="line.1043">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1044</span><a id="line.1044">    }</a>
+<span class="sourceLineNo">1045</span><a id="line.1045">  }</a>
+<span class="sourceLineNo">1046</span><a id="line.1046"></a>
+<span class="sourceLineNo">1047</span><a id="line.1047">  /**</a>
+<span class="sourceLineNo">1048</span><a id="line.1048">   * char.</a>
+<span class="sourceLineNo">1049</span><a id="line.1049">   */</a>
+<span class="sourceLineNo">1050</span><a id="line.1050">  public void preSetter(boolean intercept, int propertyIndex, char oldValue, char newValue) {</a>
+<span class="sourceLineNo">1051</span><a id="line.1051">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1052</span><a id="line.1052">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1053</span><a id="line.1053">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">1054</span><a id="line.1054">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1055</span><a id="line.1055">    }</a>
+<span class="sourceLineNo">1056</span><a id="line.1056">  }</a>
+<span class="sourceLineNo">1057</span><a id="line.1057"></a>
+<span class="sourceLineNo">1058</span><a id="line.1058">  /**</a>
+<span class="sourceLineNo">1059</span><a id="line.1059">   * byte.</a>
+<span class="sourceLineNo">1060</span><a id="line.1060">   */</a>
+<span class="sourceLineNo">1061</span><a id="line.1061">  public void preSetter(boolean intercept, int propertyIndex, byte oldValue, byte newValue) {</a>
+<span class="sourceLineNo">1062</span><a id="line.1062">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1063</span><a id="line.1063">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1064</span><a id="line.1064">    } else if (oldValue != newValue) {</a>
+<span class="sourceLineNo">1065</span><a id="line.1065">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1066</span><a id="line.1066">    }</a>
+<span class="sourceLineNo">1067</span><a id="line.1067">  }</a>
+<span class="sourceLineNo">1068</span><a id="line.1068"></a>
+<span class="sourceLineNo">1069</span><a id="line.1069">  /**</a>
+<span class="sourceLineNo">1070</span><a id="line.1070">   * char[].</a>
+<span class="sourceLineNo">1071</span><a id="line.1071">   */</a>
+<span class="sourceLineNo">1072</span><a id="line.1072">  public void preSetter(boolean intercept, int propertyIndex, char[] oldValue, char[] newValue) {</a>
+<span class="sourceLineNo">1073</span><a id="line.1073">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1074</span><a id="line.1074">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1075</span><a id="line.1075">    } else if (!Arrays.equals(oldValue, newValue)) {</a>
+<span class="sourceLineNo">1076</span><a id="line.1076">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1077</span><a id="line.1077">    }</a>
+<span class="sourceLineNo">1078</span><a id="line.1078">  }</a>
+<span class="sourceLineNo">1079</span><a id="line.1079"></a>
+<span class="sourceLineNo">1080</span><a id="line.1080">  /**</a>
+<span class="sourceLineNo">1081</span><a id="line.1081">   * byte[].</a>
+<span class="sourceLineNo">1082</span><a id="line.1082">   */</a>
+<span class="sourceLineNo">1083</span><a id="line.1083">  public void preSetter(boolean intercept, int propertyIndex, byte[] oldValue, byte[] newValue) {</a>
+<span class="sourceLineNo">1084</span><a id="line.1084">    if (state == STATE_NEW) {</a>
+<span class="sourceLineNo">1085</span><a id="line.1085">      setLoadedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1086</span><a id="line.1086">    } else if (!Arrays.equals(oldValue, newValue)) {</a>
+<span class="sourceLineNo">1087</span><a id="line.1087">      setChangedPropertyValue(propertyIndex, intercept, oldValue);</a>
+<span class="sourceLineNo">1088</span><a id="line.1088">    }</a>
+<span class="sourceLineNo">1089</span><a id="line.1089">  }</a>
+<span class="sourceLineNo">1090</span><a id="line.1090"></a>
+<span class="sourceLineNo">1091</span><a id="line.1091">  /**</a>
+<span class="sourceLineNo">1092</span><a id="line.1092">   * Explicitly set an old value with force (the old value is forced even it is already set).</a>
+<span class="sourceLineNo">1093</span><a id="line.1093">   */</a>
+<span class="sourceLineNo">1094</span><a id="line.1094">  public void setOldValue(int propertyIndex, Object oldValue) {</a>
+<span class="sourceLineNo">1095</span><a id="line.1095">    setChangedProperty(propertyIndex);</a>
+<span class="sourceLineNo">1096</span><a id="line.1096">    setOriginalValueForce(propertyIndex, oldValue);</a>
+<span class="sourceLineNo">1097</span><a id="line.1097">    setDirtyStatus();</a>
+<span class="sourceLineNo">1098</span><a id="line.1098">  }</a>
+<span class="sourceLineNo">1099</span><a id="line.1099"></a>
+<span class="sourceLineNo">1100</span><a id="line.1100">  /**</a>
+<span class="sourceLineNo">1101</span><a id="line.1101">   * Return the sort order value for an order column.</a>
+<span class="sourceLineNo">1102</span><a id="line.1102">   */</a>
+<span class="sourceLineNo">1103</span><a id="line.1103">  public int getSortOrder() {</a>
+<span class="sourceLineNo">1104</span><a id="line.1104">    return sortOrder;</a>
+<span class="sourceLineNo">1105</span><a id="line.1105">  }</a>
+<span class="sourceLineNo">1106</span><a id="line.1106"></a>
+<span class="sourceLineNo">1107</span><a id="line.1107">  /**</a>
+<span class="sourceLineNo">1108</span><a id="line.1108">   * Set the sort order value for an order column.</a>
+<span class="sourceLineNo">1109</span><a id="line.1109">   */</a>
+<span class="sourceLineNo">1110</span><a id="line.1110">  public void setSortOrder(int sortOrder) {</a>
+<span class="sourceLineNo">1111</span><a id="line.1111">    this.sortOrder = sortOrder;</a>
+<span class="sourceLineNo">1112</span><a id="line.1112">  }</a>
+<span class="sourceLineNo">1113</span><a id="line.1113"></a>
+<span class="sourceLineNo">1114</span><a id="line.1114">  /**</a>
+<span class="sourceLineNo">1115</span><a id="line.1115">   * Set if the entity was deleted from a BeanCollection.</a>
+<span class="sourceLineNo">1116</span><a id="line.1116">   */</a>
+<span class="sourceLineNo">1117</span><a id="line.1117">  public void setDeletedFromCollection(final boolean deletedFromCollection) {</a>
+<span class="sourceLineNo">1118</span><a id="line.1118">    this.deletedFromCollection = deletedFromCollection;</a>
 <span class="sourceLineNo">1119</span><a id="line.1119">  }</a>
 <span class="sourceLineNo">1120</span><a id="line.1120"></a>
-<span class="sourceLineNo">1121</span><a id="line.1121">  /**</a>
-<span class="sourceLineNo">1122</span><a id="line.1122">   * Set the load error that happened on this property.</a>
-<span class="sourceLineNo">1123</span><a id="line.1123">   */</a>
-<span class="sourceLineNo">1124</span><a id="line.1124">  public void setLoadError(int propertyIndex, Exception t) {</a>
-<span class="sourceLineNo">1125</span><a id="line.1125">    if (loadErrors == null) {</a>
-<span class="sourceLineNo">1126</span><a id="line.1126">      loadErrors = new Exception[owner._ebean_getPropertyNames().length];</a>
-<span class="sourceLineNo">1127</span><a id="line.1127">    }</a>
-<span class="sourceLineNo">1128</span><a id="line.1128">    loadErrors[propertyIndex] = t;</a>
-<span class="sourceLineNo">1129</span><a id="line.1129">    flags[propertyIndex] |= FLAG_LOADED_PROP;</a>
-<span class="sourceLineNo">1130</span><a id="line.1130">  }</a>
-<span class="sourceLineNo">1131</span><a id="line.1131"></a>
-<span class="sourceLineNo">1132</span><a id="line.1132">  /**</a>
-<span class="sourceLineNo">1133</span><a id="line.1133">   * Returns the loadErrors.</a>
-<span class="sourceLineNo">1134</span><a id="line.1134">   */</a>
-<span class="sourceLineNo">1135</span><a id="line.1135">  public Map&lt;String, Exception&gt; getLoadErrors() {</a>
-<span class="sourceLineNo">1136</span><a id="line.1136">    if (loadErrors == null) {</a>
-<span class="sourceLineNo">1137</span><a id="line.1137">      return null;</a>
-<span class="sourceLineNo">1138</span><a id="line.1138">    }</a>
-<span class="sourceLineNo">1139</span><a id="line.1139">    Map&lt;String, Exception&gt; ret = null;</a>
-<span class="sourceLineNo">1140</span><a id="line.1140">    int len = getPropertyLength();</a>
-<span class="sourceLineNo">1141</span><a id="line.1141">    for (int i = 0; i &lt; len; i++) {</a>
-<span class="sourceLineNo">1142</span><a id="line.1142">      Exception loadError = loadErrors[i];</a>
-<span class="sourceLineNo">1143</span><a id="line.1143">      if (loadError != null) {</a>
-<span class="sourceLineNo">1144</span><a id="line.1144">        if (ret == null) {</a>
-<span class="sourceLineNo">1145</span><a id="line.1145">          ret = new LinkedHashMap&lt;&gt;();</a>
-<span class="sourceLineNo">1146</span><a id="line.1146">        }</a>
-<span class="sourceLineNo">1147</span><a id="line.1147">        ret.put(getProperty(i), loadError);</a>
-<span class="sourceLineNo">1148</span><a id="line.1148">      }</a>
-<span class="sourceLineNo">1149</span><a id="line.1149">    }</a>
-<span class="sourceLineNo">1150</span><a id="line.1150">    return ret;</a>
-<span class="sourceLineNo">1151</span><a id="line.1151">  }</a>
-<span class="sourceLineNo">1152</span><a id="line.1152">}</a>
+<span class="sourceLineNo">1121</span><a id="line.1121">  public boolean isOrphanDelete() {</a>
+<span class="sourceLineNo">1122</span><a id="line.1122">    return deletedFromCollection &amp;&amp; !isNew();</a>
+<span class="sourceLineNo">1123</span><a id="line.1123">  }</a>
+<span class="sourceLineNo">1124</span><a id="line.1124"></a>
+<span class="sourceLineNo">1125</span><a id="line.1125">  /**</a>
+<span class="sourceLineNo">1126</span><a id="line.1126">   * Set the load error that happened on this property.</a>
+<span class="sourceLineNo">1127</span><a id="line.1127">   */</a>
+<span class="sourceLineNo">1128</span><a id="line.1128">  public void setLoadError(int propertyIndex, Exception t) {</a>
+<span class="sourceLineNo">1129</span><a id="line.1129">    if (loadErrors == null) {</a>
+<span class="sourceLineNo">1130</span><a id="line.1130">      loadErrors = new Exception[owner._ebean_getPropertyNames().length];</a>
+<span class="sourceLineNo">1131</span><a id="line.1131">    }</a>
+<span class="sourceLineNo">1132</span><a id="line.1132">    loadErrors[propertyIndex] = t;</a>
+<span class="sourceLineNo">1133</span><a id="line.1133">    flags[propertyIndex] |= FLAG_LOADED_PROP;</a>
+<span class="sourceLineNo">1134</span><a id="line.1134">  }</a>
+<span class="sourceLineNo">1135</span><a id="line.1135"></a>
+<span class="sourceLineNo">1136</span><a id="line.1136">  /**</a>
+<span class="sourceLineNo">1137</span><a id="line.1137">   * Returns the loadErrors.</a>
+<span class="sourceLineNo">1138</span><a id="line.1138">   */</a>
+<span class="sourceLineNo">1139</span><a id="line.1139">  public Map&lt;String, Exception&gt; getLoadErrors() {</a>
+<span class="sourceLineNo">1140</span><a id="line.1140">    if (loadErrors == null) {</a>
+<span class="sourceLineNo">1141</span><a id="line.1141">      return null;</a>
+<span class="sourceLineNo">1142</span><a id="line.1142">    }</a>
+<span class="sourceLineNo">1143</span><a id="line.1143">    Map&lt;String, Exception&gt; ret = null;</a>
+<span class="sourceLineNo">1144</span><a id="line.1144">    int len = getPropertyLength();</a>
+<span class="sourceLineNo">1145</span><a id="line.1145">    for (int i = 0; i &lt; len; i++) {</a>
+<span class="sourceLineNo">1146</span><a id="line.1146">      Exception loadError = loadErrors[i];</a>
+<span class="sourceLineNo">1147</span><a id="line.1147">      if (loadError != null) {</a>
+<span class="sourceLineNo">1148</span><a id="line.1148">        if (ret == null) {</a>
+<span class="sourceLineNo">1149</span><a id="line.1149">          ret = new LinkedHashMap&lt;&gt;();</a>
+<span class="sourceLineNo">1150</span><a id="line.1150">        }</a>
+<span class="sourceLineNo">1151</span><a id="line.1151">        ret.put(getProperty(i), loadError);</a>
+<span class="sourceLineNo">1152</span><a id="line.1152">      }</a>
+<span class="sourceLineNo">1153</span><a id="line.1153">    }</a>
+<span class="sourceLineNo">1154</span><a id="line.1154">    return ret;</a>
+<span class="sourceLineNo">1155</span><a id="line.1155">  }</a>
+<span class="sourceLineNo">1156</span><a id="line.1156">}</a>
 
 
 

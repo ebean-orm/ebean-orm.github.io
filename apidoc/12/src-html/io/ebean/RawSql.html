@@ -50,14 +50,14 @@
 <span class="sourceLineNo">041</span><a id="line.41"> * &lt;h3&gt;Example OrderAggregate&lt;/h3&gt;</a>
 <span class="sourceLineNo">042</span><a id="line.42"> * &lt;pre&gt;{@code</a>
 <span class="sourceLineNo">043</span><a id="line.43"> *  ...</a>
-<span class="sourceLineNo">044</span><a id="line.44"> *   // ＠Sql indicates to that this bean</a>
+<span class="sourceLineNo">044</span><a id="line.44"> *   // @Sql indicates to that this bean</a>
 <span class="sourceLineNo">045</span><a id="line.45"> *   // is based on RawSql rather than a table</a>
 <span class="sourceLineNo">046</span><a id="line.46"> *</a>
-<span class="sourceLineNo">047</span><a id="line.47"> *   ＠Entity</a>
-<span class="sourceLineNo">048</span><a id="line.48"> *   ＠Sql</a>
+<span class="sourceLineNo">047</span><a id="line.47"> *   @Entity</a>
+<span class="sourceLineNo">048</span><a id="line.48"> *   @Sql</a>
 <span class="sourceLineNo">049</span><a id="line.49"> *   public class OrderAggregate {</a>
 <span class="sourceLineNo">050</span><a id="line.50"> *</a>
-<span class="sourceLineNo">051</span><a id="line.51"> *    ＠OneToOne</a>
+<span class="sourceLineNo">051</span><a id="line.51"> *    @OneToOne</a>
 <span class="sourceLineNo">052</span><a id="line.52"> *    Order order;</a>
 <span class="sourceLineNo">053</span><a id="line.53"> *</a>
 <span class="sourceLineNo">054</span><a id="line.54"> *    Double totalAmount;</a>
@@ -116,7 +116,7 @@
 <span class="sourceLineNo">107</span><a id="line.107"> *</a>
 <span class="sourceLineNo">108</span><a id="line.108"> *   List&lt;OrderAggregate&gt; orders = DB.find(OrderAggregate.class)</a>
 <span class="sourceLineNo">109</span><a id="line.109"> *     .setRawSql(rawSql)</a>
-<span class="sourceLineNo">110</span><a id="line.110"> *     .fetch("order", "status,orderDate", new FetchConfig().query())</a>
+<span class="sourceLineNo">110</span><a id="line.110"> *     .fetch("order", "status,orderDate", FetchConfig.ofQuery())</a>
 <span class="sourceLineNo">111</span><a id="line.111"> *     .fetch("order.customer", "name")</a>
 <span class="sourceLineNo">112</span><a id="line.112"> *     .where().gt("order.id", 0)</a>
 <span class="sourceLineNo">113</span><a id="line.113"> *     .having().gt("totalAmount", 20)</a>

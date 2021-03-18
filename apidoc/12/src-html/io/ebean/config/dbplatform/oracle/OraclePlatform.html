@@ -88,8 +88,8 @@
 <span class="sourceLineNo">079</span><a id="line.79">  }</a>
 <span class="sourceLineNo">080</span><a id="line.80"></a>
 <span class="sourceLineNo">081</span><a id="line.81">  @Override</a>
-<span class="sourceLineNo">082</span><a id="line.82">  protected String withForUpdate(String sql, Query.ForUpdate forUpdateMode) {</a>
-<span class="sourceLineNo">083</span><a id="line.83">    switch (forUpdateMode) {</a>
+<span class="sourceLineNo">082</span><a id="line.82">  protected String withForUpdate(String sql, Query.LockWait lockWait, Query.LockType lockType) {</a>
+<span class="sourceLineNo">083</span><a id="line.83">    switch (lockWait) {</a>
 <span class="sourceLineNo">084</span><a id="line.84">      case SKIPLOCKED:</a>
 <span class="sourceLineNo">085</span><a id="line.85">        return sql + " for update skip locked";</a>
 <span class="sourceLineNo">086</span><a id="line.86">      case NOWAIT:</a>
