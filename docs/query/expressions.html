@@ -263,32 +263,186 @@
 <p>
   IsNull on a associated many property translates to <code>isEmpty()</code>
 </p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">lines</span><span class="o">.</span><span class="na">isNull</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span> <span class="p">(</span><span class="k">select</span> <span class="mi">1</span> <span class="k">from</span> <span class="n">order_lines</span> <span class="n">x</span> <span class="k">where</span> <span class="n">x</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
 
 <h2 id="isEmpty">isEmpty()</h2>
 <p>
   IsEmpty expression should be used on a ToMany property. A sql exists subquery
   is used to implement the isEmpty expression.
 </p>
-
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">lines</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<div class="syntax sql"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="p">...</span>
+<span class="k">from</span> <span class="n">orders</span> <span class="n">t0</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span> <span class="p">(</span><span class="k">select</span> <span class="mi">1</span> <span class="k">from</span> <span class="n">order_lines</span> <span class="n">x</span> <span class="k">where</span> <span class="n">x</span><span class="p">.</span><span class="n">order_id</span> <span class="o">=</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
 
 <h2 id="in">in()</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">,</span> <span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">PENDING</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
 <h2 id="inPairs">inPairs()</h2>
+<p>
+  <code>inPairs()</code> is used when we have a compound natual key with 3 or more properties
+  and we have queries that combine <code>eq</code> and <code>in</code> expressions
+  that together provide the natural key (together cover all the properties that make up the
+  natural key).
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">naturalKey</span> <span class="o">=</span> <span class="o">{</span><span class="s">&quot;store&quot;</span><span class="o">,</span><span class="s">&quot;code&quot;</span><span class="o">,</span><span class="s">&quot;sku&quot;</span><span class="o">})</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProductRange</span> <span class="o">{</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  With the <code>.store.eq("myStoreCode")</code> expression combined with the
+  <code>.inPairs(pairs)</code> expression we have defined complete natural
+  keys covering all of the <code>store, code and sku</code> properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Pairs</span> <span class="n">pairs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Pairs</span><span class="o">(</span><span class="s">&quot;sku&quot;</span><span class="o">,</span> <span class="s">&quot;code&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;S2&quot;</span><span class="o">,</span> <span class="mi">1000</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;S2&quot;</span><span class="o">,</span> <span class="mi">1001</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;S3&quot;</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
 
+<span class="k">new</span> <span class="n">QProductRange</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">store</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;myStoreCode&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">inPairs</span><span class="o">(</span><span class="n">pairs</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setBeanCacheMode</span><span class="o">(</span><span class="n">CacheMode</span><span class="o">.</span><span class="na">ON</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">(</span><span class="s">&quot;sku desc&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  We are using inPairs when our in clause has 2 properties. If instead we have
+  the <code>eq</code> expression with 2 properties then our in clause just has
+  the usual single property.
+</p>
+<p>
+  For example:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QProductRange</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">store</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;myStoreCode&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">code</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">1004</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">in</span><span class="o">(</span><span class="s">&quot;S2&quot;</span><span class="o">,</span> <span class="s">&quot;S3&quot;</span><span class="o">,</span> <span class="s">&quot;S4&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setBeanCacheMode</span><span class="o">(</span><span class="n">CacheMode</span><span class="o">.</span><span class="na">ON</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">(</span><span class="s">&quot;sku desc&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<p>
+  With the above query we have <code>eq</code> and <code>in</code> expressions that
+  combine to produce unique natural keys. Ebean can hit L2 natural key cache for this query.
+</p>
 <h2 id="like">like</h2>
+<p>
+  With <code>like</code> we use the SQL <code>%</code> and <code>_</code> place holder
+  characters to match varchar properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="startsWith">startsWith</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="endsWith">endsWith</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;@foo.com&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="contains">contains</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">&quot;ob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
 
 <h2 id="eq">eq - equal to</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="ne">ne - not equal</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">ne</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="gt">gt - greater than</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">whenCreated</span><span class="o">.</span><span class="na">gt</span><span class="o">(</span><span class="n">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">minusDays</span><span class="o">(</span><span class="mi">7</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="ge">ge - greater than or equal</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">whenCreated</span><span class="o">.</span><span class="na">ge</span><span class="o">(</span><span class="n">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">minusDays</span><span class="o">(</span><span class="mi">7</span><span class="o">))</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="lt">lt - less than</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">lines</span><span class="o">.</span><span class="na field">orderQuantity</span><span class="o">.</span><span class="na">lt</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="le">le - less than or equal</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">lines</span><span class="o">.</span><span class="na field">orderQuantity</span><span class="o">.</span><span class="na">le</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
 <h2 id="between">between</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">orderDate</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="n">firstDay</span><span class="o">,</span> <span class="n">lastDay</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="betweenProperties">betweenProperties</h2>
 
 <h2 id="example">example</h2>

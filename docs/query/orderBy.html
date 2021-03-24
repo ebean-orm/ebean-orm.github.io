@@ -272,9 +272,11 @@
 </p>
 
 <h5>Example</h5>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customer</span> <span class="o">=</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">QContact</span> <span class="n">contact</span> <span class="o">=</span> <span class="n">QContact</span><span class="o">.</span><span class="na">alias</span><span class="o">();</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customer</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;firstName, lastName&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">contact</span><span class="o">.</span><span class="na">firstName</span><span class="o">,</span> <span class="n">contact</span><span class="o">.</span><span class="na">lastName</span><span class="o">,</span> <span class="n">contact</span><span class="o">.</span><span class="na">email</span><span class="o">)</span>
     <span class="o">.</span><span class="na">orderBy</span><span class="o">()</span>
       <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
       <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>              <span class="c1">// (1) automatically moved to secondary sql query</span>
@@ -293,7 +295,7 @@
 </pre></div>
 </div>
 <div class="syntax sql"><div class="highlight"><pre><span></span><span class="c1">-- Secondary query</span>
-<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">last_name</span>
+<span class="k">select</span> <span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">t0</span><span class="p">.</span><span class="n">email</span>
 <span class="k">from</span> <span class="n">contact</span> <span class="n">t0</span>
 <span class="k">where</span> <span class="p">(</span><span class="n">t0</span><span class="p">.</span><span class="n">customer_id</span><span class="p">)</span> <span class="k">in</span> <span class="p">(</span><span class="o">?</span> <span class="p">)</span>
 <span class="k">order</span> <span class="k">by</span> <span class="n">t0</span><span class="p">.</span><span class="n">email</span>                       <span class="c1">-- (1)</span>
