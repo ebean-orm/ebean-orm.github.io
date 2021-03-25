@@ -103,12 +103,12 @@
   </div>
 </form>
     
-<p class="mtl">
-  We can use <a href="cli-tool">ebean-init</a> to automatically setup a Maven project.
-</p>
-<p>
-  These are the instructions to setup a maven project without using <em>ebean-init</em>.
-</p>
+<!--<p class="mtl">-->
+<!--  We can use <a href="cli-tool">ebean-init</a> to automatically setup a Maven project.-->
+<!--</p>-->
+<!--<p>-->
+<!--  These are the instructions to setup a maven project without using <em>ebean-init</em>.-->
+<!--</p>-->
 
 <h2>Examples</h2>
 <ul>
@@ -126,17 +126,7 @@
   <span class="nt">&lt;version&gt;</span>12.8.0<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 
-<span class="c">&lt;!-- APT Query bean generation for Java --&gt;</span>
-<span class="nt">&lt;dependency&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>12.8.0<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;scope&gt;</span>provided<span class="nt">&lt;/scope&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-
-
 <span class="c">&lt;!-- Test dependencies --&gt;</span>
-<span class="c">&lt;!-- includes docker test database container support  --&gt;</span>
 <span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-test<span class="nt">&lt;/artifactId&gt;</span>
@@ -155,25 +145,53 @@
   Refer to: <a href="/docs/testing">docs / testing</a>
 </p>
 
-
-<h2 id="tile">Add maven tile</h2>
+<h2>build / plugins</h2>
 <p>
-  Add the maven tile into the <code>build / plugins</code> section to perform build time enhancement
-  of the entity beans, <code>@Transactional</code> methods and query beans.
+  In the <code>build / plugins</code> section:
 </p>
+<ol>
+  <li>Add the <code>tiles-maven-plugin</code> to perform build time enhancement</li>
+  <li>Add or modify the <code>maven-compiler-plugin</code> to register the <em>querybean-generator</em> annotation processor.</li>
+</ol>
 
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.19<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;tiles&gt;</span>
-      <span class="c">&lt;!-- other tiles ... --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:12.8.0<span class="nt">&lt;/tile&gt;</span>
-    <span class="nt">&lt;/tiles&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
+  <span class="nt">&lt;plugins&gt;</span>
+
+
+     <span class="nt">&lt;plugin&gt;</span>
+       <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
+       <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+       <span class="nt">&lt;version&gt;</span>2.19<span class="nt">&lt;/version&gt;</span>
+       <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+       <span class="nt">&lt;configuration&gt;</span>
+         <span class="nt">&lt;tiles&gt;</span>
+          <span class="c">&lt;!-- other tiles ... --&gt;</span>
+          <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:12.8.0<span class="nt">&lt;/tile&gt;</span>
+        <span class="nt">&lt;/tiles&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/plugin&gt;</span>
+
+
+    <span class="nt">&lt;plugin&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>3.8.1<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;configuration&gt;</span>
+        ...
+        <span class="nt">&lt;annotationProcessorPaths&gt;</span>
+           <span class="nt">&lt;path&gt;</span>
+              <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+              <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+              <span class="nt">&lt;version&gt;</span>12.8.0<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;/path&gt;</span>
+          <span class="c">&lt;!-- other annotation processors --&gt;</span>
+        <span class="nt">&lt;/annotationProcessorPaths&gt;</span>
+      <span class="nt">&lt;/configuration&gt;</span>
+    <span class="nt">&lt;/plugin&gt;</span>
+
+
+  <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
 </pre></div>
 </div>
 
@@ -187,6 +205,13 @@
 <p>
   If you want to specify the maven enhancement plugin in 'normal' non-tile fashion see
   <a href="maven-plugin">maven plugin</a>.
+</p>
+
+<h3>APT - querybean generation</h3>
+<p>
+  Note that if there are no other annotation processors (e.g. mapstruct) then instead of
+  explicitly registering the <code>querybean-generator</code> with the maven-compiler-plugin
+  we can instead just add it as a dependency with provided scope.
 </p>
 
 
