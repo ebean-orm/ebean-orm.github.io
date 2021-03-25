@@ -159,7 +159,12 @@
 <h2>Redis - L2 cache</h2>
 <p>
   Configure the redis server to use by setting <code>ebean.redis</code> properties
-  in <code>main/resources/application.yaml</code> like the following:
+  in <code>main/resources/application.yaml</code> like below:
+</p>
+<p>
+  Note that for property configuration to work when we <em>programmatically</em>
+  create Database via DatabaseFactory and DatabaseConfig, then we need to make sure that
+  we use <code>DatabaseConfig.loadFromProperties()</code> to load the properties.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">redis</span><span class="p">:</span>
@@ -193,7 +198,7 @@
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-redis<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>12.1.1<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>12.8.0<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
