@@ -223,7 +223,8 @@
 
 <span class="kd">static</span> <span class="kd">final</span> <span class="n">FetchGroup</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">fetch</span> <span class="o">=</span> <span class="n">QCustomer</span><span class="o">.</span><span class="na">forFetchGroup</span><span class="o">()</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">CUST</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">CUST</span><span class="o">.</span><span class="na">version</span><span class="o">,</span> <span class="n">CUST</span><span class="o">,</span><span class="n">whenCreated</span><span class="o">)</span>
-    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">CONT</span><span class="o">.</span><span class="na">email</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">contacts</span><span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="n">CONT</span><span class="o">.</span><span class="na">email</span><span class="o">)</span>          <span class="c1">// fetch the contacts with just their email</span>
+    <span class="o">.</span><span class="na field">billingAddress</span><span class="o">.</span><span class="na">fetch</span><span class="o">()</span>              <span class="c1">// fetch all properties of billingAddress</span>
     <span class="o">.</span><span class="na">buildFetchGroup</span><span class="o">();</span>
 
 <span class="o">...</span>
