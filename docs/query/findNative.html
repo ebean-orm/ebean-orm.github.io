@@ -179,22 +179,20 @@
     
 <h2>findNative</h2>
 <p>
-  With <code>findNative</code> we supply the SQL.  The SQL can contain positioned parameters with <code>?</code>
+  With <code>findNative</code> we supply the SQL. The SQL can contain positioned parameters with <code>?</code>
   or named parameters like <code>:foo</code>
 </p>
-<p>
-  With <em>findNative</em> the columns are automatically mapped to bean properties.
-</p>
+
+<h5>Example - positioned parameters</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like ?&quot;</span><span class="o">;</span>
 
 <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;Jo%&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
 </div>
-<p>
-  An example using named parameters.
-</p>
+
+<h5>Example - named parameters</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
@@ -203,13 +201,17 @@
 </pre></div>
 </div>
 <p>
+  With <em>findNative</em> the columns are automatically mapped to bean properties.
+</p>
+<p>
   With the above examples we are selecting <b>some</b> columns and as a result getting
   <b>partially populated entity beans</b> (which is good - we should only fetch things out of the DB
   that we need).
 </p>
 <p>
-  We can use <code>select *</code> if we desire all the columns.
+  We can use <code>select *</code> if we desire all the columns but this is not generally recommended.
 </p>
+<h5>Example - select *</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select * from customer where name like :name order by name desc&quot;</span><span class="o">;</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customers</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
@@ -217,40 +219,89 @@
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
-<h5>Internal workings</h5>
+
+
+<h2>Column mapping</h2>
 <p>
-  The way this works is that when a query is first run the JDBC meta data is read for the
-  columns in the resultSet and then these columns are automatically mapped to bean properties.
+  The way column mapping works is that when a query is first run the JDBC meta data is read for the
+  columns in the resultSet and then these columns are automatically mapped to bean properties using
+  the naming convention.
 </p>
 <p>
   This only needs to be done for the first execution of the query. How the query is mapped to
   beans is cached so we only need to read the JDBC resultSet meta data once per query.
 </p>
-
-<h3>Limitations</h3>
-
 <p>
-  The limitation with using findNative (excluding Oracle) is that it can only map multiple tables when the path
-  for a given table is <em>unique</em>.
+  For columns that do not conform to the naming convention we use sql column alias.
+</p>
+<h5>Example - column alias</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using sql column alias</span>
+<span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, fname as first_name, lname as last_name &quot;</span> <span class="o">+</span>
+             <span class="s">&quot;from contact where lname like ?&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Contact</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;B%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h3>Unmapped columns</h3>
+<p>
+  Sometimes we want to specify columns in the resultSet for the <code>order by</code>
+  clause that can not be mapped to a bean property. In this case these properties are
+  ignored.
+</p>
+<h5>Example - an unmapped column for order by</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;case when anniversary &gt;= ? then 1 when anniversary &lt; ? then 2 end as order_column_1 &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;from o_customer &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;order by order_column_1&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>firstRow / maxRows</h2>
+<p>
+  We can specify <code>firstRow</code> and <code>maxRows</code> and the SQL will be modified
+  appropriately using <em>limit/offset</em> or equivalent clause.
+</p>
+<h5>Example - using maxRows</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from o_customer order by name, id&quot;</span><span class="o">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">50</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h2>fetchQuery</h2>
+<p>
+  When using findNative we can think of it as  effectively supplying the SQL for "root" or "origin"
+  query and can use <code>fetchQuery</code> to additionally fetch other parts of the graph.
 </p>
 <p>
-  For example, lets say we have Customer that maps both a billingAddress and shippingAddress
-  to the Address. When ebean tries to map a column for the address table it does not know
-  which path (billingAddress or shippingAddress) the column maps to.
+  In the example below we are using findNative with supplied SQL to fetch Customers and additionally
+  using <code>fetchQuery</code> to fetch the related orders and contacts for those customers.
 </p>
-<p>
-  When we hit this limitation we need to use <a href="/docs/query/rawSql">RawSql</a> instead
-  where we can map the columns more explicitly to bean paths/properties.
-</p>
-
-<h4>Multiple tables</h4>
+<h5>Example - using fetchQuery</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetchQuery</span><span class="o">(</span><span class="s">&quot;orders&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">fetchQuery</span><span class="o">(</span><span class="s">&quot;contacts&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h2>Multiple tables</h2>
 <p>
   Excluding Oracle (see oracle limitation below) our SQL can select from multiple tables and these
-  can automatically be mapped.
+  can automatically be mapped into related entity beans.
 </p>
 <p>
-  For example, we can fetch and populate 2 related beans like Customer and Contact.
+  For example, we can fetch and populate 2 related beans like Contact and Customer. The contact
+  entity beans returned will include customer beans with the customer id and name populated.
 </p>
+<h5>Example - contacts and their associated customer</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Contacts + Customer</span>
 <span class="n">String</span> <span class="n">sql</span>
   <span class="o">=</span> <span class="s">&quot;select con.id, con.first_name, con.last_name, cust.id, cust.name &quot;</span> <span class="o">+</span>
@@ -258,22 +309,49 @@
    <span class="s">&quot; join customer cust on cust.id = con.customer_id &quot;</span> <span class="o">+</span>
    <span class="s">&quot; order by con.first_name desc&quot;</span><span class="o">;</span>
 
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
-
-  <span class="n">nativeSql</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">Contact</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
+<h5>Example - order lines and their associated product</h5>
+<p>
+  Returns OrderLines with their associated Product with all properties loaded.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select line.*, p.* &quot;</span> <span class="o">+</span>
+  <span class="s">&quot; from order_line line &quot;</span> <span class="o">+</span>
+  <span class="s">&quot; join product p on p.id = line.product_id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot; where line.order_id = ?&quot;</span><span class="o">;</span>
 
-<h5>Oracle limitation</h5>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">OrderLine</span><span class="o">&gt;</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findNative</span><span class="o">(</span><span class="n">OrderLine</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getId</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>Limitations</h2>
+<p>
+  The limitation with using findNative (excluding Oracle) is that it can only map multiple tables
+  when the path for a given table is <em>unique</em>.
+</p>
+<p>
+  For example, lets say we have Customer that maps both a billingAddress and shippingAddress
+  to the same address table. When ebean tries to map a column for the address table it does not know
+  which path (billingAddress or shippingAddress) the column maps to.
+</p>
+<p>
+  When we hit this limitation we need to use <a href="/docs/query/rawSql">RawSql</a> instead
+  where we can map the columns more explicitly to bean paths/properties.
+</p>
+
+
+<h3>Oracle limitation</h3>
 <p>
   There is a limitation with the Oracle JDBC driver in that the meta data currently does not include
   the table that a column relates to. This means that with Oracle we can only map a single table
   and not multiple tables (and would have to use <a href="/docs/query/rawSql">RawSql</a> instead).
 </p>
 
-
-<h3 id="rawSql">RawSql</h3>
+<h2 id="rawSql">RawSql</h2>
 <p>
   Using findNative is preferred over <em>RawSql</em> as the way to execute <code>SQL</code> queries with
   <code>entity beans</code> because it is nice and simple as the columns are mapped to properties
