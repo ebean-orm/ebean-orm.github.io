@@ -170,32 +170,76 @@
   </div>
 </form>
     
-<h2>RawSql</h2>
+<h2>findNative preferred over RawSql</h2>
 <p>
-  You can explicitly specify the SQL to use and have that mapped into Objects. You
-  may want to do this so use aggregate functions like sum() max() etc or in cases
-  where you just need exact control over the SQL.
+  Note that <a href="native-sql">findNative</a> is preferred over RawSql. <code>findNative</code>
+  uses automatic mapping of columns to properties and is nicer and simpler to use.
 </p>
 <p>
-  This is useful for "Reporting" type requirements where you want to use aggregate functions such as
-  sum(), count(), max(), etc. It is also useful if you need to use Database specific SQL for whatever
-  reason.
-</p>
-<p>
-  You can programmatically use raw SQL like the following examples or put the Raw SQL and column
-  mappings into ebean-orm.xml file and reference them as 'named queries' - see
-  database.createNamedQuery().
+  We really only need to use RawSql when we hit one of the <a href="native-sql#limitations">limitations</a>
+  of findNative.
 </p>
 
+
+<h2>RawSql - unparsed</h2>
 <p>
-  You can use RawSql with ebean enhanced entity beans. You can fetch only the properties that are need
-  (creating partially populated entity beans). All ebean enhanced entity beans built with RawSql invoke
-  lazy loading etc and act just the same as if they where populated via Ebean generated SQL.
+  With <code>unparsed</code> RawSql we explicitly specify the SQL to use and explicitly map
+  columns to properties. The SQL can contain positioned parameters with <code>?</code>
+  or named parameters like <code>:foo</code>.
+</p>
+<p>
+  The RawSql instance is immutable and safe for multi-threaded use and can be
+  declared as a <em>static final</em>.
+</p>
+<p>
+  With <code>unparsed</code> RawSql we can <b>NOT</b> specify additional expressions to the WHERE
+  and HAVING clauses as well as set the ORDER BY and LIMIT OFFSET clauses. We can only do that
+  with <code>parsed</code> RawSql.
 </p>
 
+<h5>Example - using positioned parameters</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+  <span class="n">RawSqlBuilder</span>
+    <span class="o">.</span><span class="na">unparsed</span><span class="o">(</span><span class="s">&quot;select r.id, r.name from o_customer r where r.id &gt;= ? and r.name like ?&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;r.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;r.name&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+<span class="o">...</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;R%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h5>Example - using named parameters</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span>
+  <span class="n">RawSqlBuilder</span>
+    <span class="o">.</span><span class="na">unparsed</span><span class="o">(</span><span class="s">&quot;select r.id, r.name from o_customer r where r.id &gt;= :a and r.name like :b&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;r.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;r.name&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+<span class="o">...</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;b&quot;</span><span class="o">,</span> <span class="s">&quot;R%&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>RawSql - parsed</h2>
 <p>
-  If you let Ebean 'parse' the raw SQL then Ebean can add expressions to the WHERE and HAVING clauses as
-  well as set the ORDER BY and LIMIT OFFSET clauses.
+  With <code>parsed</code> RawSql we can dynamically add expressions to the WHERE and HAVING
+  clauses as well as set the ORDER BY and LIMIT OFFSET clauses.
+</p>
+<p>
+  The RawSql instance is immutable and safe for multi-threaded use and can be
+  declared as a <em>static final</em>.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Use raw SQL with an aggregate function</span>
@@ -203,14 +247,13 @@
 <span class="n">String</span> <span class="n">sql</span>
 <span class="o">=</span> <span class="s">&quot; select order_id, o.status, c.id, c.name, sum(d.order_qty*d.unit_price) as totalAmount&quot;</span>
 <span class="o">+</span> <span class="s">&quot; from orders o&quot;</span>
-<span class="o">+</span> <span class="s">&quot; join customer c on c.id = o.kcustomer_id &quot;</span>
+<span class="o">+</span> <span class="s">&quot; join customer c on c.id = o.customer_id &quot;</span>
 <span class="o">+</span> <span class="s">&quot; join order_detail d on d.order_id = o.id &quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id, o.status &quot;</span><span class="o">;</span>
 
-<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
-  <span class="c1">// let ebean parse the SQL so that it can</span>
-  <span class="c1">// add expressions to the WHERE and HAVING</span>
-  <span class="c1">// clauses</span>
+<span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
+  <span class="c1">// let ebean parse the SQL so that it can add</span>
+  <span class="c1">// expressions to the WHERE and HAVING clauses</span>
   <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
     <span class="c1">// map resultSet columns to bean properties</span>
     <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
@@ -219,23 +262,24 @@
     <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;c.name&quot;</span><span class="o">,</span> <span class="s">&quot;order.customer.name&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
+<span class="o">...</span>
 
-<span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
   <span class="c1">// add expressions to the WHERE and HAVING clauses</span>
-  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
-
-  <span class="n">List</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+  <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
+<h2>fetch</h2>
 <p>
-  This example uses FetchConfig to fetch other parts of the object graph. After the raw SQL query is
-  executed Ebean uses 'query joins' to fetch some order and customer properties.
+  When using RawSql we can use <code>fetchQuery</code> to fetch other parts of the object graph.
+  That is, we are using RawSql for the "root" or "origin" query and can use <code>fetchQuery</code>
+  to fetch other related parts of the graph.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// You can also use FetchConfig to get Ebean to</span>
-<span class="c1">// fetch additional parts of the object graph</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// fetch additional parts of the object graph</span>
 <span class="c1">// after the Raw SQL query is executed.</span>
 
 <span class="n">String</span> <span class="n">sql</span>
@@ -243,25 +287,25 @@
 <span class="o">+</span> <span class="s">&quot; from order_detail d&quot;</span>
 <span class="o">+</span> <span class="s">&quot; group by order_id &quot;</span><span class="o">;</span>
 
-<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
+<span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span>
   <span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
   <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;order_id&quot;</span><span class="o">,</span> <span class="s">&quot;order.id&quot;</span><span class="o">)</span>
   <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 
+<span class="o">...</span>
 
 <span class="n">Query</span><span class="o">&lt;</span><span class="n">OrderAggregate</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">OrderAggregate</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="n">query</span><span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
     <span class="c1">// get ebean to fetch parts of the order and customer</span>
     <span class="c1">// after the raw SQL query is executed</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
-    <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">fetchQuery</span><span class="o">(</span><span class="s">&quot;order&quot;</span><span class="o">,</span> <span class="s">&quot;status,orderDate&quot;</span><span class="o">,</span><span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">query</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">fetchQuery</span><span class="o">(</span><span class="s">&quot;order.customer&quot;</span><span class="o">,</span> <span class="s">&quot;name&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;order.id&quot;</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span>
     <span class="o">.</span><span class="na">having</span><span class="o">().</span><span class="na">gt</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">)</span>
     <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">desc</span><span class="o">(</span><span class="s">&quot;totalAmount&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>
 </pre></div>
 </div>
-</p>
 
 <p>
   This is the OrderAggregate bean used in the examples above.
@@ -323,7 +367,7 @@
 </pre></div>
 </div>
 
-<h3>tableAliasMapping()</h3>
+<h2>tableAliasMapping()</h2>
 <p>
   tableAliasMapping() will automatically map columns from the query results to the associated object based
   on its path. It does this using the query alias. This is a convenience method so that you don't have to
@@ -332,22 +376,23 @@
 
 <p>
   So a test case looks like:
-
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">rs</span> <span class="o">=</span> <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
-<span class="s">&quot; d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
-<span class="s">&quot;from orders o join customer c on c.id = o.kcustomer_id &quot;</span> <span class="o">+</span>
-<span class="s">&quot;join order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
-<span class="s">&quot;join product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
-<span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
-<span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">rs</span> <span class="o">=</span>
+  <span class="s">&quot;select o.id, o.status, c.id, c.name, &quot;</span><span class="o">+</span>
+  <span class="s">&quot;       d.id, d.order_qty, p.id, p.name &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;from orders o join customer c on c.id = o.customer_id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;join order_detail d on d.order_id = o.id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;join product p on p.id = d.product_id &quot;</span> <span class="o">+</span>
+  <span class="s">&quot;where o.id &lt;= :maxOrderId and p.id = :productId &quot;</span><span class="o">+</span>
+  <span class="s">&quot;order by o.id, d.id asc&quot;</span><span class="o">;</span>
 
-
-<span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+<span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
     <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;c&quot;</span><span class="o">,</span> <span class="s">&quot;customer&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;d&quot;</span><span class="o">,</span> <span class="s">&quot;details&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">tableAliasMapping</span><span class="o">(</span><span class="s">&quot;p&quot;</span><span class="o">,</span> <span class="s">&quot;details.product&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+<span class="o">...</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">ordersFromRaw</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="o">.</span><span class="na">setRawSql</span><span class="o">(</span><span class="n">rawSql</span><span class="o">)</span>
@@ -359,7 +404,7 @@
 <p>
   Rather than using columnMapping like:
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">static</span> <span class="kd">final</span> <span class="n">RawSql</span> <span class="n">rawSql</span> <span class="o">=</span> <span class="n">RawSqlBuilder</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">rs</span><span class="o">)</span>
     <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.id&quot;</span><span class="o">,</span> <span class="s">&quot;id&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t0.status&quot;</span><span class="o">,</span> <span class="s">&quot;status&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">columnMapping</span><span class="o">(</span><span class="s">&quot;t1.id&quot;</span><span class="o">,</span> <span class="s">&quot;customer.id&quot;</span><span class="o">)</span>
@@ -371,6 +416,13 @@
     <span class="o">.</span><span class="na">create</span><span class="o">();</span>
 </pre></div>
 </div>
+
+<h2>Named queries</h2>
+<p>
+  We can programmatically use raw SQL like the following examples or put the Raw SQL and
+  column mappings into <code>ebean-orm.xml</code> file and reference them as
+  'named queries' - see database.createNamedQuery().
+</p>
 
   <nav class="next">
     <p class="edit-page">
