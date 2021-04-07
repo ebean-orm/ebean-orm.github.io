@@ -314,9 +314,6 @@
 </pre></div>
 </div>
 <h5>Example - order lines and their associated product</h5>
-<p>
-  Returns OrderLines with their associated Product with all properties loaded.
-</p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select line.*, p.* &quot;</span> <span class="o">+</span>
   <span class="s">&quot; from order_line line &quot;</span> <span class="o">+</span>
   <span class="s">&quot; join product p on p.id = line.product_id &quot;</span> <span class="o">+</span>
