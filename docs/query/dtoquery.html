@@ -191,7 +191,6 @@
 <span class="o">}</span>
 </pre></div>
 </div>
-
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using positioned parameters</span>
 
 <span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">beans</span> <span class="o">=</span>
@@ -284,6 +283,18 @@
     <span class="o">...</span>
 
   <span class="o">});</span>
+</pre></div>
+</div>
+<h2 id="scalar" class="art">Single column</h2>
+<p>
+  If we are looking to select a single column we look to use
+  <a href="sqlquery#scalar">SqlQuery.mapToScalar()</a> for that.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select mysequence.nextval&quot;</span><span class="o">;</span>
+
+<span class="n">Long</span> <span class="n">nextVal</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">mapToScalar</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
 </pre></div>
 </div>
 
