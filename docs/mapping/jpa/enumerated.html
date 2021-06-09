@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>Types | Mapping | Ebean</title>
+  <title>Mapping | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/type">Types</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Enum</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/">Mapping</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/mapping/jpa/">JPA</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">@Enumerated</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -55,41 +55,38 @@
   <li class="nav1 active">
     <a class="active" href="/docs/mapping">Mapping</a>
 <ul class="nav">
-    <li class="nav1 active">
-    <a class="active" href="/docs/mapping/type">Types</a>
-    <ul class="nav">
-  <li class="active">
-    <a class="active" href="/docs/mapping/type/enum">Enum</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/uuid">UUID</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/file">File</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/boolean">Boolean</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/time">Date and Time</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/numeric">Numeric</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/db-array">DB Array</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type/db-json">DB Json</a>
-  </li>
-  <li >
-    <a  href="/docs/mapping/type#other">Other</a>
-  </li>
-    </ul>
+    <li class="nav1 ">
+    <a  href="/docs/mapping/type">Types</a>
   </li>
 
-  <li class="nav1 ">
-    <a  href="/docs/mapping/jpa">JPA</a>
+  <li class="nav1 active">
+    <a class="active" href="/docs/mapping/jpa">JPA</a>
+    <ul class="nav">
+  <li >
+    <a  href="/docs/mapping/jpa/id">@Id</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/mapping/jpa/version">@Version</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/mapped-superclass">@MappedSuperclass</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/one-to-many">@OneToMany</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/many-to-one">@ManyToOne</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/one-to-one">@OneToOne</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/many-to-many">@ManyToMany</a>
+  </li>
+  <li >
+    <a  href="/docs/mapping/jpa/lob">@Lob</a>
+  </li>
+    </ul>
   </li>
 
   <li class="nav1 ">
@@ -155,42 +152,38 @@
 </form>
     
 
-<h2>Enum</h2>
+
+<h2>@Enumerated</h2>
 <p>
-  For Enum types we can use JPA standard <a href="/docs/mapping/jpa/enumerated">@Enumerated</a>
-  or use Ebean specific <a href="/docs/mapping/extensions/dbenumvalue">@DbEnumValue</a>.
+  Mapping for an Enum property that uses either the <code>ordinal</code> value
+  or the <code>name</code> value of the enum.
+</p>
+<p>
+  Note that there is some risk in using ORDINAL values in that the value is
+  implied by the order of the values in the enum. That is, if a value is added
+  into the middle of an Enum then that is a subtle change to the ordinal values.
+  In this sense I personally don't recommend using ordinal values.
 </p>
 
-<p>&nbsp;</p>
+<h5>Example: Enum ORDINAL values</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// defaults to using ORDINAL value</span>
+<span class="nd">@Enumerated</span>
+<span class="n">Status</span> <span class="n">status</span><span class="o">;</span>
+</pre></div>
+</div>
 
-<h5>Example: JPA Standard using Enum name values</h5>
+<h5>Example: Enum NAME values</h5>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Enumerated</span><span class="o">(</span><span class="nx">EnumType</span><span class="o">.</span><span class="na">STRING</span><span class="o">)</span>
 <span class="n">Status</span> <span class="n">status</span><span class="o">;</span>
 </pre></div>
 </div>
 
-<p>&nbsp;</p>
 
-<h5>Example: Using Ebean @DbEnumValue</h5>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">Status</span> <span class="o">{</span>
-  <span class="n">NEW</span><span class="o">(</span><span class="s">&quot;N&quot;</span><span class="o">),</span>
-  <span class="n">ACTIVE</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">),</span>
-  <span class="n">INACTIVE</span><span class="o">(</span><span class="s">&quot;I&quot;</span><span class="o">);</span>
-
-  <span class="n">String</span> <span class="n">dbValue</span><span class="o">;</span>
-  <span class="n">Status</span><span class="o">(</span><span class="n">String</span> <span class="n">dbValue</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">dbValue</span> <span class="o">=</span> <span class="n">dbValue</span><span class="o">;</span>
-  <span class="o">}</span>
-
-  <span class="c1">// annotate a method that returns the value</span>
-  <span class="c1">// in the DB that the enum element maps to</span>
-  <span class="nd">@DbEnumValue</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getValue</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="n">dbValue</span><span class="o">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</pre></div>
-</div>
+<h2>Alternative: Ebean @DbEnumValue</h2>
+<p>
+  An alternative to JPA standard <code>@Enumerated</code> is Ebean specific
+  <a href="/docs/mapping/extensions/dbenumvalue">@DbEnumValue</a>
+</p>
 
 
 
