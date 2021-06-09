@@ -173,8 +173,14 @@
 <h2>SqlQuery</h2>
 <p>
   With SqlQuery we can execute sql queries without any entity beans or dto beans.
-  Instead we can either read the <code>ResultSet</code> directly or get <code>SqlRow</code> objects.
+  Instead we can:
 </p>
+<ul>
+  <li>Read JDBC <code>ResultSet</code> directly</li>
+  <li>Read as <code>SqlRow</code> objects</li>
+  <li>Use <code>mapToScalar()</code> and read simple scalar values like Long, BigDecimal, OffsetDateTime etc</li>
+  <li>use <code>mapTo()</code> and <code>RowMapper</code> to map and read objects</li>
+</ul>
 
 <p>&nbsp;</p>
 
@@ -204,6 +210,16 @@
   <span class="o">});</span>
 </pre></div>
 </div>
+
+<h5>Example mapToScalar()</h5>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select mysequence.nextval&quot;</span><span class="o">;</span>
+
+<span class="n">Long</span> <span class="n">nextVal</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">mapToScalar</span><span class="o">(</span><span class="n">Long</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="bind-positioned" class="art">Binding positioned parameters using ?</h2>
 <p>
   Positioned parameters use <code>?</code> as the placeholder.
@@ -299,7 +315,7 @@
 </pre></div>
 </div>
 
-<h2 id="scalar" class="art">Single column scalar result - mapToScalar()</h2>
+<h2 id="scalar" class="art">mapToScalar() - single column scalar result</h2>
 <p>
   Use <code>mapToScalar()</code> when the query has a single column in the <em>select clause</em>.
   This specifies the type to use to read the result.
@@ -331,9 +347,15 @@
   All scalar types that Ebean supports can be used - refer to <a href="/docs/mapping/type/">mapping types</a>.
 </p>
 
-<h2 id="rowmapper" class="art">RowMapper</h2>
+<h2 id="rowmapper" class="art">mapTo() - RowMapper</h2>
 <p>
   We can implement a <em>RowMapper</em> to convert a ResultSet into a dto bean.
+</p>
+<p>
+  Note that this similar to <a href="dtoquery">DtoQuery</a> except that the mapping is here is explicit
+  and with DtoQuery the mapping is effectively automatic (no effort) based on naming convention mapping.
+  In that sense the expectation is that people will use DtoQuery first and only use this explicit
+  RowMapping when necessary.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">static</span> <span class="kd">class</span> <span class="nc">CustomerDtoMapper</span> <span class="kd">implements</span> <span class="n">RowMapper</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="o">{</span>
 
@@ -358,9 +380,10 @@
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name, status from customer where name = ?&quot;</span><span class="o">;</span>
 
-<span class="n">CustomerDto</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">&quot;Rob&quot;</span><span class="o">)</span>
-  <span class="o">.</span><span class="na">findOne</span><span class="o">(</span><span class="n">CUSTOMER_MAPPER</span><span class="o">);</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">sqlQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">mapTo</span><span class="o">(</span><span class="n">CUSTOMER_MAPPER</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
 
