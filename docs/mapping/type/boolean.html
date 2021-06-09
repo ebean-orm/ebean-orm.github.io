@@ -150,6 +150,31 @@
     
 
 <h2>Boolean</h2>
+<p>
+  Boolean is mapped to the appropriate database type depending on the platform.
+</p>
+<h2>primitive boolean</h2>
+<p>
+  Note that primitive boolean is deemed non-nullable and DDL generation reflects that.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span> <span class="o">{</span>
+
+  <span class="c1">// treated as non-nullable</span>
+  <span class="kt">boolean</span> <span class="n">active</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2>Custom database true/false values</h2>
+<p>
+  If necessary we can configure the database true/false values using <code>DatabaseConfig</code>
+  but this is expected to be very rare.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">databaseConfig</span><span class="o">.</span><span class="na">setDatabaseBooleanTrue</span><span class="o">(</span><span class="s">&quot;T&quot;</span><span class="o">);</span>
+<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setDatabaseBooleanFalse</span><span class="o">(</span><span class="s">&quot;F&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
 
 
 

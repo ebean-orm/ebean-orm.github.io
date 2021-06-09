@@ -150,6 +150,38 @@
     
 
 <h2>Numeric</h2>
+<p>
+  Numeric types are mapped to appropriate database types depending on the platform.
+</p>
+
+<h2>BigDecimal</h2>
+<p>
+  By default BigDecimal maps to database <code>decimal(16,3)</code>. This default can
+  be changed via <em>databaseConfig.addCustomMapping()</em>:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// set the default mapping for BigDecimal.class/decimal</span>
+<span class="n">databaseConfig</span><span class="o">.</span><span class="na">addCustomMapping</span><span class="o">(</span><span class="n">DbType</span><span class="o">.</span><span class="na">DECIMAL</span><span class="o">,</span> <span class="s">&quot;decimal(8,2)&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h2>Decimal precision and scale</h2>
+<p>
+  Explicitly specify decimal precision and scale using <code>@Column</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Column</span><span class="o">(</span><span class="nx">precision</span> <span class="o">=</span> <span class="mi">10</span><span class="o">,</span> <span class="nx">scale</span> <span class="o">=</span> <span class="mi">4</span><span class="o">)</span>
+<span class="n">BigDecimal</span> <span class="n">approvalRate</span><span class="o">;</span>
+</pre></div>
+</div>
+
+
+<h2>primitive types</h2>
+<p>
+  Primitive types are deemed non nullable. Ebean will generate DDL for these as not nullable.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// primitive type deemed non nullable</span>
+<span class="kt">long</span> <span class="n">approvalTotal</span><span class="o">;</span>
+</pre></div>
+</div>
 
 
 

@@ -150,6 +150,99 @@
     
 
 <h2>File</h2>
+<p>
+  For large binary or text content (database LOB) we can model it
+  in the entity bean as a property of type <code>java.io.File</code>
+  and with <code>@Lob</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SomeFileBean</span> <span class="o">{</span>
+  <span class="o">...</span>
+
+  <span class="nd">@Lob</span>
+  <span class="n">File</span> <span class="n">content</span><span class="o">;</span>
+</pre></div>
+</div>
+<h2>Lazy fetched by default</h2>
+<p>
+  By default all <code>@Lob</code> properties are fetched lazy so that means
+  by default they are NOT fetched unless explicit included in the select clause.
+</p>
+<p>
+  Note that File properties (and other Lob properties) will lazy load as needed.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">QSomeFileBean</span> <span class="n">b</span> <span class="o">=</span> <span class="n">QSomeFileBean</span><span class="o">.</span><span class="na">alias</span><span class="o">()</span>
+
+<span class="n">SomeFileBean</span> <span class="n">bean</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QSomeFileBean</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">b</span><span class="o">.</span><span class="na">content</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+<span class="n">File</span> <span class="n">content</span> <span class="o">=</span> <span class="n">bean</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>Content streamed to file</h2>
+<p>
+  For each File returned Ebean creates a temporary file and streams the content
+  from the database Lob result into the file. As such when we fetch beans with
+  Files we are expected to process the file in some way and then potentially
+  discard, delete or move the temporary file. If we do not then this can result
+  in a build up of temporary files in the temp directory.
+</p>
+
+<h2>Insert</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// have the content as a File</span>
+<span class="n">File</span> <span class="n">tempFile</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="n">UserProfile</span> <span class="n">profile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserProfile</span><span class="o">();</span>
+<span class="n">profile</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">);</span>
+<span class="n">profile</span><span class="o">.</span><span class="na">setProfileImage</span><span class="o">(</span><span class="n">tempFile</span><span class="o">);</span>
+
+<span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">profile</span><span class="o">);</span>
+
+<span class="c1">// typically tidy up file</span>
+<span class="n">tempFile</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>Fetch</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">QUserProfile</span> <span class="n">u</span> <span class="o">=</span> <span class="n">QUserProfile</span><span class="o">.</span><span class="na">alias</span><span class="o">()</span>
+
+<span class="n">UserProfile</span> <span class="n">profile</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QUserProfile</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">u</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">u</span><span class="o">.</span><span class="na">profileImage</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findOne</span><span class="o">();</span>
+
+<span class="n">File</span> <span class="n">image</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="na">getProfileImage</span><span class="o">();</span>
+<span class="c1">// do something with the image file</span>
+<span class="c1">// maybe move it to a cache directory</span>
+<span class="c1">// or tidy up by deleting the temporary file</span>
+<span class="n">image</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2>Stateless update</h2>
+<p>
+  It is often useful to perform a stateless update where we update the
+  File content without fetching it.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// have the content as a File</span>
+<span class="n">File</span> <span class="n">updatedProfileImage</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="n">UserProfile</span> <span class="n">profile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UserProfile</span><span class="o">();</span>
+<span class="n">profile</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
+<span class="n">profile</span><span class="o">.</span><span class="na">setProfileImage</span><span class="o">(</span><span class="n">updatedProfileImage</span><span class="o">);</span>
+
+<span class="c1">// perform update without fetching</span>
+<span class="n">database</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">profile</span><span class="o">);</span>
+
+<span class="c1">// typically tidy up file</span>
+<span class="n">updatedProfileImage</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
+</pre></div>
+</div>
 
 
 
