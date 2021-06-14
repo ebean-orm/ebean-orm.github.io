@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>findEachWhile | Query | Ebean</title>
+  <title>Ebean ORM</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/css/reset3.css">
   <link rel="stylesheet" href="/css/site3.css">
   <link rel="stylesheet" href="/css/pygments3.css">
+  <meta http-equiv = "refresh" content = "0; url = findEach" />
 </head>
 <body>
 <div id="main">
@@ -37,110 +38,8 @@
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
   </li>
-  <li class="nav0 active">
-    <a class="active" href="/docs">Documentation</a>
-      <ul>
-  <li class="nav1 ">
-    <a  href="/docs/best-practice">Best practice</a>
-  </li>
-  <li class="nav1 active">
-    <a class="active" href="/docs/query">Query</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findOne">findOne</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findList">findList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findCount">findCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findNative">findNative</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li class="active">
-    <a class="active" href="/docs/query/findEachWhile">findEachWhile</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findIds">findIds</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findFutureCount">findFutureCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureList">findFutureList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/persist">Persist</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/transactions">Transactions</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/mapping">Mapping</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl-generation">DDL & Migrations</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/logging">Logging</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/testing">Testing</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/database">Database platforms</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/multi-database">Multiple databases</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/kotlin">Kotlin</a>
-  </li>
-        <li><a href="/docs/tuning">Tuning</a></li>
-        <li><a href="/docs/features">Features</a></li>
-      </ul>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
   </li>
   <li class="nav0 ">
     <a  href="/support">Getting help</a>
@@ -177,41 +76,7 @@
   </div>
 </form>
     
-<h2>findEachWhile</h2>
-<p>
-  Execute a large queries, one bean at a time with the ability to stop early.
-</p>
-<p>
-Execute the query using callbacks to a visitor to process the resulting
-beans one at a time, and allow breaking out of loop (by returning <code>false</code>)
- </p>
- <p>
- Note that <a href="findEachWhile">findEachWhile</a> (and <a href="findEach">findEach</a> and <a href="findIterate">findIterate</a>) use a <code>per graph</code>
-   persistence context scope and adjusts <code>jdbc</code> fetch buffer size for large
-   queries. As such it is better to use <a href="findList">findList</a> for small queries.
- </p>
- <p>
- This method is functionally equivalent to <a href="findIterate">findIterate()</a> but instead of using an
- iterator uses the Predicate (<code>SAM (Single Abstract Method)</code>) interface which is better suited to use with Java 8+ closures.
- </p>
- <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Returning false inside the predicate will stop the execution</span>
-<span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">eq</span><span class="o">(</span><span class="s">&quot;status&quot;</span><span class="o">,</span> <span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">asc</span><span class="o">(</span><span class="s">&quot;id&quot;</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">2000</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">findEachWhile</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-
-     <span class="c1">// do something with customer</span>
-     <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
-
-     <span class="c1">// return true to continue processing or false to stop</span>
-     <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
-   <span class="o">});</span>
-
- 
-</pre></div>
-</div>
-
+  <p>Redirecting</p>
 
   </article>
 </div>

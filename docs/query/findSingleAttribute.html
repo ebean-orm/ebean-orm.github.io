@@ -74,13 +74,10 @@
     <a  href="/docs/query/findEach">findEach</a>
   </li>
   <li >
-    <a  href="/docs/query/findEachWhile">findEachWhile</a>
+    <a  href="/docs/query/findEach#findStream">findStream</a>
   </li>
   <li >
-    <a  href="/docs/query/findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
+    <a  href="/docs/query/findEach#findIterate">findIterate</a>
   </li>
 
   <li >
@@ -88,9 +85,6 @@
   </li>
   <li class="active">
     <a class="active" href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
   </li>
 
   <li >
@@ -105,9 +99,6 @@
 
   <li >
     <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
   </li>
 </ul>
   </li>
@@ -186,7 +177,7 @@
   We need to use the <code>select()</code> method to select which column to retrieve the value for.
 </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
     <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findSingleAttribute</span><span class="o">();</span>
@@ -205,6 +196,30 @@
   only the first will be returned.
 </p>
 
+<h2>findSingleAttributeList</h2>
+<p>
+  Execute the query returning a list of values for a single property.
+  We need to use the <code>select()</code> method to select which column you want to retrieve the value
+</p>
+
+<h3>Example 1:</h3>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h3>Example 2:</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">names</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">setDistinct</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">orderBy</span><span class="o">().</span><span class="na">name</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">setMaxRows</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findSingleAttributeList</span><span class="o">();</span>
+</pre></div>
+</div>
 
   </article>
 </div>

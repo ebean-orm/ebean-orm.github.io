@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/css/reset3.css">
   <link rel="stylesheet" href="/css/site3.css">
   <link rel="stylesheet" href="/css/pygments3.css">
+  <meta http-equiv="refresh" content="0; url = findEach"/>
 </head>
 <body>
 <div id="main">
@@ -37,110 +38,8 @@
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
   </li>
-  <li class="nav0 active">
-    <a class="active" href="/docs">Documentation</a>
-      <ul>
-  <li class="nav1 ">
-    <a  href="/docs/best-practice">Best practice</a>
-  </li>
-  <li class="nav1 active">
-    <a class="active" href="/docs/query">Query</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findOne">findOne</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findList">findList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findCount">findCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findNative">findNative</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEachWhile">findEachWhile</a>
-  </li>
-  <li class="active">
-    <a class="active" href="/docs/query/findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findIds">findIds</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findFutureCount">findFutureCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureList">findFutureList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/persist">Persist</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/transactions">Transactions</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/mapping">Mapping</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl-generation">DDL & Migrations</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/logging">Logging</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/testing">Testing</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/database">Database platforms</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/multi-database">Multiple databases</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/kotlin">Kotlin</a>
-  </li>
-        <li><a href="/docs/tuning">Tuning</a></li>
-        <li><a href="/docs/features">Features</a></li>
-      </ul>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
   </li>
   <li class="nav0 ">
     <a  href="/support">Getting help</a>
@@ -177,45 +76,7 @@
   </div>
 </form>
     
-
-<h2 id="findStream">findStream</h2>
-<p>
-  Execute the query processing the result as a stream. Use a <code>try with resources</code> block
-  to ensure the resources held by the stream are closed.
-</p>
-<p>
-  Note that this will use a single persistence context and all beans streamed will
-  be held in that persistence context so this isn't appropriate (will require too much
-  memory) when streaming a huge result set and <code>findLargeStream()</code> should be used
-  instead for that case.
-</p>
-
- <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Stream</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">stream</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
-   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
-   <span class="o">.</span><span class="na">findStream</span><span class="o">())</span> <span class="o">{</span>
-
-  <span class="n">stream</span>
-    <span class="o">.</span><span class="na">filter</span><span class="o">(...)</span>
-    <span class="o">.</span><span class="na">map</span><span class="o">(..)</span>
-    <span class="o">.</span><span class="na">collect</span><span class="o">(...);</span>
-<span class="o">}</span>
- 
-</pre></div>
-</div>
-<p>
-  <code>findStream()</code> does a similar job to <a href="findEach"><code>findEach</code></a> and
-  <a href="findIterate"><code>findIterate</code></a> with the difference largely down to style.
-</p>
-
-<h2 id="findLargeStream">findLargeStream</h2>
-<p>
-  <code>findLargeStream()</code> is similar to <code>findStream()</code> except it will use
-  multiple persistence contexts. This means it can process huge result sets.
-</p>
-
-
+<p>Redirecting</p>
 
   </article>
 </div>

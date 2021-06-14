@@ -74,13 +74,10 @@
     <a  href="/docs/query/findEach">findEach</a>
   </li>
   <li >
-    <a  href="/docs/query/findEachWhile">findEachWhile</a>
+    <a  href="/docs/query/findEach#findStream">findStream</a>
   </li>
   <li >
-    <a  href="/docs/query/findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findIterate">findIterate</a>
+    <a  href="/docs/query/findEach#findIterate">findIterate</a>
   </li>
 
   <li >
@@ -88,9 +85,6 @@
   </li>
   <li >
     <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttributeList">findSingleAttributeList</a>
   </li>
 
   <li >
@@ -105,9 +99,6 @@
 
   <li class="active">
     <a class="active" href="/docs/query/findVersions">findVersions</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findVersionsBetween">findVersionsBetween</a>
   </li>
 </ul>
   </li>
@@ -184,13 +175,39 @@
 <p>
   Note that this query will work against view based history implementations
   but not sql2011 standards based implementations and we should use
-  <a href="findVersionsBetween">findVersionsBetween</a> that requires
+  <a href="#between">findVersionsBetween</a> that requires
   a start and end timestamp to be specified.
 </p>
 <p>
   Generally this query is expected to be a find by id or unique predicates query.
   It will execute the query against the history returning the versions of the bean.
 </p>
+
+<h2 id="between">findVersionsBetween</h2>
+<p>
+  Return versions of a @History entity bean between the 2 timestamps.
+</p>
+<p>
+  Generally this query is expected to be a find by id or unique predicates query.
+  It will execute the query against the history returning the versions of the bean
+  between the start and end timestamps.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Timestamp</span> <span class="n">start</span> <span class="o">=</span> <span class="o">...;</span>
+<span class="n">Timestamp</span> <span class="n">end</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;&gt;</span> <span class="n">customerVersions</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">id</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="mi">42</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findVersionsBetween</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">end</span><span class="o">);</span>
+
+<span class="k">for</span> <span class="o">(</span><span class="n">Version</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">customerVersion</span> <span class="o">:</span> <span class="n">customerVersions</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">Customer</span> <span class="n">bean</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getBean</span><span class="o">();</span>
+  <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">ValuePair</span><span class="o">&gt;</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getDiff</span><span class="o">();</span>
+  <span class="n">Timestamp</span> <span class="n">effectiveStart</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getStart</span><span class="o">();</span>
+  <span class="n">Timestamp</span> <span class="n">effectiveEnd</span> <span class="o">=</span> <span class="n">customerVersion</span><span class="o">.</span><span class="na">getEnd</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
   </article>
 </div>
