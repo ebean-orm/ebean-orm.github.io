@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/css/reset3.css">
   <link rel="stylesheet" href="/css/site3.css">
   <link rel="stylesheet" href="/css/pygments3.css">
+  <meta http-equiv = "refresh" content = "0; url = findFuture" />
 </head>
 <body>
 <div id="main">
@@ -18,7 +19,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">Query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">findFutureList</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Query</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -37,101 +38,8 @@
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
   </li>
-  <li class="nav0 active">
-    <a class="active" href="/docs">Documentation</a>
-      <ul>
-  <li class="nav1 ">
-    <a  href="/docs/best-practice">Best practice</a>
-  </li>
-  <li class="nav1 active">
-    <a class="active" href="/docs/query">Query</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findOne">findOne</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findList">findList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findCount">findCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findNative">findNative</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach#findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach#findIterate">findIterate</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findIds">findIds</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findFutureCount">findFutureCount</a>
-  </li>
-  <li class="active">
-    <a class="active" href="/docs/query/findFutureList">findFutureList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/persist">Persist</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/transactions">Transactions</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/mapping">Mapping</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl-generation">DDL & Migrations</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/logging">Logging</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/testing">Testing</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/database">Database platforms</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/multi-database">Multiple databases</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/kotlin">Kotlin</a>
-  </li>
-        <li><a href="/docs/tuning">Tuning</a></li>
-        <li><a href="/docs/features">Features</a></li>
-      </ul>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
   </li>
   <li class="nav0 ">
     <a  href="/support">Getting help</a>
@@ -168,32 +76,6 @@
   </div>
 </form>
     
-<h2>findFutureList</h2>
-<p>
-  findFutureList allows for the background execution of a query which we can wait for and cancel if desired.
-</p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// find list using a background thread</span>
-<span class="n">FutureList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">futureList</span> <span class="o">=</span>
-  <span class="n">Order</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">where</span><span class="o">()</span>
-    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
-    <span class="o">.</span><span class="na">findFutureList</span><span class="o">();</span>
-
-  <span class="c1">// do something else ...</span>
-
-<span class="k">if</span> <span class="o">(!</span><span class="n">futureList</span><span class="o">.</span><span class="na">isDone</span><span class="o">()){</span>
-  <span class="c1">// you can cancel the query. If supported by the JDBC</span>
-  <span class="c1">// driver and database this will actually cancel the</span>
-  <span class="c1">// sql query execution on the database</span>
-  <span class="n">futureList</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-<span class="o">}</span>
-
-<span class="c1">// wait for the query to finish ... no timeout</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-
-<span class="c1">// wait for the query to finish ... with a 30sec timeout</span>
-<span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">futureList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">30</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
-</pre></div>
-</div>
 
   </article>
 </div>

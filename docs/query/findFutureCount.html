@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/css/reset3.css">
   <link rel="stylesheet" href="/css/site3.css">
   <link rel="stylesheet" href="/css/pygments3.css">
+  <meta http-equiv = "refresh" content = "0; url = findFuture" />
 </head>
 <body>
 <div id="main">
@@ -18,7 +19,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">Query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">findFutureCount</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Query</span>
       </h1>
       <ul>
         <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
@@ -37,101 +38,8 @@
   <li class="nav0 ">
     <a  href="/docs/intro">Introduction</a>
   </li>
-  <li class="nav0 active">
-    <a class="active" href="/docs">Documentation</a>
-      <ul>
-  <li class="nav1 ">
-    <a  href="/docs/best-practice">Best practice</a>
-  </li>
-  <li class="nav1 active">
-    <a class="active" href="/docs/query">Query</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/query/exists">exists</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findOne">findOne</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findList">findList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findCount">findCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findNative">findNative</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findPagedList">findPagedList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findMap">findMap</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSet">findSet</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach">findEach</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach#findStream">findStream</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findEach#findIterate">findIterate</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findIds">findIds</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
-  </li>
-
-  <li class="active">
-    <a class="active" href="/docs/query/findFutureCount">findFutureCount</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureList">findFutureList</a>
-  </li>
-  <li >
-    <a  href="/docs/query/findFutureIds">findFutureIds</a>
-  </li>
-
-  <li >
-    <a  href="/docs/query/findVersions">findVersions</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/persist">Persist</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/transactions">Transactions</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/mapping">Mapping</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/ddl-generation">DDL & Migrations</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/logging">Logging</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/testing">Testing</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/database">Database platforms</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/multi-database">Multiple databases</a>
-  </li>
-  <li class="nav1 ">
-    <a  href="/docs/kotlin">Kotlin</a>
-  </li>
-        <li><a href="/docs/tuning">Tuning</a></li>
-        <li><a href="/docs/features">Features</a></li>
-      </ul>
+  <li class="nav0 ">
+    <a  href="/docs">Documentation</a>
   </li>
   <li class="nav0 ">
     <a  href="/support">Getting help</a>
@@ -168,39 +76,6 @@
   </div>
 </form>
     
-<h2>findFutureCount</h2>
-
-Execute find row count query in a background thread.
-  <p>
-  This returns a <a href='https://docs.oracle.com/javase/8/docs/api/index.html?java/util/concurrent/Future.html'>Future </a> object which can be used to cancel, check the
-  execution status (isDone etc) and get the value (with or without a
-  timeout).
-  </p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">FutureRowCount</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">futureRowCount</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;name&quot;</span><span class="o">,</span> <span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
-      <span class="o">.</span><span class="na">findFutureCount</span><span class="o">()</span>
-
-<span class="c1">// do other things</span>
-</pre></div>
-</div>
-
-<p>Having a <code>Future</code> reference allows you to check if the execution is done, get the value directly (blocking while waiting for the value) or get the value with a specified timeout</p>
-
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Waits (blocks) for the calculation to be finished and returns the value</span>
-<span class="n">Integer</span> <span class="n">count</span> <span class="o">=</span> <span class="n">futureRowCount</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-
-<span class="c1">// Waits for the calculation to be finished and returns the value</span>
-<span class="c1">// if it happens under 10 seconds, otherwise throw an exception</span>
-<span class="n">Integer</span> <span class="n">count</span> <span class="o">=</span> <span class="n">futureRowCount</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
-
-<span class="k">if</span> <span class="o">(</span><span class="n">futureRowCount</span><span class="o">.</span><span class="na">isDone</span><span class="o">())</span> <span class="o">{</span>
-  <span class="c1">// Here we can fetch the value (assuming that everything went ok)</span>
-<span class="o">}</span>
-</pre></div>
-</div>
-
-
 
   </article>
 </div>
