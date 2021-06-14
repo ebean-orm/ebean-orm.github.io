@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>findEach | Query | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/query/">Query</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">streaming</span>
+      </h1>
+      <ul>
+        <li><a href="https://github.com/ebean-orm/ebean" title="github source"><i class="fab fa-github"></i></a></li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/query">Query</a>
+<ul class="nav">
+    <li >
+    <a  href="/docs/query/exists">exists</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findOne">findOne</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findList">findList</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findCount">findCount</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findNative">findNative</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findPagedList">findPagedList</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findMap">findMap</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findSet">findSet</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/streaming#findEach">findEach</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/query/streaming#findStream">findStream</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/query/streaming#findIterate">findIterate</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findIds">findIds</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findSingleAttribute">findSingleAttribute</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findFuture">findFuture</a>
+  </li>
+  <li >
+    <a  href="/docs/query/findVersions">findVersions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL & Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+        <li><a href="/docs/features">Features</a></li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/12">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+<h2 id="streaming">Streaming queries</h2>
+<p>
+  The following <a href="#findEach">findEach</a>, <a href="#findIterate">findIterate</a>,
+  and <a href="#findStream">findStream</a> are all streaming queries with mainly a
+  difference in terms of style using a closure, iterator or stream.
+  With these streaming queries we can process very large results without having to hold
+  all results in memory.
+  <em>findEach</em> would be the recommended style as it ensures all the resources
+  held by the query are closed without necessitating a try with resources block. Using
+  <em>findStream</em> and <em>findIterate</em> are equally fine with the note that we
+  need to ensure the QueryIterator and Stream are closed typically via <code>try with resources</code>.
+</p>
+<p>
+  From Ebean version 12.3.5 these streaming queries use an "adaptive persistence context".
+  This means that <a href="#findEach">findEach</a>, <a href="#findIterate">findIterate</a>,
+  and <a href="#findStream">findStream</a> will work equally as well against small query
+  results as <a href="findList">findList</a>. After 1000 beans are processed the queries adapt
+  the persistence context they use to ensure it does not hold all the beans (and run out of memory
+  when processing very large results).
+</p>
+<p>
+  Queries processing less than 1000 beans use a single normal persistence context. After 1000
+  beans the persistence context adapts such that it does not hold all the beans.
+</p>
+
+<h2 id="findEach">findEach</h2>
+<p>
+  Execute the query processing the result one bean at a time.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+ <span class="o">.</span><span class="na">findEach</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+
+   <span class="c1">// do something with customer</span>
+   <span class="n">System</span><span class="o">.</span><span class="na field">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;-- visit &quot;</span> <span class="o">+</span> <span class="n">customer</span><span class="o">);</span>
+ <span class="o">});</span>
+</pre></div>
+</div>
+
+<h2 id="findEachWhile">findEachWhile</h2>
+<p>
+  Like <em>findEach</em> but takes a predicate that allows us to stop processing
+  the result early.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Returning false inside the predicate will stop the execution</span>
+<span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">findEachWhile</span><span class="o">((</span><span class="n">Customer</span> <span class="n">customer</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+     <span class="c1">// do something with customer</span>
+     <span class="o">...</span>
+     <span class="c1">// return true to continue processing or false to stop</span>
+     <span class="k">return</span> <span class="o">(</span><span class="n">customer</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="o">);</span>
+   <span class="o">});</span>
+</pre></div>
+</div>
+
+<h2 id="findEach-batch">findEach with batch consumer</h2>
+<p>
+  Similar to <em>findEach</em> but batches the beans up so that they can
+  be processed in batches - for example process in batches of 100 at a time.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+ <span class="o">.</span><span class="na">findEach</span><span class="o">(</span><span class="mi">100</span><span class="o">,</span> <span class="n">batch</span> <span class="o">-&gt;</span> <span class="o">{</span>
+   <span class="c1">// process the customers in batches of 100 at a time</span>
+   <span class="c1">// where batch is List&lt;Customer&gt;</span>
+   <span class="o">...</span>
+ <span class="o">});</span>
+</pre></div>
+</div>
+
+<h2 id="findStream">findStream</h2>
+<p>
+  Execute the query processing the result as a stream.
+  Use a <code>try with resources</code> block to ensure the resources held by the stream are closed.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Stream</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">stream</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">findStream</span><span class="o">())</span> <span class="o">{</span>
+
+  <span class="n">stream</span>
+    <span class="o">.</span><span class="na">filter</span><span class="o">(...)</span>
+    <span class="o">.</span><span class="na">map</span><span class="o">(..)</span>
+    <span class="o">.</span><span class="na">collect</span><span class="o">(...);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="findIterate">findIterate</h2>
+<p>
+  Execute the query processing the result as a QueryIterator.
+  Use a <code>try with resources</code> block to ensure the resources held by the iterator are closed.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">QueryIterator</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">it</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">equalTo</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+   <span class="o">.</span><span class="na">order</span><span class="o">().</span><span class="na">id</span><span class="o">.</span><span class="na">asc</span><span class="o">()</span>
+   <span class="o">.</span><span class="na">findIterate</span><span class="o">())</span> <span class="o">{</span>
+
+   <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+     <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+     <span class="o">...</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+</body>
+</html>
