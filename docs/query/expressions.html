@@ -362,10 +362,30 @@
 </pre></div>
 </div>
 
+<h2 id="ilike">ilike - case-insensitive like</h2>
+<p>
+  With <code>ilike</code> we use the SQL <code>%</code> and <code>_</code> place holder
+  characters to match varchar properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">ilike</span><span class="o">(</span><span class="s">&quot;Rob%&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="startsWith">startsWith</h2>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
     <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="istartsWith">istartsWith - case-insensitive startsWith</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">firstName</span><span class="o">.</span><span class="na">istartsWith</span><span class="o">(</span><span class="s">&quot;Rob&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
@@ -378,6 +398,14 @@
 </pre></div>
 </div>
 
+<h2 id="iendsWith">iendsWith - case-insensitive endsWith</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">email</span><span class="o">.</span><span class="na">iendsWith</span><span class="o">(</span><span class="s">&quot;@foo.com&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="contains">contains</h2>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Contact</span><span class="o">&gt;</span> <span class="n">contacts</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
@@ -386,11 +414,18 @@
 </pre></div>
 </div>
 
-
 <h2 id="eq">eq - equal to</h2>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
   <span class="k">new</span> <span class="n">QOrder</span><span class="o">()</span>
     <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="ieq">ieq - case-insensitive equal to</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">name</span><span class="o">.</span><span class="na">ieq</span><span class="o">(</span><span class="s">&quot;rob&quot;</span><span class="o">)</span>
     <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
 </pre></div>
 </div>
@@ -444,28 +479,70 @@
 </div>
 
 <h2 id="betweenProperties">betweenProperties</h2>
-
-<h2 id="example">example</h2>
+<p>
+  When a value is between 2 properties.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Timestamp</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Timestamp</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+ <span class="o">...</span>
+ <span class="o">.</span><span class="na">where</span><span class="o">().</span><span class="na">betweenProperties</span><span class="o">(</span><span class="s">&quot;effectiveStart&quot;</span><span class="o">,</span> <span class="s">&quot;effectiveEnd&quot;</span><span class="o">,</span> <span class="n">timestamp</span><span class="o">)</span>
+</pre></div>
+</div>
 
 <span id="bitwise"></span>
 <h2 id="bitwiseAny">bitwiseAny</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">flags</span><span class="o">.</span><span class="na">bitwiseAny</span><span class="o">(</span><span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_BULK</span> <span class="o">+</span> <span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_SIZE</span><span class="o">)</span>
+</pre></div>
+</div>
 
 <h2 id="bitwiseAnd">bitwiseAnd</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">selectedFlags</span> <span class="o">=</span> <span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_BULK</span> <span class="o">+</span> <span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_SIZE</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_SIZE</span><span class="o">;</span> <span class="c1">// Only Size flag set</span>
+
+<span class="n">bitwiseAnd</span><span class="o">(</span><span class="n">selectedFlags</span><span class="o">,</span> <span class="n">mask</span><span class="o">)</span>
+</pre></div>
+</div>
 
 <h2 id="bitwiseAll">bitwiseAll</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">flags</span><span class="o">.</span><span class="na">bitwiseAll</span><span class="o">(</span><span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_BULK</span> <span class="o">+</span> <span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_COLOUR</span><span class="o">)</span>
+</pre></div>
+</div>
 
 <h2 id="bitwiseNot">bitwiseNot</h2>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">flags</span><span class="o">.</span><span class="na">bitwiseNot</span><span class="o">(</span><span class="n">BwFlags</span><span class="o">.</span><span class="na">HAS_COLOUR</span><span class="o">)</span>
+</pre></div>
+</div>
 
 
 <span id="array"></span>
+<p>
+  The following expressions are for <code>@DbArray</code>.
+  In these examples contact phoneNumbers is a <code>@DbArray</code>.
+</p>
 <h2 id="arrayContains">arrayContains</h2>
 
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">phoneNumbers</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">&quot;4321&quot;</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 <h2 id="arrayNotContains">arrayNotContains</h2>
-
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">phoneNumbers</span><span class="o">.</span><span class="na">notContains</span><span class="o">(</span><span class="s">&quot;4321&quot;</span><span class="o">)</span>
+ <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 <h2 id="arrayIsEmpty">arrayIsEmpty</h2>
-
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">phoneNumbers</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span>
+ <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 <h2 id="arrayIsNotEmpty">arrayIsNotEmpty</h2>
-
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">QContact</span><span class="o">()</span>
+ <span class="o">.</span><span class="na field">phoneNumbers</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">()</span>
+ <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="next">
