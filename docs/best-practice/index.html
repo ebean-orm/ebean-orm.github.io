@@ -414,38 +414,54 @@
 
   <h2 id="reference-beans">Reference beans</h2>
   <p>
-    Use reference beans to have a bean with an <code>@Id</code> rather than execute a
-    query to find by id unless we really want to query the DB (to confirm existence typically).
+    When we have the id value, use a reference bean rather than execute a
+    query to find by id - unless we really want to query the database of course.
   </p>
+  <p>
+    That is, for inserts and updates when we have the <code>@Id</code> value we can
+    use reference bean for the <em>foreign key value</em>> rather than execute an extra
+    query against the database.
+  </p>
+
+  <h4>Do <b>NOT</b> do this - uses an extra database query</h4>
 <ul class="code nav nav-tabs mytabs">
   <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
   <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
 </ul>
   <div class="code-java">
-    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// using a finder to get reference bean</span>
-<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">Customer</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="mi">42</span><span class="o">);</span>
-
-<span class="c1">// using database to get reference bean</span>
-<span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">42</span><span class="o">);</span>
-
-<span class="c1">// reference bean populates the FK column</span>
-<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">(</span><span class="n">customer</span><span class="o">)</span>
-<span class="n">order</span><span class="o">.</span> <span class="o">...</span>
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">()</span>
+<span class="n">order</span><span class="o">.</span><span class="na">setCustomer</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">42</span><span class="o">));</span> <span class="c1">// extra db query for customer</span>
+<span class="o">...</span>
 <span class="n">order</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 </pre></div>
 </div>
   </div>
   <div class="code-kt">
-    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// using a finder to get reference bean</span>
-<span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">Customer</span><span class="p">.</span><span class="n">ref</span><span class="p">(</span><span class="m">42</span><span class="p">)</span>
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">order</span> <span class="p">=</span> <span class="n">new</span> <span class="n">Order</span><span class="p">()</span>
+<span class="n">order</span><span class="p">.</span><span class="n">setCustomer</span><span class="p">(</span><span class="n">DB</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">Customer</span><span class="p">.</span><span class="k">class</span><span class="p">,</span> <span class="m">42</span><span class="p">));</span>
+<span class="p">...</span>
+<span class="n">order</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+  </div>
 
-<span class="c1">// using database to get reference bean</span>
-<span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">getReference</span><span class="p">(</span><span class="n">Customer</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">,</span> <span class="m">42</span><span class="p">)</span>
-
-
-<span class="c1">// reference bean populates the FK column</span>
-<span class="k">val</span> <span class="py">order</span> <span class="p">=</span> <span class="n">new</span> <span class="n">Order</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span>
-<span class="n">order</span><span class="p">.</span> <span class="p">...</span>
+  <h4>Do <b>THIS</b> - use reference bean instead</h4>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Order</span><span class="o">()</span>
+<span class="n">order</span><span class="o">.</span><span class="na">setCustomer</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Customer</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="mi">42</span><span class="o">));</span> <span class="c1">// no extra db query</span>
+<span class="o">...</span>
+<span class="n">order</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</pre></div>
+</div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">order</span> <span class="p">=</span> <span class="n">new</span> <span class="n">Order</span><span class="p">()</span>
+<span class="n">order</span><span class="p">.</span><span class="n">setCustomer</span><span class="p">(</span><span class="n">DB</span><span class="p">.</span><span class="n">getReference</span><span class="p">(</span><span class="n">Customer</span><span class="p">.</span><span class="k">class</span><span class="p">,</span> <span class="m">42</span><span class="p">));</span>
+<span class="p">...</span>
 <span class="n">order</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
