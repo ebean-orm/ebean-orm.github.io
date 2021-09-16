@@ -172,16 +172,16 @@
   With MySql can (and probably should) specify the collation and character set we want the
   database to use. In the example below we specify the collation as <code>utf8mb4_unicode_ci</code>.
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4_unicode_ci</span>
-      <span class="nt">characterSet</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">utf8mb4</span>
-</pre></div>
-</div>
+```yml
+ebean:
+  test:
+    platform: mysql #, h2, postgres, mysql, oracle, sqlserver
+    ddlMode: dropCreate # none | dropCreate | migrations | create
+    dbName: test
+    mysql:
+      collation: utf8mb4_unicode_ci
+      characterSet: utf8mb4
+```
 
 <p>
   The above will use the following defaults:
@@ -202,24 +202,26 @@
   We can specify the collation to be <code>default</code> and with that the collection will be left up
   to the default that MySql would use.
 </p>
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysql</span> <span class="c1">#, h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
-    <span class="nt">mysql</span><span class="p">:</span>
-      <span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8.0</span>
-      <span class="nt">collation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
-</pre></div>
-</div>
+```yml
+ebean:
+  test:
+    platform: mysql #, h2, postgres, mysql, oracle, sqlserver
+    ddlMode: dropCreate # none | dropCreate | migrations | create
+    dbName: test
+    mysql:
+      version: 8.0
+      collation: default
+
+```
 <p>
   In the logs with logging DEBUG level for <code>io.ebean.docker</code> we can see:
   <code>--character-set-server</code> and <code>--collation-server</code>
 </p>
-<div class="syntax text"><div class="highlight"><pre><span></span>... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
+```text
+... INFO  io.ebean.docker.commands.Commands - Run container ut_mysql with port:4306 db:my_app user:my_app mode:Create shutdown:
 ... DEBUG io.ebean.docker.commands.Commands - docker run -d --name ut_mysql -p 4306:3306 -e MYSQL_ROOT_PASSWORD=admin mysql:5.6
-</pre></div>
-</div>
+
+```
 
 
 <h2 id="types">Types</h2>
@@ -238,6 +240,63 @@
   History support for MySQL is provided by generating triggers and history table.
 </p>
 
+<h2 id="starting">Starting docker mysql programmatically</h2>
+<p>
+  We can programmatically start a docker container version of mysql. This can be a useful way to run an
+  application locally.
+</p>
+<p>
+  The below uses <code>ebean-test-docker</code> dependency which already comes with <code>ebean-test</code>.
+  If we do not have a dependency on <code>ebean-test</code> then add <code>io.ebean:ebean-test-docker:4.2</code>
+  as a dependency.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MySqlConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MySqlContainer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StartMySql</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="n">MySqlConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MySqlConfig</span><span class="o">(</span><span class="s">&quot;8.0&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDbName</span><span class="o">(</span><span class="s">&quot;my_db&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setUser</span><span class="o">(</span><span class="s">&quot;my_user&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;my_pass&quot;</span><span class="o">);</span>
+
+    <span class="c1">// by default this mysql docker collation is case sensitive using utf8mb4_bin</span>
+    <span class="c1">// config.setCollation(&quot;default&quot;);</span>
+    <span class="c1">// config.setCollation(&quot;utf8mb4_unicode_ci&quot;);</span>
+    <span class="c1">// config.setCharacterSet(&quot;utf8mb4&quot;);</span>
+
+    <span class="n">MySqlContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MySqlContainer</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">startWithDropCreate</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
+  The above will programmatically start a MySql 8 docker container on <b>port 4306</b>. It will create a database
+  and user with container name <em>ut_mysql</em>. It will drop and re-create the container if the container already exists.
+</p>
+
+<h3>Docker trace logging</h3>
+<p>
+  Set the logging level for <code>io.ebean.docker</code> to <code>trace</code> to help trouble shoot any issues or
+  understand what ebean-test-docker is doing.
+</p>
+<div class="syntax console"><div class="highlight"><pre><span></span><span class="err">15:59:48.965</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">select</span> <span class="err">User</span> <span class="err">from</span> <span class="err">user</span> <span class="err">where</span> <span class="err">User</span> <span class="err">=</span> <span class="err">&#39;my_user&#39;</span>
+<span class="err">15:59:48.980</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">show</span> <span class="err">databases</span> <span class="err">like</span> <span class="err">&#39;my_db&#39;</span>
+<span class="err">15:59:48.982</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">drop</span> <span class="err">database</span> <span class="err">my_db</span>
+<span class="err">15:59:48.987</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">show</span> <span class="err">databases</span> <span class="err">like</span> <span class="err">&#39;my_db&#39;</span>
+<span class="err">15:59:48.989</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">create</span> <span class="err">database</span> <span class="err">my_db</span>
+<span class="err">15:59:48.995</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">set</span> <span class="err">global</span> <span class="err">log_bin_trust_function_creators=1</span>
+<span class="err">15:59:48.996</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">select</span> <span class="err">User</span> <span class="err">from</span> <span class="err">user</span> <span class="err">where</span> <span class="err">User</span> <span class="err">=</span> <span class="err">&#39;my_user&#39;</span>
+<span class="err">15:59:48.997</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">create</span> <span class="err">user</span> <span class="err">&#39;my_user&#39;@&#39;%&#39;</span> <span class="err">identified</span> <span class="err">by</span> <span class="err">&#39;my_pass&#39;</span>
+<span class="err">15:59:49.001</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">grant</span> <span class="err">all</span> <span class="err">on</span> <span class="err">my_db.*</span> <span class="err">to</span> <span class="err">&#39;my_use</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="edit-page">

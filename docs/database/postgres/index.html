@@ -300,10 +300,10 @@
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 
     <span class="n">PostgresConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PostgresConfig</span><span class="o">(</span><span class="s">&quot;13&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setPort</span><span class="o">(</span><span class="mi">5432</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setDbName</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setUser</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;unit&quot;</span><span class="o">);</span>
+    <span class="c1">// config.setPort(5432); // Note: defaults to 6432</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setDbName</span><span class="o">(</span><span class="s">&quot;my_app&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setUser</span><span class="o">(</span><span class="s">&quot;my_app&quot;</span><span class="o">);</span>
+    <span class="n">config</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;silly&quot;</span><span class="o">);</span>
     <span class="n">config</span><span class="o">.</span><span class="na">setContainerName</span><span class="o">(</span><span class="s">&quot;pg13x&quot;</span><span class="o">);</span>
     <span class="n">config</span><span class="o">.</span><span class="na">setExtensions</span><span class="o">(</span><span class="s">&quot;hstore,pgcrypto&quot;</span><span class="o">);</span>
 
@@ -314,8 +314,14 @@
 </pre></div>
 </div>
 <p>
-  The above will programmatically start a Postgres 13 docker container on port 5432. It will create a database
+  The above will programmatically start a Postgres 13 docker container on <b>port 6432</b>. It will create a database
   and user with container name <em>pg13x</em>. It will drop and re-create the container if the container already exists.
+</p>
+
+<h3>Docker trace logging</h3>
+<p>
+  Set the logging level for <code>io.ebean.docker</code> to <code>trace</code> to help trouble shoot any issues or
+  understand what ebean-test-docker is doing.
 </p>
 
 <h2 id="postgis">PostGIS</h2>
