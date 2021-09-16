@@ -286,15 +286,15 @@ ebean:
   Set the logging level for <code>io.ebean.docker</code> to <code>trace</code> to help trouble shoot any issues or
   understand what ebean-test-docker is doing.
 </p>
-<div class="syntax console"><div class="highlight"><pre><span></span><span class="err">15:59:48.965</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">select</span> <span class="err">User</span> <span class="err">from</span> <span class="err">user</span> <span class="err">where</span> <span class="err">User</span> <span class="err">=</span> <span class="err">&#39;my_user&#39;</span>
-<span class="err">15:59:48.980</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">show</span> <span class="err">databases</span> <span class="err">like</span> <span class="err">&#39;my_db&#39;</span>
-<span class="err">15:59:48.982</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">drop</span> <span class="err">database</span> <span class="err">my_db</span>
-<span class="err">15:59:48.987</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">show</span> <span class="err">databases</span> <span class="err">like</span> <span class="err">&#39;my_db&#39;</span>
-<span class="err">15:59:48.989</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">create</span> <span class="err">database</span> <span class="err">my_db</span>
-<span class="err">15:59:48.995</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">set</span> <span class="err">global</span> <span class="err">log_bin_trust_function_creators=1</span>
-<span class="err">15:59:48.996</span> <span class="err">[main]</span> <span class="err">TRACE</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">select</span> <span class="err">User</span> <span class="err">from</span> <span class="err">user</span> <span class="err">where</span> <span class="err">User</span> <span class="err">=</span> <span class="err">&#39;my_user&#39;</span>
-<span class="err">15:59:48.997</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">create</span> <span class="err">user</span> <span class="err">&#39;my_user&#39;@&#39;%&#39;</span> <span class="err">identified</span> <span class="err">by</span> <span class="err">&#39;my_pass&#39;</span>
-<span class="err">15:59:49.001</span> <span class="err">[main]</span> <span class="err">DEBUG</span> <span class="err">i.e.d.c.Commands</span> <span class="err">-</span> <span class="err">sqlRun:</span> <span class="err">grant</span> <span class="err">all</span> <span class="err">on</span> <span class="err">my_db.*</span> <span class="err">to</span> <span class="err">&#39;my_use</span>
+<div class="syntax text"><div class="highlight"><pre><span></span>15:59:48.965 [main] TRACE i.e.d.c.Commands - sqlRun: select User from user where User = &#39;my_user&#39;
+15:59:48.980 [main] TRACE i.e.d.c.Commands - sqlRun: show databases like &#39;my_db&#39;
+15:59:48.982 [main] DEBUG i.e.d.c.Commands - sqlRun: drop database my_db
+15:59:48.987 [main] TRACE i.e.d.c.Commands - sqlRun: show databases like &#39;my_db&#39;
+15:59:48.989 [main] DEBUG i.e.d.c.Commands - sqlRun: create database my_db
+15:59:48.995 [main] DEBUG i.e.d.c.Commands - sqlRun: set global log_bin_trust_function_creators=1
+15:59:48.996 [main] TRACE i.e.d.c.Commands - sqlRun: select User from user where User = &#39;my_user&#39;
+15:59:48.997 [main] DEBUG i.e.d.c.Commands - sqlRun: create user &#39;my_user&#39;@&#39;%&#39; identified by &#39;my_pass&#39;
+15:59:49.001 [main] DEBUG i.e.d.c.Commands - sqlRun: grant all on my_db.* to &#39;my_use
 </pre></div>
 </div>
 
