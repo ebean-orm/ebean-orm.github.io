@@ -149,7 +149,7 @@
 <p>
   We can explicitly turn on the use of JDBC batch via <em>transaction.setBatchMode(true)</em>
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="c1">// use JDBC batch</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
@@ -160,7 +160,7 @@
   <span class="n">cBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 
   <span class="c1">// batched</span>
-  <span class="n">server</span><span class="o">.</span><span class="na">saveAll</span><span class="o">(</span><span class="n">someBeans</span><span class="o">);</span>
+  <span class="n">database</span><span class="o">.</span><span class="na">saveAll</span><span class="o">(</span><span class="n">someBeans</span><span class="o">);</span>
 
   <span class="c1">// flush batch and commit</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
@@ -196,7 +196,7 @@
   persisting all the "orders" before persisting all the "order details".
 </p>
 <p>
-  The batch buffer size default value is set via <em>serverConfig.persistBatchSize</em> which defaults to <code>20</code>.
+  The batch buffer size default value is set via <em>databaseConfig.persistBatchSize</em> which defaults to <code>20</code>.
   We can set the buffer size on the transaction via <code>transaction.setBatchSize()</code> or <code>@Transactional(batchSize)</code>.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
@@ -362,28 +362,28 @@
 </pre></div>
 </div>
 
-<h2 id="serverConfig">Configuration via ServerConfig</h2>
+<h2 id="databaseConfig">Configuration via DatabaseConfig</h2>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use JDBC batch by default</span>
-<span class="n">serverConfig</span><span class="o">.</span><span class="na">setPersistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setPersistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>
-  We can set <em>serverConfig.setPersistBatch(PersistBatch.ALL)</em> so that JDBC batch mode is the default
+  We can set <em>databaseConfig.setPersistBatch(PersistBatch.ALL)</em> so that JDBC batch mode is the default
   being used for all transactions.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// default batch size</span>
-<span class="n">serverConfig</span><span class="o">.</span><span class="na">setPersistBatchSize</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setPersistBatchSize</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>
-  We can change the global default batch size via <em>serverConfig.setPersistBatchSize()</em>. The default is
+  We can change the global default batch size via <em>databaseConfig.setPersistBatchSize()</em>. The default is
   otherwise set at 20.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// update all loaded properties or just dirty properties</span>
-<span class="n">serverConfig</span><span class="o">.</span><span class="na">setUpdateAllPropertiesInBatch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setUpdateAllPropertiesInBatch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>

@@ -207,7 +207,7 @@
 <span class="k">new</span> <span class="n">Country</span><span class="o">(</span><span class="s">&quot;NZ&quot;</span><span class="o">,</span> <span class="s">&quot;New Zealand&quot;</span><span class="o">).</span><span class="na">save</span><span class="o">();</span>
 
 <span class="c1">// reference bean (only has @Id property loaded)</span>
-<span class="n">Country</span> <span class="n">nzRefBean</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;NZ&quot;</span><span class="o">);</span>
+<span class="n">Country</span> <span class="n">nzRefBean</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">getReference</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">&quot;NZ&quot;</span><span class="o">);</span>
 
 <span class="c1">// reference bean using a &quot;finder&quot;</span>
 <span class="n">Country</span> <span class="n">nzRefBean</span> <span class="o">=</span> <span class="n">Country</span><span class="o">.</span><span class="na field">find</span><span class="o">.</span><span class="na">ref</span><span class="o">(</span><span class="s">&quot;NZ&quot;</span><span class="o">);</span>

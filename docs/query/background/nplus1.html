@@ -164,7 +164,7 @@
     If you want to change the lazy load batch size on a specific query you can set this via
     <code>Query.setLazyLoadBatchSize()</code>:
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
     <span class="c1">// set lazy loading batch size for this query</span>
     <span class="o">.</span><span class="na">setLazyLoadBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
     <span class="o">...</span>
@@ -176,7 +176,7 @@
   <p>
     If you want to change the lazy load batch size on a specific query you can set this via <code>FetchConfig</code>:
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 
   <span class="c1">// lazy fetch customer using batchSize of 10</span>
   <span class="o">.</span><span class="na">fetch</span><span class="o">(</span><span class="s">&quot;customer&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">FetchConfig</span><span class="o">().</span><span class="na">lazy</span><span class="o">(</span><span class="mi">10</span><span class="o">))</span>
@@ -194,7 +194,7 @@
     specify a batch size to use and if not specified the batch size defaults to 100.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orders</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
 
   <span class="c1">// specify some predicates</span>
   <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na field">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>

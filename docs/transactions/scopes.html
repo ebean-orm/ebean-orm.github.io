@@ -196,7 +196,7 @@
   We can specify other transaction scopes via <code>beginTransaction(TxScope)</code>.
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">(</span><span class="n">TxScope</span><span class="o">.</span><span class="na">requiresNew</span><span class="o">()))</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">(</span><span class="n">TxScope</span><span class="o">.</span><span class="na">requiresNew</span><span class="o">()))</span> <span class="o">{</span>
   <span class="c1">// using a new transaction ...</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
 <span class="o">}</span>

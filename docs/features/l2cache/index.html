@@ -129,7 +129,7 @@
   <h2 id="l2-l3">L2/local and L3/remote</h2>
   <p>
     L2 cache can thought of as having <code>Near Caches</code> and <code>Remote Caches</code> where
-    a "Near cache" is in the same process as the EbeanServer instance (and does not require a network
+    a "Near cache" is in the same process as the Ebean instance (and does not require a network
     access) and a "Remote cache" that requires a network access.
   </p>
 
@@ -300,14 +300,14 @@
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// clearAll() caches via the ServerCacheManager ...</span>
-<span class="n">ServerCacheManager</span> <span class="n">serverCacheManager</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">getServerCacheManager</span><span class="o">();</span>
+<span class="n">ServerCacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">cacheManager</span><span class="o">();</span>
 
 <span class="c1">// Clear all the caches on the default/primary EbeanServer</span>
-<span class="n">serverCacheManager</span><span class="o">.</span><span class="na">clearAll</span><span class="o">();</span>
+<span class="n">cacheManager</span><span class="o">.</span><span class="na">clearAll</span><span class="o">();</span>
 
 <span class="c1">// clear both the bean and query cache</span>
 <span class="c1">// for Country beans ...</span>
-<span class="n">serverCacheManager</span><span class="o">.</span><span class="na">clear</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">cacheManager</span><span class="o">.</span><span class="na">clear</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 </pre></div>
 </div>
 

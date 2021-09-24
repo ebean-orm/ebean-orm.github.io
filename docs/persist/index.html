@@ -275,7 +275,7 @@ procedure calls (if CallableSql doesn't do the business for you).</p>
   ...(under construction)... need to provide better guidance on how to determine batch mode, child batch mode, and batch size
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">ebeanServer</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
 <span class="k">try</span> <span class="o">{</span>
   <span class="c1">// turn of cascade persist</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setCascadePersist</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>

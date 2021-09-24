@@ -294,7 +294,7 @@
 
   <h2 id="on-startup">Generating migration on startup</h2>
   <p>
-    The DB migration can be generated when the EbeanServer instance is started by setting <code>ddl.migration.generate</code>
+    The DB migration can be generated when the Ebean instance is started by setting <code>ddl.migration.generate</code>
     system property or environment variable to true.
   </p>
 
@@ -306,9 +306,9 @@
   <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
   <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 
-  <span class="c1">// migration will be generated when EbeanServer instance starts</span>
+  <span class="c1">// migration will be generated when Ebean starts</span>
   <span class="c1">// ... typically by running your application.</span>
-  <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
+  <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -319,7 +319,7 @@
     In <code>src/test/java</code> add the following code with a <code>main method</code>.
   </p>
   <p>
-    Running this main method will generate the next migration and starts the EbeanServer
+    Running this main method will generate the next migration and starts Ebean
     in <code>offline mode</code>. This offline mode means we don't need to start the application
     or need a database to generate the migration.
   </p>
@@ -355,7 +355,7 @@
     <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
     <span class="c1">// generate the migration ddl and xml</span>
-    <span class="c1">// ... with EbeanServer in &quot;offline&quot; mode</span>
+    <span class="c1">// ... start in &quot;offline&quot; mode</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
   <span class="o">}</span>
 <span class="o">}</span>
@@ -369,7 +369,7 @@
   </p>
 
   <h4>Ebean's migration runner</h4>
-  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## run migrations when the EbeanServer starts</span>
+  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## run migrations when the Ebean starts</span>
 <span class="na">ebean.migration.run</span><span class="o">=</span><span class="s">true</span>
 
 <span class="c">## optionally specify different DB credentials</span>
@@ -379,7 +379,7 @@
 </pre></div>
 </div>
   <p>
-    With <code>ebean.migration.run=true</code> then when the EbeanServer starts it will look at the
+    With <code>ebean.migration.run=true</code> then when the Ebean starts it will look at the
     migrations and run any that need to be run.  The migration runner will by default create a table
     called <code>db_migration</code> that holds the meta data about the migrations that have been run
     and inserts into this table when migrations are successfully executed.

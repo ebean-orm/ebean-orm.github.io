@@ -171,12 +171,12 @@
 
 <p>Note that if want to totally change the finding, you need to use a BeanQueryAdapter rather than using postLoad().</p>
 
-<p>Note that getTransaction() on the PersistRequest returns the transaction used for the insert, update, delete or fetch. To explicitly use this same transaction you should use this transaction via methods on EbeanServer.</p>
+<p>Note that getTransaction() on the PersistRequest returns the transaction used for the insert, update, delete or fetch. To explicitly use this same transaction you should use this transaction via methods on database.</p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Object</span> <span class="n">extaBeanToSave</span> <span class="o">=</span> <span class="o">...;</span>
 <span class="n">Transaction</span> <span class="n">t</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">();</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getEbeanServer</span><span class="o">();</span>
-<span class="n">server</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">extraBeanToSave</span><span class="o">,</span> <span class="n">t</span><span class="o">);</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">database</span><span class="o">();</span>
+<span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">extraBeanToSave</span><span class="o">,</span> <span class="n">t</span><span class="o">);</span>
 </pre></div>
 </div>
 
