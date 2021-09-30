@@ -69,6 +69,35 @@
   <li class="nav1 ">
     <a  href="/docs/db-migrations">DB Migrations</a>
   </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/db-migrations/detail.html">DB Migrations details</a>
+    <ul class="nav nav-scroll">
+  <li >
+    <a  href="#migration-xml">Migration xml</a>
+  </li>
+  <li >
+    <a  href="#apply-ddl">Apply DDL</a>
+  </li>
+  <li >
+    <a  href="#apply-drops">Applying pending drops</a>
+  </li>
+  <li >
+    <a  href="#version-format">Version format</a>
+  </li>
+  <li >
+    <a  href="#version">Migration version and name</a>
+  </li>
+  <li >
+    <a  href="#programmatic">Generate offline</a>
+  </li>
+  <li >
+    <a  href="#running">Running migration</a>
+  </li>
+  <li >
+    <a  href="#repeatable">Repeatable migrations</a>
+  </li>
+    </ul>
+  </li>
 </ul>
   </li>
   <li class="nav1 ">
@@ -218,7 +247,7 @@
     If the customer table has @History support this could also add columns to the history table and
     update the associated db triggers.
   </p>
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
 <span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>
@@ -253,7 +282,7 @@
     This is the DDL script that you get FlywayDB or similar to run.
   </p>
 
-  <h2>Applying pending drops</h2>
+  <h2 id="apply-drops">Applying pending drops</h2>
   <div class="syntax text"><div class="highlight"><pre><span></span>INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions [1.2]
 </pre></div>
 </div>
@@ -263,14 +292,31 @@
     the pending drops as the next migration.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
 <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.pendingDropsFor&quot;</span><span class="o">,</span> <span class="s">&quot;1.2&quot;</span><span class="o">);</span>
 
-<span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DbMigration</span><span class="o">();</span>
-<span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">DbPlatformName</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
+<span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="n">DbMigration</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+<span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
 <span class="n">dbMigration</span><span class="o">.</span><span class="na">generateMigration</span><span class="o">();</span>
 </pre></div>
 </div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// generate a migration as the drops from migration version &quot;1.2&quot;</span>
+<span class="n">System</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&quot;ddl.migration.pendingDropsFor&quot;</span><span class="p">,</span> <span class="s">&quot;1.2&quot;</span><span class="p">)</span>
+
+<span class="n">DbMigration</span><span class="p">.</span><span class="n">create</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+  <span class="n">setPlatform</span><span class="p">(</span><span class="n">Platform</span><span class="p">.</span><span class="n">POSTGRES</span><span class="p">)</span>
+<span class="p">}.</span><span class="n">generateMigration</span><span class="p">()</span>
+</pre></div>
+</div>
+  </div>
+
   <p>
     A migration is then generated with <code>dropsFor</code> set to the version of the migration that
     had the pending drops that we want to apply.  Additionally the migration apply ddl contains the
@@ -322,10 +368,22 @@
     For a migration the developer needs to provide the <code>version</code> and <code>name</code>
     and these can be set via environment variables, system properties or ebean.properties or programmatically.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="o">,</span> <span class="s">&quot;1.1&quot;</span><span class="o">);</span>
 <span class="n">System</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="o">,</span> <span class="s">&quot;support end dating&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="n">System</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&quot;ddl.migration.version&quot;</span><span class="p">,</span> <span class="s">&quot;1.1&quot;</span><span class="p">)</span>
+<span class="n">System</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">&quot;ddl.migration.name&quot;</span><span class="p">,</span> <span class="s">&quot;support end dating&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+  </div>
 
   <h2 id="programmatic">Generate offline</h2>
   <p>
@@ -337,7 +395,12 @@
     in <code>offline mode</code>. This offline mode means we don't need to start the application
     or need a database to generate the migration.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+  <div class="code-java">
+    <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
 
 <span class="kn">import</span> <span class="nn">io.ebean.annotation.Platform</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">io.ebean.dbmigration.DbMigration</span><span class="o">;</span>
@@ -350,7 +413,6 @@
 <span class="cm">   */</span>
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
 
-
     <span class="n">DbMigration</span> <span class="n">dbMigration</span> <span class="o">=</span> <span class="n">DbMigration</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
     <span class="n">dbMigration</span><span class="o">.</span><span class="na">setPlatform</span><span class="o">(</span><span class="n">Platform</span><span class="o">.</span><span class="na">POSTGRES</span><span class="o">);</span>
 
@@ -359,6 +421,19 @@
 <span class="o">}</span>
 </pre></div>
 </div>
+  </div>
+  <div class="code-kt">
+    <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="nn">io.ebean.annotation.Platform</span>
+<span class="k">import</span> <span class="nn">io.ebean.dbmigration.DbMigration</span>
+
+<span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DbMigration</span><span class="p">.</span><span class="n">create</span><span class="p">().</span><span class="n">apply</span> <span class="p">{</span>
+    <span class="n">setPlatform</span><span class="p">(</span><span class="n">Platform</span><span class="p">.</span><span class="n">POSTGRES</span><span class="p">)</span>
+  <span class="p">}.</span><span class="n">generateMigration</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+  </div>
 
   <h2 id="running">Running migration</h2>
   <p>
