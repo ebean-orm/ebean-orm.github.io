@@ -317,8 +317,10 @@
     and as such we don't want to hold all the object graphs in memory.
   </p>
   <p>
-    For these streaming queries Ebean creates a new <code>PersistenceContext</code> when iteration
-    occurs and effectively the scope becomes per object graph.
+    For these streaming queries Ebean stores only weak references in <code>PersistenceContext</code>
+    when iteration occurs and the jvm's garbage collection can remove entites, that are no longer in scope.
+    This ensures that the object graph is consistent for all referenced entities and memory is freed for all other entities
+    that are not longer referenced.
   </p>
 
 
