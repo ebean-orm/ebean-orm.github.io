@@ -256,6 +256,47 @@ touch ~/.ebean/ignore-docker-shutdown
   <li>Current user and tenant provider if not already specified (to ease testing with @Who properties etc)</li>
 </ul>
 
+<h2 id="test-platform">ebean.test.platform - application-test.yaml</h2>
+<p>
+  We use <code>ebean.test.platform</code> to specify the database platform we want to use when running tests.
+  For example, we can specify <em>h2, postgres, mysql</em> etc as the platform to run the tests.
+</p>
+
+
+<h5>e.g. Testing against Postgres</h5>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span> <span class="c1"># h2, postgres, ...</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+
+<h5>e.g. Testing against MariaDB</h5>
+<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
+  <span class="nt">test</span><span class="p">:</span>
+    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mariadb</span>
+    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations | create</span>
+    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>
+</pre></div>
+</div>
+
+<p>
+  For more details on each database platform see: <br/>
+  <a href="/docs/database/clickhouse">clickhouse</a>
+  , <a href="/docs/database/cockroach">cockroach</a>
+  , <a href="/docs/database/db2">db2</a>
+  , <a href="/docs/database/h2">h2</a>
+  , <a href="/docs/database/hana">hana</a>
+  , <a href="/docs/database/mariadb">mariadb</a>
+  , <a href="/docs/database/mysql">mysql</a>
+  , <a href="/docs/database/nuodb">nuodb</a>
+  , <a href="/docs/database/oracle">oracle</a>
+  , <a href="/docs/database/postgres">postgres</a>
+  , <a href="/docs/database/sqlite">sqlite</a>
+  , <a href="/docs/database/sqlserver">sqlserver</a>
+</p>
+
 <h2 id="ddlmode">DDL Mode</h2>
 <p>
   Most of the time we use <code>dropCreate</code> mode which means that the database will
