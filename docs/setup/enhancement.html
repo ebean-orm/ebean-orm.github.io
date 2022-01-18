@@ -268,7 +268,7 @@
 
     <p>Eclipse can be configured to enhance the classes during build using maven configuration</p>
 
-      <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
+    <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
   <span class="nt">&lt;plugins&gt;</span>
     <span class="c">&lt;!-- plugins here --&gt;</span>
   <span class="nt">&lt;/plugins&gt;</span>
@@ -470,7 +470,7 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
     The code below loads the enhancer agent programmatically onto the running JVM.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
 <span class="o">...</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
   <span class="c1">// Load the agent into the running JVM process</span>
@@ -491,7 +491,7 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
     <li>Create a target that uses the AntEnhanceTask to enhance the entity classes.</li>
   </ol>
 
-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;taskdef</span>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;taskdef</span>
     <span class="na">name=</span><span class="s">&quot;ebeanEnhance&quot;</span>
     <span class="na">classname=</span><span class="s">&quot;io.ebean.enhance.ant.AntEnhanceTask&quot;</span>
     <span class="na">classpath=</span><span class="s">&quot;your_path_to/ebean-x.x.x.jar&quot;</span><span class="nt">/&gt;</span>

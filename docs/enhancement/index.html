@@ -489,10 +489,10 @@ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>
 <span class="o">...</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>
-<span class="c1">// Load the agent into the running JVM process</span>
-<span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model&quot;</span><span class="o">))</span> <span class="o">{</span>
-<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
-<span class="o">}</span>
+  <span class="c1">// Load the agent into the running JVM process</span>
+  <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model&quot;</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>

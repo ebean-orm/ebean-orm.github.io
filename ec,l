@@ -1,0 +1,694 @@
+[1mdiff --git a/architecture/persistence-context.html b/architecture/persistence-context.html[m
+[1mindex 52f025b4..699b4d9b 100644[m
+[1m--- a/architecture/persistence-context.html[m
+[1m+++ b/architecture/persistence-context.html[m
+[36m@@ -248,7 +248,7 @@[m
+   <p>[m
+     A more realistic example would be when the persistence context is used:[m
+   </p>[m
+[31m-    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>[m
+ <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>[m
+ [m
+ <span class="k">try</span> <span class="o">{</span>[m
+[1mdiff --git a/docs/architecture/persistence-context.html b/docs/architecture/persistence-context.html[m
+[1mindex 52f025b4..699b4d9b 100644[m
+[1m--- a/docs/architecture/persistence-context.html[m
+[1m+++ b/docs/architecture/persistence-context.html[m
+[36m@@ -248,7 +248,7 @@[m
+   <p>[m
+     A more realistic example would be when the persistence context is used:[m
+   </p>[m
+[31m-    <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a new persistence context started with the transaction</span>[m
+ <span class="n">Ebean</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>[m
+ [m
+ <span class="k">try</span> <span class="o">{</span>[m
+[1mdiff --git a/docs/enhancement/index.html b/docs/enhancement/index.html[m
+[1mindex e8cb7e66..c8389b04 100644[m
+[1m--- a/docs/enhancement/index.html[m
+[1m+++ b/docs/enhancement/index.html[m
+[36m@@ -232,20 +232,20 @@[m
+ [m
+ [m
+ <h5>ebean enhancement tile</h5>[m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>[m
+[31m-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-  <span class="nt">&lt;version&gt;</span>2.18<span class="nt">&lt;/version&gt;</span>[m
+[31m-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>[m
+[31m-  <span class="nt">&lt;configuration&gt;</span>[m
+[31m-    <span class="nt">&lt;tiles&gt;</span>[m
+[31m-      <span class="c">&lt;!-- other tiles ... --&gt;</span>[m
+[31m-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:12.12.1<span class="nt">&lt;/tile&gt;</span>[m
+[31m-    <span class="nt">&lt;/tiles&gt;</span>[m
+[31m-  <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-<span class="nt">&lt;/plugin&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```xml[m
+[32m+[m[32m<plugin>[m
+[32m+[m[32m  <groupId>io.repaint.maven</groupId>[m
+[32m+[m[32m  <artifactId>tiles-maven-plugin</artifactId>[m
+[32m+[m[32m  <version>2.18</version>[m
+[32m+[m[32m  <extensions>true</extensions>[m
+[32m+[m[32m  <configuration>[m
+[32m+[m[32m    <tiles>[m
+[32m+[m[32m      <!-- other tiles ... -->[m
+[32m+[m[32m      <tile>io.ebean.tile:enhancement:12.12.1</tile>[m
+[32m+[m[32m    </tiles>[m
+[32m+[m[32m  </configuration>[m
+[32m+[m[32m</plugin>[m
+[32m+[m[32m```[m
+ <p>[m
+   Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.[m
+ </p>[m
+[36m@@ -257,25 +257,25 @@[m
+   <a href="/docs/query/typesafe#enhancement">query bean enhancement</a>.[m
+ </p>[m
+ [m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>[m
+[31m-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>[m
+[31m-  <span class="nt">&lt;executions&gt;</span>[m
+[31m-    <span class="nt">&lt;execution&gt;</span>[m
+[31m-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>[m
+[31m-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>[m
+[31m-      <span class="nt">&lt;configuration&gt;</span>[m
+[31m-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>[m
+[31m-      <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-      <span class="nt">&lt;goals&gt;</span>[m
+[31m-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>[m
+[31m-      <span class="nt">&lt;/goals&gt;</span>[m
+[31m-    <span class="nt">&lt;/execution&gt;</span>[m
+[31m-  <span class="nt">&lt;/executions&gt;</span>[m
+[31m-<span class="nt">&lt;/plugin&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```xml[m
+[32m+[m[32m<plugin>[m
+[32m+[m[32m  <groupId>io.ebean</groupId>[m
+[32m+[m[32m  <artifactId>ebean-maven-plugin</artifactId>[m
+[32m+[m[32m  <version><span class='ebean-maven-plugin-version'>${version}</span></version>[m
+[32m+[m[32m  <executions>[m
+[32m+[m[32m    <execution>[m
+[32m+[m[32m      <id>main</id>[m
+[32m+[m[32m      <phase>process-classes</phase>[m
+[32m+[m[32m      <configuration>[m
+[32m+[m[32m        <transformArgs>debug=1</transformArgs>[m
+[32m+[m[32m      </configuration>[m
+[32m+[m[32m      <goals>[m
+[32m+[m[32m        <goal>enhance</goal>[m
+[32m+[m[32m      </goals>[m
+[32m+[m[32m    </execution>[m
+[32m+[m[32m  </executions>[m
+[32m+[m[32m</plugin>[m
+[32m+[m[32m```[m
+ [m
+ [m
+ [m
+[36m@@ -284,45 +284,45 @@[m
+ [m
+   <p>Eclipse can be configured to enhance the classes during build using maven configuration</p>[m
+ [m
+[31m-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>[m
+[31m-  <span class="nt">&lt;plugins&gt;</span>[m
+[31m-    <span class="c">&lt;!-- plugins here --&gt;</span>[m
+[31m-  <span class="nt">&lt;/plugins&gt;</span>[m
+[31m-  <span class="nt">&lt;pluginManagement&gt;</span>[m
+[31m-    <span class="nt">&lt;plugins&gt;</span>[m
+[31m-      <span class="c">&lt;!--This plugin&#39;s configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. --&gt;</span>[m
+[31m-      <span class="nt">&lt;plugin&gt;</span>[m
+[31m-        <span class="nt">&lt;groupId&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-        <span class="nt">&lt;artifactId&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>[m
+[31m-        <span class="nt">&lt;configuration&gt;</span>[m
+[31m-          <span class="nt">&lt;lifecycleMappingMetadata&gt;</span>[m
+[31m-            <span class="nt">&lt;pluginExecutions&gt;</span>[m
+[31m-              <span class="nt">&lt;pluginExecution&gt;</span>[m
+[31m-                <span class="nt">&lt;pluginExecutionFilter&gt;</span>[m
+[31m-                  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-                  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-                  <span class="nt">&lt;versionRange&gt;</span>[<span class='ebean-maven-plugin-version'>${version}</span>,)<span class="nt">&lt;/versionRange&gt;</span>[m
+[31m-                  <span class="nt">&lt;goals&gt;</span>[m
+[31m-                    <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>[m
+[31m-                  <span class="nt">&lt;/goals&gt;</span>[m
+[31m-                <span class="nt">&lt;/pluginExecutionFilter&gt;</span>[m
+[31m-                <span class="nt">&lt;action&gt;</span>[m
+[31m-                  <span class="nt">&lt;execute&gt;</span>[m
+[31m-                    <span class="nt">&lt;runOnConfiguration&gt;</span>true<span class="nt">&lt;/runOnConfiguration&gt;</span>[m
+[31m-                    <span class="nt">&lt;runOnIncremental&gt;</span>true<span class="nt">&lt;/runOnIncremental&gt;</span>[m
+[31m-                  <span class="nt">&lt;/execute&gt;</span>[m
+[31m-                <span class="nt">&lt;/action&gt;</span>[m
+[31m-              <span class="nt">&lt;/pluginExecution&gt;</span>[m
+[31m-            <span class="nt">&lt;/pluginExecutions&gt;</span>[m
+[31m-          <span class="nt">&lt;/lifecycleMappingMetadata&gt;</span>[m
+[31m-        <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-      <span class="nt">&lt;/plugin&gt;</span>[m
+[31m-    <span class="nt">&lt;/plugins&gt;</span>[m
+[31m-  <span class="nt">&lt;/pluginManagement&gt;</span>[m
+[31m-<span class="nt">&lt;/build&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```xml[m
+[32m+[m[32m  <build>[m
+[32m+[m[32m    <plugins>[m
+[32m+[m[32m      <!-- plugins here -->[m
+[32m+[m[32m    </plugins>[m
+[32m+[m[32m    <pluginManagement>[m
+[32m+[m[32m      <plugins>[m
+[32m+[m[32m        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->[m
+[32m+[m[32m        <plugin>[m
+[32m+[m[32m          <groupId>org.eclipse.m2e</groupId>[m
+[32m+[m[32m          <artifactId>lifecycle-mapping</artifactId>[m
+[32m+[m[32m          <version>1.0.0</version>[m
+[32m+[m[32m          <configuration>[m
+[32m+[m[32m            <lifecycleMappingMetadata>[m
+[32m+[m[32m              <pluginExecutions>[m
+[32m+[m[32m                <pluginExecution>[m
+[32m+[m[32m                  <pluginExecutionFilter>[m
+[32m+[m[32m                    <groupId>io.ebean</groupId>[m
+[32m+[m[32m                    <artifactId>ebean-maven-plugin</artifactId>[m
+[32m+[m[32m                    <versionRange>[<span class='ebean-maven-plugin-version'>${version}</span>,)</versionRange>[m
+[32m+[m[32m                    <goals>[m
+[32m+[m[32m                      <goal>enhance</goal>[m
+[32m+[m[32m                    </goals>[m
+[32m+[m[32m                  </pluginExecutionFilter>[m
+[32m+[m[32m                  <action>[m
+[32m+[m[32m                    <execute>[m
+[32m+[m[32m                      <runOnConfiguration>true</runOnConfiguration>[m
+[32m+[m[32m                      <runOnIncremental>true</runOnIncremental>[m
+[32m+[m[32m                    </execute>[m
+[32m+[m[32m                  </action>[m
+[32m+[m[32m                </pluginExecution>[m
+[32m+[m[32m              </pluginExecutions>[m
+[32m+[m[32m            </lifecycleMappingMetadata>[m
+[32m+[m[32m          </configuration>[m
+[32m+[m[32m        </plugin>[m
+[32m+[m[32m      </plugins>[m
+[32m+[m[32m    </pluginManagement>[m
+[32m+[m[32m  </build>[m
+[32m+[m[32m  ```[m
+ [m
+ </div>[m
+ [m
+[36m@@ -339,10 +339,10 @@[m
+   libraries from apache, google, testing etc.[m
+ </p>[m
+ [m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span>java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar MyApplication[m
+[32m+[m[32m```xml[m
+[32m+[m[32mjava -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar MyApplication[m
+ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar=debug=3 MyApplication[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```[m
+ [m
+ [m
+ <p>[m
+[36m@@ -489,10 +489,10 @@[m [mjava -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<[m
+ <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>[m
+ <span class="o">...</span>[m
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>[m
+[31m-<span class="c1">// Load the agent into the running JVM process</span>[m
+[31m-<span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model&quot;</span><span class="o">))</span> <span class="o">{</span>[m
+[31m-<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>[m
+[31m-<span class="o">}</span>[m
+[32m+[m[32m  <span class="c1">// Load the agent into the running JVM process</span>[m
+[32m+[m[32m  <span class="k">if</span> <span class="o">(!</span><span class="n">AgentLoader</span><span class="o">.</span><span class="na">loadAgentFromClasspath</span><span class="o">(</span><span class="s">&quot;ebean-agent&quot;</span><span class="o">,</span><span class="s">&quot;debug=1;packages=org.example.model&quot;</span><span class="o">))</span> <span class="o">{</span>[m
+[32m+[m[32m    <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;ebean-agent not found in classpath - not dynamically loaded&quot;</span><span class="o">);</span>[m
+[32m+[m[32m  <span class="o">}</span>[m
+ <span class="o">}</span>[m
+ </pre></div>[m
+ </div>[m
+[1mdiff --git a/docs/monitoring/index.html b/docs/monitoring/index.html[m
+[1mindex abfc64cb..01f970f0 100644[m
+[1m--- a/docs/monitoring/index.html[m
+[1m+++ b/docs/monitoring/index.html[m
+[36m@@ -123,7 +123,8 @@[m
+   <li>sql - include the sql for queries</li>[m
+ </ul>[m
+ [m
+[31m-<div class="syntax text"><div class="highlight"><pre><span></span>-- Dumping metrics for db --[m
+[32m+[m[32m```text[m
+[32m+[m[32m-- Dumping metrics for db --[m
+ txn.main                                        count:10       total:117459   mean:11745    max:32894[m
+ [m
+ -- ORM queries --[m
+[36m@@ -131,7 +132,7 @@[m [mquery:CustomerFinder.findByName                 count:1        total:4089     me[m
+ hash:8c314fa1f6dbecfcdd449ccd021c8980[m
+ loc:CustomerFinder.findByName(CustomerFinder.kt:17)[m
+ [m
+[31m-sql:select t0.id, t0.name from customer t0 where lower(t0.name) like ? escape&#39;|&#39;[m
+[32m+[m[32msql:select t0.id, t0.name from customer t0 where lower(t0.name) like ? escape'|'[m
+ [m
+ query:ProductFinder.findMapBySku                count:1        total:2364     mean:2364     max:2364[m
+ hash:aeda919cc69bea1026543d5307276eeb[m
+[36m@@ -140,8 +141,7 @@[m [mloc:ProductFinder.findMapBySku(ProductFinder.kt:12)[m
+ sql:select t0.id, t0.sku, t0.name, t0.version, t0.when_created, t0.when_modified from product t0[m
+ [m
+ ...[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```[m
+ [m
+ <h2>Metrics</h2>[m
+ <p>[m
+[1mdiff --git a/docs/setup/activerecord.html b/docs/setup/activerecord.html[m
+[1mindex d0c933c1..18240e21 100644[m
+[1m--- a/docs/setup/activerecord.html[m
+[1m+++ b/docs/setup/activerecord.html[m
+[36m@@ -204,7 +204,7 @@[m
+ [m
+ [m
+   <h4>Example: extend Model</h4>[m
+[31m-<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/**</span>[m
+ <span class="cm"> * Extend Model to get the save(), delete() etc</span>[m
+ <span class="cm"> * methods on the bean itself (active record style).</span>[m
+ <span class="cm"> */</span>[m
+[36m@@ -222,6 +222,8 @@[m
+   <span class="n">String</span> <span class="n">comments</span><span class="o">;</span>[m
+ [m
+   <span class="o">...</span>[m
+[32m+[m
+[32m+[m[41m  [m
+ </pre></div>[m
+ </div>[m
+ [m
+[1mdiff --git a/docs/setup/dbmigration.html b/docs/setup/dbmigration.html[m
+[1mindex 75cf0d43..81799970 100644[m
+[1m--- a/docs/setup/dbmigration.html[m
+[1m+++ b/docs/setup/dbmigration.html[m
+[36m@@ -180,30 +180,30 @@[m
+     If the customer table has @History support this could also add columns to the history table and[m
+     update the associated db triggers.[m
+   </p>[m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>[m
+[31m-<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>[m
+[31m-  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;apply&quot;</span><span class="nt">&gt;</span>[m
+[31m-    <span class="nt">&lt;addColumn</span> <span class="na">tableName=</span><span class="s">&quot;customer&quot;</span><span class="nt">&gt;</span>[m
+[31m-      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;registered&quot;</span> <span class="na">type=</span><span class="s">&quot;date&quot;</span><span class="nt">/&gt;</span>[m
+[31m-      <span class="nt">&lt;column</span> <span class="na">name=</span><span class="s">&quot;comments&quot;</span> <span class="na">type=</span><span class="s">&quot;varchar(1000)&quot;</span><span class="nt">/&gt;</span>[m
+[31m-    <span class="nt">&lt;/addColumn&gt;</span>[m
+[31m-  <span class="nt">&lt;/changeSet&gt;</span>[m
+[31m-<span class="nt">&lt;/migration&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```xml[m
+[32m+[m[32m  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>[m
+[32m+[m[32m  <migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">[m
+[32m+[m[32m    <changeSet type="apply">[m
+[32m+[m[32m      <addColumn tableName="customer">[m
+[32m+[m[32m        <column name="registered" type="date"/>[m
+[32m+[m[32m        <column name="comments" type="varchar(1000)"/>[m
+[32m+[m[32m      </addColumn>[m
+[32m+[m[32m    </changeSet>[m
+[32m+[m[32m  </migration>[m
+[32m+[m[32m```[m
+ [m
+   <h4>Example migration with pendingDrops</h4>[m
+   <p>[m
+     Below is an example migration xml generated with <code>pendingDrops</code> changes.[m
+   </p>[m
+[31m-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>[m
+[31m-<span class="nt">&lt;migration</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/dbmigration&quot;</span><span class="nt">&gt;</span>[m
+[31m-  <span class="nt">&lt;changeSet</span> <span class="na">type=</span><span class="s">&quot;pendingDrops&quot;</span><span class="nt">&gt;</span>[m
+[31m-    <span class="nt">&lt;dropColumn</span> <span class="na">columnName=</span><span class="s">&quot;shortTitle&quot;</span> <span class="na">tableName=</span><span class="s">&quot;document&quot;</span> <span class="na">withHistory=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>[m
+[31m-  <span class="nt">&lt;/changeSet&gt;</span>[m
+[31m-<span class="nt">&lt;/migration&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```xml[m
+[32m+[m[32m  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>[m
+[32m+[m[32m  <migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">[m
+[32m+[m[32m    <changeSet type="pendingDrops">[m
+[32m+[m[32m      <dropColumn columnName="shortTitle" tableName="document" withHistory="true"/>[m
+[32m+[m[32m    </changeSet>[m
+[32m+[m[32m  </migration>[m
+[32m+[m[32m  ```[m
+   <p>[m
+     Pending drop changes are not incorporated into the apply DDL script unless they are explicitly selected.[m
+     Once pending drops are applied they drop off the 'pending drops' list.[m
+[36m@@ -217,9 +217,9 @@[m
+ [m
+   <h2>Applying pending drops</h2>[m
+ [m
+[31m-  <div class="syntax text"><div class="highlight"><pre><span></span>INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions [1.2][m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```text[m
+[32m+[m[32m  INFO  c.a.ebean.dbmigration.DbMigration - Pending un-applied drops in versions [1.2][m
+[32m+[m[32m  ```[m
+ [m
+   <p>[m
+     The DB migration will log <code>INFO</code> level messages saying which migrations contain[m
+[1mdiff --git a/docs/setup/enhancement.html b/docs/setup/enhancement.html[m
+[1mindex 118efca3..f1cfa60a 100644[m
+[1m--- a/docs/setup/enhancement.html[m
+[1m+++ b/docs/setup/enhancement.html[m
+[36m@@ -216,20 +216,20 @@[m
+ [m
+ [m
+   <h5>ebean enhancement tile</h5>[m
+[31m-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>[m
+[31m-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-  <span class="nt">&lt;version&gt;</span>2.18<span class="nt">&lt;/version&gt;</span>[m
+[31m-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>[m
+[31m-  <span class="nt">&lt;configuration&gt;</span>[m
+[31m-    <span class="nt">&lt;tiles&gt;</span>[m
+[31m-      <span class="c">&lt;!-- other tiles ... --&gt;</span>[m
+[31m-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:12.12.1<span class="nt">&lt;/tile&gt;</span>[m
+[31m-    <span class="nt">&lt;/tiles&gt;</span>[m
+[31m-  <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-<span class="nt">&lt;/plugin&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```xml[m
+[32m+[m[32m  <plugin>[m
+[32m+[m[32m    <groupId>io.repaint.maven</groupId>[m
+[32m+[m[32m    <artifactId>tiles-maven-plugin</artifactId>[m
+[32m+[m[32m    <version>2.18</version>[m
+[32m+[m[32m    <extensions>true</extensions>[m
+[32m+[m[32m    <configuration>[m
+[32m+[m[32m      <tiles>[m
+[32m+[m[32m        <!-- other tiles ... -->[m
+[32m+[m[32m        <tile>io.ebean.tile:enhancement:12.12.1</tile>[m
+[32m+[m[32m      </tiles>[m
+[32m+[m[32m    </configuration>[m
+[32m+[m[32m  </plugin>[m
+[32m+[m[32m  ```[m
+   <p>[m
+     Use <code>mvn help:effective-pom</code> to view the plugins that the tile brings in.[m
+   </p>[m
+[36m@@ -241,25 +241,25 @@[m
+     <a href="/docs/query/typesafe#enhancement">query bean enhancement</a>.[m
+   </p>[m
+ [m
+[31m-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>[m
+[31m-  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-  <span class="nt">&lt;version&gt;</span><span class='ebean-maven-plugin-version'>${version}</span><span class="nt">&lt;/version&gt;</span>[m
+[31m-  <span class="nt">&lt;executions&gt;</span>[m
+[31m-    <span class="nt">&lt;execution&gt;</span>[m
+[31m-      <span class="nt">&lt;id&gt;</span>main<span class="nt">&lt;/id&gt;</span>[m
+[31m-      <span class="nt">&lt;phase&gt;</span>process-classes<span class="nt">&lt;/phase&gt;</span>[m
+[31m-      <span class="nt">&lt;configuration&gt;</span>[m
+[31m-        <span class="nt">&lt;transformArgs&gt;</span>debug=1<span class="nt">&lt;/transformArgs&gt;</span>[m
+[31m-      <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-      <span class="nt">&lt;goals&gt;</span>[m
+[31m-        <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>[m
+[31m-      <span class="nt">&lt;/goals&gt;</span>[m
+[31m-    <span class="nt">&lt;/execution&gt;</span>[m
+[31m-  <span class="nt">&lt;/executions&gt;</span>[m
+[31m-<span class="nt">&lt;/plugin&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```xml[m
+[32m+[m[32m  <plugin>[m
+[32m+[m[32m    <groupId>io.ebean</groupId>[m
+[32m+[m[32m    <artifactId>ebean-maven-plugin</artifactId>[m
+[32m+[m[32m    <version><span class='ebean-maven-plugin-version'>${version}</span></version>[m
+[32m+[m[32m    <executions>[m
+[32m+[m[32m      <execution>[m
+[32m+[m[32m        <id>main</id>[m
+[32m+[m[32m        <phase>process-classes</phase>[m
+[32m+[m[32m        <configuration>[m
+[32m+[m[32m          <transformArgs>debug=1</transformArgs>[m
+[32m+[m[32m        </configuration>[m
+[32m+[m[32m        <goals>[m
+[32m+[m[32m          <goal>enhance</goal>[m
+[32m+[m[32m        </goals>[m
+[32m+[m[32m      </execution>[m
+[32m+[m[32m    </executions>[m
+[32m+[m[32m  </plugin>[m
+[32m+[m[32m  ```[m
+ [m
+ [m
+ [m
+[36m@@ -268,45 +268,45 @@[m
+ [m
+     <p>Eclipse can be configured to enhance the classes during build using maven configuration</p>[m
+ [m
+[31m-      <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>[m
+[31m-  <span class="nt">&lt;plugins&gt;</span>[m
+[31m-    <span class="c">&lt;!-- plugins here --&gt;</span>[m
+[31m-  <span class="nt">&lt;/plugins&gt;</span>[m
+[31m-  <span class="nt">&lt;pluginManagement&gt;</span>[m
+[31m-    <span class="nt">&lt;plugins&gt;</span>[m
+[31m-      <span class="c">&lt;!--This plugin&#39;s configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. --&gt;</span>[m
+[31m-      <span class="nt">&lt;plugin&gt;</span>[m
+[31m-        <span class="nt">&lt;groupId&gt;</span>org.eclipse.m2e<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-        <span class="nt">&lt;artifactId&gt;</span>lifecycle-mapping<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-        <span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>[m
+[31m-        <span class="nt">&lt;configuration&gt;</span>[m
+[31m-          <span class="nt">&lt;lifecycleMappingMetadata&gt;</span>[m
+[31m-            <span class="nt">&lt;pluginExecutions&gt;</span>[m
+[31m-              <span class="nt">&lt;pluginExecution&gt;</span>[m
+[31m-                <span class="nt">&lt;pluginExecutionFilter&gt;</span>[m
+[31m-                  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>[m
+[31m-                  <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>[m
+[31m-                  <span class="nt">&lt;versionRange&gt;</span>[<span class='ebean-maven-plugin-version'>${version}</span>,)<span class="nt">&lt;/versionRange&gt;</span>[m
+[31m-                  <span class="nt">&lt;goals&gt;</span>[m
+[31m-                    <span class="nt">&lt;goal&gt;</span>enhance<span class="nt">&lt;/goal&gt;</span>[m
+[31m-                  <span class="nt">&lt;/goals&gt;</span>[m
+[31m-                <span class="nt">&lt;/pluginExecutionFilter&gt;</span>[m
+[31m-                <span class="nt">&lt;action&gt;</span>[m
+[31m-                  <span class="nt">&lt;execute&gt;</span>[m
+[31m-                    <span class="nt">&lt;runOnConfiguration&gt;</span>true<span class="nt">&lt;/runOnConfiguration&gt;</span>[m
+[31m-                    <span class="nt">&lt;runOnIncremental&gt;</span>true<span class="nt">&lt;/runOnIncremental&gt;</span>[m
+[31m-                  <span class="nt">&lt;/execute&gt;</span>[m
+[31m-                <span class="nt">&lt;/action&gt;</span>[m
+[31m-              <span class="nt">&lt;/pluginExecution&gt;</span>[m
+[31m-            <span class="nt">&lt;/pluginExecutions&gt;</span>[m
+[31m-          <span class="nt">&lt;/lifecycleMappingMetadata&gt;</span>[m
+[31m-        <span class="nt">&lt;/configuration&gt;</span>[m
+[31m-      <span class="nt">&lt;/plugin&gt;</span>[m
+[31m-    <span class="nt">&lt;/plugins&gt;</span>[m
+[31m-  <span class="nt">&lt;/pluginManagement&gt;</span>[m
+[31m-<span class="nt">&lt;/build&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m      ```xml[m
+[32m+[m[32m      <build>[m
+[32m+[m[32m        <plugins>[m
+[32m+[m[32m          <!-- plugins here -->[m
+[32m+[m[32m        </plugins>[m
+[32m+[m[32m        <pluginManagement>[m
+[32m+[m[32m          <plugins>[m
+[32m+[m[32m            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->[m
+[32m+[m[32m            <plugin>[m
+[32m+[m[32m              <groupId>org.eclipse.m2e</groupId>[m
+[32m+[m[32m              <artifactId>lifecycle-mapping</artifactId>[m
+[32m+[m[32m              <version>1.0.0</version>[m
+[32m+[m[32m              <configuration>[m
+[32m+[m[32m                <lifecycleMappingMetadata>[m
+[32m+[m[32m                  <pluginExecutions>[m
+[32m+[m[32m                    <pluginExecution>[m
+[32m+[m[32m                      <pluginExecutionFilter>[m
+[32m+[m[32m                        <groupId>io.ebean</groupId>[m
+[32m+[m[32m                        <artifactId>ebean-maven-plugin</artifactId>[m
+[32m+[m[32m                        <versionRange>[<span class='ebean-maven-plugin-version'>${version}</span>,)</versionRange>[m
+[32m+[m[32m                        <goals>[m
+[32m+[m[32m                          <goal>enhance</goal>[m
+[32m+[m[32m                        </goals>[m
+[32m+[m[32m                      </pluginExecutionFilter>[m
+[32m+[m[32m                      <action>[m
+[32m+[m[32m                        <execute>[m
+[32m+[m[32m                          <runOnConfiguration>true</runOnConfiguration>[m
+[32m+[m[32m                          <runOnIncremental>true</runOnIncremental>[m
+[32m+[m[32m                        </execute>[m
+[32m+[m[32m                      </action>[m
+[32m+[m[32m                    </pluginExecution>[m
+[32m+[m[32m                  </pluginExecutions>[m
+[32m+[m[32m                </lifecycleMappingMetadata>[m
+[32m+[m[32m              </configuration>[m
+[32m+[m[32m            </plugin>[m
+[32m+[m[32m          </plugins>[m
+[32m+[m[32m        </pluginManagement>[m
+[32m+[m[32m      </build>[m
+[32m+[m[32m      ```[m
+ [m
+   </div>[m
+ [m
+[36m@@ -323,10 +323,10 @@[m
+     libraries from apache, google, testing etc.[m
+   </p>[m
+ [m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span>java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar MyApplication[m
+[32m+[m[32m```xml[m
+[32m+[m[32mjava -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar MyApplication[m
+ java -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}</span>.jar=debug=3 MyApplication[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```[m
+ [m
+ [m
+   <p>[m
+[36m@@ -470,7 +470,7 @@[m [mjava -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<[m
+     The code below loads the enhancer agent programmatically onto the running JVM.[m
+   </p>[m
+ [m
+[31m-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>[m
+[32m+[m[32m<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">org.avaje.agentloader</span><span class="o">;</span>[m
+ <span class="o">...</span>[m
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">someApplicationBootupMethod</span><span class="o">()</span> <span class="o">{</span>[m
+   <span class="c1">// Load the agent into the running JVM process</span>[m
+[36m@@ -491,24 +491,24 @@[m [mjava -javaagent:ebean-agent-<span class='ebean-maven-plugin-version'>${version}<[m
+     <li>Create a target that uses the AntEnhanceTask to enhance the entity classes.</li>[m
+   </ol>[m
+ [m
+[31m-  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;taskdef</span>[m
+[31m-    <span class="na">name=</span><span class="s">&quot;ebeanEnhance&quot;</span>[m
+[31m-    <span class="na">classname=</span><span class="s">&quot;io.ebean.enhance.ant.AntEnhanceTask&quot;</span>[m
+[31m-    <span class="na">classpath=</span><span class="s">&quot;your_path_to/ebean-x.x.x.jar&quot;</span><span class="nt">/&gt;</span>[m
+[31m-[m
+[31m-<span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;ormEnhance&quot;</span> <span class="na">depends=</span><span class="s">&quot;clean,compile&quot;</span><span class="nt">&gt;</span>[m
+[31m-  <span class="c">&lt;!--</span>[m
+[31m-<span class="c">  classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.</span>[m
+[31m-[m
+[31m-<span class="c">  packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .</span>[m
+[31m-<span class="c">  --&gt;</span>[m
+[31m-  <span class="nt">&lt;ebeanEnhance</span>[m
+[31m-      <span class="na">classSource=</span><span class="s">&quot;your_classes_directory&quot;</span>[m
+[31m-      <span class="na">packages=</span><span class="s">&quot;app.domain.*&quot;</span>[m
+[31m-      <span class="na">transformArgs=</span><span class="s">&quot;debug=1&quot;</span><span class="nt">/&gt;</span>[m
+[31m-<span class="nt">&lt;/target&gt;</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m  ```xml[m
+[32m+[m[32m  <taskdef[m
+[32m+[m[32m      name="ebeanEnhance"[m
+[32m+[m[32m      classname="io.ebean.enhance.ant.AntEnhanceTask"[m
+[32m+[m[32m      classpath="your_path_to/ebean-x.x.x.jar"/>[m
+[32m+[m
+[32m+[m[32m  <target name="ormEnhance" depends="clean,compile">[m
+[32m+[m[32m    <!--[m
+[32m+[m[32m    classSource: This is the directory that contains your class files. That is, the directory where your IDE will compile your java class files to, or the directory where a previous ant task will compile your java class files to.[m
+[32m+[m
+[32m+[m[32m    packages: a comma delimited list of packages that contain entity classes. All the classes in these packages are searched for entity classes to be enhanced. transformArgs: This contains a debug level (0 - 10) .[m
+[32m+[m[32m    -->[m
+[32m+[m[32m    <ebeanEnhance[m
+[32m+[m[32m        classSource="your_classes_directory"[m
+[32m+[m[32m        packages="app.domain.*"[m
+[32m+[m[32m        transformArgs="debug=1"/>[m
+[32m+[m[32m  </target>[m
+[32m+[m[32m  ```[m
+ [m
+ <div style="display: none">[m
+   <h2>Programmatic enhancement</h2>[m
+[1mdiff --git a/docs/setup/guice.html b/docs/setup/guice.html[m
+[1mindex 1aad954a..aa5515c5 100644[m
+[1m--- a/docs/setup/guice.html[m
+[1m+++ b/docs/setup/guice.html[m
+[36m@@ -82,7 +82,7 @@[m
+     Example provider implementation using <code>DatabaseConfig</code> and <code>DatabaseFactory</code>.[m
+   </p>[m
+ [m
+[31m-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>[m
+ <span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>[m
+ <span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>[m
+ [m
+[36m@@ -110,7 +110,7 @@[m
+     Example provider implementation using <code>Ebean</code> that implicitly creates the[m
+     <code>default</code> EbeanServer using ebean.properties.[m
+   </p>[m
+[31m-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>[m
+ <span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>[m
+ <span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>[m
+ [m
+[36m@@ -130,7 +130,7 @@[m
+       In the Guice module bind the provider using eager singleton so that the EbeanServer is[m
+       created eagerly at startup.[m
+     </p>[m
+[31m-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// bind the provider as eager singleton</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// bind the provider as eager singleton</span>[m
+ <span class="n">bind</span><span class="o">(</span><span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">toProvider</span><span class="o">(</span><span class="n">EbeanServerProvider</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">asEagerSingleton</span><span class="o">()</span>[m
+ </pre></div>[m
+ </div>[m
+[1mdiff --git a/docs/setup/spring.html b/docs/setup/spring.html[m
+[1mindex b4263ebd..f05e94fa 100644[m
+[1m--- a/docs/setup/spring.html[m
+[1m+++ b/docs/setup/spring.html[m
+[36m@@ -75,7 +75,7 @@[m
+   <h2 id="spring-boot">Spring boot</h2>[m
+   <p>[m
+     Ebean is now aware of Spring boot runnable jar structure (for scanning the classpath). There is an[m
+[31m-    <a href="https://github.com/ebean-orm/example-springboot">example application<a/> showing:[m
+[32m+[m[32m    <a href="https://github.com/ebean-orm/example-springboot">example application</a> showing:[m
+   </p>[m
+   <ul>[m
+     <li><a href="https://github.com/ebean-orm/example-springboot/blob/master/src/main/java/org/example/sboot/service/EbeanFactoryBean.java">Factory Bean (programmatic configuration of EbeanServer)</a></li>[m
+[1mdiff --git a/docs/setup/test-properties.html b/docs/setup/test-properties.html[m
+[1mindex 08c95e8d..c16cca5b 100644[m
+[1m--- a/docs/setup/test-properties.html[m
+[1m+++ b/docs/setup/test-properties.html[m
+[36m@@ -88,17 +88,17 @@[m
+   </p>[m
+ [m
+   <h3>Example test-ebean.properties</h3>[m
+[31m-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="c">## Create DB from scratch prior to running tests</span>[m
+[31m-<span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>[m
+[31m-<span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>[m
+[31m-[m
+[31m-<span class="c">## Use H2 when running tests</span>[m
+[31m-<span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>[m
+[31m-<span class="na">datasource.db.password</span><span class="o">=</span>[m
+[31m-<span class="na">datasource.db.databaseUrl</span><span class="o">=</span><span class="s">jdbc:h2:mem:tests</span>[m
+[31m-<span class="na">datasource.db.databaseDriver</span><span class="o">=</span><span class="s">org.h2.Driver</span>[m
+[31m-</pre></div>[m
+[31m-</div>[m
+[32m+[m[32m```properties[m
+[32m+[m[32m  ## Create DB from scratch prior to running tests[m
+[32m+[m[32m  ebean.db.ddl.generate=true[m
+[32m+[m[32m  ebean.db.ddl.run=true[m
+[32m+[m
+[32m+[m[32m  ## Use H2 when running tests[m
+[32m+[m[32m  datasource.db.username=sa[m
+[32m+[m[32m  datasource.db.password=[m
+[32m+[m[32m  datasource.db.databaseUrl=jdbc:h2:mem:tests[m
+[32m+[m[32m  datasource.db.databaseDriver=org.h2.Driver[m
+[32m+[m[32m```[m
+ [m
+   <h3>Programmatic - loadTestProperties()</h3>[m
+   <p>[m
+[1mdiff --git a/docs/setup/testing.html b/docs/setup/testing.html[m
+[1mindex b9238d20..ddf45701 100644[m
+[1m--- a/docs/setup/testing.html[m
+[1m+++ b/docs/setup/testing.html[m
+[36m@@ -110,7 +110,7 @@[m
+ </div>[m
+ [m
+   <h3>Example test-ebean.properties</h3>[m
+[31m-<div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>[m
+[32m+[m[32m  <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.db.ddl.generate</span><span class="o">=</span><span class="s">true</span>[m
+ <span class="na">ebean.db.ddl.run</span><span class="o">=</span><span class="s">true</span>[m
+ [m
+ <span class="na">datasource.db.username</span><span class="o">=</span><span class="s">sa</span>[m
+[36m@@ -132,7 +132,7 @@[m [mMocking with Ebean singleton[m
+ replacing the default EbeanServer instance with a mock.[m
+ </p>[m
+ [m
+[31m-<div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>[m
+[32m+[m[32m  <div class="syntax java"><div class="highlight"><pre><span></span><span class="o">...</span>[m
+ <span class="kn">import</span> <span class="nn">io.ebeaninternal.server.core.DefaultServer</span><span class="o">;</span>[m
+ <span class="o">...</span>[m
+ [m
+[36m@@ -176,10 +176,12 @@[m [mreplacing the default EbeanServer instance with a mock.[m
+     <span class="n">EbeanServer</span> <span class="n">restoredServer</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>[m
+     <span class="n">assertTrue</span><span class="o">(</span><span class="s">&quot;is a real EbeanServer&quot;</span><span class="o">,</span> <span class="n">restoredServer</span> <span class="k">instanceof</span> <span class="n">DefaultServer</span><span class="o">);</span>[m
+   <span class="o">}</span>[m
+[32m+[m
+[32m+[m[41m  [m
+ </pre></div>[m
+ </div>[m
+ <h4>MockiEbean Maven dependency</h4>[m
+[31m-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>[m
+[32m+[m[32m  <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>[m
+   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>[m
+   <span class="nt">&lt;artifactId&gt;</span>ebean-mocker<span class="nt">&lt;/artifactId&gt;</span>[m
+   <span class="nt">&lt;version&gt;</span>12.12.1<span class="nt">&lt;/version&gt;</span>[m

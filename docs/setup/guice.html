@@ -82,7 +82,7 @@
     Example provider implementation using <code>DatabaseConfig</code> and <code>DatabaseFactory</code>.
   </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>
 
@@ -110,7 +110,7 @@
     Example provider implementation using <code>Ebean</code> that implicitly creates the
     <code>default</code> EbeanServer using ebean.properties.
   </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.Ebean</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">io.ebean.EbeanServer</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">com.google.inject.Provider</span><span class="o">;</span>
 
@@ -130,7 +130,7 @@
       In the Guice module bind the provider using eager singleton so that the EbeanServer is
       created eagerly at startup.
     </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// bind the provider as eager singleton</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// bind the provider as eager singleton</span>
 <span class="n">bind</span><span class="o">(</span><span class="n">EbeanServer</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">toProvider</span><span class="o">(</span><span class="n">EbeanServerProvider</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">asEagerSingleton</span><span class="o">()</span>
 </pre></div>
 </div>
