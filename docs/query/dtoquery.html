@@ -268,6 +268,44 @@
   is a desire to only map some of the columns into bean properties.
 </p>
 
+<h2 id="any" class="art">Postgres ANY</h2>
+<p>
+  When using Postgres we can use Postgres <code>ANY</code> in DtoQuery using positioned parameters
+  or by using <code>setArrayParameter()</code>.
+</p>
+<p>
+  The benefit of using Postgres <code>ANY</code> is that we end up using a single SQL query regardless of the number
+  of parameters - a single JDBC PreparedStatement and the database has a single SQL query to parse. This results in
+  the database doing less hard parsing and better use of PreparedStatement cache, less query plans to cache, less memory consumed.
+</p>
+
+<h5>Example: Positioned parameter</h5>
+<p>
+  When using index positioned parameters and binding a collection that will bind as a JDBC ARRAY.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">ids</span> <span class="o">=</span> <span class="n">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+<span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from customer where id = any(?)&quot;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">ids</span><span class="o">)</span> <span class="c1">// bind as JDBC ARRAY</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+<h5>Example: Using setArrayParameter() for named parameters</h5>
+<p>
+  When using named parameters by default Ebean expects use of an <code>IN</code> clause and collections are "expanded".
+  For example, a collection of 3 values is expanded into 3 separate JDBC bind values <code>?,?,?</code> rather than JDBC binding a single ARRAY.
+  To bind collections as a Postgres ARRAY for an <code>ANY</code> clause we need to use <code>setArrayParameter()</code>.
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">ids</span> <span class="o">=</span> <span class="n">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span>
+<span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from o_customer where id = any(:idList)&quot;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">CustomerDto</span><span class="o">&gt;</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">findDto</span><span class="o">(</span><span class="n">CustomerDto</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">sql</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">setArrayParameter</span><span class="o">(</span><span class="s">&quot;idList&quot;</span><span class="o">,</span> <span class="n">ids</span><span class="o">)</span> <span class="c1">// bind as JDBC ARRAY</span>
+  <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
 <h2 id="findEach" class="art">findEach</h2>
 <p>
   We use <em>findEach</em> when processing a large query where we do not wish to hold
