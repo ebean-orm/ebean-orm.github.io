@@ -112,8 +112,8 @@
   Ebean to use another implementation.
 </p>
 <p>
-  Properties encrypted with client/application encryption can <b>NOT</b> be used in <code>where</code>
-  and <code>order by</code> clause.
+  Properties encrypted with client/application encryption should <b>ONLY</b> be used with <b>EQ (equal to)</b> operator
+  in <code>where</code> clauses - other operators should not be used with client side encrypted properties.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">io.ebean.config</span><span class="o">;</span>
 
