@@ -290,7 +290,7 @@ procedure calls (if CallableSql doesn't do the business for you).</p>
 
   <span class="c1">// for a large batch insert if you want to skip</span>
   <span class="c1">// getting the generated keys</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
   <span class="c1">// for batch processing via raw SQL you can inform</span>
   <span class="c1">// Ebean what tables were modified so that it can</span>

@@ -63,8 +63,8 @@
       <li><a href="#batchSize">Batch size</a></li>
       <li><a href="#generatedKeys">GetGeneratedKeys()</a></li>
       <li><a href="#flush">Flush</a></li>
-      <li><a href="#flushOnQuery">setBatchFlushOnQuery()</a></li>
-      <li><a href="#flushOnMixed">setBatchFlushOnMixed()</a></li>
+      <li><a href="#flushOnQuery">setFlushOnQuery()</a></li>
+      <li><a href="#flushOnMixed">setFlushOnMixed()</a></li>
       <li><a href="#flushOnGetter">Flush on getter/setter</a></li>
       <li><a href="#flushExplicit">Explicit flush()</a></li>
       <li><a href="#serverConfig">Configuration via ServerConfig</a></li>
@@ -224,7 +224,7 @@
   can turn off getting the generated keys for a performance benefit.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// don&#39;t bother getting back the generated keys</span>
-<span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="n">transaction</span><span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>
@@ -236,7 +236,7 @@
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
 
   <span class="c1">// turn off GetGeneratedKeys as we don&#39;t need the keys</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setGetGeneratedKeys</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
   <span class="c1">// maybe even turn off persist cascade ...</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setPersistCascade</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
@@ -256,20 +256,20 @@
 </p>
 <ul>
   <li>A buffer hits the batch size</li>
-  <li>We execute a query - depending on setBatchFlushOnQuery()</li>
-  <li>We mix SqlUpdate, CallableSql with bean persisting - depending on setBatchFlushOnMixed()</li>
+  <li>We execute a query - depending on setFlushOnQuery()</li>
+  <li>We mix SqlUpdate, CallableSql with bean persisting - depending on setFlushOnMixed()</li>
   <li>We call a getter or setter on a bean property that is already batched e.g. bean.getId()</li>
   <li>We explicitly call flush()</li>
 </ul>
 
-<h2 id="flushOnQuery">setBatchFlushOnQuery()</h2>
+<h2 id="flushOnQuery">setFlushOnQuery()</h2>
 <p>
-  Set <code>setBatchFlushOnQuery(false)</code> on a transaction when we want to execute a query
+  Set <code>setFlushOnQuery(false)</code> on a transaction when we want to execute a query
   but don't want that to trigger a flush.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchFlushOnQuery</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setFlushOnQuery</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
   <span class="c1">// these go to batch buffer</span>
   <span class="n">aBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
@@ -286,14 +286,14 @@
 </pre></div>
 </div>
 
-<h2 id="flushOnMixed">setBatchFlushOnMixed()</h2>
+<h2 id="flushOnMixed">setFlushOnMixed()</h2>
 <p>
-  We set <em>setBatchFlushOnMixed(false)</em> on a transaction when we want to execute a SqlUpdate
+  We set <em>setFlushOnMixed(false)</em> on a transaction when we want to execute a SqlUpdate
   or CallableSql mixed with bean save(), delete() etc and don't want that to trigger a flush.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
   <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchMode</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="na">setBatchFlushOnMixed</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+  <span class="n">transaction</span><span class="o">.</span><span class="na">setFlushOnMixed</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 
   <span class="c1">// these go to batch buffer</span>
   <span class="n">aBean</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
