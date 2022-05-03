@@ -81,13 +81,8 @@
     <a class="active" href="/docs/features/l2cache">L2 Cache</a>
   <ul class="nav">
 
-  <li class="active">
-    <a class="active" href="/docs/features/l2cache">Overview</a>
-<ul class="nav nav-scroll">
-  <li><a href="#overview">Overview</a></li>
-  <li><a href="#read-consistency">Eventual consistency</a></li>
-  <li><a href="#invalidation">Invalidation</a></li>
-</ul>
+  <li >
+    <a  href="/docs/features/l2cache">Overview</a>
   </li>
 
   <li >
@@ -96,8 +91,13 @@
   <li >
     <a  href="/docs/features/l2cache/query-cache">Query caching</a>
   </li>
-  <li >
-    <a  href="/docs/features/l2cache/invalidation">Invalidation</a>
+  <li class="active">
+    <a class="active" href="/docs/features/l2cache/invalidation">Invalidation</a>
+<ul class="nav nav-scroll">
+  <li><a href="#bean">Bean IUD</a></li>
+  <li><a href="#table">Table IUD / Bulk updates</a></li>
+  <li><a href="#explicit">Explicit</a></li>
+</ul>
   </li>
 
   <li >
@@ -179,76 +179,94 @@
 </form>
     
 
-  <h2 id="overview">Overview</h2>
+  <h2 id="bean">Bean IUD invalidation</h2>
   <p>
-    The goal of the L2 cache is to gain very significant performance improvement by
-    not having to hit the database to read some information.
+    Cache invalidation is automatically provided for persisted beans. The cache invalidation is processed by bean
+    type and id value.
   </p>
+  <h4>Cluster message</h4>
   <p>
-    For example, instead of performing a "find by id" or "find by unique key" query we
-    can get Ebean to effectively lookup the result in the L2 cache. If we are using <em>near caching</em>
-    then this might often result in an in-memory lookup into a local Map and not even require a
-    remote call so be very fast.
-  </p>
-  <p>
-    It is called the "Level 2 cache" because the persistence context is often referred to as the "Level 1 cache".
-  </p>
-  <p>
-    The "L2 cache" has 2 main caches – "Bean caches" and "Query caches".
+    The message sent around the cluster contains the bean type and 3 lists of ids - a list of id values for inserted,
+    updated and deleted beans.
   </p>
 
-  <h3>Bean Caches</h3>
-  <p>
-    Bean caches hold entity beans and are keyed by their <em>Id</em> values and optionally also
-    by their <em>natural key</em>. The bean cache can be used with:
-  </p>
+  <h4>L2 query cache</h4>
   <ul>
-    <li>Find by id(s)</li>
-    <li>Find by natural key(s)</li>
+    <li><code>Inserts, updates or deletes:</code> Invalidate the entire L2 query cache for the bean type</li>
+  </ul>
+  <p>
+    For any bean persist event invalidates the entire related L2 query cache for the associated bean type.
+    For example, saving a customer bean invalidates the entire L2 query cache for the Customer bean type.
+  </p>
+
+  <h4>L2 bean cache</h4>
+  <ul>
+    <li><code>Inserts:</code> Do not effect the L2 bean cache</li>
+    <li><code>Updates:</code> An entry is updated with changes</li>
+    <li><code>Deletes:</code> An entry is removed from the L2 bean cache based on the id value</li>
   </ul>
 
-  <h3>Query Caches</h3>
+
+  <h2 id="table">Table IUD invalidation (Bulk updates)</h2>
   <p>
-    Query caches hold the results of queries (Lists, Sets, Maps of entity beans and Count) and are keyed
-    by a hash of the query and its bind values.
+    Bulk insert, update or delete events are processed by table. For a given table the bean types
+    that depend on that table are determined and then for each bean type the L2 bean cache and L2 query cache
+    are invalidated as necessary.
   </p>
+  <h4>Cluster message</h4>
   <p>
-    The entries in a query cache are invalidated by ANY change to the underlying table –
-    insert, update or delete. This means that the query cache is generally only useful on entities that are
-    relatively infrequently modified (typically "lookup tables" such as countries, currencies, status codes
-    etc).
+    The message sent around the cluster contains the table name and boolean flags for insert, update and delete.
   </p>
-  <p>
-    The query cache can be used with:
-  </p>
+  <h4>L2 query cache</h4>
   <ul>
-    <li>Find list/set/map queries</li>
+    <li><code>Inserts, updates or deletes:</code> Invalidate the entire L2 query cache for the related bean type</li>
+  </ul>
+  <p>
+    For any bulk statements (bulk table insert, update or delete statement) the entire L2 query cache is invalidated
+    for the associated bean type.
+    For example, a bulk update of the customer table invalidates the entire L2 query cache for the Customer bean type.
+  </p>
+  <h4>L2 bean cache</h4>
+  <ul>
+    <li><code>Inserts:</code> Do not effect the L2 bean cache</li>
+    <li><code>Updates:</code> Invalidate the entire L2 bean cache for the related bean type</li>
+    <li><code>Deletes:</code> Invalidate the entire L2 bean cache for the related bean type</li>
   </ul>
 
-  <h2 id="read-consistency">Eventual consistency</h2>
+
+  <h2 id="explicit">Explicit invalidation</h2>
   <p>
-    Ebean L2 caching uses <em>eventual consistency</em>.
-  </p>
-  <p>
-    This means it operates a bit like "replication lag". Data returned from the L2 cache can be (milliseconds) out
-    of date. Changes will be made to the cache in a relatively short time (milliseconds) but there isn't the
-    gauruntee of read consistency that our transactional database provides.
-  </p>
-  <p>
-    With Ebean L2 caching there is no attempt to provide transactional read consistency.
-    If part of an application needs transactional read consistency then we should <em>use the database</em> to do that.
+    We can perform explicit invalidation using application code. We want to do this when data is modified
+    externally to Ebean. For example, data is updated by other frameworks, JDBC code etc. For this case we want to
+    explicitly invalidate parts of the L2 cache.
   </p>
 
-  <h2 id="invalidation">Invalidation</h2>
-  <p>
-    Ebean will automatically invalidate the cache when <a href="/docs/features/l2cache/invalidation#bean">beans are persisted</a>
-    or <a href="/docs/features/l2cache/invalidation#table">update queries</a> are executed.
-  </p>
-  <p>
-    In addition we can explicitly <a href="/docs/features/l2cache/invalidation#explicit">invalidate parts of the cache</a>
-    programmatically.
-  </p>
+  <h4>Using externalModification()</h4>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// inform Ebean that some rows have been inserted and updated</span>
+<span class="c1">// on the country table.</span>
+<span class="c1">// ... Ebean will invalidate the appropriate caches</span>
+<span class="kt">boolean</span> <span class="n">inserts</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="kt">boolean</span> <span class="n">updates</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+<span class="kt">boolean</span> <span class="n">deletes</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+<span class="n">DB</span><span class="o">.</span><span class="na">externalModification</span><span class="o">(</span><span class="s">&quot;country&quot;</span><span class="o">,</span> <span class="n">inserts</span><span class="o">,</span> <span class="n">updates</span><span class="o">,</span> <span class="n">deletes</span><span class="o">);</span>
+</pre></div>
+</div>
 
+  <h4>Using ServerCacheManager</h4>
+  <p>
+    ServerCacheManager also provides explicit API for clearing caches.
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// clearAll() caches via the ServerCacheManager ...</span>
+<span class="n">ServerCacheManager</span> <span class="n">cacheManager</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">cacheManager</span><span class="o">();</span>
+
+<span class="c1">// Clear all the caches on the default/primary EbeanServer</span>
+<span class="n">cacheManager</span><span class="o">.</span><span class="na">clearAll</span><span class="o">();</span>
+
+<span class="c1">// clear both the bean and query cache</span>
+<span class="c1">// for Country beans ...</span>
+<span class="n">cacheManager</span><span class="o">.</span><span class="na">clear</span><span class="o">(</span><span class="n">Country</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</pre></div>
+</div>
 
 
 

@@ -1,5 +1,5 @@
 
-import io.ebean.Model
+import plio.ebean.Model
 import io.ebean.annotation.WhenCreated
 import io.ebean.annotation.WhenModified
 import java.time.Instant
