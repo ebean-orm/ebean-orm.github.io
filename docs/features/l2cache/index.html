@@ -87,6 +87,8 @@
   <li><a href="#overview">Overview</a></li>
   <li><a href="#read-consistency">Eventual consistency</a></li>
   <li><a href="#invalidation">Invalidation</a></li>
+  <li><a href="#near-cache">Near cache</a></li>
+  <li><a href="#configuration">Configuration</a></li>
 </ul>
   </li>
 
@@ -248,6 +250,120 @@
     In addition we can explicitly <a href="/docs/features/l2cache/invalidation#explicit">invalidate parts of the cache</a>
     programmatically.
   </p>
+
+  <h4>Background notification</h4>
+  <p>
+    By default Ebean will perform L2 cache updates and invalidation in the background. If we want cache updates and
+    invalidation to execute in the foreground then we need to set <code>notifyL2CacheInForeground</code> to true.
+  </p>
+
+  <h2 id="near-cache">Near cache</h2>
+  <p>
+    A cache that runs in the same process as Ebean is a <em>Near cache</em>. Performing a hit against a near cache
+    is an in-memory Map lookup and does not go over the network. Hits against a near cache are very fast - it's
+    effectively a local in-memory Map get().
+  </p>
+  <p>
+    Ebean L2 bean caches for Redis, Hazelcast and Ignite all have a Near cache option. When this is enabled then there is
+    a local in-process cache that is used and hit first, and then only if there is a miss on the near cache does the request
+    go to the remote Redis | Hazelcast | Ignite cache.
+  </p>
+  <p>
+    For example, using ebean-redis with bean caching on Customer with near cache enabled:
+  </p>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Cache</span><span class="o">(</span><span class="nx">nearCache</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Customer</span>
+</pre></div>
+</div>
+  <ul>
+    <li>First hit the local in-memory near cache, if hit return the Customer</li>
+    <li>Second, hit the remote Redis cache, if hit return the Customer</li>
+    <li>Third, query the database, return the Customer, also loading Redis cache and near cache</li>
+  </ul>
+
+  <p>
+    Note that all Query caches are implemented as near cache only.
+  </p>
+
+  <h2 id="configuration">Configuration</h2>
+  <p>
+    Configuration options that can be set via <code>DatabaseConfig</code>.
+  </p>
+
+  <table class="table">
+    <tr>
+      <th>Parameter</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>disableL2Cache</td>
+      <td>false</td>
+      <td>Set to true to globally disable L2 caching</td>
+    </tr>
+    <tr>
+      <td>enabledL2Regions</td>
+      <td></td>
+      <td>Set the enabled L2 cache regions (comma delimited)</td>
+    </tr>
+    <tr>
+      <td>localOnlyL2Cache</td>
+      <td>false</td>
+      <td>Set to true to effectively disable L2 cache plugins (like ebean-redis, ebean-hazelcast)</td>
+    </tr>
+    <tr>
+      <td>notifyL2CacheInForeground</td>
+      <td>false</td>
+      <td>Set to true for cache notifications and invalidation to run in the
+        foreground. Generally we want to perform L2 cache notification in the background and not impact
+        the performance of executing transactions.
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+<!--  </table>-->
+
+<!--  <table class="table">-->
+
+    <tr>
+      <td>cacheMaxSize</td>
+      <td>10000</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>cacheMaxIdleTime</td>
+      <td>10mins</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>cacheMaxTimeToLive</td>
+      <td>6hrs</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>queryCacheMaxSize</td>
+      <td>1000</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>queryCacheMaxIdleTime</td>
+      <td>10mins</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>queryCacheMaxTimeToLive</td>
+      <td>6hrs</td>
+      <td></td>
+    </tr>
+
+  </table>
 
 
 
