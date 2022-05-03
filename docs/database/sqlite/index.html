@@ -101,6 +101,9 @@
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
   <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
+  <li >
     <a  href="/docs/database/nuodb">NuoDB</a>
   </li>
   <li >
@@ -186,6 +189,13 @@
   <tr><th>isolationlevel:</th><td>read_uncommitted</td></tr>
 
 </table>
+
+
+<h2 id="ebean-sqlite">ebean-sqlite dependency</h2>
+<p>
+  We can use the <code>io.ebean:ebean-sqlite</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
+  bring in the Sqlite specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
+</p>
 
   <nav class="next">
     <p class="edit-page">

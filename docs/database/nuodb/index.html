@@ -100,6 +100,9 @@
   <li >
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
+  <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
   <li class="active">
     <a class="active" href="/docs/database/nuodb">NuoDB</a>
   </li>
@@ -176,6 +179,11 @@
 </pre></div>
 </div>
 
+<h2 id="ebean-nuodb">ebean-nuodb dependency</h2>
+<p>
+  We can use the <code>io.ebean:ebean-nuodb</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
+  bring in the NuoDB specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
+</p>
 
 <h2 id="types">Types</h2>
 
@@ -205,6 +213,36 @@
 <p>
   NuoDB supports table partitioning but this is not supported by Ebean yet (via <em>@DbPartition</em>).
 </p>
+
+<h2 id="starting">Docker container</h2>
+<p>
+  We can programmatically start a docker container version of NuoDB.
+</p>
+<p>
+  The below uses <code>ebean-test-docker</code> dependency which already comes with <code>ebean-test</code>.
+  If we do not have a dependency on <code>ebean-test</code> then add <code>io.ebean:ebean-test-docker:5.0</code>
+  as a dependency.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.NuoDBContainer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="n">NuoDBContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="n">NuoDBContainer</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="s">&quot;4.0&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">schema</span><span class="o">(</span><span class="s">&quot;my_app&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">user</span><span class="o">(</span><span class="s">&quot;my_app&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="s">&quot;test&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+    <span class="n">container</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="edit-page">

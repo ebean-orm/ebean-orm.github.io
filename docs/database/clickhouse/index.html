@@ -101,6 +101,9 @@
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
   <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
+  <li >
     <a  href="/docs/database/nuodb">NuoDB</a>
   </li>
   <li >
@@ -189,6 +192,11 @@
   <tr><th>image:</th><td>yandex/clickhouse-server:{version}</td></tr>
 </table>
 
+<h2 id="ebean-clickhouse">ebean-clickhouse dependency</h2>
+<p>
+  We can use the <code>io.ebean:ebean-clickhouse</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
+  bring in the ClickHouse specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
+</p>
 
   <nav class="next">
     <p class="edit-page">

@@ -101,6 +101,9 @@
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
   <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
+  <li >
     <a  href="/docs/database/nuodb">NuoDB</a>
   </li>
   <li >
@@ -184,6 +187,12 @@
   <tr><th>url:</th><td>jdbc:h2:mem:{databaseName}</td></tr>
   <tr><th>driver:</th><td>org.h2.Driver</td></tr>
 </table>
+
+<h2 id="ebean-h2">ebean-h2 dependency</h2>
+<p>
+  We can use the <code>io.ebean:ebean-h2</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
+  bring in the H2Database specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
+</p>
 
 
 <h2 id="types">Types</h2>

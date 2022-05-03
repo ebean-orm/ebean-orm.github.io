@@ -101,6 +101,9 @@
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
   <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
+  <li >
     <a  href="/docs/database/nuodb">NuoDB</a>
   </li>
   <li >
@@ -223,6 +226,12 @@
 </pre></div>
 </div>
 
+<h2 id="ebean-mysql">ebean-mysql dependency</h2>
+<p>
+  We can use the <code>io.ebean:ebean-mysql</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
+  bring in the MySql specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
+</p>
+
 
 <h2 id="types">Types</h2>
 <h5>UUID</h5>
@@ -240,38 +249,37 @@
   History support for MySQL is provided by generating triggers and history table.
 </p>
 
-<h2 id="starting">Starting docker mysql programmatically</h2>
+<h2 id="starting">Docker container</h2>
 <p>
   We can programmatically start a docker container version of mysql. This can be a useful way to run an
   application locally.
 </p>
 <p>
   The below uses <code>ebean-test-docker</code> dependency which already comes with <code>ebean-test</code>.
-  If we do not have a dependency on <code>ebean-test</code> then add <code>io.ebean:ebean-test-docker:4.2</code>
+  If we do not have a dependency on <code>ebean-test</code> then add <code>io.ebean:ebean-test-docker:5.0</code>
   as a dependency.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MySqlConfig</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">io.ebean.docker.commands.MySqlContainer</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StartMySql</span> <span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 
-    <span class="n">MySqlConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MySqlConfig</span><span class="o">(</span><span class="s">&quot;8.0&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setDbName</span><span class="o">(</span><span class="s">&quot;my_db&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setUser</span><span class="o">(</span><span class="s">&quot;my_user&quot;</span><span class="o">);</span>
-    <span class="n">config</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;my_pass&quot;</span><span class="o">);</span>
+    <span class="n">MySqlContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="n">MySqlContainer</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="s">&quot;8.0&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">dbName</span><span class="o">(</span><span class="s">&quot;my_db&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">user</span><span class="o">(</span><span class="s">&quot;my_user&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="s">&quot;my_pass&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
     <span class="c1">// by default this mysql docker collation is case sensitive using utf8mb4_bin</span>
-    <span class="c1">// config.setCollation(&quot;default&quot;);</span>
-    <span class="c1">// config.setCollation(&quot;utf8mb4_unicode_ci&quot;);</span>
-    <span class="c1">// config.setCharacterSet(&quot;utf8mb4&quot;);</span>
+    <span class="c1">// builder.collation(&quot;default&quot;);</span>
+    <span class="c1">// builder.collation(&quot;utf8mb4_unicode_ci&quot;);</span>
+    <span class="c1">// builder.characterSet(&quot;utf8mb4&quot;);</span>
 
-    <span class="n">MySqlContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MySqlContainer</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-    <span class="n">container</span><span class="o">.</span><span class="na">startWithDropCreate</span><span class="o">();</span>
+    <span class="n">container</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>

@@ -101,6 +101,9 @@
     <a  href="/docs/database/cockroach">Cockroach</a>
   </li>
   <li >
+    <a  href="/docs/database/yugabyte">Yugabyte</a>
+  </li>
+  <li >
     <a  href="/docs/database/nuodb">NuoDB</a>
   </li>
   <li class="active">
@@ -248,6 +251,33 @@
 <p class="mtm">
   For more <a href="/docs/features/elasticsearch">details on the ElasticSearch</a>.
 </p>
+
+<h2 id="starting">Docker container</h2>
+<p>
+  We can programmatically start a docker container version of ElasticContainer.
+</p>
+<p>
+  The below uses <code>ebean-test-docker</code> dependency which already comes with <code>ebean-test</code>.
+  If we do not have a dependency on <code>ebean-test</code> then add <code>io.ebean:ebean-test-docker:5.0</code>
+  as a dependency.
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">main</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.ebean.docker.commands.ElasticContainer</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="n">ElasticContainer</span> <span class="n">container</span> <span class="o">=</span> <span class="n">ElasticContainer</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">(</span><span class="s">&quot;5.6.0&quot;</span><span class="o">)</span>
+      <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+      <span class="n">container</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
 
   <nav class="next">
     <p class="edit-page">
