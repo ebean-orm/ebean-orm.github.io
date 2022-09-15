@@ -77,8 +77,8 @@
     
 <h2>Mapping concatenated primary keys</h2>
 <p>
-  JPA and Ebean use <code>@EmbeddedId</code> or <code>@IdClass</code> to map concatenated primary keys.
-  For both these cases the Primary key is modeled as an <code>@Embeddable</code>.
+  JPA and Ebean use <code>@Embeddable</code> to map concatenated primary keys (via <code>@IdClass</code> or <code>@EmbeddedId</code>).
+  Primary keys are generally unchanging and best represented by an immutable class.
 </p>
 <p>
   In the example below, the primary key is made up of <code>partId</code> and <code>brandId</code>.
@@ -118,27 +118,15 @@
 </pre></div>
 </div>
 <p>
-  The semantics of an <code>@Embeddable</code> that maps a primary key is that the <code>equals</code> and
-  <code>hashCode</code> <em><b>must include all the components</b></em> - in this case both partId and brandId <em>MUST</em>
-  be part of the equals and hashCode implementation.
-</p>
-<p>
-  We see semantics that match an immutable type.
-</p>
-<p>
-  Note that the ORM requires developers to provide the correct implementation of equals and hashCode. It is on
-  the <em>developer</em> to do this correctly - not the ORM (most will get the IDE to generate these).
-  If the developer stuffs this up things will go bang!!! but this is NOT on the ORM.
-</p>
-<p>
-  Now the above works for Ebean but if we consider 3 JPA implementations then we note that 2 of those
-  currently require a default constructor (which can be private). The above does not exactly work for
-  those ORMs and we instead for those ORMs we need to add a [private] default constructor.
+  There is a requirement to correctly implement equals() and hashCode() for an @Embeddable that maps a primary key.
+  The implementations must include all components (partId and brandId in this case). The ORM cannot fix your mistakes
+  here, but most IDEs could generate these methods for you.
 </p>
 
 <h2>Adding a default constructor</h2>
 <p>
-  Adding a [private] default constructor is required by some ORMs. What we <em>then</em> see is:
+  Some JPA implementations require a default constructor. This forces Java classes to look much
+  less immutable:
 </p>
 <ul>
   <li>The fields are no longer final</li>
@@ -185,28 +173,20 @@
 </div>
 
 
-
-<h2>Enter Record type ...</h2>
+<h2>Java 14 record type</h2>
 <p>
-  What ORMs want to do for this case is:
+  Java 14 records are immutable with correct equals() and hashCode() implementations. They provide a perfect match
+  for the semantics to map a concatenated primary key with @Embeddable.
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Embeddable</span>
 <span class="kd">public</span> <span class="n">record</span> <span class="nf">PartBrandKey</span><span class="o">(</span><span class="kt">long</span> <span class="n">partId</span><span class="o">,</span> <span class="kt">long</span> <span class="n">brandId</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
 </pre></div>
 </div>
-<p>
-  When we look at the semantics of <code>record</code> type we see it's a match for what we are trying to
-  do for this case of mapping a concatenated primary key with <code>@Embeddable</code>. We see an immutable
-  type and the semantics of <code>Record::equals()</code> is an exact match.
-</p>
-<p>
-  From an ORM perspective the above looks perfect and we have an exact match in semantics.
-</p>
 
-<h2>Enter Kotlin data class ...</h2>
+
+<h2>Kotlin data class shorthand</h2>
 <p>
-  The Kotlin folks are going to point out this is also a match to a <code>data class</code> with <code>val</code>
-  parameters.
+  Kotlin data class with <code>val</code> parameters also perfectly match the semantics.
 </p>
 <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="nd">@Embeddable</span>
 <span class="k">data</span> <span class="k">class</span> <span class="nc">PartBrandKey</span><span class="p">(</span><span class="k">val</span> <span class="py">partId</span><span class="p">:</span> <span class="n">Long</span><span class="p">,</span> <span class="k">val</span> <span class="py">brandId</span><span class="p">:</span> <span class="n">Long</span><span class="p">)</span>
@@ -214,32 +194,16 @@
 </div>
 
 
-
-<h2>The world between javac and the jvm</h2>
+<h2>Java Language vs JVM Bytecode</h2>
 <p>
-  Bytecode transformation lives in that world between javac and the jvm. Generally we have an
-  annotation like <em>@Embeddable</em> or <em>@Transactional</em> as a marker for the bytecode
-  transformation to be applied to that class or method.
+  Annotations like <code>@Embeddable</code> or <code>@Transactional</code> are markers for transformation to be
+  applied to the bytecode.
 </p>
 <p>
-  Bytecode transformation reads and transforms bytecode so in this sense it doesn't necessarily
-  even see "language features" per say. For example, ebean bytecode transformation applies equally
-  to other JVM languages like Kotlin, Scala, Groovy.
-</p>
-<p>
-  In this way the bytecode created by record type presented nothing new to ebean-agent (the ebean bytecode
-  transformer) in much the same way a kotlin data class didn't look new.
-</p>
-<p>
-  Yes Java records are different in that they extend <code>java.lang.Record</code>, yes they are different in
-  how they provide a default implementation of hashCode and equals using <code>java.lang.runtime.ObjectMethods</code>
-  and method handles (which is actually pretty cool) but for ebean-agent in terms of the transforms it
-  is expected to make, the bytecode presented by record types isn't really new or different when compared to
-  the plain old non-record cases or indeed kotlin data classes.
-</p>
-<p>
-  From an ebean perspective that is expected because - record type is a <em>language</em> feature and the
-  ebean-agent reads bytecode and is really not <em>expected</em> to see <em>language</em> features.
+  Ebean bytecode transformation applies equally to Java and other JVM languages like Kotlin, Scala, and Groovy.
+  Java 14 record types are an important (and cool) step forward for the Java language, but the bytecode they compile
+  to isn't much different from immutable Java non-record classes or Kotlin data classes. No changes were necessary
+  to the Ebean code in order to support Java 14 records.
 </p>
 
 
@@ -261,6 +225,12 @@
   in particular to do this job.
 </p>
 -->
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/well-thats-interesting/embedded-id.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+  </nav>
 
 
 
