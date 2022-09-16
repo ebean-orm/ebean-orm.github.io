@@ -207,6 +207,23 @@
 </p>
 
 
+<h2>Java Memory Model</h2>
+<p>
+  In the related SO post we mention "Java Memory Model" which is in reference to the JVM specification and <em>JSR-133</em>.
+</p>
+<ul>
+  <li><a href="http://www.cs.umd.edu/users/pugh/java/memoryModel/jsr-133-faq.html">JSR 133 (Java Memory Model) FAQ</a></li>
+  <li><a href="http://www.cs.umd.edu/~pugh/java/memoryModel/">pugh - Java Memory Model</a></li>
+  <li><a href="https://www.jcp.org/en/jsr/detail?id=133">jcp.org - JSR-133</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Java_memory_model">wikipedia - Java Memory Model</a></li>
+</ul>
+<p>
+  This relates to the point that although we no longer have final fields and hence don't get the memory visibility
+  guarantees that provides the instances are not accessible by multiple threads until they are 'effectively immutable'.
+</p>
+
+
+
 <!--
 <h2>Side note on Meta Programming</h2>
 <p>
