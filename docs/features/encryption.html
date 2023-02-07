@@ -257,9 +257,19 @@
   database encryption will use client/application encryption.
 </p>
 <ul>
-  <li>Enum</li>
-  <li>String</li>
+  <li>String (VARCHAR, CHAR, CLOB, LONGVARCHAR)</li>
+  <li>Enum (if based on VAHRCHAR)</li>
   <li>Date types - LocalDate, Date, Joda LocalDate</li>
+</ul>
+<p> 
+  Important: The following types are currently not supported:
+</p>
+<ul>
+  <li>primitive types</li>
+  <li>Timestamps</li>
+</ul>
+
+<ul>
   <li>Timestamp types - Timestamp, Instant, OffsetDateTime, ZonedDateTime</li>
 </ul>
 
