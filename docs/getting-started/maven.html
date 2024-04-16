@@ -43,17 +43,6 @@
   </li>
   <li class="nav1 active">
     <a class="active" href="/docs/getting-started/maven">Maven</a>
-      <ul class="nav nav-scroll">
-  <li >
-    <a  href="#dependencies">Dependencies</a>
-  </li>
-  <li >
-    <a  href="#tile">Tile</a>
-  </li>
-  <li >
-    <a  href="#kotlin-kapt">Kotlin KAPT</a>
-  </li>
-      </ul>
   </li>
   <li class="nav1 ">
     <a  href="/docs/getting-started/gradle">Gradle</a>
@@ -104,30 +93,97 @@
   </div>
 </form>
     
-<!--<p class="mtl">-->
-<!--  We can use <a href="cli-tool">ebean-init</a> to automatically setup a Maven project.-->
-<!--</p>-->
-<!--<p>-->
-<!--  These are the instructions to setup a maven project without using <em>ebean-init</em>.-->
-<!--</p>-->
 
-<h2>Examples</h2>
-<ul>
-  <li><a target="_blank" href="https://github.com/ebean-orm-examples/example-minimal">Java maven example</a></li>
-  <li><a target="_blank" href="https://github.com/ebean-orm-examples/example-kotlin">Kotlin maven example</a></li>
-</ul>
-
-<h2 id="dependencies">Dependencies</h2>
+<h2 id="jdbc-dep">JDBC Driver(s)</h2>
 <p>
-  Add the following dependencies:
+  Add the dependency for the JDBC Driver(s) you want to use.
+  For example, with Postgres we could add:
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- JDBC Driver(s) --&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>org.postgresql<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>postgresql<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>42.7.2<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="dependencies">Main dependency</h2>
+<p>
+  Ebean provides a dependency per database platform. We include one
+  or more of these dependencies for each database that our application
+  is going to use.
+</p>
+<ul>
+  <li>io.ebean:ebean-clickhouse</li>
+  <li>io.ebean:ebean-cockroach</li>
+  <li>io.ebean:ebean-db2</li>
+  <li>io.ebean:ebean-hana</li>
+  <li>io.ebean:ebean-h2</li>
+  <li>io.ebean:ebean-mysql</li>
+  <li>io.ebean:ebean-mariadb</li>
+  <li>io.ebean:ebean-oracle</li>
+  <li>io.ebean:ebean-postgres</li>
+  <li>io.ebean:ebean-sqlanywhere</li>
+  <li>io.ebean:ebean-sqlite</li>
+  <li>io.ebean:ebean-sqlserver</li>
+  <li>io.ebean:ebean-yugabyte</li>
+</ul>
+<p>
+  For example, if our application is only going to use Postgres then
+  we add the <code>io.ebean:ebean-postgres</code> dependency.
+</p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-postgres<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+<p>
+  If for example our application is going to use both YugabyteDB and
+  ClickHouse then we add both dependencies.
 </p>
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>ebean<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-yugabyte<span class="nt">&lt;/artifactId&gt;</span>
   <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean-clickhouse<span class="nt">&lt;/artifactId&gt;</span>
+  <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
 
-<span class="c">&lt;!-- Test dependencies --&gt;</span>
+<p>
+  If we want to support all platforms we can just use <code>io.ebean:ebean</code>
+  which is a composite of all the supported platforms.
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+  <span class="nt">&lt;artifactId&gt;</span>ebean<span class="nt">&lt;/artifactId&gt;</span> <span class="c">&lt;!-- All database platforms --&gt;</span>
+  <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+
+<h2 id="testDependencies">Test dependency - ebean-test</h2>
+<p>
+  Add <code>io.ebean:ebean-test</code> as a test dependency.
+</p>
+<p>
+  This configures Ebean for running tests including automatic use of docker
+  containers for Postgres, MySql, Oracle, SqlServer, ClickHouse, Yugabyte, Hana
+  + support for H2 and SqlLite.
+</p>
+<p>
+  Refer to: <a href="/docs/testing">docs / testing</a>
+</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="c">&lt;!-- Test dependencies --&gt;</span>
 <span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-test<span class="nt">&lt;/artifactId&gt;</span>
@@ -136,60 +192,41 @@
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
-<h3>ebean-test</h3>
-<p>
-  <em>ebean-test</em> should be added as a test dependency.
-  This configures Ebean for running tests including automatic use of docker
-  containers for Postgres, MySql, Oracle, SqlServer, Hana + support for H2 and SqlLite.
-</p>
-<p>
-  Refer to: <a href="/docs/testing">docs / testing</a>
-</p>
+
 
 <h2>build / plugins</h2>
 <p>
   In the <code>build / plugins</code> section:
 </p>
 <ol>
-  <li>Add the <code>tiles-maven-plugin</code> to perform build time enhancement</li>
+  <li>Add the <code>ebean-maven-plugin</code> to perform build time enhancement</li>
   <li>Add or modify the <code>maven-compiler-plugin</code> to register the <em>querybean-generator</em> annotation processor.</li>
 </ol>
 
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;build&gt;</span>
   <span class="nt">&lt;plugins&gt;</span>
 
-
-     <span class="nt">&lt;plugin&gt;</span>
-       <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-       <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-       <span class="nt">&lt;version&gt;</span>2.40<span class="nt">&lt;/version&gt;</span>
+     <span class="nt">&lt;plugin&gt;</span> <span class="c">&lt;!-- perform ebean enhancement --&gt;</span>
+       <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+       <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+       <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
        <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-       <span class="nt">&lt;configuration&gt;</span>
-         <span class="nt">&lt;tiles&gt;</span>
-          <span class="c">&lt;!-- other tiles ... --&gt;</span>
-          <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:14.1.0<span class="nt">&lt;/tile&gt;</span>
-        <span class="nt">&lt;/tiles&gt;</span>
-      <span class="nt">&lt;/configuration&gt;</span>
-    <span class="nt">&lt;/plugin&gt;</span>
-
+     <span class="nt">&lt;/plugin&gt;</span>
 
     <span class="nt">&lt;plugin&gt;</span>
       <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
       <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
       <span class="nt">&lt;version&gt;</span>3.10.1<span class="nt">&lt;/version&gt;</span>
       <span class="nt">&lt;configuration&gt;</span>
-        ...
         <span class="nt">&lt;annotationProcessorPaths&gt;</span>
-           <span class="nt">&lt;path&gt;</span>
+           <span class="nt">&lt;path&gt;</span> <span class="c">&lt;!-- generate ebean query beans --&gt;</span>
               <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
               <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
               <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
           <span class="nt">&lt;/path&gt;</span>
-          <span class="c">&lt;!-- other annotation processors --&gt;</span>
         <span class="nt">&lt;/annotationProcessorPaths&gt;</span>
       <span class="nt">&lt;/configuration&gt;</span>
     <span class="nt">&lt;/plugin&gt;</span>
-
 
   <span class="nt">&lt;/plugins&gt;</span>
 <span class="nt">&lt;/build&gt;</span>
@@ -197,82 +234,89 @@
 </div>
 
 
-<h3>Maven enhancement tile</h3>
-<p>
-  The maven tile above will enhance the code at build time for both <code>src/main</code>
-  and <code>src/test</code>. This is simpler than defining the plugin in the traditional (non-tile)
-  fashion and is the preferred approach.
-</p>
-<p>
-  If you want to specify the maven enhancement plugin in 'normal' non-tile fashion see
-  <a href="maven-plugin">maven plugin</a>.
-</p>
 
-<h3>APT - querybean generation</h3>
+<h2>Example pom for Postgres</h2>
 <p>
-  Note that if there are no other annotation processors (e.g. mapstruct) then instead of
-  explicitly registering the <code>querybean-generator</code> with the maven-compiler-plugin
-  we can instead just add it as a dependency with provided scope.
+  An example pom for an application that only uses Postgres is:
 </p>
 
 
-<h3 id="jdbc-dep">JDBC Driver(s)</h3>
-<p>
-  Add the dependency for the JDBC Driver(s) you want to use.
-</p>
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+  <span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+      <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
 
-<h2 id="kotlin-kapt">Kotlin KAPT</h2>
-<p>
-  When using Kotlin we need to use KAPT (Kotlin annotation processing) to
-  generate Kotlin query beans.
-</p>
-<p>
-  The recommended way to do this is via the <a href="https://avaje.io/kotlin-kapt"><code>io.avaje.kapt</code></a>
-  maven tiles as this makes it easier to add additional annotation processors
-  (like <a href="https://dinject">DInject</a> for dependency injection for example).
-</p>
-<p>
-  Add the maven tiles plugin into the <code>build / plugins</code> section of the pom.xml
-  with the tiles for:
-</p>
-<div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;plugin&gt;</span>
-  <span class="nt">&lt;groupId&gt;</span>io.repaint.maven<span class="nt">&lt;/groupId&gt;</span>
-  <span class="nt">&lt;artifactId&gt;</span>tiles-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>2.40<span class="nt">&lt;/version&gt;</span>
-  <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
-  <span class="nt">&lt;configuration&gt;</span>
-    <span class="nt">&lt;tiles&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.ebean.tile:enhancement:14.1.0<span class="nt">&lt;/tile&gt;</span> <span class="c">&lt;!-- ebean enhancement --&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.example<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>hello-ebean<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.0-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
 
-      <span class="c">&lt;!-- Kotlin + Java compilers with KAPT support --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.avaje.kapt:compile:1.1<span class="nt">&lt;/tile&gt;</span>
+    <span class="nt">&lt;properties&gt;</span>
+      <span class="nt">&lt;maven.compiler.release&gt;</span>21<span class="nt">&lt;/maven.compiler.release&gt;</span> <span class="c">&lt;!-- Prefer release --&gt;</span>
+      <span class="nt">&lt;maven.compiler.source&gt;</span>21<span class="nt">&lt;/maven.compiler.source&gt;</span> <span class="c">&lt;!-- fallback --&gt;</span>
+      <span class="nt">&lt;maven.compiler.target&gt;</span>21<span class="nt">&lt;/maven.compiler.target&gt;</span> <span class="c">&lt;!-- fallback --&gt;</span>
+      <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
 
-      <span class="c">&lt;!-- KAPT query bean generator --&gt;</span>
-      <span class="nt">&lt;tile&gt;</span>io.avaje.kapt:querybean-generator:1.1<span class="nt">&lt;/tile&gt;</span>
+    <span class="nt">&lt;dependencies&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span> <span class="c">&lt;!-- JDBC Driver(s) --&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.postgresql<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>postgresql<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>42.7.1<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
 
-      <span class="c">&lt;!-- other annotation processors ... --&gt;</span>
-      <span class="c">&lt;!-- &lt;tile&gt;io.avaje.kapt:dinject-generator:1.1&lt;/tile&gt; --&gt;</span>
-      <span class="c">&lt;!-- &lt;tile&gt;io.avaje.kapt:javalin-generator:1.1&lt;/tile&gt; --&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span> <span class="c">&lt;!-- ebean postgres, add more platforms as needed --&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>ebean-postgres<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
 
-      <span class="c">&lt;!-- other tiles ... --&gt;</span>
+      <span class="c">&lt;!-- test dependencies --&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>ebean-test<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
 
-    <span class="nt">&lt;/tiles&gt;</span>
-  <span class="nt">&lt;/configuration&gt;</span>
-<span class="nt">&lt;/plugin&gt;</span>
+      <span class="nt">&lt;dependency&gt;</span> <span class="c">&lt;!-- Optional extra: JUnit5 + AssertJ + Mockito --&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>io.avaje<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>junit<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.5<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+      <span class="nt">&lt;/dependency&gt;</span>
+
+    <span class="nt">&lt;/dependencies&gt;</span>
+
+    <span class="nt">&lt;build&gt;</span>
+      <span class="nt">&lt;plugins&gt;</span>
+
+        <span class="nt">&lt;plugin&gt;</span> <span class="c">&lt;!-- perform ebean enhancement --&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>ebean-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;extensions&gt;</span>true<span class="nt">&lt;/extensions&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+
+        <span class="nt">&lt;plugin&gt;</span>
+          <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+          <span class="nt">&lt;artifactId&gt;</span>maven-compiler-plugin<span class="nt">&lt;/artifactId&gt;</span>
+          <span class="nt">&lt;version&gt;</span>3.10.1<span class="nt">&lt;/version&gt;</span>
+          <span class="nt">&lt;configuration&gt;</span>
+            <span class="nt">&lt;annotationProcessorPaths&gt;</span>
+               <span class="nt">&lt;path&gt;</span> <span class="c">&lt;!-- generate ebean query beans --&gt;</span>
+                  <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
+                  <span class="nt">&lt;artifactId&gt;</span>querybean-generator<span class="nt">&lt;/artifactId&gt;</span>
+                  <span class="nt">&lt;version&gt;</span>14.1.0<span class="nt">&lt;/version&gt;</span>
+              <span class="nt">&lt;/path&gt;</span>
+            <span class="nt">&lt;/annotationProcessorPaths&gt;</span>
+          <span class="nt">&lt;/configuration&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+
+      <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+<span class="nt">&lt;/project&gt;</span>
 </pre></div>
 </div>
-<p>
-  We can add other additional annotation processors by adding tiles, for example:
-</p>
-<ul>
-  <li>io.avaje.kapt:dinject-generator:1.1 - for DInject Dependency injection generation</li>
-  <li>io.avaje.kapt:javalin-generator:1.1 - for Javalin controller generation</li>
-</ul>
-
-<h3>Example project</h3>
-<p>
-  <a href="https://github.com/ebean-orm-examples/example-kotlin/blob/master/pom.xml">Full example pom for Kotlin query bean generation</a>
-</p>
 
 
 
