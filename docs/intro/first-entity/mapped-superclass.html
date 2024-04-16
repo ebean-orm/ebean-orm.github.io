@@ -132,9 +132,9 @@
 <span class="kn">import</span> <span class="nn">io.ebean.annotation.WhenCreated</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">io.ebean.annotation.WhenModified</span><span class="o">;</span>
 
-<span class="kn">import</span> <span class="nn">javax.persistence.Id</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">javax.persistence.MappedSuperclass</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">javax.persistence.Version</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarata.persistence.Id</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarata.persistence.MappedSuperclass</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">jakarata.persistence.Version</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.time.Instant</span><span class="o">;</span>
 
 <span class="cm">/**</span>
@@ -169,9 +169,9 @@
 <span class="k">import</span> <span class="nn">io.ebean.annotation.WhenCreated</span>
 <span class="k">import</span> <span class="nn">io.ebean.annotation.WhenModified</span>
 <span class="k">import</span> <span class="nn">java.time.Instant</span>
-<span class="k">import</span> <span class="nn">javax.persistence.Id</span>
-<span class="k">import</span> <span class="nn">javax.persistence.MappedSuperclass</span>
-<span class="k">import</span> <span class="nn">javax.persistence.Version</span>
+<span class="k">import</span> <span class="nn">jakarata.persistence.Id</span>
+<span class="k">import</span> <span class="nn">jakarata.persistence.MappedSuperclass</span>
+<span class="k">import</span> <span class="nn">jakarata.persistence.Version</span>
 
 <span class="nd">@MappedSuperclass</span>
 <span class="k">open</span> <span class="k">class</span> <span class="nc">BaseDomain</span> <span class="p">:</span> <span class="n">Model</span><span class="p">()</span> <span class="p">{</span>
@@ -221,7 +221,7 @@
 <div class="code-kt">
   <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">package</span> <span class="nn">org.example.domain</span>
 
-<span class="k">import</span> <span class="nn">javax.persistence.Entity</span>
+<span class="k">import</span> <span class="nn">jakarata.persistence.Entity</span>
 
 <span class="nd">@Entity</span>
 <span class="k">class</span> <span class="nc">Customer</span> <span class="p">:</span> <span class="n">BaseDomain</span><span class="p">()</span> <span class="p">{</span>
