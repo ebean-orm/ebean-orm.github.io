@@ -488,14 +488,6 @@
   "url":"/docs/trouble-shooting#registered"
 }
 ,{
-  "title":"Trouble shooting - Transient Initialisation",
-  "caption":"",
-  "category":"Introduction",
-  "priority":"2",
-  "keywords":"",
-  "url":"/docs/trouble-shooting#transient-initialisation"
-}
-,{
   "title":"Trouble shooting - java.lang.IllegalStateException: Bean class _ is not enhanced?",
   "caption":"",
   "category":"Introduction",
@@ -638,14 +630,6 @@
   "priority":"3",
   "keywords":"",
   "url":"/docs/db-migrations#db-migrations"
-}
-,{
-  "title":"Dependencies",
-  "caption":"",
-  "category":"DB migrations",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/db-migrations#dependencies"
 }
 ,{
   "title":"Details",
@@ -1176,6 +1160,22 @@
   "url":"/docs/database/postgres#ebean-postgres"
 }
 ,{
+  "title":"Postgres / Array type",
+  "caption":"",
+  "category":"Database platforms",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/database/postgres/arraytype"
+}
+,{
+  "title":"Postgres / PostGIS",
+  "caption":"",
+  "category":"Database platforms",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/database/postgres/postgis"
+}
+,{
   "title":"Redis - L2 cache",
   "caption":"",
   "category":"Database platforms",
@@ -1408,6 +1408,38 @@
   "url":"/docs/features"
 }
 ,{
+  "title":"CLI tool - ebeaninit",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/cli-tool"
+}
+,{
+  "title":"CLI tool - ebeaninit - CLI Tool - ebeaninit",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/cli-tool"
+}
+,{
+  "title":"CLI tool - ebeaninit / Manual install",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/cli-tool-manualinstall"
+}
+,{
+  "title":"CLI tool - ebeaninit / Manual install - Manual installation (Linux)",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/cli-tool-manualinstall#manual"
+}
+,{
   "title":"Eclipse IDE",
   "caption":"",
   "category":"Getting started",
@@ -1504,23 +1536,7 @@
   "url":"/docs/getting-started/maven"
 }
 ,{
-  "title":"Maven - Example pom for Postgres",
-  "caption":"",
-  "category":"Getting started",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/getting-started/maven"
-}
-,{
-  "title":"Maven - JDBC Driver(s)",
-  "caption":"",
-  "category":"Getting started",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/getting-started/maven#jdbc-dep"
-}
-,{
-  "title":"Maven - Main dependency",
+  "title":"Maven - Dependencies",
   "caption":"",
   "category":"Getting started",
   "priority":"3",
@@ -1528,12 +1544,20 @@
   "url":"/docs/getting-started/maven#dependencies"
 }
 ,{
-  "title":"Maven - Test dependency - ebean-test",
+  "title":"Maven - Examples",
   "caption":"",
   "category":"Getting started",
   "priority":"3",
   "keywords":"",
-  "url":"/docs/getting-started/maven#testDependencies"
+  "url":"/docs/getting-started/maven"
+}
+,{
+  "title":"Maven - Kotlin KAPT",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/maven#kotlin-kapt"
 }
 ,{
   "title":"Maven - build / plugins",
@@ -1542,6 +1566,14 @@
   "priority":"3",
   "keywords":"",
   "url":"/docs/getting-started/maven"
+}
+,{
+  "title":"Maven / Plugin",
+  "caption":"",
+  "category":"Getting started",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/getting-started/maven-plugin"
 }
 ,{
   "title":"Prerequisite - Java 11",
@@ -1558,14 +1590,6 @@
   "priority":"3",
   "keywords":"",
   "url":"/docs/getting-started/ebean-test"
-}
-,{
-  "title":"jakarata and javax persisence",
-  "caption":"",
-  "category":"Getting started",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/getting-started#Jakarata"
 }
 ,{
   "title":"@OneToMany",
@@ -1904,14 +1928,6 @@
   "url":"/docs/mapping/extensions/dbenumvalue#storage"
 }
 ,{
-  "title":"Extension / @DbForeignKey",
-  "caption":"",
-  "category":"Mapping",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/mapping/extensions/dbforeignkey"
-}
-,{
   "title":"Extension / @DbJson",
   "caption":"",
   "category":"Mapping",
@@ -2088,22 +2104,6 @@
   "url":"/docs/mapping/extensions/view"
 }
 ,{
-  "title":"Extension / @View - Dependent Tables",
-  "caption":"",
-  "category":"Mapping",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/mapping/extensions/view"
-}
-,{
-  "title":"Extension / @View - Extra DDL to define the view",
-  "caption":"",
-  "category":"Mapping",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/mapping/extensions/view"
-}
-,{
   "title":"Extension / @View - View",
   "caption":"",
   "category":"Mapping",
@@ -2246,14 +2246,6 @@
   "priority":"3",
   "keywords":"",
   "url":"/docs/mapping/jpa/id#uuid"
-}
-,{
-  "title":"JPA / @Id - UUID and @GeneratedValue",
-  "caption":"",
-  "category":"Mapping",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/mapping/jpa/id#uuid-generatedValue"
 }
 ,{
   "title":"JPA / @Lob",
@@ -2574,14 +2566,6 @@
   "priority":"3",
   "keywords":"",
   "url":"/docs/mapping/type/uuid"
-}
-,{
-  "title":"Types / UUID - @GeneratedValue",
-  "caption":"",
-  "category":"Mapping",
-  "priority":"3",
-  "keywords":"",
-  "url":"/docs/mapping/type/uuid#generatedValue"
 }
 ,{
   "title":"Types / UUID - Binary storage",
