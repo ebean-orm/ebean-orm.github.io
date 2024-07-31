@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>H2 | Ebean ORM</title>
+  <title>Read Replicas | Ebean</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="shortcut icon" href="/images/favicon.ico">
@@ -18,7 +18,7 @@
   <header>
     <nav id="top">
       <h1 id="breadcrumb">
-        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/database">Database platforms</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">H2</span>
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Read Replicas</span>
       </h1>
       <ul>
         
@@ -64,58 +64,11 @@
   <li class="nav1 ">
     <a  href="/docs/testing">Testing</a>
   </li>
-  <li class="nav1 ">
-    <a  href="/docs/read-replicas">Read Replicas</a>
-  </li>
   <li class="nav1 active">
-    <a class="active" href="/docs/database">Database platforms</a>
-<ul class="nav">
-    <li >
-    <a  href="/docs/database/postgres">Postgres</a>
+    <a class="active" href="/docs/read-replicas">Read Replicas</a>
   </li>
-  <li class="active">
-    <a class="active" href="/docs/database/h2">H2</a>
-  </li>
-  <li >
-    <a  href="/docs/database/mysql">MySql</a>
-  </li>
-  <li >
-    <a  href="/docs/database/mariadb">MariaDB</a>
-  </li>
-  <li >
-    <a  href="/docs/database/sqlserver">SQL Server</a>
-  </li>
-  <li >
-    <a  href="/docs/database/oracle">Oracle</a>
-  </li>
-  <li >
-    <a  href="/docs/database/db2">DB2</a>
-  </li>
-  <li >
-    <a  href="/docs/database/hana">SAP Hana</a>
-  </li>
-  <li >
-    <a  href="/docs/database/sqlite">Sqlite</a>
-  </li>
-  <li >
-    <a  href="/docs/database/clickhouse">ClickHouse</a>
-  </li>
-  <li >
-    <a  href="/docs/database/cockroach">Cockroach</a>
-  </li>
-  <li >
-    <a  href="/docs/database/yugabyte">YugabyteDB</a>
-  </li>
-  <li >
-    <a  href="/docs/database/nuodb">NuoDB</a>
-  </li>
-  <li >
-    <a  href="/docs/database/elasticsearch">ElasticSearch</a>
-  </li>
-  <li >
-    <a  href="/docs/database/redis">Redis</a>
-  </li>
-</ul>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
   </li>
   <li class="nav1 ">
     <a  href="/docs/multi-database">Multiple databases</a>
@@ -164,57 +117,89 @@
   </div>
 </form>
     
-<h2>H2</h2>
-
-<h3>Testing</h3>
+<h2 id="transactional">Read Replicas</h2>
 <p>
-  To test using H2 set the <em>platform</em> to <code>h2</code> in
-  <code>src/test/resources/application-test.yaml</code>
+  Ebean supports configuring a second DataSource [connect pool] that points to
+  a "Read replica". The DataSource is <em>readOnly = true</em> and <em>autoCommit=true</em>.
 </p>
-<p>
-  Refer to <a href="/docs/testing">docs / testing</a> if application-test.yaml doesn't exist yet.
-</p>
-
-<div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
-  <span class="nt">test</span><span class="p">:</span>
-    <span class="nt">platform</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">h2</span> <span class="c1"># h2, postgres, mysql, oracle, sqlserver</span>
-    <span class="nt">ddlMode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dropCreate</span> <span class="c1"># none | dropCreate | migrations</span>
-    <span class="nt">dbName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">test</span>
+<div class="syntax java"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 
+<h2 id="aurora">Amazon AWS Aurora</h2>
 <p>
-  The above will use the following defaults:
+  Amazon AWS Aurora provides 2 connection endpoints with one endpoint for the "Master" [writer] and
+  a second endpoint for the "Read replica" [read only] instance(s).
 </p>
-<table class="compact w100">
-  <tr><th>url:</th><td>jdbc:h2:mem:{databaseName}</td></tr>
-  <tr><th>driver:</th><td>org.h2.Driver</td></tr>
-</table>
-
-<h2 id="ebean-h2">ebean-h2 dependency</h2>
-<p>
-  We can use the <code>io.ebean:ebean-h2</code> dependency rather than <code>io.ebean:ebean</code> if we want to only
-  bring in the H2Database specific platform code. Depending on <code>io.ebean:ebean</code> will bring in all platforms.
-</p>
+<div class="syntax java"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 
 
-<h2 id="types">Types</h2>
-<h5>UUID</h5>
+<h2 id="usingMaster">Using the "Master"</h2>
 <p>
-  UUID is a native H2 type.
+  When we have an explicit transaction via <em>@Transactional</em> on a method or using
+  explicitly <code>database.beginTransaction()</code> - then this transaction will use
+  the "Master".
+</p>
+<p>
+  When we use database.save() without an explicit transaction, then a transaction will be
+  used implicitly and this will use the "Master".
 </p>
 
-<h2 id="history">History support</h2>
+<h2 id="queryUseMaster">Query.useMaster()</h2>
 <p>
-  History support for H2 is provided by generating triggers and history table.
+  If we have a query that is executed outside any explicit transaction, and it will fetch data
+  (not a bulk update query or bulk delete query) then by default it will use the "Read Replica".
 </p>
+<p>
+  To force a query to use the "Master" we use <code>Query.useMaster()</code> like:
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">useMaster</span><span class="o">()</span> <span class="c1">// Use the &quot;Master&quot; database</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="queryUseReadReplica">Using the Read Replica</h2>
+<p>
+  If we have a query that is executed outside any explicit transaction, and it will fetch data
+  (it is not a bulk update query or bulk delete query) then by default it will use the "Read Replica".
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// a query executed outside of any explicit transaction</span>
+<span class="c1">// ... will use the replica</span>
+<span class="k">var</span> <span class="n">customers</span> <span class="o">=</span>
+  <span class="k">new</span> <span class="n">QCustomer</span><span class="o">()</span>
+    <span class="o">.</span><span class="na field">status</span><span class="o">.</span><span class="na">eq</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">NEW</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">findList</span><span class="o">();</span>
+</pre></div>
+</div>
+
+
+<h2 id="transactionReadOnly">@Transaction(readOnly=true)</h2>
+<p>
+  When a method is annotated with <code>@Transaction(readOnly=true)</code>, then this
+  will create a read only transaction using the "Read Replica".
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Transaction</span><span class="o">(</span><span class="nx">readOnly</span><span class="o">=</span><span class="kc">true</span><span class="o">)</span>
+<span class="kt">void</span> <span class="nf">myMethod</span><span class="o">()</span> <span class="o">{</span>
+
+  <span class="c1">// do stuff with a transaction using the Read replica</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+
 
   <nav class="next">
     <p class="edit-page">
-      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/database/nuodb/index.html"><i class="fab fa-github"></i> Edit Page</a>
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/read-replicas/index.html"><i class="fab fa-github"></i> Edit Page</a>
     </p>
     <p class="next">
-      <a href="/docs/database/postgres" class="btn btn-info">Next: Postgres</a>
+      <a href="/docs/monitoring" class="btn btn-info">Next: Batch</a>
     </p>
   </nav>
 
