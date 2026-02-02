@@ -216,6 +216,36 @@ class. Comment out each mapping until the exception goes away, then you have ide
   unsupported collection or in some way isn't supported.
 </p>
 <p>
+  For example, if an entity has a copy constructor and is initialising a OneToMany
+  in that constructor it instead should change to use a setter method or addAll().
+</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@OneToMany</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Bar</span><span class="o">&gt;</span> <span class="n">bars</span><span class="o">;</span>
+
+<span class="cm">/** A copy constructor */</span>
+<span class="kd">public</span> <span class="nf">Foo</span><span class="o">(</span><span class="n">Foo</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// NOT Allowed - initialising to an unknown underlying collection</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">bars</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="na">getBars</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Instead use a setter like:</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/** A copy constructor */</span>
+<span class="kd">public</span> <span class="nf">Foo</span><span class="o">(</span><span class="n">Foo</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// Allowed - Use of setters is allowed</span>
+  <span class="n">setBars</span><span class="o">(</span><span class="n">source</span><span class="o">.</span><span class="na">getBars</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Or instead use addAll() like:</p>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="cm">/** A copy constructor */</span>
+<span class="kd">public</span> <span class="nf">Foo</span><span class="o">(</span><span class="n">Foo</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// Allowed - Use of addAll is allowed</span>
+  <span class="k">this</span><span class="o">.</span><span class="na field">bars</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">source</span><span class="o">.</span><span class="na">getBars</span><span class="o">());</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>
   The supported initialisation for OneToMany, ManyToMany, DbArray collections are:
 </p>
 <ul>
