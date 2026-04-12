@@ -1,0 +1,845 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Test Entity Builder | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/testing">Testing</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Test Entity Builder</span>
+      </h1>
+      <ul>
+        
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL & Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 active">
+    <a class="active" href="/docs/testing">Testing</a>
+<ul class="nav nav-scroll">
+  <li><a href="#third-age">Third age of testing</a></li>
+  <li><a href="#ebean-test">ebean-test dependency</a></li>
+  <li><a href="#ddlmode">DDL Mode</a></li>
+  <li><a href="#docker">Docker test containers</a></li>
+    <li >
+    <a  href="/docs/testing/#scriptRunner#container-startup">Container startup</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#container-shutdown">Container shutdown</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#not-docker">Not using docker</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#current-user">Current User & Tenant</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#ddl-generation-properties">DDL generation properties</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/#scriptRunner">DDL/SQL Script runner</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/testing/test-entity-builder">Test Entity Builder</a>
+  </li>
+  <li >
+    <a  href="/docs/testing/ci-testing">CI - Jenkins etc</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/read-replicas">Read Replicas</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/features">Features</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/13">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/deprecated">Deprecated</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+<h2 id="purpose">Purpose & Benefits</h2>
+
+<p>
+  <code>TestEntityBuilder</code> is a utility class for rapidly creating test entity instances
+  with auto-populated random values. It eliminates boilerplate test setup code by automatically
+  generating realistic test data for all scalar fields while respecting entity constraints.
+</p>
+
+<p>
+  This is particularly valuable for:
+</p>
+
+<ul>
+  <li><strong>Integration tests</strong> that need representative data without caring about specific values</li>
+  <li><strong>Persistence layer tests</strong> that verify save/update/delete operations work correctly</li>
+  <li><strong>Query and filter tests</strong> where you need multiple entities with varied data</li>
+  <li><strong>Rapid test setup</strong> that reduces test code verbosity and improves readability</li>
+</ul>
+
+<p>
+  Rather than manually constructing test entities like this:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Product</span><span class="o">();</span>
+<span class="n">product</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;XYZABC123&quot;</span><span class="o">);</span>
+<span class="n">product</span><span class="o">.</span><span class="na">setPrice</span><span class="o">(</span><span class="k">new</span> <span class="n">BigDecimal</span><span class="o">(</span><span class="s">&quot;99.99&quot;</span><span class="o">));</span>
+<span class="n">product</span><span class="o">.</span><span class="na">setInStock</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">product</span><span class="o">.</span><span class="na">setDescription</span><span class="o">(</span><span class="s">&quot;Test product&quot;</span><span class="o">);</span>
+<span class="c1">// ... set more fields ...</span>
+</pre></div>
+</div>
+
+<p>
+  You can now do this:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="c1">// All fields automatically populated with realistic random values</span>
+</pre></div>
+</div>
+
+<p style="border-left: 4px solid #e0e0e0; padding-left: 15px; margin: 20px 0; color: #666;">
+  <strong>Note for AI Agents:</strong> Step-by-step guides for implementing TestEntityBuilder are available at
+  <a href="https://github.com/ebean-orm/ebean/tree/master/docs/guides/testing-with-testentitybuilder.md">docs/guides/testing-with-testentitybuilder.md</a>
+  in the Ebean repository.
+</p>
+
+<h2 id="setup">Setup & Dependencies</h2>
+
+<h3>Add ebean-test to Your Project</h3>
+
+<p>
+  <code>TestEntityBuilder</code> is provided by the <code>ebean-test</code> module. Add it as a test dependency:
+</p>
+
+<p><strong>Maven:</strong></p>
+
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="ni">&amp;lt;</span>dependency<span class="ni">&amp;gt;</span>
+  <span class="ni">&amp;lt;</span>groupId<span class="ni">&amp;gt;</span>io.ebean<span class="ni">&amp;lt;</span>/groupId<span class="ni">&amp;gt;</span>
+  <span class="ni">&amp;lt;</span>artifactId<span class="ni">&amp;gt;</span>ebean-test<span class="ni">&amp;lt;</span>/artifactId<span class="ni">&amp;gt;</span>
+  <span class="ni">&amp;lt;</span>version<span class="ni">&amp;gt;</span>16.5.0<span class="ni">&amp;lt;</span>/version<span class="ni">&amp;gt;</span>
+  <span class="ni">&amp;lt;</span>scope<span class="ni">&amp;gt;</span>test<span class="ni">&amp;lt;</span>/scope<span class="ni">&amp;gt;</span>
+<span class="ni">&amp;lt;</span>/dependency<span class="ni">&amp;gt;</span>
+</pre></div>
+</div>
+
+<p><strong>Gradle:</strong></p>
+
+testImplementation 'io.ebean:ebean-test:16.5.0'
+
+
+<p>
+  Replace <code>16.5.0</code> with the version matching your Ebean installation.
+</p>
+
+<h3>Import and Create Builder</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.test.TestEntityBuilder</span><span class="o">;</span>
+
+<span class="c1">// Create a builder instance</span>
+<span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<h3>Build an Entity (In-Memory)</h3>
+
+<p>
+  The <code>build()</code> method creates an instance with populated fields <strong>without persisting to the database</strong>:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// Fields are automatically populated:</span>
+<span class="c1">// - id: null (not populated)</span>
+<span class="c1">// - name: random string (e.g., &quot;f7d2e4a1&quot;)</span>
+<span class="c1">// - price: random BigDecimal (e.g., 42.50)</span>
+<span class="c1">// - inStock: true (default for boolean)</span>
+<span class="c1">// - createdAt: current instant</span>
+<span class="c1">// - etc.</span>
+
+<span class="k">assert</span> <span class="n">product</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">;</span>           <span class="c1">// Not persisted yet</span>
+<span class="k">assert</span> <span class="n">product</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+</pre></div>
+</div>
+
+<h3>Build and Save (Persist to Database)</h3>
+
+<p>
+  The <code>save()</code> method creates, persists, and returns an entity with the database-assigned <code>@Id</code>:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// Entity is now in the database:</span>
+<span class="k">assert</span> <span class="n">product</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+
+<span class="c1">// Verify it was saved:</span>
+<span class="n">Product</span> <span class="n">found</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">product</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+<span class="k">assert</span> <span class="n">found</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+</pre></div>
+</div>
+
+<h3>Build Multiple Distinct Instances</h3>
+
+<p>
+  Each call to <code>build()</code> or <code>save()</code> produces a new instance with fresh random values:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Order</span> <span class="n">order1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Order</span> <span class="n">order2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">Order</span> <span class="n">order3</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// All have different IDs and values:</span>
+<span class="k">assert</span> <span class="n">order1</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">!=</span> <span class="n">order2</span><span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+<span class="k">assert</span> <span class="n">order1</span><span class="o">.</span><span class="na">getOrderNumber</span><span class="o">()</span> <span class="o">!=</span> <span class="n">order2</span><span class="o">.</span><span class="na">getOrderNumber</span><span class="o">();</span>
+</pre></div>
+</div>
+
+<h2 id="type-generation">Type-Specific Value Generation</h2>
+
+<p>
+  <code>TestEntityBuilder</code> generates appropriate random values for each Java/SQL type. This table shows what gets generated by default:
+</p>
+
+<table>
+  <tr>
+    <th>Java Type</th>
+    <th>Generated Value</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td><code>String</code></td>
+    <td>UUID-derived string</td>
+    <td>Truncated to column length if <code>@Column(length=...)</code> is set</td>
+  </tr>
+  <tr>
+    <td>Email fields</td>
+    <td><code>uuid@domain.com</code></td>
+    <td>Detected when property name contains "email"</td>
+  </tr>
+  <tr>
+    <td><code>Integer</code>, <code>int</code></td>
+    <td>Random in [1, 1000)</td>
+    <td>Positive random integer</td>
+  </tr>
+  <tr>
+    <td><code>Long</code>, <code>long</code></td>
+    <td>Random in [1, 100000)</td>
+    <td>Positive random long</td>
+  </tr>
+  <tr>
+    <td><code>Short</code>, <code>short</code></td>
+    <td>Random in [1, 100)</td>
+    <td>Positive random short</td>
+  </tr>
+  <tr>
+    <td><code>Double</code>, <code>double</code></td>
+    <td>Random in [1, 100)</td>
+    <td>Floating point value</td>
+  </tr>
+  <tr>
+    <td><code>Float</code>, <code>float</code></td>
+    <td>Random in [1, 100)</td>
+    <td>Floating point value</td>
+  </tr>
+  <tr>
+    <td><code>BigDecimal</code></td>
+    <td>Respects precision and scale</td>
+    <td>Uses <code>@Column(precision=..., scale=...)</code></td>
+  </tr>
+  <tr>
+    <td><code>Boolean</code>, <code>boolean</code></td>
+    <td><code>true</code></td>
+    <td>Override in custom generator if needed</td>
+  </tr>
+  <tr>
+    <td><code>UUID</code></td>
+    <td>Random UUID</td>
+    <td>Via <code>UUID.randomUUID()</code></td>
+  </tr>
+  <tr>
+    <td><code>LocalDate</code></td>
+    <td>Today's date</td>
+    <td>Via <code>LocalDate.now()</code></td>
+  </tr>
+  <tr>
+    <td><code>LocalDateTime</code></td>
+    <td>Current datetime</td>
+    <td>Via <code>LocalDateTime.now()</code></td>
+  </tr>
+  <tr>
+    <td><code>Instant</code></td>
+    <td>Current instant</td>
+    <td>Via <code>Instant.now()</code></td>
+  </tr>
+  <tr>
+    <td><code>Enum</code></td>
+    <td>First constant</td>
+    <td>Override in custom generator if needed</td>
+  </tr>
+  <tr>
+    <td>Other types</td>
+    <td><code>null</code></td>
+    <td>Set these fields manually in tests</td>
+  </tr>
+</table>
+
+<h3>String Length Constraints</h3>
+
+<p>
+  The builder respects column length constraints:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+  <span class="nd">@Column</span><span class="o">(</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">50</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">username</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">().</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="o">;</span>  <span class="c1">// Constraint respected</span>
+</pre></div>
+</div>
+
+<h3>BigDecimal Precision and Scale</h3>
+
+<p>
+  For <code>BigDecimal</code> fields, the builder respects database column precision and scale:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LineItem</span> <span class="o">{</span>
+  <span class="nd">@Column</span><span class="o">(</span><span class="nx">precision</span> <span class="o">=</span> <span class="mi">10</span><span class="o">,</span> <span class="nx">scale</span> <span class="o">=</span> <span class="mi">2</span><span class="o">)</span>  <span class="c1">// max 99_999_999.99</span>
+  <span class="kd">private</span> <span class="n">BigDecimal</span> <span class="n">amount</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">LineItem</span> <span class="n">item</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">LineItem</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="na">getAmount</span><span class="o">().</span><span class="na">scale</span><span class="o">()</span> <span class="o">==</span> <span class="mi">2</span><span class="o">;</span>
+</pre></div>
+</div>
+
+<h2 id="relationships">Entity Relationships</h2>
+
+<h3>Cascade Persist Relationships: Recursively Built</h3>
+
+<p>
+  Relationships marked with <code>cascade = PERSIST</code> are recursively populated:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Customer</span> <span class="n">customer</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// Both order and customer are built:</span>
+<span class="k">assert</span> <span class="n">order</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">assert</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">assert</span> <span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">().</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// not persisted yet</span>
+
+<span class="c1">// When saved, cascade handles both:</span>
+<span class="n">Order</span> <span class="n">saved</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">saved</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+<span class="k">assert</span> <span class="n">saved</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">().</span><span class="na">getId</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>  <span class="c1">// parent also saved</span>
+</pre></div>
+</div>
+
+<h3>Non-Cascade Relationships: Left Null</h3>
+
+<p>
+  Relationships without cascade persist are left null:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BlogPost</span> <span class="o">{</span>
+  <span class="nd">@ManyToOne</span>  <span class="c1">// No cascade = left null</span>
+  <span class="kd">private</span> <span class="n">Author</span> <span class="n">author</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">BlogPost</span> <span class="n">post</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">BlogPost</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">post</span><span class="o">.</span><span class="na">getAuthor</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">;</span>
+
+<span class="c1">// Set it manually if needed for your test:</span>
+<span class="n">post</span><span class="o">.</span><span class="na">setAuthor</span><span class="o">(</span><span class="n">manuallyCreatedAuthor</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h3>Collection Relationships: Left Empty</h3>
+
+<p>
+  Collection relationships (<code>@OneToMany</code>, <code>@ManyToMany</code>) are left empty:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Author</span> <span class="o">{</span>
+  <span class="nd">@OneToMany</span><span class="o">(</span><span class="nx">mappedBy</span> <span class="o">=</span> <span class="s">&quot;author&quot;</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">BlogPost</span><span class="o">&gt;</span> <span class="n">posts</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">Author</span> <span class="n">author</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Author</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">author</span><span class="o">.</span><span class="na">getPosts</span><span class="o">().</span><span class="na">isEmpty</span><span class="o">();</span>
+
+<span class="c1">// Populate if needed:</span>
+<span class="n">author</span><span class="o">.</span><span class="na">getPosts</span><span class="o">().</span><span class="na">addAll</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">post1</span><span class="o">,</span> <span class="n">post2</span><span class="o">,</span> <span class="n">post3</span><span class="o">));</span>
+</pre></div>
+</div>
+
+<h3>Cycle Detection: Prevents Infinite Recursion</h3>
+
+<p>
+  If two entities reference each other with cascade persist, the builder detects the cycle and breaks it by leaving one reference null:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Organization</span> <span class="n">org</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="nd">@Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Organization</span> <span class="o">{</span>
+  <span class="nd">@ManyToOne</span><span class="o">(</span><span class="nx">cascade</span> <span class="o">=</span> <span class="nx">CascadeType</span><span class="o">.</span><span class="na">PERSIST</span><span class="o">)</span>
+  <span class="kd">private</span> <span class="n">Person</span> <span class="n">founder</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Person</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="c1">// One reference will be null to break the cycle</span>
+</pre></div>
+</div>
+
+<h2 id="customization">Customization via RandomValueGenerator</h2>
+
+<h3>Why Customize?</h3>
+
+<p>
+  The default <code>RandomValueGenerator</code> uses generic random values. For domain-specific testing, you may want:
+</p>
+
+<ul>
+  <li>Email addresses with your company domain</li>
+  <li>Realistic phone numbers or SKUs</li>
+  <li>Monetary amounts within realistic ranges</li>
+  <li>Addresses in specific regions</li>
+</ul>
+
+<h3>Creating a Custom Generator</h3>
+
+<p>
+  Subclass <code>RandomValueGenerator</code> and override individual methods:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">CompanyTestDataGenerator</span> <span class="kd">extends</span> <span class="n">RandomValueGenerator</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">randomString</span><span class="o">(</span><span class="n">String</span> <span class="n">propName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxLength</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">propName</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">propName</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">().</span><span class="na">contains</span><span class="o">(</span><span class="s">&quot;email&quot;</span><span class="o">))</span> <span class="o">{</span>
+      <span class="n">String</span> <span class="n">localPart</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">randomUUID</span><span class="o">().</span><span class="na">toString</span><span class="o">().</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">8</span><span class="o">);</span>
+      <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">localPart</span> <span class="o">+</span> <span class="s">&quot;@mycompany.com&quot;</span><span class="o">;</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">maxLength</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">email</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">maxLength</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">email</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">maxLength</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">email</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">randomString</span><span class="o">(</span><span class="n">propName</span><span class="o">,</span> <span class="n">maxLength</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>Using a Custom Generator</h3>
+
+<p>
+  Pass the custom generator when building:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">CompanyTestDataGenerator</span><span class="o">())</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="k">assert</span> <span class="n">user</span><span class="o">.</span><span class="na">getEmail</span><span class="o">().</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;@mycompany.com&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<h3>Example: Domain-Specific Money Type</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoneyValueGenerator</span> <span class="kd">extends</span> <span class="n">RandomValueGenerator</span> <span class="o">{</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">BigDecimal</span> <span class="nf">randomBigDecimal</span><span class="o">(</span><span class="kt">int</span> <span class="n">precision</span><span class="o">,</span> <span class="kt">int</span> <span class="n">scale</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// Generate prices in realistic range: &#36;5.00 to &#36;999.99</span>
+    <span class="n">BigDecimal</span> <span class="n">price</span> <span class="o">=</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span>
+      <span class="n">ThreadLocalRandom</span><span class="o">.</span><span class="na">current</span><span class="o">().</span><span class="na">nextDouble</span><span class="o">(</span><span class="mf">5.0</span><span class="o">,</span> <span class="mf">1000.0</span><span class="o">)</span>
+    <span class="o">);</span>
+    <span class="k">return</span> <span class="n">price</span><span class="o">.</span><span class="na">setScale</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">RoundingMode</span><span class="o">.</span><span class="na">HALF_UP</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="best-practices">Best Practices</h2>
+
+<h3>1. Use for Integration Tests, Not Unit Tests</h3>
+
+<p>
+  <strong>Good:</strong> Integration test with database
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">whenSaving_thenCanRetrieve</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">Product</span> <span class="n">found</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">product</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">found</span><span class="o">).</span><span class="na">isNotNull</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<p>
+  <strong>Poor:</strong> Validation test requiring specific values
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">whenNameIsBlank_thenThrowException</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>  <span class="c1">// name is random!</span>
+  <span class="n">product</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>  <span class="c1">// have to override anyway</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>2. Override Values for Specific Test Scenarios</h3>
+
+<p>
+  When test requirements demand specific field values, manually override after building:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">whenStockIsLow_thenShowWarning</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">product</span><span class="o">.</span><span class="na">setQuantity</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>  <span class="c1">// Specific value for this test</span>
+
+  <span class="kt">boolean</span> <span class="n">shouldWarn</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="na">shouldShowLowStockWarning</span><span class="o">();</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">shouldWarn</span><span class="o">).</span><span class="na">isTrue</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>3. Create Fixture Factories for Common Patterns</h3>
+
+<p>
+  Encapsulate common test entity setups in factory methods:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestDataFactory</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span>
+    <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Order</span> <span class="nf">createPendingOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">order</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Order</span> <span class="nf">savePendingOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">createPendingOrder</span><span class="o">();</span>
+    <span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// Usage:</span>
+<span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">whenOrderPending_thenCanUpdate</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">TestDataFactory</span><span class="o">.</span><span class="na">savePendingOrder</span><span class="o">();</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="examples">Complete Examples</h2>
+
+<h3>Example 1: Integration Test with Repository</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@SpringBootTest</span>
+<span class="kd">class</span> <span class="nc">OrderRepositoryTest</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span>
+  <span class="kd">private</span> <span class="n">OrderRepository</span> <span class="n">orderRepository</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="n">TestEntityBuilder</span> <span class="n">builder</span><span class="o">;</span>
+
+  <span class="nd">@BeforeEach</span>
+  <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="nd">@Test</span>
+  <span class="kt">void</span> <span class="nf">whenFindingOrdersByStatus_thenReturnsMatching</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">// Create test data quickly</span>
+    <span class="n">Order</span> <span class="n">pending1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">pending1</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+
+    <span class="n">Order</span> <span class="n">pending2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">pending2</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+
+    <span class="n">Order</span> <span class="n">shipped</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">shipped</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">);</span>
+
+    <span class="n">DB</span><span class="o">.</span><span class="na">saveAll</span><span class="o">(</span><span class="n">pending1</span><span class="o">,</span> <span class="n">pending2</span><span class="o">,</span> <span class="n">shipped</span><span class="o">);</span>
+
+    <span class="c1">// Test the query</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pending</span> <span class="o">=</span> <span class="n">orderRepository</span><span class="o">.</span><span class="na">findByStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">assertThat</span><span class="o">(</span><span class="n">pending</span><span class="o">).</span><span class="na">hasSize</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>Example 2: Recursive Relationship Building</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">whenBuildingOrderWithCustomer_thenBothPopulated</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+  <span class="c1">// Customer is recursively built due to @ManyToOne(cascade=PERSIST)</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">().</span><span class="na">getId</span><span class="o">()).</span><span class="na">isNull</span><span class="o">();</span>  <span class="c1">// not persisted yet</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">order</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">().</span><span class="na">getName</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+
+  <span class="c1">// Saving cascades to customer:</span>
+  <span class="n">Order</span> <span class="n">saved</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">saved</span><span class="o">.</span><span class="na">getId</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">saved</span><span class="o">.</span><span class="na">getCustomer</span><span class="o">().</span><span class="na">getId</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>Example 3: Custom Generator for Domain Values</h3>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">ECommerceTestDataGenerator</span> <span class="kd">extends</span> <span class="n">RandomValueGenerator</span> <span class="o">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">BigDecimal</span> <span class="nf">randomBigDecimal</span><span class="o">(</span><span class="kt">int</span> <span class="n">precision</span><span class="o">,</span> <span class="kt">int</span> <span class="n">scale</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// Product prices typically &#36;10-&#36;500</span>
+    <span class="k">return</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span>
+      <span class="n">ThreadLocalRandom</span><span class="o">.</span><span class="na">current</span><span class="o">().</span><span class="na">nextDouble</span><span class="o">(</span><span class="mf">10.0</span><span class="o">,</span> <span class="mf">500.0</span><span class="o">)</span>
+    <span class="o">).</span><span class="na">setScale</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">RoundingMode</span><span class="o">.</span><span class="na">HALF_UP</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@Test</span>
+<span class="kt">void</span> <span class="nf">usingCustomGenerator</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">())</span>
+      <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">ECommerceTestDataGenerator</span><span class="o">())</span>
+      <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+  <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+  <span class="n">assertThat</span><span class="o">(</span><span class="n">product</span><span class="o">.</span><span class="na">getPrice</span><span class="o">())</span>
+      <span class="o">.</span><span class="na">isBetween</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">TEN</span><span class="o">,</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mf">500.0</span><span class="o">));</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3>Error: "No BeanDescriptor found for [Class] — is it an @Entity?"</h3>
+
+<p>
+  <strong>Cause:</strong> The class is not registered as an Ebean entity.
+</p>
+
+<p>
+  <strong>Solution:</strong> Ensure the class is annotated with <code>@Entity</code>:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="nx">name</span> <span class="o">=</span> <span class="s">&quot;products&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Product</span> <span class="o">{</span>
+  <span class="c1">// ...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<h3>Fields are null even though I expected them populated</h3>
+
+<p>
+  <strong>Cause:</strong> <code>TestEntityBuilder</code> does <strong>not</strong> populate:
+</p>
+
+<ul>
+  <li><code>@Id</code> fields (identity)</li>
+  <li><code>@Version</code> fields (optimistic locking)</li>
+  <li><code>@Transient</code> fields</li>
+  <li><code>@OneToMany</code> collections</li>
+  <li>Non-cascade <code>@ManyToOne</code> relationships</li>
+</ul>
+
+<p>
+  <strong>Solution:</strong> Set these fields manually if needed:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">product</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">1L</span><span class="o">);</span>  <span class="c1">// Set @Id manually</span>
+</pre></div>
+</div>
+
+<h3>StackOverflowError with Recursive Relationships</h3>
+
+<p>
+  <strong>Cause:</strong> Two or more entities mutually reference each other without cycle detection.
+</p>
+
+<p>
+  <strong>Solution:</strong> This should be handled automatically. If not, manually break the cycle:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Person</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">person</span><span class="o">.</span><span class="na">getOrganization</span><span class="o">().</span><span class="na">setFounder</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>  <span class="c1">// Break cycle</span>
+</pre></div>
+</div>
+
+<h3>Values Generated are Too Random for My Test</h3>
+
+<p>
+  <strong>Cause:</strong> Default <code>RandomValueGenerator</code> uses true random values, not suitable when your test needs predictable data.
+</p>
+
+<p>
+  <strong>Solution:</strong> Create a deterministic custom generator:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">DeterministicTestDataGenerator</span> <span class="kd">extends</span> <span class="n">RandomValueGenerator</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">randomString</span><span class="o">(</span><span class="n">String</span> <span class="n">propName</span><span class="o">,</span> <span class="kt">int</span> <span class="n">maxLength</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">&quot;test_&quot;</span> <span class="o">+</span> <span class="o">(</span><span class="n">counter</span><span class="o">++);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  <nav class="next">
+    <p class="edit-page">
+      <a href="https://github.com/ebean-orm/website-source/blob/master/docs/testing/test-entity-builder/index.html"><i class="fab fa-github"></i> Edit Page</a>
+    </p>
+    <p class="next">
+      <a href="/docs/testing/ci-testing" class="btn btn-info">Next: CI Testing</a>
+    </p>
+  </nav>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-75181644-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-75181644-1');
+</script>
+</body>
+</html>

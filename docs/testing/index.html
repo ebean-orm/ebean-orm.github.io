@@ -87,6 +87,9 @@
     <a  href="/docs/testing/#scriptRunner">DDL/SQL Script runner</a>
   </li>
   <li >
+    <a  href="/docs/testing/test-entity-builder">Test Entity Builder</a>
+  </li>
+  <li >
     <a  href="/docs/testing/ci-testing">CI - Jenkins etc</a>
   </li>
 </ul>
@@ -263,6 +266,51 @@ touch ~/.ebean/ignore-docker-shutdown
   <li>Docker test container setup and execution based on the database platform</li>
   <li>Current user and tenant provider if not already specified (to ease testing with @Who properties etc)</li>
 </ul>
+
+<h2 id="testEntityBuilder">Test Entity Builder</h2>
+
+<p>
+  The <code>TestEntityBuilder</code> class is a utility for rapidly creating test entity instances
+  with auto-populated random values. This is particularly useful for integration tests where you need
+  representative data without manually setting each field.
+</p>
+
+<p>
+  Key features:
+</p>
+
+<ul>
+  <li>Auto-generates appropriate random values for all supported types</li>
+  <li>Respects column length and decimal precision constraints</li>
+  <li>Handles entity relationships with cascade persist</li>
+  <li>Cycle detection prevents infinite recursion</li>
+  <li>Customizable via subclassing <code>RandomValueGenerator</code></li>
+</ul>
+
+<p>
+  Example usage:
+</p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+
+<span class="c1">// Build in-memory (not persisted)</span>
+<span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// Build and save to database</span>
+<span class="n">Product</span> <span class="n">saved</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</pre></div>
+</div>
+
+<p>
+  <a href="/docs/testing/test-entity-builder">See the full Test Entity Builder guide</a> for detailed setup,
+  usage, examples, and best practices.
+</p>
+
+<p>
+  <strong>For AI Agents:</strong> Step-by-step guides for using TestEntityBuilder and other tasks are available at
+  <a href="https://github.com/ebean-orm/ebean/tree/master/docs/guides/README.md">docs/guides/README.md</a>
+  in the GitHub repository.
+</p>
 
 <h2 id="test-platform">ebean.test.platform - application-test.yaml</h2>
 <p>
