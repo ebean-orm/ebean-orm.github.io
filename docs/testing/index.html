@@ -291,22 +291,24 @@ touch ~/.ebean/ignore-docker-shutdown
 </ul>
 
 <p>
-  Example usage:
+  The recommended way to use <code>TestEntityBuilder</code> in a DI-managed test context (Spring or Avaje Inject)
+  is to register it as a bean so it can be injected directly — no <code>@BeforeEach</code> setup required:
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Spring Boot — add to a @TestConfiguration class</span>
+<span class="nd">@Bean</span>
+<span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+<span class="o">}</span>
 
-<span class="c1">// Build in-memory (not persisted)</span>
-<span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-
-<span class="c1">// Build and save to database</span>
-<span class="n">Product</span> <span class="n">saved</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="c1">// Then inject in test classes:</span>
+<span class="nd">@Autowired</span> <span class="nx">TestEntityBuilder</span> <span class="nx">builder</span><span class="o">;</span>
 </pre></div>
 </div>
 
 <p>
   <a href="/docs/testing/test-entity-builder">See the full Test Entity Builder guide</a> for detailed setup,
-  usage, examples, and best practices.
+  DI integration patterns (Spring and Avaje Inject), examples, and best practices.
 </p>
 
 <p>

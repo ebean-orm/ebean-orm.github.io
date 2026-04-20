@@ -214,7 +214,7 @@
 <div class="syntax xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>io.ebean<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>ebean-test<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>16.5.0<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>&#36;{ebean.version}<span class="nt">&lt;/version&gt;</span>
   <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
@@ -222,19 +222,74 @@
 
 <p><strong>Gradle:</strong></p>
 
-testImplementation 'io.ebean:ebean-test:16.5.0'
+testImplementation "io.ebean:ebean-test:&#36;{ebeanVersion}"
 
 
 <p>
-  Replace <code>16.5.0</code> with the version matching your Ebean installation.
+  Use a version matching your Ebean runtime. If your build does not centralise versions,
+  replace with an explicit fixed version.
 </p>
 
-<h3>Import and Create Builder</h3>
+<h3>Using with Dependency Injection</h3>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io.ebean.test.TestEntityBuilder</span><span class="o">;</span>
+<p>
+  Most applications using Ebean also use a DI framework. The recommended pattern is to
+  register <code>TestEntityBuilder</code> as a bean in the test DI context so it can be
+  injected directly into test classes — eliminating <code>@BeforeEach</code> setup entirely.
+</p>
 
-<span class="c1">// Create a builder instance</span>
-<span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
+<p><strong>Spring Boot — <code>@TestConfiguration</code>:</strong></p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@TestConfiguration</span>
+<span class="kd">class</span> <span class="nc">TestConfig</span> <span class="o">{</span>
+
+  <span class="nd">@Bean</span>
+  <span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@SpringBootTest</span>
+<span class="kd">class</span> <span class="nc">OrderControllerTest</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span> <span class="nx">Database</span> <span class="nx">database</span><span class="o">;</span>
+  <span class="nd">@Autowired</span> <span class="nx">TestEntityBuilder</span> <span class="nx">builder</span><span class="o">;</span>
+
+  <span class="nd">@Test</span>
+  <span class="kt">void</span> <span class="nf">findByStatus</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+    <span class="c1">// ... test assertions</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<p><strong>Avaje Inject — <code>@TestScope @Factory</code>:</strong></p>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@TestScope</span>
+<span class="nd">@Factory</span>
+<span class="kd">class</span> <span class="nc">TestConfiguration</span> <span class="o">{</span>
+
+  <span class="nd">@Bean</span>
+  <span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nd">@InjectTest</span>
+<span class="kd">class</span> <span class="nc">OrderControllerTest</span> <span class="o">{</span>
+
+  <span class="nd">@Inject</span> <span class="nx">Database</span> <span class="nx">database</span><span class="o">;</span>
+  <span class="nd">@Inject</span> <span class="nx">TestEntityBuilder</span> <span class="nx">builder</span><span class="o">;</span>
+
+  <span class="nd">@Test</span>
+  <span class="kt">void</span> <span class="nf">findByStatus</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">var</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+    <span class="c1">// ... test assertions</span>
+  <span class="o">}</span>
+<span class="o">}</span>
 </pre></div>
 </div>
 
@@ -329,7 +384,7 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
   <tr>
     <td><code>Short</code>, <code>short</code></td>
     <td>Random in [1, 100)</td>
-    <td>Positive random short</td>
+    <td>If used as a boolean flag (e.g. <code>active = 1</code>), override explicitly after building</td>
   </tr>
   <tr>
     <td><code>Double</code>, <code>double</code></td>
@@ -550,10 +605,25 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
 <h3>Using a Custom Generator</h3>
 
 <p>
-  Pass the custom generator when building:
+  Pass the custom generator when building. In a DI context, configure it in your
+  <code>@TestConfiguration</code> or <code>@TestScope @Factory</code> class:
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">())</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Spring Boot</span>
+<span class="nd">@TestConfiguration</span>
+<span class="kd">class</span> <span class="nc">TestConfig</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">CompanyTestDataGenerator</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Without DI — pass database directly:</span>
+<span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">)</span>
     <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">CompanyTestDataGenerator</span><span class="o">())</span>
     <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
@@ -628,32 +698,55 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
 <h3>3. Create Fixture Factories for Common Patterns</h3>
 
 <p>
-  Encapsulate common test entity setups in factory methods:
+  For shared domain-specific setup, encapsulate build patterns in an instance helper class
+  that takes <code>TestEntityBuilder</code> and <code>Database</code> via its constructor.
+  In a DI context, register it as a bean alongside <code>TestEntityBuilder</code>:
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestDataFactory</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// Spring Boot</span>
+<span class="nd">@TestConfiguration</span>
+<span class="kd">class</span> <span class="nc">TestConfig</span> <span class="o">{</span>
 
-  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span>
-    <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
-
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Order</span> <span class="nf">createPendingOrder</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">order</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
+  <span class="nd">@Bean</span>
+  <span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="n">Order</span> <span class="nf">savePendingOrder</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">createPendingOrder</span><span class="o">();</span>
-    <span class="n">DB</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
+  <span class="nd">@Bean</span>
+  <span class="n">OrderTestFactory</span> <span class="nf">orderTestFactory</span><span class="o">(</span><span class="n">TestEntityBuilder</span> <span class="n">builder</span><span class="o">,</span> <span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">OrderTestFactory</span><span class="o">(</span><span class="n">builder</span><span class="o">,</span> <span class="n">database</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderTestFactory</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">TestEntityBuilder</span> <span class="n">builder</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="n">Database</span> <span class="n">database</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">OrderTestFactory</span><span class="o">(</span><span class="n">TestEntityBuilder</span> <span class="n">builder</span><span class="o">,</span> <span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">builder</span> <span class="o">=</span> <span class="n">builder</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">database</span> <span class="o">=</span> <span class="n">database</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">Order</span> <span class="nf">savePendingOrder</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">order</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">database</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">order</span><span class="o">);</span>
     <span class="k">return</span> <span class="n">order</span><span class="o">;</span>
   <span class="o">}</span>
 <span class="o">}</span>
 
-<span class="c1">// Usage:</span>
-<span class="nd">@Test</span>
-<span class="kt">void</span> <span class="nf">whenOrderPending_thenCanUpdate</span><span class="o">()</span> <span class="o">{</span>
-  <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">TestDataFactory</span><span class="o">.</span><span class="na">savePendingOrder</span><span class="o">();</span>
-  <span class="c1">// ...</span>
+<span class="c1">// Usage in tests:</span>
+<span class="nd">@SpringBootTest</span>
+<span class="kd">class</span> <span class="nc">OrderControllerTest</span> <span class="o">{</span>
+
+  <span class="nd">@Autowired</span> <span class="nx">OrderTestFactory</span> <span class="nx">orderFactory</span><span class="o">;</span>
+
+  <span class="nd">@Test</span>
+  <span class="kt">void</span> <span class="nf">whenOrderPending_thenCanUpdate</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">Order</span> <span class="n">order</span> <span class="o">=</span> <span class="n">orderFactory</span><span class="o">.</span><span class="na">savePendingOrder</span><span class="o">();</span>
+    <span class="c1">// ...</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -665,31 +758,17 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@SpringBootTest</span>
 <span class="kd">class</span> <span class="nc">OrderRepositoryTest</span> <span class="o">{</span>
 
-  <span class="nd">@Autowired</span>
-  <span class="kd">private</span> <span class="n">OrderRepository</span> <span class="n">orderRepository</span><span class="o">;</span>
-
-  <span class="kd">private</span> <span class="n">TestEntityBuilder</span> <span class="n">builder</span><span class="o">;</span>
-
-  <span class="nd">@BeforeEach</span>
-  <span class="kt">void</span> <span class="nf">setup</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">()).</span><span class="na">build</span><span class="o">();</span>
-  <span class="o">}</span>
+  <span class="nd">@Autowired</span> <span class="nx">Database</span> <span class="nx">database</span><span class="o">;</span>
+  <span class="nd">@Autowired</span> <span class="nx">OrderRepository</span> <span class="nx">orderRepository</span><span class="o">;</span>
+  <span class="nd">@Autowired</span> <span class="nx">TestEntityBuilder</span> <span class="nx">builder</span><span class="o">;</span>
 
   <span class="nd">@Test</span>
   <span class="kt">void</span> <span class="nf">whenFindingOrdersByStatus_thenReturnsMatching</span><span class="o">()</span> <span class="o">{</span>
-    <span class="c1">// Create test data quickly</span>
-    <span class="n">Order</span> <span class="n">pending1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">pending1</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">Order</span> <span class="n">pending1</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">Order</span> <span class="n">pending2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
+    <span class="n">Order</span> <span class="n">shipped</span>  <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">);</span>
+    <span class="n">database</span><span class="o">.</span><span class="na">saveAll</span><span class="o">(</span><span class="n">pending1</span><span class="o">,</span> <span class="n">pending2</span><span class="o">,</span> <span class="n">shipped</span><span class="o">);</span>
 
-    <span class="n">Order</span> <span class="n">pending2</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">pending2</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
-
-    <span class="n">Order</span> <span class="n">shipped</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Order</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-    <span class="n">shipped</span><span class="o">.</span><span class="na">setStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">SHIPPED</span><span class="o">);</span>
-
-    <span class="n">DB</span><span class="o">.</span><span class="na">saveAll</span><span class="o">(</span><span class="n">pending1</span><span class="o">,</span> <span class="n">pending2</span><span class="o">,</span> <span class="n">shipped</span><span class="o">);</span>
-
-    <span class="c1">// Test the query</span>
     <span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">pending</span> <span class="o">=</span> <span class="n">orderRepository</span><span class="o">.</span><span class="na">findByStatus</span><span class="o">(</span><span class="n">OrderStatus</span><span class="o">.</span><span class="na">PENDING</span><span class="o">);</span>
     <span class="n">assertThat</span><span class="o">(</span><span class="n">pending</span><span class="o">).</span><span class="na">hasSize</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
   <span class="o">}</span>
@@ -728,12 +807,20 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
   <span class="o">}</span>
 <span class="o">}</span>
 
+<span class="c1">// Register in @TestConfiguration (or @TestScope @Factory for Avaje Inject):</span>
+<span class="nd">@TestConfiguration</span>
+<span class="kd">class</span> <span class="nc">TestConfig</span> <span class="o">{</span>
+  <span class="nd">@Bean</span>
+  <span class="n">TestEntityBuilder</span> <span class="nf">testEntityBuilder</span><span class="o">(</span><span class="n">Database</span> <span class="n">database</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">database</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">ECommerceTestDataGenerator</span><span class="o">())</span>
+        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="c1">// Then use the injected builder in tests:</span>
 <span class="nd">@Test</span>
 <span class="kt">void</span> <span class="nf">usingCustomGenerator</span><span class="o">()</span> <span class="o">{</span>
-  <span class="n">TestEntityBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="n">TestEntityBuilder</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">())</span>
-      <span class="o">.</span><span class="na">valueGenerator</span><span class="o">(</span><span class="k">new</span> <span class="n">ECommerceTestDataGenerator</span><span class="o">())</span>
-      <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-
   <span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
   <span class="n">assertThat</span><span class="o">(</span><span class="n">product</span><span class="o">.</span><span class="na">getPrice</span><span class="o">())</span>
       <span class="o">.</span><span class="na">isBetween</span><span class="o">(</span><span class="n">BigDecimal</span><span class="o">.</span><span class="na">TEN</span><span class="o">,</span> <span class="n">BigDecimal</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="mf">500.0</span><span class="o">));</span>
@@ -776,11 +863,17 @@ testImplementation 'io.ebean:ebean-test:16.5.0'
 </ul>
 
 <p>
-  <strong>Solution:</strong> Set these fields manually if needed:
+  <strong>Solution:</strong> Set these fields manually if needed. For <code>@Id</code> fields,
+  use <code>builder.save(Product.class)</code> instead of <code>builder.build(Product.class)</code>
+  — saving persists the entity and returns it with a DB-assigned id:
 </p>
 
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-<span class="n">product</span><span class="o">.</span><span class="na">setId</span><span class="o">(</span><span class="mi">1L</span><span class="o">);</span>  <span class="c1">// Set @Id manually</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// build() — in-memory only, @Id remains null</span>
+<span class="n">Product</span> <span class="n">product</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+<span class="c1">// save() — persisted, @Id is DB-assigned</span>
+<span class="n">Product</span> <span class="n">saved</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="n">Product</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">assertThat</span><span class="o">(</span><span class="n">saved</span><span class="o">.</span><span class="na">getId</span><span class="o">()).</span><span class="na">isNotNull</span><span class="o">();</span>
 </pre></div>
 </div>
 
