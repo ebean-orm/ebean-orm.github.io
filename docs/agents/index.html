@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>AI Agent Instructions | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">AI Agents</span>
+      </h1>
+      <ul>
+        
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 active">
+    <a class="active" href="/docs/agents">AI Agents</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL & Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/read-replicas">Read Replicas</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/features">Features</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/13">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/deprecated">Deprecated</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+<h2 id="overview">AI Agent Instructions</h2>
+<p>
+  This page is the entry point for AI coding agents (GitHub Copilot, Cursor, Claude Code,
+  OpenAI Codex, etc.) working in projects that use Ebean ORM.
+</p>
+<p>
+  The fastest way to bootstrap Ebean knowledge is to fetch <a href="/llms.txt">https://ebean.io/llms.txt</a> —
+  it contains a concise capability reference and links to all step-by-step guides.
+</p>
+
+<h2 id="guides">Step-by-step guides</h2>
+<p>
+  Prescriptive guides written for AI agents and developers. Fetch and follow the relevant
+  guide before performing Ebean-related tasks.
+</p>
+<p>
+  Full guide index: <a href="https://github.com/ebean-orm/ebean/tree/HEAD/docs/guides/">https://github.com/ebean-orm/ebean/tree/HEAD/docs/guides/</a>
+</p>
+
+<table class="table">
+  <tr>
+    <th>Guide</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-maven-pom.md">Maven POM setup</a></td>
+    <td>Add Ebean dependencies, the enhancement plugin, and querybean-generator to pom.xml</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-database-config.md">Database configuration</a></td>
+    <td>Configure the Ebean Database bean using DataSourceBuilder and DatabaseBuilder with Avaje Inject</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-test-container.md">Test container setup</a></td>
+    <td>Start a PostgreSQL or PostGIS Docker container for tests using @TestScope @Factory</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/writing-ebean-query-beans.md">Write queries with query beans</a></td>
+    <td>Type-safe Q-bean queries — choose terminal methods, tune select/fetch, project to DTOs</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/persisting-and-transactions-with-ebean.md">Persisting and transactions</a></td>
+    <td>Choose insert/save/update/delete, cascade rules, @Transactional, batch writes</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-db-migration-generation.md">DB migration generation</a></td>
+    <td>Generate schema diff migrations offline with GenerateDbMigration.java</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/entity-bean-creation.md">Entity bean creation</a></td>
+    <td>Clean, idiomatic entity beans — annotations, field patterns, relationships, anti-patterns</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/lombok-with-ebean-entity-beans.md">Lombok with entity beans</a></td>
+    <td>Which Lombok annotations to use and avoid; why @Data is incompatible with Ebean</td>
+  </tr>
+  <tr>
+    <td><a href="https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/testing-with-testentitybuilder.md">Testing with TestEntityBuilder</a></td>
+    <td>Rapidly create test entity instances with auto-populated random values</td>
+  </tr>
+</table>
+
+<h2 id="project-config">Add to your project</h2>
+<p>
+  Copy the relevant snippet into your project so AI agents working in your codebase
+  automatically discover these guides.
+</p>
+
+<h4 id="agents-md">agents.md — OpenAI Codex / GitHub Copilot coding agent</h4>
+<p>Place an <code>agents.md</code> at your repo root:</p>
+<pre class="code">
+## Ebean ORM
+
+This project uses [Ebean ORM](https://ebean.io). Step-by-step guides for common
+tasks are at: https://github.com/ebean-orm/ebean/tree/HEAD/docs/guides/
+
+Key guides (fetch and follow these when performing the relevant task):
+- Maven POM setup: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-maven-pom.md
+- Database configuration: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-database-config.md
+- Write queries with query beans: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/writing-ebean-query-beans.md
+- Persisting and transactions: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/persisting-and-transactions-with-ebean.md
+- Test container setup: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-postgres-test-container.md
+- DB migration generation: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/add-ebean-db-migration-generation.md
+- Entity bean creation: https://raw.githubusercontent.com/ebean-orm/ebean/HEAD/docs/guides/entity-bean-creation.md
+</pre>
+
+<h4 id="copilot">GitHub Copilot — <code>.github/copilot-instructions.md</code></h4>
+<p>Same content as <code>agents.md</code> above — add an <code>## Ebean ORM</code> section.</p>
+
+<h4 id="claude">Claude Code — <code>CLAUDE.md</code></h4>
+<p>Same content as <code>agents.md</code> above — Claude Code reads <code>CLAUDE.md</code> at the project root.</p>
+
+<h4 id="cursor">Cursor — <code>.cursor/rules/ebean.mdc</code></h4>
+<pre class="code">
+---
+description: Ebean ORM task guidance
+globs: ["**/*.java", "**/pom.xml"]
+alwaysApply: false
+---
+
+## Ebean ORM
+
+This project uses Ebean ORM. Before performing any Ebean-related task, fetch and
+follow the relevant step-by-step guide from:
+https://github.com/ebean-orm/ebean/tree/HEAD/docs/guides/
+</pre>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-75181644-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-75181644-1');
+</script>
+</body>
+</html>
