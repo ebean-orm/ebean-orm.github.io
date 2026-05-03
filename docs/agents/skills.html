@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Agent Skills for Ebean Projects | Ebean</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="/images/favicon.ico">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Source+Sans+Pro|Ubuntu&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/reset3.css">
+  <link rel="stylesheet" href="/css/site3.css">
+  <link rel="stylesheet" href="/css/pygments3.css">
+</head>
+<body>
+<div id="main">
+  
+<div id="banner">
+  <header>
+    <nav id="top">
+      <h1 id="breadcrumb">
+        <a class="nav-logo" href="/"><img src="/images/logo-200.png" height="35"></a>&nbsp;&nbsp;<a href="/docs">Documentation</a><span class="sep">&nbsp;/&nbsp;</span><a href="/docs/agents">AI Agents</a><span class="sep">&nbsp;/&nbsp;</span><span class="last">Agent Skills</span>
+      </h1>
+      <ul>
+        <li>  <a href="https://github.com/ebean-orm/website-source/blob/master/docs/agents/skills.html"><i class="fab fa-github"></i> edit page</a>
+</li>
+        <li><a onclick="toggleTheme();" title="switch dark light theme"><i class="fas fa-adjust"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<div class="grid grid-docs">
+  <aside>
+<nav class="side">
+  <ul>
+      <li class="nav0 ">
+    <a  href="/docs/getting-started">Getting started</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/intro">Introduction</a>
+  </li>
+  <li class="nav0 active">
+    <a class="active" href="/docs">Documentation</a>
+      <ul>
+  <li class="nav1 active">
+    <a class="active" href="/docs/agents">AI Agents</a>
+            <ul class="nav nav-scroll">
+  <li >
+    <a  href="/docs/agents">Overview</a>
+  </li>
+  <li class="active">
+    <a class="active" href="/docs/agents/skills">Agent Skills</a>
+  </li>
+            </ul>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/best-practice">Best practice</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/query">Query</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/persist">Persist</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/transactions">Transactions</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/mapping">Mapping</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/ddl-generation">DDL & Migrations</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/logging">Logging</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/testing">Testing</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/read-replicas">Read Replicas</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/database">Database platforms</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/multi-database">Multiple databases</a>
+  </li>
+  <li class="nav1 ">
+    <a  href="/docs/kotlin">Kotlin</a>
+  </li>
+        <li><a href="/docs/tuning">Tuning</a></li>
+  <li class="nav1 ">
+    <a  href="/docs/features">Features</a>
+  </li>
+      </ul>
+  </li>
+  <li class="nav0 ">
+    <a  href="/support">Getting help</a>
+  </li>
+    <li class="nav0 ">
+      <a target="_blank" href="/apidoc/13">API Javadoc</a>
+    </li>
+  <li class="nav0 ">
+    <a  href="/videos">Videos</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/upgrading">Upgrading</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/docs/deprecated">Deprecated</a>
+  </li>
+  <li class="nav0 ">
+    <a  href="/releases">Releases</a>
+  </li>
+
+  </ul>
+</nav>
+  </aside>
+  <article>
+<form action="https://www.google.com/search" method="get" class="inline-form">
+  <input type="hidden" name="as_sitesearch" value="ebean.io">
+  <div id="page-search">
+    <div class="input-group">
+      <input class="frm" name="q" id="searchinput" type="text" placeholder="Search... (press 's' to focus)" data-placeholder-focus="Search... (use '↑', '↓' and '⏎' to select results)" data-placeholder-blur="Search... (press 's' to focus)" autocomplete="off">
+      <div class="input-group-btn">
+        <button class="frm" type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div id="page-search-results" style="display: none;">
+      <ul id="search-results-container" class="search-results"><li class=" active"><a href="/docs" title="Docs"><span style="color:#777;">Docs</span> Documentation </a></li><li class=""><small style="color:#999;">And 101 more...</small></li></ul>
+    </div>
+  </div>
+</form>
+    
+
+<h2 id="overview">Ebean Agent Skills</h2>
+<p>
+  Ebean Agent Skills are structured knowledge packages that compatible coding agents can load on demand
+  when working with <a href="https://ebean.io">Ebean ORM</a>.
+</p>
+<p>
+  They follow the <a href="https://agentskills.io/specification">Agent Skills specification</a>
+  and work with skill-aware tools including
+  <a href="https://github.com/mariozechner/pi-coding-agent">pi</a> and
+  <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a>.
+</p>
+
+<h2 id="available">Available skill</h2>
+<table class="table">
+  <tr>
+    <th>Skill</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>ebean-orm</code></td>
+    <td>Entity modeling, querying, persistence, testing, project setup, and database migrations.</td>
+  </tr>
+</table>
+<p>
+  The <code>ebean-orm</code> skill gives the agent Ebean-specific guidance for entity beans, query beans,
+  transactions, testing, project setup, and migration generation.
+</p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="clone-symlink">Option A - Clone and symlink (recommended)</h3>
+<pre class="code">
+ git clone https://github.com/ebean-orm/skills.git ~/.agents/ebean-skills
+ mkdir -p ~/.agents/skills
+ ln -sf ~/.agents/ebean-skills/ebean-orm ~/.agents/skills/ebean-orm
+</pre>
+<p>To update:</p>
+<pre class="code">
+ cd ~/.agents/ebean-skills && git pull
+</pre>
+
+<h3 id="copy-install">Option B - Clone and copy into the skills directory</h3>
+<pre class="code">
+ git clone https://github.com/ebean-orm/skills.git /tmp/ebean-skills
+ mkdir -p ~/.agents/skills
+ cp -r /tmp/ebean-skills/ebean-orm ~/.agents/skills/ebean-orm
+ rm -rf /tmp/ebean-skills
+</pre>
+
+<h3 id="project-level">Option C - Project-level installation</h3>
+<p>
+  To make the skill available to everyone working on a specific project, copy it into a checked-in
+  <code>.agents/skills</code> directory.
+</p>
+<pre class="code">
+ # from your project root
+ git clone https://github.com/ebean-orm/skills.git /tmp/ebean-skills
+ mkdir -p .agents/skills
+ cp -r /tmp/ebean-skills/ebean-orm .agents/skills/ebean-orm
+ rm -rf /tmp/ebean-skills
+ git add .agents/skills/ebean-orm
+</pre>
+
+<h2 id="verification">Verification</h2>
+<p>
+  After installation, verify that the skill is visible to your coding tool. In pi:
+</p>
+<pre class="code">
+ /skills
+</pre>
+<p>
+  You should see <code>ebean-orm</code> listed.
+</p>
+
+<h2 id="how-it-works">How it works</h2>
+<p>
+  The skill uses <strong>progressive disclosure</strong>.
+</p>
+<ol>
+  <li>The tool initially sees only the skill name and description.</li>
+  <li>When a task matches Ebean work, it loads <code>SKILL.md</code>.</li>
+  <li><code>SKILL.md</code> provides key principles, a quick reference, and links to the detailed guides.</li>
+  <li>The tool then loads only the guide needed for the task at hand.</li>
+</ol>
+<p>
+  This keeps the default instruction set small while still giving the tool detailed Ebean guidance when needed.
+</p>
+
+<h2 id="structure">Skill structure</h2>
+<pre class="code">
+ ebean-orm/
+ ├── SKILL.md
+ └── references/
+     ├── setup.md
+     ├── modeling.md
+     ├── querying.md
+     ├── write-transactions.md
+     ├── testing.md
+     └── db-migrations.md
+</pre>
+<ul>
+  <li><code>setup.md</code> - project setup, dependencies, and configuration</li>
+  <li><code>modeling.md</code> - entity modeling and relationships</li>
+  <li><code>querying.md</code> - query beans, fetch tuning, and DTO queries</li>
+  <li><code>write-transactions.md</code> - save, update, delete, and transactions</li>
+  <li><code>testing.md</code> - testing patterns and tools</li>
+  <li><code>db-migrations.md</code> - migration generation and execution</li>
+</ul>
+
+<h2 id="repository">Repository</h2>
+<p>
+  Source repository: <a href="https://github.com/ebean-orm/skills">github.com/ebean-orm/skills</a>
+</p>
+
+
+  </article>
+</div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="/js/site3.js"></script>
+<script src="/js/search3.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-75181644-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-75181644-1');
+</script>
+</body>
+</html>
