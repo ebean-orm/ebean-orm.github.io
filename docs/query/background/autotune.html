@@ -157,10 +157,10 @@
   
 </pre></div>
 </div>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseBuilder</span> <span class="n">databaseBuilder</span> <span class="o">=</span> <span class="o">...</span>
 
 <span class="c1">// turn on profiling</span>
-<span class="n">serverConfig</span><span class="o">.</span><span class="na">getAutoTuneConfig</span><span class="o">().</span><span class="na">setProfiling</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">databaseBuilder</span><span class="o">.</span><span class="na">settings</span><span class="o">().</span><span class="na">getAutoTuneConfig</span><span class="o">().</span><span class="na">setProfiling</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </pre></div>
 </div>
 
@@ -256,9 +256,9 @@
   
 </pre></div>
 </div>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">serverConfig</span> <span class="o">=</span> <span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseBuilder</span> <span class="n">databaseBuilder</span> <span class="o">=</span> <span class="o">...</span>
 
-<span class="n">AutoTuneConfig</span> <span class="n">autoTuneConfig</span> <span class="o">=</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">getAutoTuneConfig</span><span class="o">();</span>
+<span class="n">AutoTuneConfig</span> <span class="n">autoTuneConfig</span> <span class="o">=</span> <span class="n">databaseBuilder</span><span class="o">.</span><span class="na">settings</span><span class="o">().</span><span class="na">getAutoTuneConfig</span><span class="o">();</span>
 
 <span class="c1">// turn on query tuning</span>
 <span class="n">autoTuneConfig</span><span class="o">.</span><span class="na">setQueryTuning</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>

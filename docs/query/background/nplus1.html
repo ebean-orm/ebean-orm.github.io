@@ -140,7 +140,7 @@
     With Ebean the <code>default lazy load batch size is 10</code>. You can change the lazy load batch size:
   </p>
   <ul>
-    <li>Globally via ServerConfig.setLazyLoadBatchSize()</li>
+    <li>Globally via <code>DatabaseBuilder.lazyLoadBatchSize()</code></li>
     <li>Per Query via Query.setLazyLoadBatchSize()</li>
     <li>Per Query path via Query.fetch() and FetchConfig</li>
   </ul>
@@ -148,9 +148,9 @@
   <h3>Global default</h3>
   <p>
     If you want to change the global default lazy load batch size to 100 you can set this via
-    <code>ServerConfig.setLazyLoadBatchSize()</code>
+    <code>DatabaseBuilder.lazyLoadBatchSize()</code>
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">serverConfig</span><span class="o">.</span><span class="na">setLazyLoadBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">databaseBuilder</span><span class="o">.</span><span class="na">lazyLoadBatchSize</span><span class="o">(</span><span class="mi">100</span><span class="o">);</span>
 </pre></div>
 </div>
   <p>

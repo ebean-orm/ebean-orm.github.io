@@ -185,7 +185,7 @@
     we can choose to override the default behaviour.
   </p>
   <p>
-    By default inserts are included. <code>DatabaseConfig.setChangeLogIncludeInserts(boolean)</code> can be used
+    By default inserts are included. <code>DatabaseBuilder.changeLogIncludeInserts(boolean)</code> can be used
     to control the default behaviour.  This can also be set via application.properties.
   </p>
   <div class="syntax properties"><div class="highlight"><pre><span></span><span class="na">ebean.changeLogIncludeInserts</span><span class="o">=</span><span class="s">false</span>
@@ -271,21 +271,18 @@
   </p>
   <p>
     If scanning is not used or the ChangeLogPrepare implementation has dependencies and its
-    instantiation should be performed externally to Ebean then we register it explicitly
-    with DatabaseConfig.
+    instantiation should be performed externally to Ebean then register it explicitly on the
+    <code>DatabaseBuilder</code>.
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// example code explicitly registering the ChangeLogPrepare implementation</span>
 
 <span class="n">MyChangeLogPrepare</span> <span class="n">changeLogPrepare</span> <span class="o">=</span> <span class="o">...;</span>
 
-<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="o">...</span>
-<span class="c1">// register explicitly here</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setChangeLogPrepare</span><span class="o">(</span><span class="n">changeLogPrepare</span><span class="o">);</span>
-
-
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">changeLogPrepare</span><span class="o">(</span><span class="n">changeLogPrepare</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 <span class="o">...</span>
 </pre></div>
 </div>

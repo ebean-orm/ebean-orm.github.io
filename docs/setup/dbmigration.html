@@ -308,7 +308,7 @@
 
   <span class="c1">// migration will be generated when Ebean starts</span>
   <span class="c1">// ... typically by running your application.</span>
-  <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+  <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">loadFromProperties</span><span class="o">().</span><span class="na">build</span><span class="o">();</span>
 <span class="o">}</span>
 </pre></div>
 </div>
@@ -442,7 +442,7 @@
   <a href="/docs/setup/logging">Logging</a>
 </li>
 <li >
-  <a href="/docs/setup/serverconfig">ServerConfig</a>
+  <a href="/docs/setup/serverconfig">DatabaseBuilder</a>
 </li>
 <li >
   <a href="/docs/setup/guice">Guice</a>

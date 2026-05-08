@@ -187,10 +187,10 @@
 </pre></div>
 </div>
 <p>
-  use <code>database.currentTransaction()</code> to return the current transaction for a given database
-  that is typically not the default database.
+  Use <code>database.currentTransaction()</code> to return the current transaction for a given database
+  that is typically injected or created explicitly during startup.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">otherDb</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">otherDb</span> <span class="o">=</span> <span class="o">...;</span> <span class="c1">// injected or created with Database.builder()</span>
 
 <span class="n">Transaction</span> <span class="n">txn</span> <span class="o">=</span> <span class="n">otherDb</span><span class="o">.</span><span class="na">currentTransaction</span><span class="o">();</span>
 </pre></div>
@@ -206,7 +206,7 @@
   We should use a <em>try with resources</em> block to ensure that the transaction is closed
   if any error occurs in the block.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="c1">// do stuff...</span>
   <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="o">...</span>
@@ -224,7 +224,7 @@
   Kotlin <code>use</code> is used similarly to <em>try with resources</em> to ensure
   the transaction is closed.
 </p>
-<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="n">DB</span><span class="p">.</span><span class="n">beginTransaction</span><span class="p">().</span><span class="n">use</span> <span class="p">{</span> <span class="n">transaction</span> <span class="p">-&gt;</span>
+<div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="n">database</span><span class="p">.</span><span class="n">beginTransaction</span><span class="p">().</span><span class="n">use</span> <span class="p">{</span> <span class="n">transaction</span> <span class="p">-&gt;</span>
 
   <span class="c1">// do stuff...</span>
   <span class="k">val</span> <span class="py">customer</span> <span class="p">=</span> <span class="p">...</span>
@@ -253,7 +253,7 @@
   <code>end()</code> will rollback the transaction if it has not already been committed.
   We primarily use <code>end()</code> in a finally block.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">()</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">()</span>
 <span class="k">try</span> <span class="o">{</span>
   <span class="c1">// do stuff...</span>
   <span class="n">Customer</span> <span class="n">customer</span> <span class="o">=</span> <span class="o">...</span>
@@ -308,7 +308,7 @@
   in queries and saving etc. We explicitly specify the transaction with query beans
   via ... and <em>model.save(transaction)</em> etc.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">getDefault</span><span class="o">().</span><span class="na">createTransaction</span><span class="o">())</span> <span class="o">{</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="o">(</span><span class="n">Transaction</span> <span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="na">createTransaction</span><span class="o">())</span> <span class="o">{</span>
 
   <span class="o">...</span>
   <span class="k">var</span> <span class="n">customer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QCustomer</span><span class="o">(</span><span class="n">transaction</span><span class="o">)</span> <span class="c1">// explicit transaction</span>

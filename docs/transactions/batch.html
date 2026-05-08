@@ -373,28 +373,28 @@
 </pre></div>
 </div>
 
-<h2 id="databaseConfig">Configuration via DatabaseConfig</h2>
+<h2 id="databaseConfig">Configuration via DatabaseBuilder</h2>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// use JDBC batch by default</span>
-<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setPersistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
+<span class="n">databaseBuilder</span><span class="o">.</span><span class="na">persistBatch</span><span class="o">(</span><span class="n">PersistBatch</span><span class="o">.</span><span class="na">ALL</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>
-  We can set <em>databaseConfig.setPersistBatch(PersistBatch.ALL)</em> so that JDBC batch mode is the default
+  We can set <em>databaseBuilder.persistBatch(PersistBatch.ALL)</em> so that JDBC batch mode is the default
   being used for all transactions.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// default batch size</span>
-<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setPersistBatchSize</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+<span class="n">databaseBuilder</span><span class="o">.</span><span class="na">persistBatchSize</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>
-  We can change the global default batch size via <em>databaseConfig.setPersistBatchSize()</em>. The default is
+  We can change the global default batch size via <em>databaseBuilder.persistBatchSize()</em>. The default is
   otherwise set at 20.
 </p>
 
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// update all loaded properties or just dirty properties</span>
-<span class="n">databaseConfig</span><span class="o">.</span><span class="na">setUpdateAllPropertiesInBatch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+<span class="n">databaseBuilder</span><span class="o">.</span><span class="na">updateAllPropertiesInBatch</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 </pre></div>
 </div>
 <p>

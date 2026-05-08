@@ -394,14 +394,14 @@
 </div>
 
 <p>
-  Programmatically configure using DatabaseConfig.
+  Programmatically configure using <code>Database.builder()</code>.
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="o">...</span>
-<span class="n">EncryptKeyManager</span> <span class="n">keyManager</span> <span class="o">=</span> <span class="o">...;</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setEncryptKeyManager</span><span class="o">(</span><span class="n">keyManager</span><span class="o">);</span>
-<span class="o">...</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">EncryptKeyManager</span> <span class="n">keyManager</span> <span class="o">=</span> <span class="o">...;</span>
+
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">encryptKeyManager</span><span class="o">(</span><span class="n">keyManager</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
 

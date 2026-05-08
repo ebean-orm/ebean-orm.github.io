@@ -60,7 +60,7 @@
     
 <div class="jumbotron mini">
   <div class="container">
-    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / ServerConfig </h1>
+    <h1><a href="/docs">Documentation</a> / <a href="/docs/setup">Setup</a> / DatabaseBuilder </h1>
   </div>
 </div>
 
@@ -74,116 +74,108 @@
 <div class="bs-docs-section">
   <h2 id="overview">Overview</h2>
   <p>
-    Configuration of EbeanServer instances is defined by the <code>ServerConfig</code> bean. It has a series of
-    getters and setters for all the configuration options available.
+    The preferred way to programmatically configure Ebean is via <code>Database.builder()</code>
+    and <code>DatabaseBuilder</code>.
   </p>
   <p>
-    In code terms a new ServerConfig instance is created and configured by either caller setter methods or
-    loading configuration from ebean.properties or external properties. Finally <code>EbeanServerFactory</code>
-    is used to take the ServerConfig and create an <code>EbeanServer</code> instance.
+    This keeps database creation explicit, works naturally with dependency injection,
+    and avoids relying on implicit bootstrap through the <code>DB</code> singleton.
+    For new applications, prefer injecting <code>Database</code> and calling methods on
+    that instance directly.
   </p>
 
-  <h2 id="ebean-properties">ebean.properties</h2>
+  <h2 id="builder">Database.builder()</h2>
   <p>
-    The <code>ServerConfig.loadFromProperties()</code> loads configuration from <code>ebean.properties</code> file.
-    This is can be used where some properties are set via code (calling setter methods on ServerConfig)
-    and some from ebean.properties.
+    Build the <code>Database</code> explicitly and keep the instance returned from
+    <code>build()</code>.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="o">...</span>
-<span class="c1">// load configuration from ebean.properties</span>
-<span class="c1">// using &quot;pg&quot; as the server name</span>
-<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">();</span>
-<span class="o">...</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">DataSourceBuilder</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">username</span><span class="o">(</span><span class="s">&quot;my_app&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="s">&quot;secret&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">url</span><span class="o">(</span><span class="s">&quot;jdbc:postgresql://localhost:5432/my_app&quot;</span><span class="o">);</span>
 
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">dataSourceBuilder</span><span class="o">(</span><span class="n">dataSource</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
 
-  <h2 id="external-properties">External properties</h2>
+  <h2 id="properties">Load from properties</h2>
   <p>
-    You can have an external mechanism for loading <code>Properties</code> and supply this to ServerConfig via:
-    <code>ServerConfig.loadFromProperties(Properties)</code>. This is can be used where some configuration is set
-    via the externally loaded properties and some is set via code (calling setter methods on ServerConfig).
+    If some configuration lives in <code>application.yaml</code> or <code>application.properties</code>,
+    load it explicitly with the builder rather than relying on automatic bootstrap.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// load properties externally</span>
-<span class="n">Properties</span> <span class="n">externalProps</span> <span class="o">=</span> <span class="o">...;</span>
-
-<span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="o">...</span>
-<span class="c1">// load configuration from external properties</span>
-<span class="c1">// using &quot;pg&quot; as the server name</span>
-<span class="n">config</span><span class="o">.</span><span class="na">loadFromProperties</span><span class="o">(</span><span class="n">externalProps</span><span class="o">);</span>
-<span class="o">...</span>
-
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
+
+  <p>
+    For named databases, set the name before <code>loadFromProperties()</code> so the
+    matching datasource configuration is loaded.
+  </p>
+
   <h2 id="register">Register</h2>
   <p>
-    By default ServerConfig has register=true and this means that the EbeanServer instance is registered with
-    the Ebean singleton and can be later accessed via <code>Ebean.getServer(serverName)</code>
+    By default a built <code>Database</code> is registered with the <code>DB</code> registry,
+    and that is generally the right choice. Query beans, Model and other default-database-based
+    APIs resolve the database through that registry under the hood.
   </p>
   <p>
-    You need to explicitly ServerConfig.setRegister(false) if you don't this feature.
+    Only disable registration for isolated or one-off databases that are never referenced that way.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="o">...</span>
-
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-
-<span class="o">...</span>
-
-<span class="c1">// Later on we can get the server instance</span>
-<span class="c1">// using it&#39;s name via Ebean</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;reporting&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">defaultDatabase</span><span class="o">(</span><span class="kc">false</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
 
-  <h2 id="default">Default server</h2>
+  <h2 id="default">Default database</h2>
   <p>
-    You can set ServerConfig.setDefaultServer(true) to indicate that the EbeanServer instance created should
-    be the 'default' EbeanServer and can be later accessed via <code>Ebean.getDefaultServer()</code>
+    One registered <code>Database</code> is typically left as the default database. Query beans,
+    Model and older convenience APIs commonly resolve against that default registration.
+    Even so, for new code prefer using the injected <code>Database</code> directly rather than
+    calling <code>DB</code> convenience methods in application code.
   </p>
 
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">ServerConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ServerConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;pg&quot;</span><span class="o">);</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-<span class="o">...</span>
-
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">EbeanServerFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-
-<span class="o">...</span>
-
-<span class="c1">// Later on we can get the server instance ...</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getDefaultServer</span><span class="o">();</span>
-
-<span class="c1">// Note: serverName of null is the same as getting the default server</span>
-<span class="n">EbeanServer</span> <span class="n">server</span> <span class="o">=</span> <span class="n">Ebean</span><span class="o">.</span><span class="na">getServer</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">defaultDatabase</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
-
 
   <h2 id="di">Dependency injection</h2>
   <p>
-    For dependency injection with Guice, Spring and similar DI frameworks typically a "provider" or "factory"
-    is required that creates a ServerConfig, configures it as required perhaps using ebean.properties or
-    external properties and then uses <code>EbeanServerFactory</code> to create the EbeanServer instance.
-  </p>
-  <h4>Inject and ActiveRecord</h4>
-  <p>
-    It is common and expected that you want to be able to both <code>@Inject</code> <code>EbeanServer</code>
-    instances in the traditional DI coding style <em>and also</em> use the active record style.  This can be done
-    when the EbeanServer instances are created with <code>register</code> as true and one instance marked
-    as the <code>default server</code>.
+    With Guice, Spring, Avaje Inject and similar DI frameworks, create the
+    <code>Database</code> in a provider or bean factory and inject the resulting
+    instance where needed.
   </p>
 
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="nd">@Bean</span>
+<span class="n">Database</span> <span class="nf">database</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+  <p>
+    Older versions referred to <code>ServerConfig</code> / <code>EbeanServerFactory</code>.
+    If you are migrating older setup code, see <a href="/docs/upgrading">docs / upgrading</a>.
+  </p>
 </div>
 
     </div>
@@ -202,13 +194,13 @@
   <a href="/docs/setup/logging">Logging</a>
 </li>
 <li class="active">
-  <a href="/docs/setup/serverconfig">ServerConfig</a>
+  <a href="/docs/setup/serverconfig">DatabaseBuilder</a>
 <ul class="nav">
   <li><a href="#overview">Overview</a></li>
-  <li><a href="#ebean-properties">ebean.properties</a></li>
-  <li><a href="#external-properties">External properties</a></li>
-  <li><a href="#server">Register</a></li>
-  <li><a href="#default">Default server</a></li>
+  <li><a href="#builder">Database.builder()</a></li>
+  <li><a href="#properties">Load from properties</a></li>
+  <li><a href="#register">Register</a></li>
+  <li><a href="#default">Default database</a></li>
   <li><a href="#di">Dependency injection</a></li>
 </ul>
 </li>

@@ -176,9 +176,9 @@
   in <code>main/resources/application.yaml</code> like below:
 </p>
 <p>
-  Note that for property configuration to work when we <em>programmatically</em>
-  create Database via DatabaseFactory and DatabaseConfig, then we need to make sure that
-  we use <code>DatabaseConfig.loadFromProperties()</code> to load the properties.
+  Note that when we <em>programmatically</em> create the Database, we should still
+  explicitly call <code>Database.builder().loadFromProperties()</code> if we want
+  the Redis configuration from application properties to be applied.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">redis</span><span class="p">:</span>

@@ -118,10 +118,53 @@
   </div>
 </form>
     
-<h2 id="properties">via Properties / yaml</h2>
+<h2 id="programmatic">Programmatic configuration (recommended)</h2>
 <p>
-  io.ebean.Database can automatically be configured via properties in <code>application.yaml</code>,
-  <code>application.properties</code> etc.
+  The preferred approach is to programmatically create a <code>Database</code> using
+  <code>Database.builder()</code> and then inject or otherwise pass that instance where it is needed.
+</p>
+<p>
+  This makes startup explicit and avoids relying on global lookup via <code>DB</code>.
+</p>
+
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="k">var</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">DataSourceBuilder</span><span class="o">.</span><span class="na">create</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">username</span><span class="o">(</span><span class="s">&quot;sa&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">password</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">url</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:myapp&quot;</span><span class="o">);</span>
+
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">dataSourceBuilder</span><span class="o">(</span><span class="n">dataSource</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">dataSource</span> <span class="p">=</span> <span class="n">DataSourceBuilder</span><span class="p">.</span><span class="n">create</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">username</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">password</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">url</span><span class="p">(</span><span class="s">&quot;jdbc:h2:mem:myapp&quot;</span><span class="p">)</span>
+
+<span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">Database</span><span class="p">.</span><span class="n">builder</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;db&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">dataSourceBuilder</span><span class="p">(</span><span class="n">dataSource</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+  
+</pre></div>
+</div>
+</div>
+
+<h2 id="properties">Load configuration from application.yaml / properties</h2>
+<p>
+  If the datasource settings live in <code>application.yaml</code>, <code>application.properties</code>
+  and similar configuration sources, still create the <code>Database</code> explicitly and call
+  <code>loadFromProperties()</code>.
 </p>
 <p>
   The default database name is <code>db</code> so the minimal configuration looks like:
@@ -143,6 +186,29 @@
     <span class="nt">password</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_password</span>
     <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">jdbc:postgresql://localhost:5432/my_app</span>
 </pre></div>
+</div>
+
+<ul class="code nav nav-tabs mytabs">
+  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
+  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
+</ul>
+<div class="code-java">
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;db&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+  
+</pre></div>
+</div>
+</div>
+<div class="code-kt">
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">Database</span><span class="p">.</span><span class="n">builder</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;db&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">loadFromProperties</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">build</span><span class="p">()</span>
+  
+</pre></div>
+</div>
 </div>
 
 <h3>ebean.migration.run</h3>
@@ -173,13 +239,10 @@
 </pre></div>
 </div>
 
-
 <h3 id="properties-multiple">Multiple databases</h3>
 <p>
-  When using multiple databases we set multiple datasource configurations.
-  The non-default databases have a name. For example, if we have a second
-  database called <code>"other"</code> we configure a second datasource
-  like below:
+  When using multiple databases, keep the startup explicit and create each <code>Database</code>
+  using its configured name.
 </p>
 <div class="syntax yml"><div class="highlight"><pre><span></span><span class="nt">ebean</span><span class="p">:</span>
   <span class="nt">dbSchema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_app</span>  <span class="c1"># use this schema rather than public</span>
@@ -199,79 +262,30 @@
 </pre></div>
 </div>
 <p>
-  We can obtain the "other" database instance by it's name:
+  Create the named database explicitly:
 </p>
-<ul class="code nav nav-tabs mytabs">
-  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
-  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
-</ul>
 <div class="code-java">
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// obtain &quot;other&quot; database by its name</span>
-<span class="n">Database</span> <span class="n">otherDatabase</span> <span class="o">=</span> <span class="n">DB</span><span class="o">.</span><span class="na">byName</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">);</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">otherDatabase</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">&quot;other&quot;</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
   
 </pre></div>
 </div>
 </div>
 <div class="code-kt">
-  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// obtain &quot;other&quot; database by its name</span>
-<span class="k">val</span> <span class="py">otherDatabase</span> <span class="p">=</span> <span class="n">DB</span><span class="p">.</span><span class="n">byName</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">);</span>
+  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="py">otherDatabase</span> <span class="p">=</span> <span class="n">Database</span><span class="p">.</span><span class="n">builder</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;other&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="n">loadFromProperties</span><span class="p">()</span>
+  <span class="p">.</span><span class="n">build</span><span class="p">()</span>
   
 </pre></div>
 </div>
 </div>
 <p>
-  Goto <a href="/docs/multi-database">docs / multi-database</a> for more details on using multiple databases
-  with <code>@DbName</code>, Model and Finder.
+  Goto <a href="/docs/multi-database">docs / multi-database</a> for more details on working
+  with multiple databases.
 </p>
-
-<h2 id="programmatic">Programmatically creating database</h2>
-<p>
-  We can programmatically create a Database instance using <a href="#factory">DatabaseFactory</a>
-  and <a href="#config">DatabaseConfig</a>.
-</p>
-
-<ul class="code nav nav-tabs mytabs">
-  <li role="presentation" class="javaActive active"><a onclick="setLang('java');">java</a></li>
-  <li role="presentation" class="kotlinActive"><a onclick="setLang('kt');">kotlin</a></li>
-</ul>
-<div class="code-java">
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// datasource</span>
-<span class="n">DataSourceConfig</span> <span class="n">dataSourceConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DataSourceConfig</span><span class="o">();</span>
-<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUsername</span><span class="o">(</span><span class="s">&quot;sa&quot;</span><span class="o">);</span>
-<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">);</span>
-<span class="n">dataSourceConfig</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="s">&quot;jdbc:h2:mem:myapp;&quot;</span><span class="o">);</span>
-
-
-<span class="c1">// configuration ...</span>
-<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setDataSourceConfig</span><span class="o">(</span><span class="n">dataSourceConfig</span><span class="o">);</span>
-<span class="o">...</span>
-
-<span class="c1">// create database instance</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
-  
-</pre></div>
-</div>
-</div>
-<div class="code-kt">
-  <div class="syntax kotlin"><div class="highlight"><pre><span></span><span class="c1">// datasource</span>
-<span class="k">val</span> <span class="py">dataSourceConfig</span> <span class="p">=</span> <span class="n">new</span> <span class="n">DataSourceConfig</span><span class="p">()</span>
-<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUsername</span><span class="p">(</span><span class="s">&quot;sa&quot;</span><span class="p">)</span>
-<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setPassword</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-<span class="n">dataSourceConfig</span><span class="p">.</span><span class="n">setUrl</span><span class="p">(</span><span class="s">&quot;jdbc:h2:mem:myapp;&quot;</span><span class="p">)</span>
-
-
-<span class="c1">// configuration ...</span>
-<span class="k">val</span> <span class="py">config</span> <span class="p">=</span> <span class="n">new</span> <span class="n">DatabaseConfig</span><span class="p">();</span>
-<span class="n">config</span><span class="p">.</span><span class="n">setDataSourceConfig</span><span class="p">(</span><span class="n">dataSourceConfig</span><span class="p">)</span>
-<span class="p">...</span>
-
-<span class="c1">// create database instance</span>
-<span class="k">val</span> <span class="py">database</span> <span class="p">=</span> <span class="n">DatabaseFactory</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-  
-</pre></div>
-</div>
-</div>
 
 <h2 id="testing-ddl">For Testing with ddl.generation</h2>
 <p>

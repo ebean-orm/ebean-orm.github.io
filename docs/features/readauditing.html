@@ -241,23 +241,18 @@
   </p>
   <p>
     If scanning is not used or the ReadAuditPrepare implementation has dependencies and its
-    instantiation should be performed externally to Ebean then you can register it explicitly
-    with the DatabaseConfig.
+    instantiation should be performed externally to Ebean then register it explicitly on the
+    <code>DatabaseBuilder</code>.
   </p>
 
   <div class="syntax java"><div class="highlight"><pre><span></span><span class="c1">// example code explicitly registering the ReadAuditPrepare implementation</span>
 
 <span class="n">MyReadAuditPrepare</span> <span class="n">readAuditPrepare</span> <span class="o">=</span> <span class="o">...;</span>
 
-<span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-<span class="o">...</span>
-
-<span class="c1">// register explicitly here</span>
-<span class="n">config</span><span class="o">.</span><span class="na">setReadAuditPrepare</span><span class="o">(</span><span class="n">readAuditPrepare</span><span class="o">);</span>
-
-
-<span class="o">...</span>
-<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">DatabaseFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">config</span><span class="o">);</span>
+<span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">readAuditPrepare</span><span class="o">(</span><span class="n">readAuditPrepare</span><span class="o">)</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
 

@@ -148,7 +148,7 @@
 <h2>Spring transactions</h2>
 <p>
   The recommendation is to use Ebean's own transaction management but we can also use
-  spring transactions.
+  Spring transactions.
 </p>
 <p>
   To do so include the dependency:
@@ -162,11 +162,13 @@
 </div>
 
 <p>
-  Set <code>SpringJdbcTransactionManager</code> as an external transaction by:
+  Register <code>SpringJdbcTransactionManager</code> as the external transaction manager
+  on the builder:
 </p>
-<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">DatabaseConfig</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DatabaseConfig</span><span class="o">();</span>
-
-<span class="n">config</span><span class="o">.</span><span class="na">setExternalTransactionManager</span><span class="o">(</span><span class="k">new</span> <span class="n">SpringJdbcTransactionManager</span><span class="o">());</span>
+<div class="syntax java"><div class="highlight"><pre><span></span><span class="n">Database</span> <span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">loadFromProperties</span><span class="o">()</span>
+  <span class="o">.</span><span class="na">externalTransactionManager</span><span class="o">(</span><span class="k">new</span> <span class="n">SpringJdbcTransactionManager</span><span class="o">())</span>
+  <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </pre></div>
 </div>
 

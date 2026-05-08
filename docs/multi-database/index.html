@@ -272,31 +272,32 @@
   </p>
 
   <p>
-    Create an implementation of ServerConfigProvider that registers the
-    entity beans with the appropriate database based on the name.
+    Create an implementation of <code>DatabaseConfigProvider</code> that registers the
+    entity beans with the appropriate database based on the configured name.
   </p>
-  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegisterDomainBeans</span> <span class="kd">implements</span> <span class="n">ServerConfigProvider</span> <span class="o">{</span>
+  <div class="syntax java"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RegisterDomainBeans</span> <span class="kd">implements</span> <span class="n">DatabaseConfigProvider</span> <span class="o">{</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">OTHER</span> <span class="o">=</span> <span class="s">&quot;other&quot;</span><span class="o">;</span>
 
   <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">DB</span> <span class="o">=</span> <span class="s">&quot;db&quot;</span><span class="o">;</span>
 
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">ServerConfig</span> <span class="n">serverConfig</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">apply</span><span class="o">(</span><span class="n">DatabaseBuilder</span> <span class="n">config</span><span class="o">)</span> <span class="o">{</span>
 
-      <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;register beans for {}&quot;</span><span class="o">,</span> <span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
-      <span class="k">if</span> <span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+      <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">settings</span><span class="o">().</span><span class="na">getName</span><span class="o">();</span>
+      <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;register beans for {}&quot;</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
         <span class="c1">// the default database</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DCustomer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DOrder</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DProduct</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DCustomer</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DOrder</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">DProduct</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
         <span class="o">...</span>
 
-      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">OTHER</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">serverConfig</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">OTHER</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">))</span> <span class="o">{</span>
         <span class="c1">// second OTHER database</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">setDefaultServer</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OSales</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-        <span class="n">serverConfig</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OMarket</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">defaultDatabase</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OSales</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">addClass</span><span class="o">(</span><span class="n">OMarket</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
         <span class="o">...</span>
 
       <span class="o">}</span>
@@ -305,8 +306,8 @@
 </pre></div>
 </div>
   <p>
-    Add a service loader <code>src/main/resources/META-INF/services/io.ebean.config.ServerConfigProvider</code>
-    file to specify our ServerConfigProvider implementation (e.g. RegisterDomainBeans).
+    Add a service loader <code>src/main/resources/META-INF/services/io.ebean.config.DatabaseConfigProvider</code>
+    file to specify our <code>DatabaseConfigProvider</code> implementation (e.g. RegisterDomainBeans).
   </p>
 
 
