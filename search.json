@@ -2,6 +2,14 @@
 {
   "title":"",
   "caption":"",
+  "category":"AI Agents",
+  "priority":"0",
+  "keywords":"",
+  "url":"/docs/agents"
+}
+,{
+  "title":"",
+  "caption":"",
   "category":"Best Practice",
   "priority":"0",
   "keywords":"",
@@ -320,20 +328,20 @@
   "url":"/docs/intro/configuration#testing"
 }
 ,{
-  "title":"Configuration - Programmatically creating database",
-  "caption":"",
-  "category":"Introduction",
-  "priority":"2",
-  "keywords":"",
-  "url":"/docs/intro/configuration#programmatic"
-}
-,{
-  "title":"Configuration - via Properties / yaml",
+  "title":"Configuration - Load configuration from application.yaml / properties",
   "caption":"",
   "category":"Introduction",
   "priority":"2",
   "keywords":"",
   "url":"/docs/intro/configuration#properties"
+}
+,{
+  "title":"Configuration - Programmatic configuration (recommended)",
+  "caption":"",
+  "category":"Introduction",
+  "priority":"2",
+  "keywords":"",
+  "url":"/docs/intro/configuration#programmatic"
 }
 ,{
   "title":"Database & DB",
@@ -344,7 +352,7 @@
   "url":"/docs/intro/database"
 }
 ,{
-  "title":"Database & DB - DB (io.ebean.DB)",
+  "title":"Database & DB - DB (optional / compatibility)",
   "caption":"",
   "category":"Introduction",
   "priority":"2",
@@ -526,6 +534,102 @@
   "priority":"2",
   "keywords":"",
   "url":"/docs/trouble-shooting#not-enhanced"
+}
+,{
+  "title":"AI Agent Instructions",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents#overview"
+}
+,{
+  "title":"Add to your project",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents#project-config"
+}
+,{
+  "title":"Agent Skills",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills"
+}
+,{
+  "title":"Agent Skills - Available skill",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#available"
+}
+,{
+  "title":"Agent Skills - Ebean Agent Skills",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#overview"
+}
+,{
+  "title":"Agent Skills - How it works",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#how-it-works"
+}
+,{
+  "title":"Agent Skills - Installation",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#installation"
+}
+,{
+  "title":"Agent Skills - Repository",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#repository"
+}
+,{
+  "title":"Agent Skills - Skill structure",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#structure"
+}
+,{
+  "title":"Agent Skills - Verification",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents/skills#verification"
+}
+,{
+  "title":"Recommended: install the Ebean agent skill",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents#recommended"
+}
+,{
+  "title":"Step-by-step guides",
+  "caption":"",
+  "category":"AI Agents",
+  "priority":"3",
+  "keywords":"",
+  "url":"/docs/agents#guides"
 }
 ,{
   "title":"@Column(name=...)",
@@ -2656,7 +2760,7 @@
   "url":"/docs/mapping/type/uuid"
 }
 ,{
-  "title":"Types / UUID - DatabaseConfig.setDbUuid()",
+  "title":"Types / UUID - DatabaseBuilder.dbUuid()",
   "caption":"",
   "category":"Mapping",
   "priority":"3",
@@ -4472,7 +4576,7 @@
   "url":"/docs/transactions/batch#batchSize"
 }
 ,{
-  "title":"Batch - Configuration via DatabaseConfig",
+  "title":"Batch - Configuration via DatabaseBuilder",
   "caption":"",
   "category":"Transactions",
   "priority":"3",
