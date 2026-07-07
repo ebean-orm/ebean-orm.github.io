@@ -255,24 +255,24 @@ public class MyOrderView {
   Ebean's own migration runner) will (re)run whenever the script content changes.
 </p>
 
-<pre type="xml">
-  &lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;
-  &lt;extra-ddl xmlns="http://ebean-orm.github.io/xml/ns/extraddl"&gt;
+<div class="syntax xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;</span>
+<span class="nt">&lt;extra-ddl</span> <span class="na">xmlns=</span><span class="s">&quot;http://ebean-orm.github.io/xml/ns/extraddl&quot;</span><span class="nt">&gt;</span>
 
-  &lt;ddl-script name="order views" platforms="h2" drop="true"&gt;
-      drop view order_agg_vw if exists;
-  &lt;/ddl-script&gt;
+<span class="nt">&lt;ddl-script</span> <span class="na">name=</span><span class="s">&quot;order views&quot;</span> <span class="na">platforms=</span><span class="s">&quot;h2&quot;</span> <span class="na">drop=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+    drop view order_agg_vw if exists;
+<span class="nt">&lt;/ddl-script&gt;</span>
 
-  &lt;ddl-script name="order views" platforms="postgres,oracle"&gt;
-    create or replace view order_agg_vw as
-    select d.order_id, sum(d.order_qty * d.unit_price) as order_total,
-           sum(d.ship_qty * d.unit_price) as ship_total
-    from o_order_detail d
-    group by d.order_id
-  &lt;/ddl-script&gt;
+<span class="nt">&lt;ddl-script</span> <span class="na">name=</span><span class="s">&quot;order views&quot;</span> <span class="na">platforms=</span><span class="s">&quot;postgres,oracle&quot;</span><span class="nt">&gt;</span>
+  create or replace view order_agg_vw as
+  select d.order_id, sum(d.order_qty * d.unit_price) as order_total,
+         sum(d.ship_qty * d.unit_price) as ship_total
+  from o_order_detail d
+  group by d.order_id
+<span class="nt">&lt;/ddl-script&gt;</span>
 
-  &lt;/extra-ddl&gt;
-</pre>
+<span class="nt">&lt;/extra-ddl&gt;</span>
+</pre></div>
+</div>
 
 
 
