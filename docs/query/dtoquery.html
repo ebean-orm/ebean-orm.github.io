@@ -339,7 +339,9 @@
 <p>
   <em>findStream</em> is similar to findEach where we process the result one at a time.
   We should use a <code>try with resources</code> block to ensure the underlying resources
-  are closed.
+  are closed. As with entity queries, the connection is held open for the lifetime of the
+  stream - for small/bounded results that you collect anyway prefer <code>findList().stream()</code>
+  (see <a href="streaming#findStream-vs-findList">findStream() vs findList().stream()</a>).
 </p>
 <div class="syntax java"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">&quot;select id, name from o_customer where id &gt; ? order by id desc&quot;</span><span class="o">;</span>
 
